@@ -1,0 +1,97 @@
+// src/shared/components/ui/Button/Button.module.scss
+.button {
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // Variants
+  &--primary {
+    background: var(--btn-primary);
+    color: var(--text-primary);
+
+    &:hover:not(:disabled) {
+      background: var(--btn-hover);
+      color: var(--text-inverse);
+    }
+  }
+
+  &--secondary {
+    background: var(--secondary);
+    color: var(--text-inverse);
+
+    &:hover:not(:disabled) {
+      background: var(--accent);
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+
+    &:hover:not(:disabled) {
+      background: var(--primary);
+      color: var(--text-inverse);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: var(--text-primary);
+
+    &:hover:not(:disabled) {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  // Sizes
+  &--sm {
+    padding: 9px 10px;
+    font-size: 24px;
+    height: 44px;
+  }
+
+  &--md {
+    padding: 12px 24px;
+    font-size: 16px;
+    height: 44px;
+  }
+  &--promo {
+    padding: 5px;
+    font-size: 16px;
+    height: 35px;
+  }
+
+  &--lg {
+    padding: 14px 32px;
+    font-size: var(--text-lg);
+    height: 52px;
+  }
+
+  &--xl {
+    padding: 11px 25px;
+    font-size: 24px;
+    height: 60px;
+    line-height: 1.1;
+    border-radius: 4px;
+    text-align: center;
+  }
+  &--fl {
+    padding: 0;
+  }
+
+  &--fullWidth {
+    width: 100%;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

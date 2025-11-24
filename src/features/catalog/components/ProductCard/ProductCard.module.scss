@@ -1,0 +1,227 @@
+// src/features/catalog/components/ProductCard/ProductCard.module.scss
+@use '../../../../shared/styles/animations';
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+}
+
+.card {
+  height: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+
+  &:hover {
+    .productImage {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.productCardImageContainer {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: visible; // Дозволяємо трикутнику виходити за межі
+
+  &__ImageWrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; // Обрізаємо зображення
+  }
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  background: #f3f4f6;
+  &.loading {
+    animation: blurFadeIn 1.5s ease-in-out infinite;
+  }
+}
+// ✅ Animation imported from shared styles
+
+// Wrapper для позиціонування FavoriteButton на картинці
+.favoriteButtonWrapper {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 99;
+}
+
+.content {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.title {
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+.variants {
+  margin: 8px 0 12px;
+
+  &__label {
+    font-size: var(--text-sm);
+    font-weight: var(--fw-medium);
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  &__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &__option {
+    padding: 6px 12px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: var(--fw-medium);
+
+    &:hover:not(:disabled) {
+      border-color: var(--accent-yellow);
+      background: #fffbf0;
+      transform: translateY(-1px);
+    }
+
+    &_active {
+      border-color: var(--accent-yellow);
+      background: var(--accent-yellow);
+      color: var(--text-primary);
+      font-weight: var(--fw-bold);
+    }
+
+    &_disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      text-decoration: line-through;
+      background: #f5f5f5;
+    }
+  }
+}
+
+.description {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0 0 5px 0;
+  min-height: 40px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.priceSection {
+  display: flex;
+  align-items: center;
+}
+
+// Ціни
+.originalPrice {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  text-decoration: line-through;
+  margin-right: 8px;
+}
+
+.finalPrice {
+  font-size: var(--text-base);
+  font-weight: var(--fw-bold);
+  color: var(--primary);
+}
+
+.price {
+  font-size: var(--text-base);
+  font-weight: var(--fw-bold);
+  color: var(--primary);
+}
+
+.unitValue {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  margin-left: 4px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+
+  button {
+    font-size: var(--text-xl);
+  }
+}
+
+// ✅ ВИПРАВЛЕНО: Прибрано inline стилі з Button
+.addedButton {
+  background-color: #10b981 !important;
+  transform: scale(0.95);
+  transition: all 0.15s ease;
+}
+
+.addButton {
+  transform: scale(1);
+  transition: all 0.15s ease;
+}
+
+// Респонсив
+@media (max-width: 768px) {
+  .variants {
+    &__options {
+      gap: 4px;
+    }
+
+    &__option {
+      padding: 4px 10px;
+      font-size: var(--text-xs);
+    }
+  }
+  .productCardImageContainer {
+    height: 180px;
+  }
+
+  .content {
+    padding: 12px;
+  }
+
+  .title {
+    font-size: var(--text-base);
+  }
+
+  .favoriteButton {
+    width: 32px;
+    height: 32px;
+  }
+}

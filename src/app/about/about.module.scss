@@ -1,0 +1,67 @@
+/* Section 4: Image left, text right */
+/* Section 5:  image right */
+.ImageSection {
+  background-color: #f8f9fa;
+  padding: 0;
+  overflow: hidden;
+}
+
+.ImageGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 500px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.TextContainer {
+  padding: 120px 40px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 565px;
+  @media (max-width: 768px) {
+    padding: 40px 20px;
+  }
+}
+.titlePrimary {
+  font-size: 40px;
+  color: var(--text-yellow);
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
+}
+
+.Title {
+  font-family: var(--font-heading);
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+  line-height: 0.8;
+  @media (max-width: 768px) {
+    font-size: 30px;
+    margin-bottom: 12px;
+  }
+}
+
+.Text {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+}
+
+.ImageContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.Image {
+  width: 100%;
+  object-position: center;
+  height: 100%;
+  object-fit: cover;
+  min-height: 500px;
+}

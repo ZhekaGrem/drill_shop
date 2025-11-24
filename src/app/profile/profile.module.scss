@@ -1,0 +1,42 @@
+// src/app/profile/profile.module.scss
+.sidebar {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    margin-bottom: 1rem;
+  }
+}
+
+.content {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  min-height: 400px;
+}
+
+.navItem {
+  border-radius: var(--border-radius-md);
+  padding: 12px 16px;
+  transition: all var(--transition-normal);
+
+  &:hover {
+    background-color: rgba(251, 184, 0, 0.1);
+  }
+
+  &[data-active] {
+    background-color: var(--accent-yellow);
+    color: var(--text-inverse);
+    font-weight: 600;
+
+    .mantine-NavLink-leftSection {
+      color: var(--text-inverse);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    .navItem {
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+  }
+}

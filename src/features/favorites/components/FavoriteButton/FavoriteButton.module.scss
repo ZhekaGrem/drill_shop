@@ -1,0 +1,98 @@
+// src/features/favorites/components/FavoriteButton/FavoriteButton.module.scss
+@use '../../../../shared/styles/animations';
+
+.favoriteButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0);
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  color: #c1baba;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  // Розміри кнопки
+  &.sm {
+    width: 32px;
+    height: 32px;
+
+    .icon {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &.md {
+    width: 40px;
+    height: 40px;
+
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &.lg {
+    width: 48px;
+    height: 48px;
+
+    .icon {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  // Анімація іконки
+  .icon {
+    transition:
+      transform 0.3s ease,
+      fill 0.3s ease;
+  }
+
+  // Стан hover
+  &:hover:not(:disabled) {
+    background: rgba(204, 33, 40, 0.08);
+
+    .icon {
+      transform: scale(1.1);
+    }
+  }
+
+  // Активний стан
+  &.active {
+    color: var(--primary);
+
+    .icon {
+      animation: heartBeat 0.4s ease-out;
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba(204, 33, 40, 0.12);
+
+      .icon {
+        transform: scale(1.15);
+      }
+    }
+  }
+
+  // Неактивний стан
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  // Фокус
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  // Ripple effect при кліку
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+}
+
+// ✅ Animation heartBeat imported from shared styles

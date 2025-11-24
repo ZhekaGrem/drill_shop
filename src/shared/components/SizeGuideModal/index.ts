@@ -1,0 +1,1 @@
+export { SizeGuideModal } from './SizeGuideModal';

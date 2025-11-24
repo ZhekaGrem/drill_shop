@@ -1,0 +1,407 @@
+// Sausage Man inspired footer - professional German style
+.footer {
+  background: var(--background-secondary);
+  position: relative;
+  margin-top: auto;
+  color: #ffffff;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Decorative top line with German-inspired pattern
+.topLine {
+  height: 26px;
+  width: 100%;
+  background-image: url('./toplineSvg.svg');
+  background-size: 975px 26px;
+  background-repeat: repeat-x;
+  background-position: center;
+  position: absolute;
+  top: -25px;
+  z-index: 100;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+  }
+}
+
+.container {
+  padding: 60px 0 0;
+
+  @media (max-width: 768px) {
+    padding: 48px 0 0;
+  }
+}
+
+// Trust badges bar - Sausage Man style
+.trustBar {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  padding: 32px 0;
+  margin-bottom: 48px;
+  border-bottom: 1px solid rgba(251, 184, 0, 0.2);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+  }
+}
+
+.trustBadge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fbb800;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  svg {
+    color: #fbb800;
+  }
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+}
+
+// Main footer grid - professional layout
+.footerGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.2fr;
+  gap: 48px;
+  margin-bottom: 48px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+  }
+}
+
+// Company section
+.companySection {
+  max-width: 320px;
+
+  @media (max-width: 768px) {
+    max-width: none;
+  }
+}
+
+.logo {
+  max-width: 160px;
+  height: auto;
+  margin-bottom: 20px;
+  filter: brightness(1.1) contrast(1.1);
+
+  @media (max-width: 768px) {
+    max-width: 140px;
+    margin: 0 auto 20px;
+    display: block;
+  }
+}
+
+.companyDescription {
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 24px;
+  font-weight: 400;
+}
+
+.contactInfo {
+  gap: 12px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+
+  svg {
+    color: rgba(255, 255, 255, 0.9);
+    flex-shrink: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+    &:hover svg {
+      color: var(--text-primary);
+    }
+
+    &:focus {
+      outline: 2px solid #fbb800;
+      outline-offset: 2px;
+      border-radius: 3px;
+    }
+  }
+}
+
+// Links columns
+.linksColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.columnTitle {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background: #cc2128;
+    border-radius: 1px;
+
+    @media (max-width: 768px) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+}
+
+.linksColumn a {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 4px 0;
+  position: relative;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+
+  &:focus {
+    outline: 2px solid #fbb800;
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  @media (max-width: 768px) {
+    &:hover {
+      padding-left: 0;
+    }
+  }
+}
+
+// Social section
+.socialSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.socialDescription {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.socialIcons {
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+}
+
+.socialLink {
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+
+  &:focus {
+    outline: 2px solid #fbb800;
+    outline-offset: 3px;
+    border-radius: 50%;
+  }
+}
+
+.socialIcon {
+  background: #fbb800;
+  color: #1a1a1a;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.blogLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @media (max-width: 768px) {
+    align-items: center;
+  }
+
+  a {
+    font-size: 13px;
+    color: var(--text-inverse);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+    &:focus {
+      outline: 2px solid #fbb800;
+      outline-offset: 2px;
+      border-radius: 3px;
+    }
+  }
+}
+
+// Bottom section - legal and copyright
+.bottomSection {
+  padding: 32px 0;
+  border-top: 1px solid rgba(251, 184, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.legalLinks {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    gap: 16px;
+  }
+
+  a {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:focus {
+      outline: 2px solid #fbb800;
+      outline-offset: 2px;
+      border-radius: 3px;
+    }
+  }
+}
+
+.copyright {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+// Responsive refinements
+@media (max-width: 480px) {
+  .container {
+    padding: 32px 0 0;
+  }
+
+  .trustBar {
+    padding: 24px 0;
+    margin-bottom: 32px;
+  }
+
+  .footerGrid {
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .columnTitle {
+    font-size: 16px;
+  }
+
+  .bottomSection {
+    padding: 24px 0;
+  }
+}
+
+// High contrast and accessibility
+@media (prefers-contrast: high) {
+  .footer {
+    background: #000000;
+  }
+
+  .columnTitle::after {
+    background: #fbb800;
+  }
+
+  .socialIcon {
+    border-width: 3px;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .footer {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .trustBadge,
+  .socialLink,
+  .linksColumn a {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}

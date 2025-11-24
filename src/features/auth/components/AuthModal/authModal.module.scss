@@ -1,0 +1,22 @@
+// src/features/auth/components/AuthModal/authModal.module.scss
+.title {
+  font-size: var(--mantine-font-size-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.modalContent {
+  border-radius: var(--mantine-radius-md);
+}
+
+.modalBody {
+  padding-top: 0;
+}
+
+.resetPanel {
+  padding-top: var(--mantine-spacing-lg);
+}
+
+.modalContent {
+  font-family: var(--font-body);
+}

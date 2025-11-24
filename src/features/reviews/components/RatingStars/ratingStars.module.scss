@@ -1,0 +1,53 @@
+.ratingStars {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stars {
+  display: flex;
+  gap: 0.125rem;
+}
+
+.star {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.star:hover:not(.readonly) {
+  transform: scale(1.1);
+}
+
+.star.filled {
+  color: var(--accent-yellow);
+}
+
+.star.readonly {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Size variants */
+.sm .star {
+  font-size: 1rem;
+}
+
+.md .star {
+  font-size: 1.25rem;
+}
+
+.lg .star {
+  font-size: 1.75rem;
+}
+
+.ratingText {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: var(--fw-medium);
+}

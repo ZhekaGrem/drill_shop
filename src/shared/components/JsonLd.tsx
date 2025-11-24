@@ -1,0 +1,10 @@
+// src/shared/components/JsonLd.tsx
+import React from 'react';
+
+interface JsonLdProps {
+  data: Record<string, any>;
+}
+
+export function JsonLd({ data }: JsonLdProps) {
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;
+}

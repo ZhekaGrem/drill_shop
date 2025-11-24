@@ -1,0 +1,11 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "rule-empty-line-before": [
+      "always",
+      {
+        "except": ["after-single-line-rule", "inside-block"]
+      }
+    ]
+  }
+}

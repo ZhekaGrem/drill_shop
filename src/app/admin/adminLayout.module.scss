@@ -1,0 +1,35 @@
+/* app/admin/adminLayout.module.css */
+.shell {
+  background: var(--mantine-color-gray-0);
+}
+
+.header {
+  background: white;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+.navbar {
+  background: white;
+  border-right: 1px solid var(--mantine-color-gray-2);
+}
+
+.main {
+  background: var(--mantine-color-gray-0);
+  min-height: calc(100vh - 60px);
+}
+
+.navLink {
+  border-radius: var(--mantine-radius-md);
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  transition: all 0.2s ease;
+}
+
+.navLink:hover {
+  background: var(--accent-yellow);
+}
+
+.navLink[data-active='true'] {
+  background: var(--mantine-color-blue-light);
+  color: var(--mantine-color-blue-filled);
+  font-weight: 600;
+}

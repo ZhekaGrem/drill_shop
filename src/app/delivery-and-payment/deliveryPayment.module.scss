@@ -1,0 +1,15 @@
+// src/app/delivery-and-payment/deliveryPayment.module.scss
+.page {
+  min-height: 100vh;
+  background: var(--background);
+}
+
+.title {
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-3xl);
+  }
+}

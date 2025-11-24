@@ -1,0 +1,231 @@
+.products {
+  display: flex;
+  padding-top: 60px;
+}
+
+/* Section 2: Buttons */
+.wrappingSection {
+  position: relative;
+  &::after {
+    content: '';
+    display: block;
+    background-image: url('../../public/svg/inlinerAfterSection.svg');
+    bottom: -17px;
+    width: 100%;
+    height: 17px;
+    position: absolute;
+    background-size: 681px 18px;
+    z-index: 20;
+  }
+
+  &::before {
+    content: '';
+    display: block;
+    background-image: url('../../public/svg/inlinerBeforSection.svg');
+    height: 26px;
+    width: 100%;
+    position: absolute;
+    top: -25px;
+    z-index: 40;
+    background-size: 975px 26px;
+  }
+}
+.buttonsSection {
+  padding: 100px 0;
+}
+
+.buttonGroup {
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+/* Section 3: Parallax */
+.parallaxSection {
+  height: 700px;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../public/assets/img/chicken.png');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  @media (max-width: 768px) {
+    background-attachment: scroll;
+    height: 400px;
+  }
+}
+
+.parallaxContent {
+  text-align: center;
+  color: white;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.parallaxTitle {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 48px;
+  font-weight: 700;
+  text-shadow: 0.08em 0.08em 0.08em rgba(0, 0, 0, 0.69);
+  font-family: var(--font-heading);
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
+}
+
+.parallaxText {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 20px;
+  line-height: 1.6;
+  text-wrap: balance;
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+}
+
+/* Section 4: Image left, text right */
+/* Section 5: Wide image right */
+.wideImageSection {
+  background-color: #f8f9fa;
+  padding: 0;
+  overflow: hidden;
+}
+
+.wideImageGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 500px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.wideTextContainer {
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 40px 20px;
+  }
+}
+.titlePrimary {
+  font-size: 40px;
+  color: var(--text-yellow);
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
+}
+
+.wideTitle {
+  font-size: 100px;
+  margin-bottom: 30px;
+  color: var(--text-secondary);
+  line-height: 0.8;
+  @media (max-width: 768px) {
+    font-size: 80px;
+  }
+}
+
+.wideText {
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-green);
+  margin-bottom: 30px;
+}
+
+.wideImageContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.wideImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 500px;
+}
+
+/* Social bar */
+.socialBar {
+  background: var(--background);
+  padding: 40px 0;
+}
+
+.socialTitle {
+  text-align: center;
+  font-size: 47px;
+  color: var(--text-green);
+  font-family: var(--font-heading);
+}
+.socialIcon {
+  @media (max-width: 768px) {
+    max-width: 100px;
+    max-height: 100px;
+  }
+}
+
+/* Product slider */
+.sliderSection {
+  padding: 50px 0;
+}
+
+.productTitle {
+  text-align: center;
+  font-size: 47px;
+  color: var(--text-yellow);
+}
+
+.productSlider {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+}
+
+.productCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.productImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.productInfo {
+  padding: 20px;
+
+  .mantine-Text-root:last-child {
+    margin-top: 10px;
+  }
+}

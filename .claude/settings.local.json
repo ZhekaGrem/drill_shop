@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "F:\\Progect\\2025\\shop_sausages\\frontend\\**",
+      "Bash(npm uninstall:*)",
+      "Bash(npm install:*)",
+      "Bash(dir:*)",
+      "Bash(move \"[paymentId]\" \"[orderId]\")",
+      "Bash(npm run lint)",
+      "Bash(findstr:*)",
+      "Bash(find:*)",
+      "Bash(npm run build:*)",
+      "Bash(cat:*)",
+      "Bash(npx prisma migrate:*)",
+      "Bash(npx prisma generate:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm start)",
+      "Bash(node dist/server.js:*)",
+      "Bash(timeout 30 npm run build:*)",
+      "Bash(npm ls:*)",
+      "Bash(node:*)",
+      "Bash(timeout 20 node:*)",
+      "Bash(timeout 20 tsc:*)",
+      "Bash(timeout 20 npm run build:*)",
+      "Bash(npx --yes prisma generate:*)",
+      "Bash(npm run db:generate:*)",
+      "Bash(tasklist:*)",
+      "Bash(nul)",
+      "Bash(timeout 20 npx tsc:*)",
+      "Bash(test:*)",
+      "Bash(mv:*)",
+      "Bash(where:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

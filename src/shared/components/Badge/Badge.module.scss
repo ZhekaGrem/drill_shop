@@ -1,0 +1,92 @@
+// src/shared/components/Badge/Badge.module.scss
+
+.badge {
+  display: inline-block;
+  text-align: center;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 25px;
+  height: 25px;
+  border: 0 solid transparent;
+  box-sizing: border-box;
+
+  &.badgePromo {
+    position: relative;
+    width: 87px;
+    background-color: var(--accent);
+    color: #ffffff;
+
+    // Трикутник зліва знизу (складка стрічки)
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0;
+      height: 0;
+      border-left: 3px solid transparent;
+      border-right: 1px solid var(--accent); // Темніша версія accent для глибини
+      border-top: 6px solid var(--accent);
+    }
+  }
+
+  &.badgeFeatured {
+    width: auto;
+    min-width: 70px;
+    padding: 0 8px;
+    background-color: var(--primary);
+    color: var(--text-inverse);
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0;
+      height: 0;
+      border-left: 3px solid transparent;
+      border-right: 1px solid var(--primary); // Темніша версія accent для глибини
+      border-top: 6px solid var(--primary);
+    }
+  }
+
+  &.badgeNew {
+    width: auto;
+    min-width: 60px;
+    padding: 0 8px;
+    background-color: #28a745;
+    color: white;
+  }
+
+  &.badgeDiscount {
+    position: relative;
+    width: auto;
+    min-width: 50px;
+    padding: 0 8px;
+    background-color: #ff6a14;
+    color: white;
+    font-weight: 800;
+
+    // Трикутник зліва знизу (складка стрічки)
+  }
+
+  &.badgeOutOfStock {
+    width: auto;
+    min-width: 100px;
+    padding: 0 8px;
+    background-color: var(--error);
+    color: var(--text-inverse);
+  }
+}
+
+// Респонсив
+@media (max-width: 768px) {
+  .badge {
+    height: 22px;
+    line-height: 22px;
+    font-size: 11px;
+
+    &.badgePromo {
+      width: 75px;
+    }
+  }
+}

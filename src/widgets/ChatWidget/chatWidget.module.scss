@@ -1,0 +1,57 @@
+// src/widgets/ChatWidget/chatWidget.module.scss
+@use '../../shared/styles/animations';
+
+.chatButton {
+  position: fixed;
+  bottom: 120px;
+  right: 20px;
+  z-index: 1000;
+  width: 60px;
+  height: 60px;
+  background-color: var(--accent-yellow);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: var(--btn-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  // Animation pulse effect
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background-color: var(--accent-yellow);
+    animation: chatPulse 2s infinite;
+    z-index: -1;
+  }
+
+  // ✅ Animation imported from shared styles
+
+  // Mobile responsive
+  @media (max-width: 768px) {
+    bottom: 15px;
+    right: 15px;
+    width: 55px;
+    height: 55px;
+  }
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  transition: color 0.3s;
+  font-size: var(--text-xl);
+  font-family: var(--font-body);
+  gap: 5px;
+  &:hover {
+    text-decoration: underline;
+    color: var(--btn-hover);
+  }
+}

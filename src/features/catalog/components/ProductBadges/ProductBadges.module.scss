@@ -1,0 +1,12 @@
+// src/features/catalog/components/ProductBadges/ProductBadges.module.scss
+
+.container {
+  position: absolute;
+  top: 5px;
+  left: -4px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  pointer-events: none;
+}

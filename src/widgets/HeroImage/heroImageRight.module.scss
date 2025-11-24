@@ -1,0 +1,120 @@
+.root {
+  background-color: #e6ebf0;
+  background-size: cover;
+  background-position: center;
+  background-image:
+    linear-gradient(250deg, rgba(156, 236, 36, 0) 0%, #94cc9791 70%), url(./assorted-premium.png);
+  padding-top: calc(var(--mantine-spacing-xl) * 3);
+  padding-bottom: calc(var(--mantine-spacing-xl) * 3);
+  &.contact {
+    min-height: 500px;
+    background-image:
+      linear-gradient(67deg, rgba(252, 252, 252, 0) 57%, rgba(3, 3, 0, 0.21) 100%), url(./contact-hero.png);
+  }
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  &.innerContact {
+    justify-content: right;
+  }
+
+  @media (max-width: var(--mantine-breakpoint-md)) {
+    flex-direction: column;
+  }
+}
+
+.image {
+  @media (max-width: var(--mantine-breakpoint-md)) {
+    display: none;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  background: var(--background) url(../../../public/assets/img/bg/bg-rugged.png) repeat 50% 50%;
+  padding: 30px;
+  margin-right: calc(var(--mantine-spacing-xl) * 3);
+  text-wrap: balance;
+  &.contentContact {
+    background: var(--background) url(../../../public/assets/img/bg/bg-rugged.png) repeat 50% 50%;
+    max-width: 520px;
+    padding: 48px;
+    margin-right: 0;
+    box-shadow: 0 6px 26px rgba(0, 0, 0, 0.35);
+  }
+  @media (max-width: var(--mantine-breakpoint-md)) {
+    margin-right: 0;
+  }
+}
+.content > *:last-child {
+  align-self: flex-end;
+  max-width: max-content;
+}
+
+.title {
+  font-weight: 700;
+  line-height: 1.05;
+  max-width: 500px;
+  font-size: var(--text-4xl);
+
+  @media (max-width: var(--mantine-breakpoint-md)) {
+    max-width: 100%;
+    font-size: var(--text-4xl);
+    line-height: 1.15;
+  }
+}
+
+.description {
+  padding-top: 20px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  max-width: 600px;
+  font-size: var(--text-xl);
+  @media (max-width: var(--mantine-breakpoint-md)) {
+    max-width: 100%;
+  }
+}
+
+.control {
+  padding-left: 50px;
+  padding-right: 50px;
+  font-size: 22px;
+
+  @media (max-width: var(--mantine-breakpoint-md)) {
+    width: 100%;
+  }
+}
+//#Catalog
+
+.innerCatalog {
+  @media (max-width: var(--mantine-breakpoint-md)) {
+    flex-direction: column;
+  }
+}
+
+.contentCatalog {
+  text-align: end;
+  margin-right: 0;
+  background: #fff url(../../../public/assets/img/bg/bg-rugged.png) repeat 50% 50%;
+  background-size: auto;
+  background-size: 520px 275px;
+  padding: 48px;
+  max-width: 520px;
+  -webkit-box-shadow: 0 6px 26px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.35);
+
+  @media (max-width: var(--mantine-breakpoint-md)) {
+    margin-right: 0;
+  }
+}
+
+.titleCatalog {
+  color: var(--text-primary);
+}
+
+.descriptionCatalog {
+  color: var(--text-secondary);
+}

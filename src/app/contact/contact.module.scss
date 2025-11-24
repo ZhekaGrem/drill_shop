@@ -1,0 +1,247 @@
+// src/app/contact/contact.module.scss - minimized repetitions
+// Info section
+.infoSection {
+  padding: 80px 0;
+  background: var(--background);
+  position: relative;
+  @media (max-width: 768px) {
+    padding: 40px 0;
+  }
+  &::before {
+    content: '';
+    display: block;
+    background-image: url('../../../public/svg/inlinerBeforSection.svg');
+    height: 26px;
+    width: 100%;
+    position: absolute;
+    top: -25px;
+    z-index: 40;
+    background-size: 975px 26px;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    background-image: url('../../../public/svg/inlinerAfterSection.svg');
+    bottom: -17px;
+    width: 100%;
+    height: 17px;
+    position: absolute;
+    background-size: 681px 18px;
+    z-index: 20;
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-bold);
+  text-align: center;
+  color: var(--text-green);
+  margin-bottom: 60px;
+  text-transform: uppercase;
+  line-height: 1;
+
+  @media (max-width: 768px) {
+    font-size: var(--text-3xl);
+    margin-bottom: 40px;
+  }
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.infoCard {
+  text-align: center;
+  padding: 30px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .icon {
+    color: var(--primary);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  a,
+  p {
+    color: var(--text-secondary);
+    text-decoration: none;
+    white-space: pre-line;
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+}
+
+// Form section - like wide image sections
+.formSection {
+  background-image:
+    linear-gradient(359deg, rgba(8, 0, 0, 0.27) 32%, rgba(252, 203, 8, 0.17) 100%), url(./section-5.png);
+  overflow: hidden;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.formInfo {
+  color: white;
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 40px 20px;
+  }
+
+  h2 {
+    text-shadow: 0 1px 2px #ffffff;
+    font-size: var(--text-5xl);
+    text-transform: uppercase;
+    line-height: 0.9;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: var(--text-lg);
+    margin-bottom: 40px;
+    opacity: 0.9;
+  }
+}
+
+.benefits {
+  list-style: none;
+
+  li {
+    margin-bottom: 16px;
+    font-size: var(--text-base);
+  }
+}
+
+.formContainer {
+  padding: 80px 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 40px 20px;
+  }
+
+  form {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  label,
+  .textForm {
+    color: var(--text-inverse);
+  }
+}
+
+// Form elements
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  margin-bottom: 24px;
+
+  label {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: var(--fw-medium);
+    margin-bottom: 8px;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: var(--text-base);
+    font-family: inherit;
+    transition: border-color 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+}
+
+.error {
+  display: block;
+  color: var(--error);
+  font-size: var(--text-sm);
+  margin-top: 4px;
+}
+
+// Success state
+.success {
+  text-align: center;
+  padding: 40px;
+
+  .successIcon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    background: var(--success);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+  }
+
+  h3 {
+    font-size: var(--text-2xl);
+    margin-bottom: 12px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+}

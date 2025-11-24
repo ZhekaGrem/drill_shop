@@ -1,0 +1,238 @@
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card {
+  height: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    .productImage {
+      transform: scale(1.05);
+    }
+
+    .addToCartButton {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+.productCardImageContainer {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+// НОВA СИСТЕМА BADGES
+.badge {
+  position: absolute;
+  top: 5px;
+  display: inline-block;
+  text-align: center;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 25px;
+  height: 25px;
+  border-radius: 3px;
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  overflow: visible;
+  text-overflow: clip;
+
+  // Позиціонування різних типів
+  &.badgePromo {
+    left: -10px;
+    width: 87px;
+    background-color: #ff6a14;
+    color: #ffffff;
+    z-index: 3;
+  }
+
+  &.badgeFeatured {
+    right: 8px;
+    width: auto;
+    min-width: 70px;
+    padding: 0 8px;
+    background-color: var(--accent);
+    color: var(--text-inverse);
+    z-index: 2;
+  }
+
+  &.badgeOutOfStock {
+    right: 8px;
+    width: auto;
+    min-width: 100px;
+    padding: 0 8px;
+    background-color: var(--error);
+    color: var(--text-inverse);
+    z-index: 4; // Найвищий пріоритет
+  }
+}
+
+// Wrapper для позиціонування FavoriteButton на картинці
+.favoriteButtonWrapper {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 99;
+}
+
+.content {
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.title {
+  font-size: var(--text-base);
+  font-weight: var(--fw-semibold);
+  color: var(--text-inverse);
+  margin: 0 0 5px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: center;
+  &:hover {
+    color: var(--primary);
+  }
+}
+.title2 {
+  font-size: var(--text-base);
+  font-weight: var(--fw-semibold);
+  color: var(--text-secondary);
+  margin: 0 0 5px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: center;
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+.description {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0 0 5px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.priceSection {
+  display: flex;
+  align-items: center;
+}
+
+// ЦІНИ З АКЦІЯМИ
+.originalPrice {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-decoration: line-through;
+  margin-right: 8px;
+}
+
+.finalPrice {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-bold);
+  color: var(--primary);
+}
+
+.price {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-bold);
+  color: var(--primary);
+}
+
+.weight {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-left: 4px;
+}
+
+.unitValue {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-left: 4px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.addToCartButton {
+  flex: 1;
+  padding: 9px 10px;
+  font-weight: var(--fw-medium);
+  border: none;
+  border-radius: 6px;
+  background: var(--btn-primary);
+  color: var(--text-inverse);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  font-size: 24px;
+
+  &:hover:not(.disabled) {
+    background: var(--btn-hover);
+  }
+}
+
+.disabled {
+  background: var(--text-secondary);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+// РЕСПОНСИВ
+@media (max-width: 768px) {
+  .productCardImageContainer {
+    height: 180px;
+  }
+
+  .content {
+    padding: 12px;
+  }
+
+  .title {
+    font-size: var(--text-base);
+  }
+
+  .badge {
+    height: 22px;
+    line-height: 22px;
+    font-size: 11px;
+
+    &.badgePromo {
+      width: 75px;
+      left: -8px;
+    }
+  }
+}

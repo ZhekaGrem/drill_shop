@@ -1,0 +1,1 @@
+export { ProductQuickViewModal } from './ProductQuickViewModal';

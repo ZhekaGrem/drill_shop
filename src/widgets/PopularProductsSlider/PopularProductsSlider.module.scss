@@ -1,0 +1,58 @@
+// src/widgets/PopularProductsSlider/PopularProductsSlider.module.scss
+.section {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(./background.png);
+}
+
+.container {
+  padding: 60px 0;
+}
+
+.title {
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-bold);
+  color: var(--text-yellow);
+  text-align: center;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+}
+
+.slider {
+  margin-bottom: 40px;
+}
+
+.slide {
+  min-width: 300px;
+  width: 300px;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  color: var(--text-secondary);
+}
+
+.viewAll {
+  text-align: center;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .container {
+    padding: 40px 0;
+  }
+
+  .title {
+    font-size: var(--text-2xl);
+    margin-bottom: 24px;
+  }
+
+  .slide {
+    min-width: 280px;
+    width: 280px;
+  }
+}
