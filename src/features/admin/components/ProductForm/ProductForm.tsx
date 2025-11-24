@@ -82,8 +82,10 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
   const [imageState, setImageState] = useState({
     newFiles: [] as File[],
     primaryImageIndex: 0,
+    secondaryImageIndex: null as number | null,
     existingImages: product?.images || [],
     existingPrimaryId: product?.images?.find((img: any) => img.isPrimary)?.id || null,
+    existingSecondaryId: product?.images?.find((img: any) => img.isSecondary)?.id || null,
   });
 
   // Variants management state
@@ -126,6 +128,13 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
 
       if (values.price <= 0) {
         alert('Ціна повинна бути більше 0');
+        return;
+      }
+
+      // Images validation - мінімум 2 фото
+      const totalImages = imageState.existingImages.length + imageState.newFiles.length;
+      if (totalImages < 2) {
+        alert('Товар повинен мати мінімум 2 фото (головне та друге для hover)');
         return;
       }
 
@@ -200,7 +209,7 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
       });
 
       // Reset form state
-      setImageState((prev) => ({ ...prev, newFiles: [], primaryImageIndex: 0 }));
+      setImageState((prev) => ({ ...prev, newFiles: [], primaryImageIndex: 0, secondaryImageIndex: null }));
       setVariants([]);
     } catch (error) {
       console.error('❌ Form submission error:', error);

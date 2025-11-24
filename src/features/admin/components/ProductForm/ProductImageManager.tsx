@@ -9,8 +9,10 @@ import { apiClient } from '@/shared/api/client';
 interface ImageState {
   newFiles: File[];
   primaryImageIndex: number;
+  secondaryImageIndex: number | null;
   existingImages: any[];
   existingPrimaryId: string | null;
+  existingSecondaryId: string | null;
 }
 
 interface ProductImageManagerProps {
@@ -110,6 +112,37 @@ export const ProductImageManager = ({
     }
   };
 
+  const handleSetExistingSecondary = async (imageId: string) => {
+    if (!product?.id) {
+      // Якщо товар ще не створений - зберігаємо локально
+      onImageStateChange((prev) => ({
+        ...prev,
+        existingSecondaryId: imageId,
+      }));
+      return;
+    }
+
+    // Якщо товар вже існує - відправляємо запит на сервер
+    try {
+      await apiClient.patch(`/admin/products/${product.id}/images/${imageId}/secondary`);
+
+      onImageStateChange((prev) => ({
+        ...prev,
+        existingSecondaryId: imageId,
+      }));
+    } catch (error) {
+      console.error('Error setting secondary image:', error);
+      alert('Помилка при встановленні другого зображення');
+    }
+  };
+
+  const handleSetSecondaryImage = (index: number | null) => {
+    onImageStateChange((prev) => ({
+      ...prev,
+      secondaryImageIndex: index,
+    }));
+  };
+
   return (
     <Card padding="md" withBorder>
       <Text size="lg" fw={600} mb="md">
@@ -156,7 +189,7 @@ export const ProductImageManager = ({
                     color="yellow"
                     style={{
                       position: 'absolute',
-                      bottom: 5,
+                      bottom: 30,
                       left: 5,
                       padding: '4px 8px',
                     }}
@@ -167,6 +200,23 @@ export const ProductImageManager = ({
                     ) : (
                       <IconStar size={14} />
                     )}
+                  </Button>
+
+                  {/* Make secondary button */}
+                  <Button
+                    size="xs"
+                    variant={imageState.existingSecondaryId === image.id ? 'filled' : 'light'}
+                    color="blue"
+                    style={{
+                      position: 'absolute',
+                      bottom: 5,
+                      left: 5,
+                      padding: '4px 6px',
+                      fontSize: '10px',
+                    }}
+                    onClick={() => handleSetExistingSecondary(image.id)}
+                    title={imageState.existingSecondaryId === image.id ? 'Друга (hover)' : 'Зробити другою'}>
+                    {imageState.existingSecondaryId === image.id ? '2-га' : '2'}
                   </Button>
 
                   {/* Delete button */}

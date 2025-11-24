@@ -216,6 +216,7 @@ export interface ProductImage {
   altText?: string | null;
   sortOrder: number;
   isPrimary: boolean;
+  isSecondary: boolean;
   createdAt: Date;
 }
 

@@ -4,6 +4,7 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
+import { IconShoppingBag } from '@tabler/icons-react';
 import { Product } from '@/shared/types';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { useTimeout } from '@/shared/hooks';
@@ -28,11 +29,15 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
   const [isClicked, setIsClicked] = useState(false);
   const [quickViewOpened, setQuickViewOpened] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
+  const [isImageHovered, setIsImageHovered] = useState(false);
 
   const priceData = calculatePromoPrice(product);
 
   const primaryImage = product.images?.find((img) => img.isPrimary) || product.images?.[0];
-  const imageUrl = primaryImage?.url || primaryImage?.publicId;
+  const secondaryImage = product.images?.find((img) => img.isSecondary);
+  const imageUrl = isImageHovered && secondaryImage
+    ? (secondaryImage.url || secondaryImage.publicId)
+    : (primaryImage?.url || primaryImage?.publicId);
 
   // ✅ Отримати об'єкт обраного варіанту
   const selectedVariantObject = useMemo(() => {
@@ -246,11 +251,15 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
   return (
     <div className={`${styles.card} ${className}`}>
       <div className={styles.link} onClick={() => setQuickViewOpened(true)}>
-        <div className={styles.productCardImageContainer}>
+        <div
+          className={styles.productCardImageContainer}
+          onMouseEnter={() => setIsImageHovered(true)}
+          onMouseLeave={() => setIsImageHovered(false)}
+        >
           <div className={styles.productCardImageContainer__ImageWrapper}>
             <CloudinaryImage
               src={imageUrl || '/assets/img/placeholder-product.jpeg'}
-              alt={primaryImage?.altText || product.name}
+              alt={isImageHovered && secondaryImage ? (secondaryImage.altText || product.name) : (primaryImage?.altText || product.name)}
               width={400}
               height={400}
               className={styles.productImage}
@@ -273,8 +282,6 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
           <Link href={`/catalog/${product.slug}`} onClick={(e) => e.stopPropagation()}>
             <h3 className={styles.title}>{product.name}</h3>
           </Link>
-
-          {product.shortDescription && <p className={styles.description}>{product.shortDescription}</p>}
 
           {/* ✅ Показувати варіанти ТІЛЬКИ якщо SIZE/COLOR */}
           {showVariantsInCatalog && product.variants && product.variants.length > 0 && (
@@ -362,7 +369,8 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
                 onClick={handleAddToCart}
                 type="button"
                 size="sm"
-                className={isClicked ? styles.addedButton : styles.addButton}>
+                className={isClicked ? styles.addedButton : styles.addButton}
+                leftIcon={<IconShoppingBag size={18} />}>
                 {getButtonText()}
               </Button>
             </div>
