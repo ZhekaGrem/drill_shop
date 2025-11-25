@@ -19,6 +19,7 @@ export const siteConfig = {
     instagram: 'https://www.instagram.com/selo_ta_salo',
     youtube: 'https://www.youtube.com/@selotasalo',
     threads: 'https://www.threads.com/@selo_ta_salo?xmt=AQF0LiblIcaHHQNzKwSFpAJd1OK7xv_-fJlIuxKkpSLFzK4',
+    telegram: 'https://t.me/selo_ta_salo',
   },
   workingHours: 'Пн-Пт: 08:00 - 20:00 | Сб-Нд: 09:00 - 18:00',
   logo: assets.logo.main,

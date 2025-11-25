@@ -1,89 +1,146 @@
 // src/shared/components/ui/Button/Button.module.scss
+// Pixel art стиль з Figma "Щільний дріл"
 .button {
-  font-weight: 600;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  border-radius: 4px;
-  font-family: var(--font-heading);
-  border: none;
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  transition: var(--transition-fast);
+  border-radius: 0;
+  border: var(--border-width) solid var(--border-color);
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--spacing-sm);
+  box-shadow: var(--shadow-md);
+  text-transform: none;
+
+  // Pixel art hover effect
+  &:hover:not(:disabled) {
+    transform: translate(1px, 1px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: var(--shadow-xs);
+  }
+
   // Variants
   &--primary {
     background: var(--btn-primary);
     color: var(--text-primary);
 
     &:hover:not(:disabled) {
-      background: var(--btn-hover);
-      color: var(--text-inverse);
+      background: var(--btn-primary-hover);
     }
   }
 
   &--secondary {
-    background: var(--secondary);
+    background: var(--background-dark);
+    color: var(--text-white);
+
+    &:hover:not(:disabled) {
+      background: var(--text-secondary);
+    }
+  }
+
+  &--green {
+    background: var(--btn-green);
+    color: var(--text-white);
+
+    &:hover:not(:disabled) {
+      background: var(--btn-green-hover);
+    }
+  }
+
+  &--red {
+    background: var(--btn-red);
     color: var(--text-inverse);
 
     &:hover:not(:disabled) {
-      background: var(--accent);
+      background: var(--btn-red-hover);
+    }
+  }
+
+  &--beige {
+    background: var(--btn-beige);
+    color: var(--text-green);
+
+    &:hover:not(:disabled) {
+      background: var(--btn-beige-hover);
     }
   }
 
   &--outline {
     background: transparent;
-    border: 2px solid var(--primary);
-    color: var(--primary);
+    border: var(--border-width) solid var(--border-color);
+    color: var(--text-primary);
 
     &:hover:not(:disabled) {
-      background: var(--primary);
-      color: var(--text-inverse);
+      background: var(--background-secondary);
     }
   }
 
   &--ghost {
     background: transparent;
+    border: none;
     color: var(--text-primary);
+    box-shadow: none;
 
     &:hover:not(:disabled) {
-      background: rgba(0, 0, 0, 0.05);
+      background: var(--background-secondary);
+      box-shadow: none;
+    }
+
+    &:active:not(:disabled) {
+      transform: none;
     }
   }
 
-  // Sizes
+  // Sizes (згідно з Figma)
   &--sm {
-    padding: 9px 10px;
-    font-size: 24px;
-    height: 44px;
+    padding: 10px 16px;
+    font-size: var(--text-base); // 16px
+    height: 40px;
   }
 
   &--md {
     padding: 12px 24px;
-    font-size: 16px;
-    height: 44px;
-  }
-  &--promo {
-    padding: 5px;
-    font-size: 16px;
-    height: 35px;
+    font-size: var(--text-lg); // 18px
+    height: 48px;
   }
 
   &--lg {
     padding: 14px 32px;
-    font-size: var(--text-lg);
+    font-size: var(--text-xl); // 20px
     height: 52px;
   }
 
   &--xl {
-    padding: 11px 25px;
-    font-size: 24px;
+    padding: 16px 40px;
+    font-size: var(--text-2xl); // 24px
     height: 60px;
-    line-height: 1.1;
-    border-radius: 4px;
-    text-align: center;
   }
+
+  &--promo {
+    padding: 6px 12px;
+    font-size: var(--text-base); // 16px
+    height: 35px;
+  }
+
   &--fl {
     padding: 0;
+    min-width: 0;
+  }
+
+  &--menu {
+    padding: 12px 24px;
+    font-family: var(--font-condensed);
+    font-size: var(--text-xl); // 20px
+    font-weight: var(--fw-bold);
+    height: 48px;
+    width: 100%;
+    justify-content: flex-start;
   }
 
   &--fullWidth {
@@ -93,5 +150,6 @@
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    box-shadow: var(--shadow-xs);
   }
 }

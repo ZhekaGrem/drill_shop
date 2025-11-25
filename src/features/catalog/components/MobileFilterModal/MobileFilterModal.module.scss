@@ -1,61 +1,81 @@
 // src/features/catalog/components/MobileFilterModal/MobileFilterModal.module.scss
-.modal {
-  :global(.mantine-Modal-content) {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+// Pixel art стиль з Figma
 
-  :global(.mantine-Modal-body) {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-  }
+.drawer {
+  :global {
+    .mantine-Drawer-content {
+      border-radius: 0 !important;
+      border: var(--border-width) solid var(--border-color) !important;
+      border-bottom: none !important;
+      background: var(--background) !important;
+    }
 
-  :global(.mantine-Modal-header) {
-    padding: 16px;
-    border-bottom: 1px solid #e5e5e5;
-    background: var(--background);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
+    .mantine-Drawer-header {
+      background: var(--background-secondary) !important;
+      border-bottom: var(--border-width) solid var(--border-color) !important;
+      padding: var(--spacing-md) !important;
+    }
 
-  :global(.mantine-Modal-title) {
-    font-size: var(--text-lg);
-    font-weight: var(--fw-semibold);
-    color: var(--text-primary);
+    .mantine-Drawer-body {
+      background: var(--background) !important;
+      padding: var(--spacing-md) !important;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .mantine-Drawer-close {
+      svg {
+        width: 24px;
+        height: 24px;
+        stroke-width: 2px;
+      }
+
+      &:hover {
+        background: var(--btn-primary) !important;
+      }
+    }
   }
 }
 
-.content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  overflow-y: auto;
+.drawerContent {
+  border-radius: 0 !important;
 }
 
-.actions {
-  position: sticky;
-  bottom: 0;
-  padding: 16px;
-  background: var(--background);
-  border-top: 1px solid #e5e5e5;
-  z-index: 10;
+.drawerHeader {
+  background: var(--background-secondary);
+  border-bottom: var(--border-width) solid var(--border-color);
 }
 
-.applyButton {
-  background: var(--btn-primary);
-  color: var(--text-primary);
-  font-weight: var(--fw-semibold);
-  height: 48px;
-  font-size: var(--text-base);
-  border: none;
-  border-radius: var(--border-radius-md);
+.drawerTitle {
+  width: 100%;
+}
+
+.drawerClose {
+  svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2px;
+  }
 
   &:hover {
-    background: var(--btn-hover);
+    background: var(--btn-primary) !important;
   }
+}
+
+.drawerBody {
+  background: var(--background);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-family: var(--font-condensed);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
+
+.icon {
+  color: var(--text-primary);
 }

@@ -1,20 +1,17 @@
+// src/widgets/Footer/Footer.tsx
 'use client';
 
-import { useState, useEffect, useTransition } from 'react';
-import { ActionIcon, Container, Group, Image, Text, Stack, Flex } from '@mantine/core';
+import { useState, useEffect } from 'react';
+import { Container, Stack, Text } from '@mantine/core';
+import { IconBrandInstagram, IconBrandTelegram } from '@tabler/icons-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import styles from './footer.module.scss';
-import { siteConfig, footerLinks, footerCategories } from '@/shared/config/site';
-import { content } from '@/shared/config/content';
-import { assets } from '@/shared/config/assets';
+import { siteConfig } from '@/shared/config/site';
 
 const currentYear = new Date().getFullYear();
 
 export function Footer() {
   const [isVisible, setIsVisible] = useState(false);
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
 
   // Scroll animation
   useEffect(() => {
@@ -35,158 +32,74 @@ export function Footer() {
     };
   }, []);
 
-  // Scroll to top on link click
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-
-    startTransition(() => {
-      router.push(href);
-      // Скрол вгору після навігації з невеликою затримкою
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 100);
-    });
-  };
-
   return (
     <footer
       className={`${styles.footer} ${isVisible ? styles.visible : ''}`}
       data-footer
       role="contentinfo"
       aria-label="Інформація про сайт">
-      <div className={styles.topLine} />
-
       <Container size="lg" className={styles.container}>
-        {/* Trust badges bar */}
-
         {/* Main footer grid */}
         <div className={styles.footerGrid}>
-          {/* Company info */}
-          <div className={styles.companySection}>
-            <Image src={siteConfig.logo} alt={siteConfig.name} className={styles.logo} />
-            <Text className={styles.companyDescription}>{content.footer.description}</Text>
-
-            {/* Contact info */}
-            <Stack gap="xs" className={styles.contactInfo}>
-              <div className={styles.contactItem}>
-                <a href={`tel:${siteConfig.contacts.phone.replace(/\s/g, '')}`}>
-                  {siteConfig.contacts.phone}
-                </a>
-              </div>
-              {/* <div className={styles.contactItem}>
-                <IconClock size={16} />
-                <span>Пн-Нд: 8:00 - 20:00</span>
-              </div>
-              <div className={styles.contactItem}>
-                <IconMapPin size={16} />
-                <span>По всій Україні</span>
-              </div> */}
-            </Stack>
-          </div>
-
-          {/* Quick links */}
+          {/* Column 1: Час роботи */}
           <div className={styles.linksColumn}>
-            <Text className={styles.columnTitle}>{content.footer.sections.customers}</Text>
+            <Text className={styles.columnTitle}>Час роботи</Text>
+            <Text className={styles.socialDescription}>Понеділок - Неділя{'\n'}З 8:00 до 23:00</Text>
+          </div>
+
+          {/* Column 2: Про нас */}
+          <div className={styles.linksColumn}>
+            <Text className={styles.columnTitle}>Про нас</Text>
             <Stack gap="xs">
-              {footerLinks.map((link) => (
-                <Link key={link.link} href={link.link} onClick={(e) => handleLinkClick(e, link.link)}>
-                  {link.label}
-                </Link>
-              ))}
+              <Link href="/about">Зв'язок з нами</Link>
+              <Link href="/delivery">Доставка та оплата</Link>
+              <Link href="/returns">Обмін та Повернення</Link>
+              <Link href="/terms">Публічний договір</Link>
             </Stack>
           </div>
 
-          {/* Product categories */}
-          {/* <div className={styles.linksColumn}>
-            <Text className={styles.columnTitle}>{content.footer.sections.categories}</Text>
-            <Stack gap="xs">
-              {footerCategories.map((category) => (
-                <Link
-                  key={category.link}
-                  href={category.link}
-                  onClick={(e) => handleLinkClick(e, category.link)}>
-                  {category.label}
-                </Link>
-              ))}
-            </Stack>
-          </div> */}
-
-          {/* Newsletter & Social */}
+          {/* Column 3: Контакти + Соцмережі */}
           <div className={styles.socialSection}>
-            <Text className={styles.columnTitle}>{content.footer.sections.social}</Text>
-            <Text size="sm" className={styles.socialDescription}>
-              {content.footer.socialDescription}
-            </Text>
+            <div className={styles.contactInfo}>
+              <a href={`mailto:${siteConfig.contacts.email}`} className={styles.contactItem}>
+                {siteConfig.contacts.email}
+              </a>
+              <a href={`tel:${siteConfig.contacts.phone.replace(/\s/g, '')}`} className={styles.phoneNumber}>
+                {siteConfig.contacts.phone}
+              </a>
+            </div>
 
-            <Group gap="sm" className={styles.socialIcons}>
-              <a
-                href={siteConfig.socials.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube канал"
-                className={styles.socialLink}>
-                <ActionIcon size="lg" className={styles.socialIcon}>
-                  <Image src={assets.social.youtube} alt="" width={20} height={20} />
-                </ActionIcon>
-              </a>
-              <a
-                href={siteConfig.socials.tiktok}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="TikTok профіль"
-                className={styles.socialLink}>
-                <ActionIcon size="lg" className={styles.socialIcon}>
-                  <Image src={assets.social.tiktok} alt="" width={20} height={20} />
-                </ActionIcon>
-              </a>
+            <Stack gap="sm" mt="md">
               <a
                 href={siteConfig.socials.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Instagram профіль"
                 className={styles.socialLink}>
-                <ActionIcon size="lg" className={styles.socialIcon}>
-                  <Image src={assets.social.instagram} alt="" width={20} height={20} />
-                </ActionIcon>
+                <IconBrandInstagram size={20} />
+                <span>Instagram</span>
               </a>
               <a
-                href={siteConfig.socials.threads}
+                href={siteConfig.socials.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="threads профіль"
                 className={styles.socialLink}>
-                <ActionIcon size="lg" className={styles.socialIcon}>
-                  <Image src={assets.social.threads} alt="" width={20} height={20} />
-                </ActionIcon>
+                <IconBrandTelegram size={20} />
+                <span>Telegram</span>
               </a>
-            </Group>
-
-            <div className={styles.blogLinks}>
-              <a href={siteConfig.socials.youtube} target="_blank" rel="noopener noreferrer">
-                {content.footer.blog}
-              </a>
-              <a
-                href="https://www.instagram.com/stories/highlights/18255125920123857/"
-                target="_blank"
-                rel="noopener noreferrer">
-                {content.footer.reviews}
-              </a>
-            </div>
+            </Stack>
           </div>
         </div>
 
         {/* Bottom section */}
         <div className={styles.bottomSection}>
-          <div className={styles.legalLinks}>
-            <Link href="/privacy-policy" onClick={(e) => handleLinkClick(e, '/privacy-policy')}>
-              {content.footer.privacyPolicy}
-            </Link>
-            {/* <Link href="/terms">Умови використання</Link> */}
-          </div>
+          <Text className={styles.copyright}>© {currentYear} DrillShop.com</Text>
 
-          <Text className={styles.copyright}>
-            © {currentYear} {content.footer.copyright}
-          </Text>
+          <div className={styles.designerSection}>
+            <span>Designed by</span>
+            <a href="https://www.behance.net/d-okuniev" target="_blank" rel="noopener noreferrer">
+              Danil Okuniev
+            </a>
+          </div>
         </div>
       </Container>
     </footer>

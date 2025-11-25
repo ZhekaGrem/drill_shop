@@ -7,8 +7,16 @@ import styles from './CatalogFilters.module.scss';
 interface CatalogFiltersProps {
   onFiltersChange?: () => void;
   className?: string;
-  initialCategories?: any[]; // ✅ ДОДАНО
+  initialCategories?: any[];
 }
+
+const SORT_OPTIONS = [
+  { value: 'created_desc', label: 'Рекомендовані' },
+  { value: 'popularity_desc', label: 'За популярністю' },
+  { value: 'price_asc', label: 'Від дешевших' },
+  { value: 'price_desc', label: 'Від дорожчих' },
+  { value: 'name_asc', label: 'За назвою (А-Я)' },
+];
 
 export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
   onFiltersChange,
@@ -17,6 +25,7 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
 }) => {
   const { filters, setFilter, clearFilters } = useCatalogFilters();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
 
   const {
     categories,
@@ -26,18 +35,7 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     getGroupedCategories,
   } = useCategoriesStore();
 
-  // ✅ Використовуємо SSG дані якщо є
   const displayCategories = categories.length > 0 ? categories : initialCategories || [];
-
-  const handleCategoryToggle = (categoryId: string) => {
-    const newCategories = selectedCategories.includes(categoryId)
-      ? selectedCategories.filter((id) => id !== categoryId)
-      : [...selectedCategories, categoryId];
-
-    setSelectedCategories(newCategories);
-    setFilter('categoryIds', newCategories.length > 0 ? newCategories : undefined);
-    onFiltersChange?.();
-  };
 
   const [priceRange, setPriceRange] = useState({
     min: filters.priceMin?.toString() || '',
@@ -45,7 +43,6 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
   });
 
   useEffect(() => {
-    // ✅ Завантажуємо тільки якщо немає SSG даних
     if (!categoriesInitialized && !categoriesLoading) {
       fetchCategories();
     }
@@ -58,15 +55,38 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     });
   }, [filters.priceMin, filters.priceMax]);
 
+  const currentSort = `${filters.sortBy || 'created'}_${filters.sortOrder || 'desc'}`;
+  const currentSortLabel = SORT_OPTIONS.find((opt) => opt.value === currentSort)?.label || 'Рекомендовані';
+
   const handleSortChange = (value: string) => {
     const [sortBy, sortOrder] = value.split('_');
     setFilter('sortBy', sortBy);
     setFilter('sortOrder', sortOrder);
+    setShowSortDropdown(false);
     onFiltersChange?.();
   };
 
-  const handlePromoFilterChange = (hasPromo: boolean) => {
-    setFilter('hasPromo', hasPromo || undefined);
+  const handleCategoryToggle = (categoryId: string) => {
+    const newCategories = selectedCategories.includes(categoryId)
+      ? selectedCategories.filter((id) => id !== categoryId)
+      : [...selectedCategories, categoryId];
+
+    setSelectedCategories(newCategories);
+    setFilter('categoryIds', newCategories.length > 0 ? newCategories : undefined);
+    onFiltersChange?.();
+  };
+
+  const handlePriceChange = (field: 'min' | 'max', value: string) => {
+    const numValue = value === '' ? '' : value;
+    setPriceRange((prev) => ({ ...prev, [field]: numValue }));
+  };
+
+  const handlePriceBlur = () => {
+    const min = priceRange.min === '' ? undefined : Number(priceRange.min);
+    const max = priceRange.max === '' ? undefined : Number(priceRange.max);
+
+    setFilter('priceMin', min);
+    setFilter('priceMax', max);
     onFiltersChange?.();
   };
 
@@ -77,94 +97,101 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     onFiltersChange?.();
   };
 
-  // ✅ Оптимізовані функції для роботи з SSG даними
   const rootCategories = displayCategories.filter(
     (cat) => !cat.parentId && (!cat.children || cat.children.length === 0)
   );
 
   const groupedCategories = getGroupedCategories();
 
-  const currentSort = `${filters.sortBy || 'created'}_${filters.sortOrder || 'desc'}`;
-
   return (
-    <div className={`${styles.catalogFilters} ${className}`}>
-      <div className={styles.catalogFilters__header}>
-        <h3 className={styles.catalogFilters__title}>Фільтри</h3>
-        <button className={styles.catalogFilters__clear} onClick={handleClearFilters}>
-          Очистити
-        </button>
-      </div>
-
+    <div className={`${styles.filters} ${className}`}>
       {/* Сортування */}
-      <div className={styles.catalogFilters__section}>
-        <label className={styles.catalogFilters__label}>Сортувати</label>
-        <select
-          className={styles.catalogFilters__select}
-          value={currentSort}
-          onChange={(e) => handleSortChange(e.target.value)}>
-          <option value="created_desc">Новинки</option>
-          <option value="popularity_desc">За популярністю</option>
-          <option value="price_asc">Від дешевшого</option>
-          <option value="price_desc">Від дорожчого</option>
-        </select>
+      <div className={styles.filterGroup}>
+        <label className={styles.label}>Сортувати за:</label>
+        <div className={styles.dropdown}>
+          <button className={styles.dropdownButton} onClick={() => setShowSortDropdown(!showSortDropdown)}>
+            <span>{currentSortLabel}</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className={styles.chevron}>
+              <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
+            </svg>
+          </button>
+
+          {showSortDropdown && (
+            <div className={styles.dropdownMenu}>
+              {SORT_OPTIONS.map((option) => (
+                <button
+                  key={option.value}
+                  className={`${styles.dropdownItem} ${currentSort === option.value ? styles.active : ''}`}
+                  onClick={() => handleSortChange(option.value)}>
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Акції */}
-      <div className={styles.catalogFilters__section}>
-        <label className={styles.catalogFilters__label}>Акції</label>
-        <div className={styles.catalogFilters__checkboxes}>
-          <label className={styles.catalogFilters__checkbox}>
+      {/* Ціна */}
+      <div className={styles.filterGroup}>
+        <div className={styles.priceInputs}>
+          <div className={styles.priceField}>
+            <label className={styles.priceLabel}>від ₴</label>
             <input
-              type="checkbox"
-              name="promo"
-              checked={!filters.hasPromo}
-              onChange={() => handlePromoFilterChange(false)}
+              type="number"
+              className={styles.priceInput}
+              value={priceRange.min}
+              onChange={(e) => handlePriceChange('min', e.target.value)}
+              onBlur={handlePriceBlur}
+              placeholder="0"
             />
-            <span className={styles.catalogFilters__checkboxText}>Всі товари</span>
-          </label>
+          </div>
 
-          <label className={styles.catalogFilters__checkbox}>
+          <div className={styles.priceField}>
+            <label className={styles.priceLabel}>до ₴</label>
             <input
-              type="checkbox"
-              name="promo"
-              checked={filters.hasPromo === true}
-              onChange={() => handlePromoFilterChange(true)}
+              type="number"
+              className={styles.priceInput}
+              value={priceRange.max}
+              onChange={(e) => handlePriceChange('max', e.target.value)}
+              onBlur={handlePriceBlur}
+              placeholder="9999"
             />
-            <span className={styles.catalogFilters__checkboxText}>Акційні товари</span>
-          </label>
+          </div>
         </div>
       </div>
 
       {/* Категорії (основні без батьків) */}
-      <div className={styles.catalogFilters__section}>
-        <label className={styles.catalogFilters__label}>Категорії</label>
-        <div className={styles.catalogFilters__checkboxes}>
-          {rootCategories.map((category) => (
-            <label key={category.id} className={styles.catalogFilters__checkbox}>
-              <input
-                type="checkbox"
-                checked={selectedCategories.includes(category.id)}
-                onChange={() => handleCategoryToggle(category.id)}
-              />
-              <span className={styles.catalogFilters__checkboxText}>{category.name}</span>
-            </label>
-          ))}
+      {rootCategories.length > 0 && (
+        <div className={styles.categorySection}>
+          <label className={styles.categoryLabel}>Категорії</label>
+          <div className={styles.checkboxes}>
+            {rootCategories.map((category) => (
+              <label key={category.id} className={styles.checkbox}>
+                <input
+                  type="checkbox"
+                  checked={selectedCategories.includes(category.id)}
+                  onChange={() => handleCategoryToggle(category.id)}
+                />
+                <span className={styles.checkboxText}>{category.name}</span>
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Групові категорії (батько + діти як окремі блоки) */}
       {groupedCategories.map((group) => (
-        <div key={group.parent.id} className={styles.catalogFilters__section}>
-          <label className={styles.catalogFilters__label}>{group.parent.name}</label>
-          <div className={styles.catalogFilters__checkboxes}>
+        <div key={group.parent.id} className={styles.categorySection}>
+          <label className={styles.categoryLabel}>{group.parent.name}</label>
+          <div className={styles.checkboxes}>
             {group.children.map((child) => (
-              <label key={child.id} className={styles.catalogFilters__checkbox}>
+              <label key={child.id} className={styles.checkbox}>
                 <input
                   type="checkbox"
                   checked={selectedCategories.includes(child.id)}
                   onChange={() => handleCategoryToggle(child.id)}
                 />
-                <span className={styles.catalogFilters__checkboxText}>{child.name}</span>
+                <span className={styles.checkboxText}>{child.name}</span>
               </label>
             ))}
           </div>

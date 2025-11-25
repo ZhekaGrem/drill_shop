@@ -224,10 +224,11 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
   // Отримуємо всі категорії з size guide
   const categoriesWithGuide =
     product.categories
-      ?.map((pc: any) => ({
-        categoryName: pc.name,
-        imageUrl: pc.sizeGuideImage || null,
-        text: pc.sizeGuideText || null,
+      ?.filter((pc) => pc.category)
+      .map((pc) => ({
+        categoryName: pc.category!.name,
+        imageUrl: pc.category!.sizeGuideImage || null,
+        text: pc.category!.sizeGuideText || null,
       }))
       .filter((cat) => cat.imageUrl || cat.text) || [];
   const hasSizeGuide = categoriesWithGuide.length > 0;
@@ -237,10 +238,20 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
       <div className={styles.container}>
         {/* Breadcrumbs */}
         <nav className={styles.breadcrumbs}>
-          <Link href="/catalog" className={styles.breadcrumbs__link}>
-            Каталог
+          <Link href="/" className={styles.breadcrumbs__link}>
+            Головна
           </Link>
-          <span className={styles.breadcrumbs__separator}>→</span>
+          <span className={styles.breadcrumbs__separator}>›</span>
+          {product.categories && product.categories[0]?.category && (
+            <>
+              <Link
+                href={`/catalog/category/${product.categories[0].category.slug}`}
+                className={styles.breadcrumbs__link}>
+                {product.categories[0].category.name}
+              </Link>
+              <span className={styles.breadcrumbs__separator}>›</span>
+            </>
+          )}
           <span className={styles.breadcrumbs__current}>{product.name}</span>
         </nav>
 
@@ -249,6 +260,28 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
           {/* Images */}
           <div className={styles.productDetails__images}>
             <div className={styles.productGallery}>
+              {/* Thumbnails - тепер зліва */}
+              {sortedImages.length > 1 && (
+                <div className={styles.productGallery__thumbnails}>
+                  {sortedImages.map((image, index) => (
+                    <button
+                      key={image.id}
+                      className={`${styles.productGallery__thumbnail} ${
+                        index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
+                      }`}
+                      onClick={() => setSelectedImageIndex(index)}>
+                      <CloudinaryImage
+                        src={getImageUrl(image.url || image.publicId)}
+                        alt={image.altText || product.name}
+                        width={80}
+                        height={80}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Main Image справа від thumbnails */}
               <div className={styles.productGallery__main}>
                 <div className={styles.productGallery__mainImageWrapper}>
                   <CloudinaryImage
@@ -269,29 +302,23 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                 <div className={styles.favoriteButtonWrapper}>
                   <FavoriteButton product={product} />
                 </div>
-              </div>
 
-              {sortedImages.length > 1 && (
-                <div className={styles.productGallery__thumbnails}>
-                  {sortedImages.map((image, index) => (
-                    <Button
-                      key={image.id}
-                      className={`${styles.productGallery__thumbnail} ${
-                        index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
-                      }`}
-                      variant="ghost"
-                      size="fl"
-                      onClick={() => setSelectedImageIndex(index)}>
-                      <CloudinaryImage
-                        src={getImageUrl(image.url || image.publicId)}
-                        alt={image.altText || product.name}
-                        width={80}
-                        height={80}
+                {/* Dots для навігації по зображеннях */}
+                {sortedImages.length > 1 && (
+                  <div className={styles.productGallery__dots}>
+                    {sortedImages.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`${styles.productGallery__dot} ${
+                          index === selectedImageIndex ? styles.productGallery__dotActive : ''
+                        }`}
+                        onClick={() => setSelectedImageIndex(index)}
+                        aria-label={`Зображення ${index + 1}`}
                       />
-                    </Button>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -506,44 +533,51 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
 
             {/* Add to Cart Section */}
             <div className={styles.productDetails__actions}>
-              <div className={styles.quantitySelector}>
+              <div className={styles.actionButtons}>
+                <div className={styles.quantitySelector}>
+                  <button
+                    className={styles.quantitySelector__button}
+                    onClick={() => handleQuantityChange(quantity - 1)}
+                    disabled={quantity <= 1}>
+                    −
+                  </button>
+                  <input
+                    type="number"
+                    className={styles.quantitySelector__input}
+                    value={quantity}
+                    onChange={(e) => handleQuantityChange(Number(e.target.value))}
+                    min="1"
+                    max={availableQuantity}
+                  />
+                  <button
+                    className={styles.quantitySelector__button}
+                    onClick={() => handleQuantityChange(quantity + 1)}
+                    disabled={quantity >= availableQuantity}>
+                    +
+                  </button>
+                </div>
+
                 <Button
-                  size="sm"
-                  className={styles.quantitySelector__Button}
-                  onClick={() => handleQuantityChange(quantity - 1)}
-                  disabled={quantity <= 1}>
-                  −
+                  variant="primary"
+                  size="lg"
+                  className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
+                  onClick={handleAddToCart}
+                  disabled={!isInStock}>
+                  {getButtonText()}
                 </Button>
-                <input
-                  type="number"
-                  className={styles.quantitySelector__input}
-                  value={quantity}
-                  onChange={(e) => handleQuantityChange(Number(e.target.value))}
-                  min="1"
-                  max={availableQuantity}
-                />
+
                 <Button
-                  size="sm"
-                  className={styles.quantitySelector__Button}
-                  onClick={() => handleQuantityChange(quantity + 1)}
-                  disabled={quantity >= availableQuantity}>
-                  +
+                  variant="green"
+                  size="lg"
+                  className={styles.buyNowButton}
+                  onClick={() => {
+                    handleAddToCart();
+                    setTimeout(() => router.push('/cart'), 500);
+                  }}
+                  disabled={!isInStock}>
+                  КУПИТИ ЗАРАЗ
                 </Button>
               </div>
-
-              <Button
-                className={`${styles.addToCartButton} ${
-                  !isInStock ? styles.addToCartButton__disabled : ''
-                } ${isClicked ? styles.addToCartButton__success : ''}`}
-                onClick={handleAddToCart}
-                disabled={!isInStock}
-                style={{
-                  backgroundColor: isClicked ? '#10B981' : undefined,
-                  transform: isClicked ? 'scale(0.98)' : 'scale(1)',
-                  transition: 'all 0.15s ease',
-                }}>
-                {getButtonText()}
-              </Button>
             </div>
           </div>
         </div>
@@ -565,7 +599,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <section className={styles.relatedProducts}>
-            <h2 className={styles.relatedProducts__title}>Схожі товари</h2>
+            <h2 className={styles.relatedProducts__title}>ЩЕ ТОВАРИ</h2>
             <div className={styles.relatedProducts__grid}>
               {relatedProducts.slice(0, 4).map((relatedProduct) => (
                 <Card key={relatedProduct.id} product={relatedProduct} styleText="title2" />

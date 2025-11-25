@@ -1,0 +1,112 @@
+// src/features/auth/components/AuthDrawer/AuthDrawer.module.scss
+// Pixel art Auth Drawer з Figma "Щільний дріл"
+
+.drawer {
+  :global {
+    .mantine-Drawer-content {
+      border-radius: 0 !important;
+      border-left: var(--border-width) solid var(--border-color) !important;
+      background: var(--background) !important;
+    }
+
+    .mantine-Drawer-header {
+      background: var(--background-secondary) !important;
+      border-bottom: var(--border-width) solid var(--border-color) !important;
+      padding: var(--spacing-md) !important;
+    }
+
+    .mantine-Drawer-title {
+      width: 100%;
+    }
+
+    .mantine-Drawer-body {
+      padding: var(--spacing-md) !important;
+      background: var(--background) !important;
+    }
+
+    .mantine-Drawer-close {
+      svg {
+        width: 24px;
+        height: 24px;
+        stroke-width: 2px;
+      }
+
+      &:hover {
+        background: var(--btn-primary) !important;
+      }
+    }
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-family: var(--font-condensed);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
+
+.tabs {
+  :global {
+    .mantine-Tabs-list {
+      border-bottom: var(--border-width) solid var(--border-color) !important;
+      background: var(--background-light) !important;
+      padding: 0 !important;
+      gap: 0 !important;
+    }
+
+    .mantine-Tabs-tab {
+      font-family: var(--font-condensed) !important;
+      font-size: var(--text-base) !important;
+      font-weight: var(--fw-bold) !important;
+      color: var(--text-secondary) !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: var(--spacing-md) !important;
+      background: var(--background-light) !important;
+      transition: var(--transition-fast) !important;
+
+      &:hover {
+        background: var(--background-secondary) !important;
+        color: var(--text-primary) !important;
+      }
+
+      &[data-active='true'] {
+        background: var(--background) !important;
+        color: var(--text-primary) !important;
+        border-bottom: 3px solid var(--btn-primary) !important;
+        font-weight: var(--fw-black) !important;
+      }
+    }
+
+    .mantine-Tabs-panel {
+      padding-top: var(--spacing-lg) !important;
+    }
+  }
+}
+
+.tabsList {
+  border-bottom: var(--border-width) solid var(--border-color);
+  background: var(--background-light);
+}
+
+.tab {
+  font-family: var(--font-condensed);
+  font-size: var(--text-base);
+  font-weight: var(--fw-bold);
+  color: var(--text-secondary);
+  transition: var(--transition-fast);
+
+  &:hover {
+    background: var(--background-secondary);
+    color: var(--text-primary);
+  }
+
+  &[data-active='true'] {
+    background: var(--background);
+    color: var(--text-primary);
+    border-bottom: 3px solid var(--btn-primary);
+  }
+}

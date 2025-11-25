@@ -6,11 +6,13 @@
 
 ## 🎯 Огляд проекту
 
-**Shop Sausages** — це Next.js e-commerce застосунок для продажу м'ясних виробів з використанням **Feature-Sliced Design (FSD)** архітектури.
+**Shop Sausages** — це Next.js e-commerce застосунок для продажу одягу
+**Feature-Sliced Design (FSD)** архітектури.
 
 ### Стек технологій
 
 - **Frontend:** Next.js 15, TypeScript, Mantine UI 8.2.8, Zustand, TanStack Query
+- **TelegramMiniApp:** Next.js 15, TypeScript, Mantine UI 8.2.8, Zustand, TanStack Query
 - **Backend Integration:** Express, Prisma, PostgreSQL (Supabase)
 - **Auth:** Supabase Authentication
 - **Images:** Cloudinary CDN

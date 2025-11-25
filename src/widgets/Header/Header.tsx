@@ -1,6 +1,6 @@
-// src/widgets/Header/Header.tsx - OPTIMIZED
+// src/widgets/Header/Header.tsx
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   IconUser,
   IconLogout,
@@ -8,22 +8,12 @@ import {
   IconSettings,
   IconHeart,
   IconShoppingCart,
+  IconSearch,
+  IconMenu2,
+  IconX,
+  IconChevronRight,
 } from '@tabler/icons-react';
-import {
-  Box,
-  Burger,
-  Button,
-  Divider,
-  Drawer,
-  Group,
-  ScrollArea,
-  Image,
-  Badge,
-  ActionIcon,
-  Menu,
-  Text,
-  Stack,
-} from '@mantine/core';
+import { Box, Drawer, Menu, ScrollArea, Stack, Divider, Text, Group, Badge, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect } from 'react';
 import styles from './header.module.scss';
@@ -31,31 +21,9 @@ import Link from 'next/link';
 import { useCartDrawerActions, useCartCalculations, useCartStore } from '@/shared/stores/cart';
 import { useAuthStore } from '@/shared/stores/auth';
 import { CartDrawer } from '@/features/cart/components/CartDrawer';
-import { CartIcon } from './CartIcon';
+import { AuthDrawer } from '@/features/auth/components/AuthDrawer/AuthDrawer';
 import { content } from '@/shared/config/content';
 import { siteConfig } from '@/shared/config/site';
-import { PromoBanner } from './PromoBanner';
-import { SearchSection } from './SearchSection';
-
-// ✅ ОПТИМІЗОВАНО: React.memo запобігає непотрібним ререндерам
-const CartIconWithBadge = React.memo(({ isMobile = false }: { isMobile?: boolean }) => {
-  const { toggle } = useCartDrawerActions();
-  const calculations = useCartCalculations();
-
-  return (
-    <ActionIcon
-      variant="unstyled"
-      className={isMobile ? styles.buttonMobile : styles.button}
-      onClick={toggle}>
-      <CartIcon />
-      {calculations && calculations.itemsCount > 0 && (
-        <Badge size="sm" circle color="red" className={styles.cartIconBadge}>
-          {calculations.itemsCount > 99 ? '99+' : calculations.itemsCount}
-        </Badge>
-      )}
-    </ActionIcon>
-  );
-});
 
 // SINGLE logout handler
 const useLogoutHandler = () => {
@@ -67,236 +35,242 @@ const useLogoutHandler = () => {
   };
 };
 
-// ✅ ОПТИМІЗОВАНО: React.memo
-const AuthControl = React.memo(({ onNavigate }: { onNavigate?: () => void }) => {
-  const userProfile = useAuthStore((state) => state.userProfile);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const isInitialized = useAuthStore((state) => state.isInitialized);
-  const handleLogout = useLogoutHandler();
+// ✅ Оптимізовано: React.memo
+const AuthControl = React.memo(
+  ({ onNavigate, onOpenAuth }: { onNavigate?: () => void; onOpenAuth: () => void }) => {
+    const userProfile = useAuthStore((state) => state.userProfile);
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+    const isInitialized = useAuthStore((state) => state.isInitialized);
+    const handleLogout = useLogoutHandler();
 
-  const isAdmin = userProfile?.role === 'ADMIN' || userProfile?.role === 'SUPER_ADMIN';
-  const isManager = userProfile?.role === 'MANAGER' || isAdmin;
+    const isAdmin = userProfile?.role === 'ADMIN' || userProfile?.role === 'SUPER_ADMIN';
+    const isManager = userProfile?.role === 'MANAGER' || isAdmin;
 
-  const handleLogoutClick = async () => {
-    onNavigate?.();
-    await handleLogout();
-  };
+    const handleLogoutClick = async () => {
+      onNavigate?.();
+      await handleLogout();
+    };
 
-  if (!isInitialized) {
+    if (!isInitialized) {
+      return null;
+    }
+
+    if (isAuthenticated && userProfile) {
+      return (
+        <Menu shadow="md" width={200} classNames={{ dropdown: styles.userMenu }}>
+          <Menu.Target>
+            <button className={styles.iconButton}>
+              <IconUser />
+            </button>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Label>{content.header.accountMenu.label}</Menu.Label>
+            <Menu.Item component={Link} href="/profile" leftSection={<IconUser size={18} />}>
+              {content.header.accountMenu.profile}
+            </Menu.Item>
+            <Menu.Item component={Link} href="/profile/favorites" leftSection={<IconHeart size={18} />}>
+              {content.header.accountMenu.favorites}
+            </Menu.Item>
+            <Menu.Item component={Link} href="/profile/orders" leftSection={<IconShoppingCart size={18} />}>
+              {content.header.accountMenu.orders}
+            </Menu.Item>
+            {isManager && (
+              <>
+                <Menu.Divider />
+                <Menu.Label>{content.header.accountMenu.management}</Menu.Label>
+                <Menu.Item component={Link} href="/admin" leftSection={<IconSettings size={18} />}>
+                  {content.header.accountMenu.adminPanel}
+                </Menu.Item>
+              </>
+            )}
+            <Menu.Divider />
+            <Menu.Item color="red" leftSection={<IconLogout size={18} />} onClick={handleLogoutClick}>
+              {content.header.accountMenu.logout}
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      );
+    }
+
     return (
-      <Link href="/login" className={styles.link} onClick={onNavigate}>
-        <span>{content.navigation.account}</span>
-      </Link>
+      <button className={styles.iconButton} onClick={onOpenAuth}>
+        <IconUser />
+      </button>
     );
   }
+);
 
-  if (isAuthenticated && userProfile) {
+// ✅ Mobile menu з іконками та chevron
+const MobileMenu = React.memo(
+  ({ opened, onClose, onNavigate }: { opened: boolean; onClose: () => void; onNavigate: () => void }) => {
+    const userProfile = useAuthStore((state) => state.userProfile);
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+    const handleLogout = useLogoutHandler();
+
+    const isAdmin = userProfile?.role === 'ADMIN' || userProfile?.role === 'SUPER_ADMIN';
+    const isManager = userProfile?.role === 'MANAGER' || isAdmin;
+
+    const handleLogoutClick = async () => {
+      onNavigate();
+      await handleLogout();
+    };
+
+    const menuItems = [
+      { label: 'Розпродаж', href: '/catalog?sale=true', icon: '🔥' },
+      { label: 'ТОП продажів', href: '/catalog?sort=popularity_desc', icon: '⭐' },
+      { label: 'Футболки', href: '/catalog?category=t-shirts', icon: '👕' },
+      { label: 'Худі', href: '/catalog?category=hoodies', icon: '🧥' },
+      { label: 'Кепки', href: '/catalog?category=caps', icon: '🧢' },
+      { label: 'Аксесуари', href: '/catalog?category=accessories', icon: '🎒' },
+    ];
+
     return (
-      <Menu shadow="md" width={200}>
-        <Menu.Target>
-          <Button rightSection={<IconChevronDown size={14} />} variant="unstyled" className={styles.button}>
-            <Group>
-              <IconUser size={16} />
-              <Text size="sm" className={styles.link_user}>
-                {userProfile.firstName}
-              </Text>
-            </Group>
-          </Button>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Label>{content.header.accountMenu.label}</Menu.Label>
-          <Menu.Item component={Link} href="/profile" leftSection={<IconUser size={24} />}>
-            {content.header.accountMenu.profile}
-          </Menu.Item>
-          <Menu.Item component={Link} href="/profile/favorites" leftSection={<IconHeart />}>
-            {content.header.accountMenu.favorites}
-          </Menu.Item>
-          <Menu.Item component={Link} href="/profile/orders" leftSection={<IconShoppingCart />}>
-            {content.header.accountMenu.orders}
-          </Menu.Item>
-          {isManager && (
+      <Drawer opened={opened} onClose={onClose} position="right" size="280px" className={styles.drawer}>
+        <ScrollArea h="calc(100vh - 80px)">
+          {menuItems.map((item) => (
+            <Link key={item.href} href={item.href} className={styles.menuLink} onClick={onNavigate}>
+              <div className={styles.menuIcon}>
+                <span>{item.icon}</span>
+                <span>{item.label}</span>
+              </div>
+              <IconChevronRight size={20} />
+            </Link>
+          ))}
+
+          {isAuthenticated && userProfile && (
             <>
-              <Menu.Divider />
-              <Menu.Label>{content.header.accountMenu.management}</Menu.Label>
-              <Menu.Item component={Link} href="/admin" leftSection={<IconSettings size={14} />}>
-                {content.header.accountMenu.adminPanel}
-              </Menu.Item>
+              <Divider my="sm" />
+              <Text size="sm" fw={700} p="md" c="dimmed" tt="uppercase">
+                {userProfile.firstName} {userProfile.lastName}
+              </Text>
+              <Link href="/profile" className={styles.menuLink} onClick={onNavigate}>
+                <div className={styles.menuIcon}>
+                  <IconUser size={24} />
+                  <span>{content.navigation.profile}</span>
+                </div>
+                <IconChevronRight size={20} />
+              </Link>
+              <Link href="/profile/favorites" className={styles.menuLink} onClick={onNavigate}>
+                <div className={styles.menuIcon}>
+                  <IconHeart size={24} />
+                  <span>{content.navigation.favorites}</span>
+                </div>
+                <IconChevronRight size={20} />
+              </Link>
+              <Link href="/profile/orders" className={styles.menuLink} onClick={onNavigate}>
+                <div className={styles.menuIcon}>
+                  <IconShoppingCart size={24} />
+                  <span>{content.navigation.orders}</span>
+                </div>
+                <IconChevronRight size={20} />
+              </Link>
+              {isManager && (
+                <>
+                  <Divider my="sm" />
+                  <Link href="/admin" className={styles.menuLink} onClick={onNavigate}>
+                    <div className={styles.menuIcon}>
+                      <IconSettings size={24} />
+                      <span>{content.navigation.adminPanel}</span>
+                    </div>
+                    <IconChevronRight size={20} />
+                  </Link>
+                </>
+              )}
+              <Divider my="sm" />
+              <div className={`${styles.menuLink} ${styles.logoutLink}`} onClick={handleLogoutClick}>
+                <div className={styles.menuIcon}>
+                  <IconLogout size={24} />
+                  <span>{content.navigation.logout}</span>
+                </div>
+                <IconChevronRight size={20} />
+              </div>
             </>
           )}
-          <Menu.Divider />
-          <Menu.Item color="red" leftSection={<IconLogout size={14} />} onClick={handleLogoutClick}>
-            {content.header.accountMenu.logout}
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
+        </ScrollArea>
+      </Drawer>
     );
   }
-
-  return (
-    <Link href="/login" className={styles.link} onClick={onNavigate}>
-      {content.navigation.account}
-    </Link>
-  );
-});
-
-// ✅ ОПТИМІЗОВАНО: React.memo
-const MobileAuthMenu = React.memo(({ onNavigate }: { onNavigate: () => void }) => {
-  const userProfile = useAuthStore((state) => state.userProfile);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const isInitialized = useAuthStore((state) => state.isInitialized);
-  const handleLogout = useLogoutHandler();
-
-  const isAdmin = userProfile?.role === 'ADMIN' || userProfile?.role === 'SUPER_ADMIN';
-  const isManager = userProfile?.role === 'MANAGER' || isAdmin;
-
-  const handleLogoutClick = async () => {
-    onNavigate();
-    await handleLogout();
-  };
-
-  if (!isInitialized || !isAuthenticated || !userProfile) {
-    return (
-      <Link href="/login" className={styles.link} onClick={onNavigate}>
-        {content.navigation.account}
-      </Link>
-    );
-  }
-
-  return (
-    <Stack gap={0}>
-      <Divider my="sm" />
-      <Text size="sm" fw={700} p="md" c="dimmed" tt="uppercase">
-        {userProfile.firstName} {userProfile.lastName}
-      </Text>
-      <Link href="/profile" className={styles.link} onClick={onNavigate}>
-        <Group gap="xs">
-          <IconUser size={18} />
-          <span>{content.navigation.profile.toUpperCase()}</span>
-        </Group>
-      </Link>
-      <Link href="/profile/favorites" className={styles.link} onClick={onNavigate}>
-        <Group gap="xs">
-          <IconHeart size={18} />
-          <span>{content.navigation.favorites.toUpperCase()}</span>
-        </Group>
-      </Link>
-      <Link href="/profile/orders" className={styles.link} onClick={onNavigate}>
-        <Group gap="xs">
-          <IconShoppingCart size={18} />
-          <span>{content.navigation.orders.toUpperCase()}</span>
-        </Group>
-      </Link>
-      {isManager && (
-        <>
-          <Divider my="sm" />
-          <Text size="sm" fw={700} p="md" c="dimmed" tt="uppercase">
-            {content.header.accountMenu.management}
-          </Text>
-          <Link href="/admin" className={styles.link} onClick={onNavigate}>
-            <Group gap="xs">
-              <IconSettings size={18} />
-              <span>{content.navigation.adminPanel.toUpperCase()}</span>
-            </Group>
-          </Link>
-        </>
-      )}
-      <Divider my="sm" />
-      <div className={`${styles.link} ${styles.logoutLink}`} onClick={handleLogoutClick}>
-        <Group gap="xs">
-          <IconLogout size={18} />
-          <span>{content.navigation.logout.toUpperCase()}</span>
-        </Group>
-      </div>
-    </Stack>
-  );
-});
+);
 
 export function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
+  const [authDrawerOpened, { open: openAuthDrawer, close: closeAuthDrawer }] = useDisclosure(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const calculations = useCartCalculations();
   const { toggle: toggleCartDrawer } = useCartDrawerActions();
-  const userProfile = useAuthStore((state) => state.userProfile);
   const syncCart = useCartStore((state) => state.syncCart);
-
-  const isAdmin = userProfile?.role === 'ADMIN' || userProfile?.role === 'SUPER_ADMIN';
 
   useEffect(() => {
     syncCart();
   }, [syncCart]);
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      window.location.href = `/catalog?search=${encodeURIComponent(searchQuery)}`;
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    closeAuthDrawer();
+    window.location.reload();
+  };
+
   return (
     <Box className={styles.wrapper}>
       <header className={styles.header}>
-        <Group justify="space-between" h="100%" className={styles.nav}>
-          <Group h="100%" gap={30} visibleFrom="md">
-            <Link href="/" className={styles.link}>
-              {content.navigation.home}
-            </Link>
-            <Link href="/catalog" className={styles.link}>
-              {content.navigation.shop}
-            </Link>
-            <Link href="/about" className={styles.link}>
-              {content.navigation.about}
-            </Link>
-          </Group>
-          <Link href="/">
-            <Image src={siteConfig.logo} alt={siteConfig.name} className={styles.logo} />
-          </Link>
-          <Group visibleFrom="md" gap={30}>
-            <Link href="/contact" className={styles.link}>
-              {content.navigation.contacts}
-            </Link>
-            <div className={styles.link}>
-              <CartIconWithBadge />
-            </div>
-            <AuthControl />
-          </Group>
-          <Group h="100%" gap={30} hiddenFrom="md">
-            <CartIconWithBadge isMobile={true} />
-            <Burger color="#ffffff" opened={drawerOpened} onClick={toggleDrawer} />
-          </Group>
-        </Group>
-      </header>
-      <SearchSection />
-      <PromoBanner />
-      <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
-        size="280px"
-        padding="md"
-        title={content.header.navigation}
-        hiddenFrom="md"
-        zIndex={1000}>
-        <ScrollArea h="calc(100vh - 80px)" mx="-md">
-          <Divider my="sm" />
-          <Link href="/catalog" className={styles.link} onClick={closeDrawer}>
-            {content.navigation.shop}
-          </Link>
-          <Link href="/about" className={styles.link} onClick={closeDrawer}>
-            {content.navigation.about}
-          </Link>
-          <Link href="/contact" className={styles.link} onClick={closeDrawer}>
-            {content.navigation.contacts}
-          </Link>
-          <Group
-            className={styles.link}
-            onClick={() => {
-              closeDrawer();
-              toggleCartDrawer();
-            }}
-            style={{ cursor: 'pointer' }}>
-            <span>{content.navigation.cart}</span>
+        {/* Left section: Menu + Search (Desktop only) */}
+        <div className={`${styles.leftSection} ${styles.desktopOnly}`}>
+          <button className={styles.iconButton} onClick={toggleDrawer}>
+            <IconMenu2 />
+          </button>
+          <form onSubmit={handleSearch} className={styles.searchBox}>
+            <input
+              type="text"
+              placeholder="Пошук"
+              className={styles.searchInput}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <IconSearch className={styles.searchIcon} />
+          </form>
+        </div>
+
+        {/* Mobile left: Menu only */}
+        <div className={`${styles.leftSection} ${styles.mobileOnly}`}>
+          <button className={styles.iconButton} onClick={toggleDrawer}>
+            <IconMenu2 />
+          </button>
+        </div>
+
+        {/* Logo (Center) */}
+        <Link href="/">
+          <Image src={siteConfig.logo} alt={siteConfig.name} className={styles.logo} />
+        </Link>
+
+        {/* Right section: Cart + User */}
+        <div className={styles.rightSection}>
+          <button className={styles.cartButton} onClick={toggleCartDrawer}>
+            <IconShoppingCart />
             {calculations && calculations.itemsCount > 0 && (
-              <Badge size="sm" color="red">
-                {calculations.itemsCount}
+              <Badge size="sm" circle color="red" className={styles.cartIconBadge}>
+                {calculations.itemsCount > 99 ? '99+' : calculations.itemsCount}
               </Badge>
             )}
-          </Group>
+            <span className={styles.desktopOnly}>{calculations?.itemsCount || 0}</span>
+          </button>
+          <AuthControl onOpenAuth={openAuthDrawer} />
+        </div>
+      </header>
 
-          <MobileAuthMenu onNavigate={closeDrawer} />
-        </ScrollArea>
-      </Drawer>
+      {/* Mobile Drawer Menu */}
+      <MobileMenu opened={drawerOpened} onClose={closeDrawer} onNavigate={closeDrawer} />
+
+      {/* Cart Drawer */}
       <CartDrawer />
+
+      {/* Auth Drawer */}
+      <AuthDrawer opened={authDrawerOpened} onClose={closeAuthDrawer} onSuccess={handleAuthSuccess} />
     </Box>
   );
 }

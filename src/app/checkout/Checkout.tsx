@@ -1,17 +1,17 @@
-// src/pages/Checkout/Checkout.tsx
+// src/app/checkout/Checkout.tsx
 'use client';
 
 import { CheckoutForm } from '@/features/checkout/components/CheckoutForm/CheckoutForm';
-import { Container, Title } from '@mantine/core';
+import styles from './checkout.module.scss';
 
 const CheckoutPage = () => {
   return (
-    <Container size="lg" py="xl">
-      <Title order={1} mb="xl" ta="center">
-        Оформлення замовлення
-      </Title>
-      <CheckoutForm />
-    </Container>
+    <div className={styles.checkoutPage}>
+      <div className={styles.container}>
+        <h1 className={styles.pageTitle}>ОФОРМЛЕННЯ ЗАМОВЛЕННЯ</h1>
+        <CheckoutForm />
+      </div>
+    </div>
   );
 };
 

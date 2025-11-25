@@ -1,15 +1,14 @@
 // src/features/catalog/components/MobileFilterModal/MobileFilterModal.tsx
 import React from 'react';
-import { Modal, ScrollArea } from '@mantine/core';
+import { Drawer } from '@mantine/core';
 import { CatalogFilters } from '../CatalogFilters/CatalogFilters';
 import styles from './MobileFilterModal.module.scss';
-import { Button } from '@/shared/components/Button/Button';
 
 interface MobileFilterModalProps {
   opened: boolean;
   onClose: () => void;
   onFiltersChange: () => void;
-  initialCategories?: any[]; // ✅ ДОДАНО
+  initialCategories?: any[];
 }
 
 export const MobileFilterModal: React.FC<MobileFilterModalProps> = ({
@@ -18,31 +17,52 @@ export const MobileFilterModal: React.FC<MobileFilterModalProps> = ({
   onFiltersChange,
   initialCategories,
 }) => {
-  const handleApply = () => {
-    onFiltersChange();
-    onClose();
-  };
-
   const handleFilterUpdate = () => {
-    // Нічого не робимо - просто оновлюються фільтри
+    onFiltersChange();
   };
 
   return (
-    <Modal
+    <Drawer
       opened={opened}
       onClose={onClose}
-      size="400px"
-      className={styles.modal}
-      scrollAreaComponent={ScrollArea.Autosize}
-      closeButtonProps={{ size: 'md' }}>
-      <div className={styles.content}>
-        <CatalogFilters onFiltersChange={handleFilterUpdate} initialCategories={initialCategories} />
-        <div className={styles.actions}>
-          <Button fullWidth size="md" onClick={onClose} className={styles.applyButton}>
-            Закрити
-          </Button>
+      position="bottom"
+      size="auto"
+      className={styles.drawer}
+      classNames={{
+        content: styles.drawerContent,
+        header: styles.drawerHeader,
+        title: styles.drawerTitle,
+        close: styles.drawerClose,
+        body: styles.drawerBody,
+      }}
+      title={
+        <div className={styles.header}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={styles.icon}>
+            <rect x="3" y="4" width="18" height="2" fill="currentColor" />
+            <rect x="3" y="11" width="18" height="2" fill="currentColor" />
+            <rect x="3" y="18" width="18" height="2" fill="currentColor" />
+          </svg>
+          <span>Фільтри</span>
         </div>
-      </div>
-    </Modal>
+      }
+      styles={{
+        content: {
+          borderRadius: 0,
+          border: '2px solid var(--border-color)',
+          borderBottom: 'none',
+          background: 'var(--background)',
+        },
+        header: {
+          borderBottom: '2px solid var(--border-color)',
+          padding: 'var(--spacing-md)',
+        },
+        body: {
+          padding: 'var(--spacing-md)',
+          maxHeight: '70vh',
+          overflowY: 'auto',
+        },
+      }}>
+      <CatalogFilters onFiltersChange={handleFilterUpdate} initialCategories={initialCategories} />
+    </Drawer>
   );
 };

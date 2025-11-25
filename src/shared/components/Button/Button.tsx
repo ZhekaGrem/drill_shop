@@ -5,17 +5,19 @@ import clsx from 'clsx';
 import styles from './button.module.scss';
 
 interface ButtonProps extends Omit<MantineButtonProps, 'variant' | 'size'> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'fl' | 'promo';
+  variant?: 'primary' | 'secondary' | 'green' | 'red' | 'beige' | 'outline' | 'ghost';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'menu' | 'fl' | 'promo';
   fullWidth?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLButtonElement>;
   type?: 'button' | 'submit' | 'reset';
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', size = 'xl', fullWidth = false, className, ...props }, ref) => {
+  ({ variant = 'primary', size = 'md', fullWidth = false, className, ...props }, ref) => {
     return (
       <MantineButton
         ref={ref}

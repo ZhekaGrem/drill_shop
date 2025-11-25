@@ -31,7 +31,16 @@
       "Bash(timeout 20 npx tsc:*)",
       "Bash(test:*)",
       "Bash(mv:*)",
-      "Bash(where:*)"
+      "Bash(where:*)",
+      "WebFetch(domain:api.figma.com)",
+      "Bash(curl:*)",
+      "Bash(timeout 30 npx tsc:*)",
+      "Bash(npx prisma db push:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout 5 echo:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []

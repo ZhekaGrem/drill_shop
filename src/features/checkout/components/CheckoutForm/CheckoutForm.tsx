@@ -1,22 +1,5 @@
 'use client';
 
-import {
-  Grid,
-  Paper,
-  Title,
-  Stack,
-  Group,
-  TextInput,
-  Textarea,
-  Radio,
-  Text,
-  Divider,
-  Alert,
-  Center,
-  Badge,
-  Checkbox,
-  Image,
-} from '@mantine/core';
 import { Controller } from 'react-hook-form';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { formatPrice } from '@/shared/utils/format';
@@ -30,6 +13,8 @@ import { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { Button } from '@/shared/components/Button/Button';
 import { getVariantDisplayBadges } from '@/shared/utils/variant-display';
 import { PromoCodeInput } from '../PromoCodeInput/PromoCodeInput';
+import styles from './CheckoutForm.module.scss';
+import Image from 'next/image';
 
 const paymentMethods = [
   {
@@ -184,220 +169,256 @@ const CheckoutFormComponent = () => {
 
   if (items.length === 0 && !isCartLoading) {
     return (
-      <Paper p="xl" withBorder ta="center">
-        <Title order={2}>Ваш кошик порожній</Title>
-        <Text c="dimmed" mt="md">
-          Додайте товари до кошика, щоб оформити замовлення.
-        </Text>
-        <Center mt="xl">
-          <Link href="/catalog">
-            <Button mt="xl">Перейти до каталогу</Button>
-          </Link>
-        </Center>
-      </Paper>
+      <div className={styles.emptyCart}>
+        <h2 className={styles.emptyCart__title}>Ваш кошик порожній</h2>
+        <p className={styles.emptyCart__text}>Додайте товари до кошика, щоб оформити замовлення.</p>
+        <Link href="/catalog">
+          <Button size="lg" variant="primary">
+            Перейти до каталогу
+          </Button>
+        </Link>
+      </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Grid gutter="xl">
-        <Grid.Col span={{ base: 12, md: 7 }}>
-          <Paper p="xl" withBorder>
-            <Stack gap="lg">
-              {submitError && (
-                <Alert color="red" icon={<IconAlertCircle />}>
-                  Помилка створення замовлення. Перевірте дані та спробуйте ще раз.
-                </Alert>
-              )}
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className={styles.checkoutForm}>
+      <div className={styles.formGrid}>
+        {/* Left column - form */}
+        <div className={styles.formColumn}>
+          <div className={styles.formSection}>
+            {submitError && (
+              <div className={styles.alert}>
+                <IconAlertCircle size={20} />
+                <span>Помилка створення замовлення. Перевірте дані та спробуйте ще раз.</span>
+              </div>
+            )}
 
-              <Title order={3}>Контактні дані</Title>
+            <h3 className={styles.sectionTitle}>КОНТАКТНІ ДАНІ</h3>
 
-              <Group grow>
-                <TextInput
-                  label="Ім'я"
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>
+                  Ім'я <span className={styles.required}>*</span>
+                </label>
+                <input
+                  type="text"
+                  className={`${styles.input} ${errors.shippingAddress?.firstName ? styles.inputError : ''}`}
                   placeholder="Іван"
                   {...register('shippingAddress.firstName')}
-                  error={errors.shippingAddress?.firstName?.message}
-                  required
                 />
-                <TextInput
-                  label="Прізвище"
+                {errors.shippingAddress?.firstName && (
+                  <span className={styles.errorMessage}>{errors.shippingAddress.firstName.message}</span>
+                )}
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>
+                  Прізвище <span className={styles.required}>*</span>
+                </label>
+                <input
+                  type="text"
+                  className={`${styles.input} ${errors.shippingAddress?.lastName ? styles.inputError : ''}`}
                   placeholder="Петренко"
                   {...register('shippingAddress.lastName')}
-                  error={errors.shippingAddress?.lastName?.message}
-                  required
                 />
-              </Group>
-              <TextInput
-                label="Email"
+                {errors.shippingAddress?.lastName && (
+                  <span className={styles.errorMessage}>{errors.shippingAddress.lastName.message}</span>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>
+                Email <span className={styles.required}>*</span>
+              </label>
+              <input
+                type="email"
+                className={`${styles.input} ${errors.guestEmail ? styles.inputError : ''}`}
                 placeholder="your@email.com"
                 {...register('guestEmail')}
-                error={errors.guestEmail?.message}
-                required
               />
-              <TextInput
-                label="Телефон"
+              {errors.guestEmail && <span className={styles.errorMessage}>{errors.guestEmail.message}</span>}
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>
+                Телефон <span className={styles.required}>*</span>
+              </label>
+              <input
+                type="tel"
+                className={`${styles.input} ${errors.shippingAddress?.phone ? styles.inputError : ''}`}
                 placeholder="+380501234567"
                 {...register('shippingAddress.phone')}
-                error={errors.shippingAddress?.phone?.message}
-                required
               />
+              {errors.shippingAddress?.phone && (
+                <span className={styles.errorMessage}>{errors.shippingAddress.phone.message}</span>
+              )}
+            </div>
 
-              {/* Delivery method selection */}
-              <Title order={3}>Спосіб доставки</Title>
-              <Controller
-                control={control}
-                name="deliveryMethod"
-                render={({ field }) => (
-                  <Radio.Group
-                    {...field}
-                    label="Виберіть спосіб доставки"
-                    required
-                    error={errors.deliveryMethod?.message}>
-                    <Stack mt="xs">
-                      {deliveryMethods.map((method) => (
-                        <Paper key={method.value} p="md" withBorder>
-                          <Radio value={method.value} label={method.label} />
-                          <Text size="sm" c="dimmed" mt={4}>
-                            {method.description}
-                          </Text>
-                        </Paper>
-                      ))}
-                    </Stack>
-                  </Radio.Group>
-                )}
-              />
-
-              {/* Nova Poshta specific fields */}
-              {deliveryMethod === 'nova_poshta' && (
-                <Stack gap="md">
-                  <CitySelect
-                    value={selectedCity}
-                    onChange={handleCityChange}
-                    error={errors.deliveryData?.cityRef?.message || errors.shippingAddress?.city?.message}
-                    onBlur={() => {
-                      form.trigger('deliveryData.cityRef');
-                      form.trigger('shippingAddress.city');
-                    }}
-                  />
-
-                  {selectedCity && (
-                    <WarehouseSelect
-                      cityRef={selectedCity.ref}
-                      value={selectedWarehouse?.ref || ''}
-                      onChange={handleWarehouseChange}
-                      error={errors.deliveryData?.warehouseRef?.message}
-                      required
-                      onBlur={() => form.trigger('deliveryData.warehouseRef')}
-                    />
+            {/* Delivery method selection */}
+            <h3 className={styles.sectionTitle}>СПОСІБ ДОСТАВКИ</h3>
+            <Controller
+              control={control}
+              name="deliveryMethod"
+              render={({ field }) => (
+                <div className={styles.radioGroup}>
+                  <p className={styles.radioGroupLabel}>
+                    Виберіть спосіб доставки <span className={styles.required}>*</span>
+                  </p>
+                  {errors.deliveryMethod && (
+                    <span className={styles.errorMessage}>{errors.deliveryMethod.message}</span>
                   )}
-                </Stack>
+                  <div className={styles.radioOptions}>
+                    {deliveryMethods.map((method) => (
+                      <label
+                        key={method.value}
+                        className={`${styles.radioOption} ${field.value === method.value ? styles.radioOptionActive : ''}`}>
+                        <input
+                          type="radio"
+                          value={method.value}
+                          checked={field.value === method.value}
+                          onChange={(e) => field.onChange(e.target.value)}
+                          className={styles.radioInput}
+                        />
+                        <div className={styles.radioContent}>
+                          <span className={styles.radioLabel}>{method.label}</span>
+                          <span className={styles.radioDescription}>{method.description}</span>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
               )}
+            />
 
-              {/* Other delivery method */}
-              {deliveryMethod === 'other' && (
-                <Stack gap="xs">
-                  <Text size="sm" fw={500}>
-                    Адреса доставки
-                  </Text>
-                  <Group gap="xs" mb="xs">
-                    <Badge
-                      size="lg"
-                      variant="light"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => insertQuickText('Укрпошта')}>
-                      Укрпошта
-                    </Badge>
-                    <Badge
-                      size="lg"
-                      variant="light"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => insertQuickText('Містекспрес')}>
-                      Містекспрес
-                    </Badge>
-                  </Group>
+            {/* Nova Poshta specific fields */}
+            {deliveryMethod === 'nova_poshta' && (
+              <div className={styles.deliveryFields}>
+                <CitySelect
+                  value={selectedCity}
+                  onChange={handleCityChange}
+                  error={errors.deliveryData?.cityRef?.message || errors.shippingAddress?.city?.message}
+                  onBlur={() => {
+                    form.trigger('deliveryData.cityRef');
+                    form.trigger('shippingAddress.city');
+                  }}
+                />
 
-                  <Textarea
-                    placeholder="Вкажіть спосіб доставки та адресу"
-                    value={customDeliveryText}
-                    onChange={(e) => handleCustomDeliveryChange(e.target.value)}
-                    minRows={3}
+                {selectedCity && (
+                  <WarehouseSelect
+                    cityRef={selectedCity.ref}
+                    value={selectedWarehouse?.ref || ''}
+                    onChange={handleWarehouseChange}
+                    error={errors.deliveryData?.warehouseRef?.message}
                     required
-                    error={!customDeliveryText ? 'Вкажіть адресу доставки' : undefined}
+                    onBlur={() => form.trigger('deliveryData.warehouseRef')}
                   />
-                </Stack>
-              )}
-
-              {/* Hidden delivery data fields */}
-              <input type="hidden" {...register('deliveryData.cityRef')} />
-              <input type="hidden" {...register('deliveryData.cityName')} />
-              <input type="hidden" {...register('deliveryData.warehouseRef')} />
-              <input type="hidden" {...register('deliveryData.warehouseName')} />
-
-              <Title order={3}>Спосіб оплати</Title>
-              <Controller
-                control={control}
-                name="paymentMethod"
-                render={({ field }) => (
-                  <Radio.Group
-                    {...field}
-                    label="Виберіть спосіб оплати"
-                    required
-                    error={errors.paymentMethod?.message}>
-                    <Stack mt="xs">
-                      {paymentMethods.map((method) => (
-                        <Paper key={method.value} p="md" withBorder>
-                          <Group justify="space-between" align="flex-start">
-                            <Stack gap={4} style={{ flex: 1 }}>
-                              <Radio value={method.value} label={method.label} />
-                              <Text size="sm" c="dimmed" ml={22}>
-                                {method.description}
-                              </Text>
-                            </Stack>
-                            {method.logo && (
-                              <Center>
-                                <Image
-                                  src={method.logo}
-                                  alt={`${method.label} logo`}
-                                  w={60}
-                                  h={34}
-                                  fit="contain"
-                                />
-                              </Center>
-                            )}
-                          </Group>
-                        </Paper>
-                      ))}
-                    </Stack>
-                  </Radio.Group>
                 )}
-              />
+              </div>
+            )}
 
-              {/* Побажання + Не дзвонити */}
-              <Title order={3}>Побажання до замовлення</Title>
-              <Textarea
+            {/* Other delivery method */}
+            {deliveryMethod === 'other' && (
+              <div className={styles.customDelivery}>
+                <label className={styles.label}>
+                  Адреса доставки <span className={styles.required}>*</span>
+                </label>
+                <div className={styles.quickButtons}>
+                  <button
+                    type="button"
+                    className={styles.quickButton}
+                    onClick={() => insertQuickText('Укрпошта')}>
+                    Укрпошта
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.quickButton}
+                    onClick={() => insertQuickText('Містекспрес')}>
+                    Містекспрес
+                  </button>
+                </div>
+                <textarea
+                  className={`${styles.textarea} ${!customDeliveryText ? styles.inputError : ''}`}
+                  placeholder="Вкажіть спосіб доставки та адресу"
+                  value={customDeliveryText}
+                  onChange={(e) => handleCustomDeliveryChange(e.target.value)}
+                  rows={3}
+                />
+                {!customDeliveryText && <span className={styles.errorMessage}>Вкажіть адресу доставки</span>}
+              </div>
+            )}
+
+            {/* Hidden delivery data fields */}
+            <input type="hidden" {...register('deliveryData.cityRef')} />
+            <input type="hidden" {...register('deliveryData.cityName')} />
+            <input type="hidden" {...register('deliveryData.warehouseRef')} />
+            <input type="hidden" {...register('deliveryData.warehouseName')} />
+
+            <h3 className={styles.sectionTitle}>СПОСІБ ОПЛАТИ</h3>
+            <Controller
+              control={control}
+              name="paymentMethod"
+              render={({ field }) => (
+                <div className={styles.radioGroup}>
+                  <p className={styles.radioGroupLabel}>
+                    Виберіть спосіб оплати <span className={styles.required}>*</span>
+                  </p>
+                  {errors.paymentMethod && (
+                    <span className={styles.errorMessage}>{errors.paymentMethod.message}</span>
+                  )}
+                  <div className={styles.radioOptions}>
+                    {paymentMethods.map((method) => (
+                      <label
+                        key={method.value}
+                        className={`${styles.radioOption} ${field.value === method.value ? styles.radioOptionActive : ''}`}>
+                        <input
+                          type="radio"
+                          value={method.value}
+                          checked={field.value === method.value}
+                          onChange={(e) => field.onChange(e.target.value)}
+                          className={styles.radioInput}
+                        />
+                        <div className={styles.radioContent}>
+                          <span className={styles.radioLabel}>{method.label}</span>
+                          <span className={styles.radioDescription}>{method.description}</span>
+                        </div>
+                        {method.logo && (
+                          <div className={styles.paymentLogo}>
+                            <Image src={method.logo} alt={`${method.label} logo`} width={60} height={34} />
+                          </div>
+                        )}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+            />
+
+            {/* Побажання до замовлення */}
+            <h3 className={styles.sectionTitle}>ПОБАЖАННЯ ДО ЗАМОВЛЕННЯ</h3>
+            <div className={styles.formGroup}>
+              <textarea
+                className={styles.textarea}
                 placeholder="Ваші побажання щодо замовлення"
                 value={orderNotes}
                 onChange={(e) => setOrderNotes(e.target.value)}
-                minRows={2}
+                rows={2}
               />
+            </div>
 
-              {/* Hidden notes field - synced with finalNotes */}
-              <input type="hidden" {...register('notes')} value={finalNotes} />
-
-              {/* Promo code section */}
-            </Stack>
-          </Paper>
-        </Grid.Col>
+            {/* Hidden notes field - synced with finalNotes */}
+            <input type="hidden" {...register('notes')} value={finalNotes} />
+          </div>
+        </div>
 
         {/* Right column - order summary */}
-        <Grid.Col span={{ base: 12, md: 5 }}>
-          <Paper p="xl" withBorder pos="sticky" top={20}>
-            <Stack gap="md">
-              <Title order={3}>Ваше замовлення</Title>
-              <Text size="lg" fw={700}>
-                Промокод
-              </Text>
+        <div className={styles.summaryColumn}>
+          <div className={styles.orderSummary}>
+            <h3 className={styles.summaryTitle}>ВАШЕ ЗАМОВЛЕННЯ</h3>
+
+            <div className={styles.promoSection}>
+              <h4 className={styles.promoTitle}>Промокод</h4>
               <PromoCodeInput
                 orderAmount={calculations.totalAmount}
                 onApply={(discountData) => {
@@ -416,136 +437,118 @@ const CheckoutFormComponent = () => {
                 appliedCode={appliedDiscount?.code}
                 disabled={isSubmitting}
               />
-              <Stack gap="sm">
-                {items.map((item) => {
-                  const price = item.finalPrice;
-                  return (
-                    <Group key={item.id} justify="space-between">
-                      <Stack gap={2}>
-                        <Text size="sm">
-                          x{item.quantity} {item.product.name}
-                        </Text>
-                        {(() => {
-                          const badges = getVariantDisplayBadges(
-                            item.variant?.options || item.product.options
-                          );
+            </div>
 
-                          if (badges.length === 0) return null;
+            <div className={styles.orderItems}>
+              {items.map((item) => {
+                const price = item.finalPrice;
+                return (
+                  <div key={item.id} className={styles.orderItem}>
+                    <div className={styles.itemDetails}>
+                      <span className={styles.itemQuantity}>x{item.quantity}</span>
+                      <span className={styles.itemName}>{item.product.name}</span>
+                      {(() => {
+                        const badges = getVariantDisplayBadges(item.variant?.options || item.product.options);
+                        if (badges.length === 0) return null;
+                        return (
+                          <div className={styles.itemBadges}>
+                            {badges.map((badge) => (
+                              <span key={badge.key} className={styles.itemBadge}>
+                                {badge.label}: {badge.value}
+                              </span>
+                            ))}
+                          </div>
+                        );
+                      })()}
+                    </div>
+                    <span className={styles.itemPrice}>{formatPrice(price * item.quantity)}</span>
+                  </div>
+                );
+              })}
+            </div>
 
-                          return (
-                            <Group gap={4}>
-                              {badges.map((badge) => (
-                                <Badge key={badge.key} size="xs" variant="light" color="blue">
-                                  {badge.label}: {badge.value}
-                                </Badge>
-                              ))}
-                            </Group>
-                          );
-                        })()}
-                      </Stack>
-                      <Text size="sm">{formatPrice(price * item.quantity)}</Text>
-                    </Group>
-                  );
-                })}
-              </Stack>
-              <Divider />
+            <div className={styles.divider} />
 
-              <Group justify="space-between">
-                <Text>Доставка</Text>
-                <Text>За тарифами перевізника</Text>
-              </Group>
+            <div className={styles.summaryRow}>
+              <span className={styles.summaryLabel}>Доставка</span>
+              <span className={styles.summaryValue}>За тарифами перевізника</span>
+            </div>
 
-              {/* Discount section */}
-              {appliedDiscount && (
-                <>
-                  <Divider />
-                  <Stack gap="xs">
-                    <Group justify="space-between">
-                      <Text size="sm" c="dimmed">
-                        Підсумок
-                      </Text>
-                      <Text size="sm">{formatPrice(calculations.totalAmount)}</Text>
-                    </Group>
-                    <Group justify="space-between">
-                      <Stack gap={0}>
-                        <Text size="sm" fw={500} c="green">
-                          Промокод: {appliedDiscount.code}
-                        </Text>
-                        {appliedDiscount.name && (
-                          <Text size="xs" c="dimmed">
-                            {appliedDiscount.name}
-                          </Text>
-                        )}
-                      </Stack>
-                      <Text size="sm" fw={500} c="green">
-                        -{formatPrice(appliedDiscount.amount)}
-                      </Text>
-                    </Group>
-                  </Stack>
-                </>
-              )}
+            {/* Discount section */}
+            {appliedDiscount && (
+              <>
+                <div className={styles.divider} />
+                <div className={styles.discountSection}>
+                  <div className={styles.summaryRow}>
+                    <span className={styles.summaryLabel}>Підсумок</span>
+                    <span className={styles.summaryValue}>{formatPrice(calculations.totalAmount)}</span>
+                  </div>
+                  <div className={styles.summaryRow}>
+                    <div className={styles.discountInfo}>
+                      <span className={styles.discountCode}>Промокод: {appliedDiscount.code}</span>
+                      {appliedDiscount.name && (
+                        <span className={styles.discountName}>{appliedDiscount.name}</span>
+                      )}
+                    </div>
+                    <span className={styles.discountAmount}>-{formatPrice(appliedDiscount.amount)}</span>
+                  </div>
+                </div>
+              </>
+            )}
 
-              <Divider />
-              <Group justify="space-between">
-                <Text size="lg" fw={700}>
-                  До сплати
-                </Text>
-                <Text size="xl" fw={700}>
-                  {formatPrice(
-                    appliedDiscount
-                      ? Math.max(0, calculations.totalAmount - appliedDiscount.amount)
-                      : calculations.totalAmount
-                  )}
-                </Text>
-              </Group>
-              <Paper p="sm" withBorder>
-                <Group gap="xs" justify="space-between">
-                  <Text
-                    component="label"
-                    htmlFor="doNotCall"
-                    size="sm"
-                    style={{ cursor: 'pointer', userSelect: 'none' }}>
-                    Не дзвонити для уточнення
-                  </Text>
-                  <Checkbox
-                    type="checkbox"
-                    id="doNotCall"
-                    checked={doNotCall}
-                    onChange={(e) => setDoNotCall(e.target.checked)}
-                    style={{
-                      cursor: 'pointer',
-                      width: '18px',
-                      height: '18px',
-                      accentColor: 'var(--accent-yellow))',
-                    }}
-                  />
-                </Group>
-              </Paper>
-              <Button
-                type="submit"
-                size="lg"
-                fullWidth
-                loading={isSubmitting}
-                disabled={isCartLoading || items.length === 0}>
-                {isSubmitting ? 'Створення замовлення...' : 'Підтвердити замовлення'}
-              </Button>
-              <Alert variant="default" color="blue" title="Увага" icon={<IconAlertCircle />}>
-                Натискаючи "Підтвердити замовлення", ви погоджуєтесь з умовами
-                <Text component={Link} href="/public-offer" size="sm" c="blue">
-                  {' '}
+            <div className={styles.divider} />
+
+            <div className={styles.totalRow}>
+              <span className={styles.totalLabel}>ДО СПЛАТИ</span>
+              <span className={styles.totalAmount}>
+                {formatPrice(
+                  appliedDiscount
+                    ? Math.max(0, calculations.totalAmount - appliedDiscount.amount)
+                    : calculations.totalAmount
+                )}
+              </span>
+            </div>
+
+            <div className={styles.doNotCallWrapper}>
+              <label className={styles.checkboxLabel} htmlFor="doNotCall">
+                <input
+                  type="checkbox"
+                  id="doNotCall"
+                  checked={doNotCall}
+                  onChange={(e) => setDoNotCall(e.target.checked)}
+                  className={styles.checkbox}
+                />
+                <span className={styles.checkboxText}>Не дзвонити для уточнення</span>
+              </label>
+            </div>
+
+            <Button
+              type="submit"
+              size="lg"
+              variant="primary"
+              fullWidth
+              loading={isSubmitting}
+              disabled={isCartLoading || items.length === 0}>
+              {isSubmitting ? 'Створення замовлення...' : 'Підтвердити замовлення'}
+            </Button>
+
+            <div className={styles.agreementNotice}>
+              <IconAlertCircle size={20} />
+              <p className={styles.agreementText}>
+                Натискаючи "Підтвердити замовлення", ви погоджуєтесь з умовами{' '}
+                <Link href="/public-offer" className={styles.agreementLink}>
                   публічної оферти
-                </Text>{' '}
-                та
-                <Text component={Link} href="/privacy-policy" size="sm" c="blue">
-                  {' '}
+                </Link>{' '}
+                та{' '}
+                <Link href="/privacy-policy" className={styles.agreementLink}>
                   політики конфіденційності
-                </Text>
+                </Link>
                 .
-              </Alert>
-            </Stack>
-          </Paper>
-        </Grid.Col>
-      </Grid>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </form>
   );
 };

@@ -35,9 +35,10 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
 
   const primaryImage = product.images?.find((img) => img.isPrimary) || product.images?.[0];
   const secondaryImage = product.images?.find((img) => img.isSecondary);
-  const imageUrl = isImageHovered && secondaryImage
-    ? (secondaryImage.url || secondaryImage.publicId)
-    : (primaryImage?.url || primaryImage?.publicId);
+  const imageUrl =
+    isImageHovered && secondaryImage
+      ? secondaryImage.url || secondaryImage.publicId
+      : primaryImage?.url || primaryImage?.publicId;
 
   // ✅ Отримати об'єкт обраного варіанту
   const selectedVariantObject = useMemo(() => {
@@ -254,12 +255,15 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
         <div
           className={styles.productCardImageContainer}
           onMouseEnter={() => setIsImageHovered(true)}
-          onMouseLeave={() => setIsImageHovered(false)}
-        >
+          onMouseLeave={() => setIsImageHovered(false)}>
           <div className={styles.productCardImageContainer__ImageWrapper}>
             <CloudinaryImage
               src={imageUrl || '/assets/img/placeholder-product.jpeg'}
-              alt={isImageHovered && secondaryImage ? (secondaryImage.altText || product.name) : (primaryImage?.altText || product.name)}
+              alt={
+                isImageHovered && secondaryImage
+                  ? secondaryImage.altText || product.name
+                  : primaryImage?.altText || product.name
+              }
               width={400}
               height={400}
               className={styles.productImage}
