@@ -48,12 +48,12 @@ export const MobileFilterModal: React.FC<MobileFilterModalProps> = ({
       styles={{
         content: {
           borderRadius: 0,
-          border: '2px solid var(--border-color)',
+          border: '0px solid var(--border-color)',
           borderBottom: 'none',
           background: 'var(--background)',
         },
         header: {
-          borderBottom: '2px solid var(--border-color)',
+          borderBottom: '0px solid var(--border-color)',
           padding: 'var(--spacing-md)',
         },
         body: {

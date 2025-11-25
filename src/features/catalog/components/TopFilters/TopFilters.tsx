@@ -1,53 +1,34 @@
-// src/features/catalog/components/CatalogFilters/CatalogFilters.tsx
+// src/features/catalog/components/TopFilters/TopFilters.tsx
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useCatalogFilters } from '@/features/catalog/hooks/useCatalogFilters';
-import { useCategoriesStore } from '@/shared/stores/categories';
-import styles from './CatalogFilters.module.scss';
+import styles from './TopFilters.module.scss';
 
-interface CatalogFiltersProps {
+interface TopFiltersProps {
   onFiltersChange?: () => void;
   className?: string;
-  initialCategories?: any[];
 }
 
 const SORT_OPTIONS = [
   { value: 'created_desc', label: 'Рекомендовані' },
-  { value: 'popularity_desc', label: 'За популярністю' },
-  { value: 'price_asc', label: 'Від дешевших' },
-  { value: 'price_desc', label: 'Від дорожчих' },
-  { value: 'name_asc', label: 'За назвою (А-Я)' },
+  { value: 'price_asc', label: 'Ціна, від низької до високої' },
+  { value: 'price_desc', label: 'Ціна, від високої до низької' },
+  { value: 'name_asc', label: 'Новинки' },
 ];
 
-export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
-  onFiltersChange,
-  className = '',
-  initialCategories,
-}) => {
-  const { filters, setFilter, clearFilters } = useCatalogFilters();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+const SIZE_OPTIONS = ['S', 'M', 'L', 'XL', 'XXL'];
+
+export const TopFilters: React.FC<TopFiltersProps> = ({ onFiltersChange, className = '' }) => {
+  const { filters, setFilter } = useCatalogFilters();
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const {
-    categories,
-    fetchCategories,
-    isLoading: categoriesLoading,
-    isInitialized: categoriesInitialized,
-    getGroupedCategories,
-  } = useCategoriesStore();
-
-  const displayCategories = categories.length > 0 ? categories : initialCategories || [];
 
   const [priceRange, setPriceRange] = useState({
     min: filters.priceMin?.toString() || '',
     max: filters.priceMax?.toString() || '',
   });
-
-  useEffect(() => {
-    if (!categoriesInitialized && !categoriesLoading) {
-      fetchCategories();
-    }
-  }, [initialCategories, categoriesInitialized, categoriesLoading, fetchCategories]);
 
   useEffect(() => {
     setPriceRange({
@@ -84,13 +65,13 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     onFiltersChange?.();
   };
 
-  const handleCategoryToggle = (categoryId: string) => {
-    const newCategories = selectedCategories.includes(categoryId)
-      ? selectedCategories.filter((id) => id !== categoryId)
-      : [...selectedCategories, categoryId];
+  const handleSizeToggle = (size: string) => {
+    const newSizes = selectedSizes.includes(size)
+      ? selectedSizes.filter((s) => s !== size)
+      : [...selectedSizes, size];
 
-    setSelectedCategories(newCategories);
-    setFilter('categoryIds', newCategories.length > 0 ? newCategories : undefined);
+    setSelectedSizes(newSizes);
+    // TODO: Інтегрувати з API фільтрації по розмірах
     onFiltersChange?.();
   };
 
@@ -108,23 +89,10 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     onFiltersChange?.();
   };
 
-  const handleClearFilters = () => {
-    clearFilters();
-    setPriceRange({ min: '', max: '' });
-    setSelectedCategories([]);
-    onFiltersChange?.();
-  };
-
-  const rootCategories = displayCategories.filter(
-    (cat) => !cat.parentId && (!cat.children || cat.children.length === 0)
-  );
-
-  const groupedCategories = getGroupedCategories();
-
   return (
-    <div className={`${styles.filters} ${className}`}>
+    <div className={`${styles.topFilters} ${className}`}>
       {/* Сортування */}
-      <div className={styles.filterGroup}>
+      <div className={styles.filterItem}>
         <label className={styles.label}>Сортувати за:</label>
         <div className={styles.dropdown} ref={dropdownRef}>
           <button className={styles.dropdownButton} onClick={() => setShowSortDropdown(!showSortDropdown)}>
@@ -149,8 +117,23 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
         </div>
       </div>
 
+      {/* Розміри */}
+      <div className={styles.filterItem}>
+        <label className={styles.label}>Розміри:</label>
+        <div className={styles.sizeButtons}>
+          {SIZE_OPTIONS.map((size) => (
+            <button
+              key={size}
+              className={`${styles.sizeButton} ${selectedSizes.includes(size) ? styles.active : ''}`}
+              onClick={() => handleSizeToggle(size)}>
+              {size}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Ціна */}
-      <div className={styles.filterGroup}>
+      <div className={styles.filterItem}>
         <div className={styles.priceInputs}>
           <div className={styles.priceField}>
             <label className={styles.priceLabel}>від ₴</label>
@@ -160,7 +143,8 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
               value={priceRange.min}
               onChange={(e) => handlePriceChange('min', e.target.value)}
               onBlur={handlePriceBlur}
-              placeholder="0"
+              placeholder="500"
+              min="0"
             />
           </div>
 
@@ -172,49 +156,12 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
               value={priceRange.max}
               onChange={(e) => handlePriceChange('max', e.target.value)}
               onBlur={handlePriceBlur}
-              placeholder="9999"
+              placeholder="2 000"
+              min="0"
             />
           </div>
         </div>
       </div>
-
-      {/* Категорії (основні без батьків) */}
-      {rootCategories.length > 0 && (
-        <div className={styles.categorySection}>
-          <label className={styles.categoryLabel}>Категорії</label>
-          <div className={styles.checkboxes}>
-            {rootCategories.map((category) => (
-              <label key={category.id} className={styles.checkbox}>
-                <input
-                  type="checkbox"
-                  checked={selectedCategories.includes(category.id)}
-                  onChange={() => handleCategoryToggle(category.id)}
-                />
-                <span className={styles.checkboxText}>{category.name}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Групові категорії (батько + діти як окремі блоки) */}
-      {groupedCategories.map((group) => (
-        <div key={group.parent.id} className={styles.categorySection}>
-          <label className={styles.categoryLabel}>{group.parent.name}</label>
-          <div className={styles.checkboxes}>
-            {group.children.map((child) => (
-              <label key={child.id} className={styles.checkbox}>
-                <input
-                  type="checkbox"
-                  checked={selectedCategories.includes(child.id)}
-                  onChange={() => handleCategoryToggle(child.id)}
-                />
-                <span className={styles.checkboxText}>{child.name}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      ))}
     </div>
   );
 };

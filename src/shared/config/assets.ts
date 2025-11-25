@@ -4,7 +4,7 @@
 export const assets = {
   // ===== ЛОГОТИПИ =====
   logo: {
-    main: '/logo/logo-5.png',
+    main: '/logo/logo.webp',
     og: '/logo/logo.jpg', // для Open Graph
     favicon: '/favicon.ico',
     appleTouchIcon: '/apple-touch-icon.png',
@@ -39,9 +39,9 @@ export const assets = {
 
   // ===== ПЛЕЙСХОЛДЕРИ =====
   placeholders: {
-    product: '/assets/img/placeholder-product.png',
+    product: '/assets/img/placeholder-product.jpg',
     user: '/assets/img/placeholder-user.png',
-    noImage: '/assets/img/no-image.png',
+    noImage: '/assets/img/placeholder-product.jpg',
   },
 };
 

@@ -1,0 +1,258 @@
+// src/features/catalog/components/TopFilters/TopFilters.module.scss
+
+.topFilters {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.filterItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+// Dropdown для сортування
+.dropdown {
+  position: relative;
+}
+
+.dropdownButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 200px;
+  justify-content: space-between;
+
+  &:hover {
+    border-color: var(--primary);
+    background: var(--surface-hover);
+  }
+
+  span {
+    flex: 1;
+    text-align: left;
+  }
+}
+
+.chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + var(--spacing-xs));
+  left: 0;
+  right: 0;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.dropdownItem {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--surface-hover);
+  }
+
+  &.active {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 600;
+  }
+}
+
+// Кнопки розмірів
+.sizeButtons {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.sizeButton {
+  min-width: 44px;
+  height: 44px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--background);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+  }
+
+  &.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+}
+
+// Поля ціни
+.priceInputs {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.priceField {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.priceLabel {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.priceInput {
+  width: 100px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+  }
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  // Приховати стрілки для number input
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+// Адаптивність
+@media (max-width: 1024px) {
+  .topFilters {
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+
+  .dropdownButton {
+    min-width: 180px;
+  }
+
+  .priceInput {
+    width: 90px;
+  }
+}
+
+@media (max-width: 768px) {
+  .topFilters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+
+  .filterItem {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-xs);
+  }
+
+  .label {
+    font-size: var(--text-xs);
+  }
+
+  .dropdownButton {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .sizeButtons {
+    justify-content: space-between;
+  }
+
+  .sizeButton {
+    flex: 1;
+    min-width: auto;
+  }
+
+  .priceInputs {
+    width: 100%;
+    gap: var(--spacing-sm);
+  }
+
+  .priceField {
+    flex: 1;
+  }
+
+  .priceInput {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .topFilters {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .sizeButton {
+    min-width: 40px;
+    height: 40px;
+    font-size: var(--text-sm);
+  }
+}

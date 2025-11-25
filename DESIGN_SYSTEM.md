@@ -56,7 +56,7 @@
 ### Borders
 
 ```css
-border: 2px solid #2b2b27;
+border:;
 border-radius: 0; /* Все квадратне! */
 ```
 

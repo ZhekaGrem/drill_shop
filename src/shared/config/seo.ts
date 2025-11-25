@@ -9,21 +9,21 @@ export const viewport: Viewport = {
 
 // Базова SEO конфігурація
 export const baseMetadata: Metadata = {
-  metadataBase: new URL('https://selotasalo.shop'),
+  // metadataBase: new URL('https://selotasalo.shop'),
 
   title: {
-    default: "Selo ta Salo | Свіже м'ясо від ферми",
-    template: '%s | Selo ta Salo',
+    default: "Drill shop | Щільний Drill для вас",
+    template: '%s | Drill shop',
   },
 
   description:
-    "Купити свіже м'ясо онлайн. Фермерські продукти найвищої якості. Доставка по всій Україні за 24 години.",
+    "Купити мерч онлайн. ",
 
   openGraph: {
-    title: 'Selo ta Salo',
-    description: "Свіже м'ясо від виробника. Доставка по Україні.",
-    url: 'https://selotasalo.shop',
-    siteName: 'Selo ta Salo',
+    title: 'Drill shop',
+    description: "Щільний Drill для вас",
+    // url: 'https://selotasalo.shop',
+    siteName: 'Drill shop',
     locale: 'uk_UA',
     type: 'website',
     images: [
@@ -31,15 +31,15 @@ export const baseMetadata: Metadata = {
         url: '/logo/logo.jpg',
         width: 1200,
         height: 630,
-        alt: 'Selo ta Salo',
+        alt: 'Drill shop',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Selo ta Salo',
+    title: 'Drill shop',
     description: 'Свіже м`ясо від виробника. Доставка по Україні.',
-    images: ['https://selotasalo.shop/logo/logo.jpg'],
+    // images: ['https://selotasalo.shop/logo/logo.jpg'],
   },
   robots: {
     index: true,
@@ -62,7 +62,7 @@ export const baseMetadata: Metadata = {
   },
 
   alternates: {
-    canonical: 'https://selotasalo.shop',
+    // canonical: 'https://selotasalo.shop',
   },
 };
 
@@ -70,9 +70,9 @@ export const baseMetadata: Metadata = {
 export const pageMetadata = {
   home: (): Metadata => ({
     title: 'Головна',
-    description: "Замовити свіже м'ясо онлайн. Власне виробництво. Доставка по Україні.",
+    description: "Замовити мерч онлайн. Власне виробництво. Доставка по Україні.",
     alternates: {
-      canonical: 'https://selotasalo.shop',
+      // canonical: 'https://selotasalo.shop',
     },
   }),
 
@@ -80,7 +80,7 @@ export const pageMetadata = {
     title: 'Каталог',
     description: "Великий вибір свіжого м'яса. Свинина, яловичина, курка. Ціни від виробника.",
     alternates: {
-      canonical: 'https://selotasalo.shop/catalog',
+      // canonical: 'https://selotasalo.shop/catalog',
     },
   }),
 
@@ -89,7 +89,7 @@ export const pageMetadata = {
     description:
       product.description || `Купити ${product.name}. Ціна від ${product.price} грн. Доставка по Україні.`,
     alternates: {
-      canonical: `https://selotasalo.shop/catalog/${product.slug}`,
+      // canonical: `https://selotasalo.shop/catalog/${product.slug}`,
     },
   }),
 
@@ -97,15 +97,15 @@ export const pageMetadata = {
     title: 'Про нас',
     description: "Дізнайтеся про нашу ферму. Власне виробництво м'яса. Екологічно чисті продукти.",
     alternates: {
-      canonical: 'https://selotasalo.shop/about',
+      // canonical: 'https://selotasalo.shop/about',
     },
   }),
 
   contact: (): Metadata => ({
     title: 'Контакти',
-    description: 'Контакти Selo ta Salo. Телефони, адреса, графік роботи.',
+    description: 'Контакти Drill shop. Телефони, адреса, графік роботи.',
     alternates: {
-      canonical: 'https://selotasalo.shop/contact',
+      // canonical: 'https://selotasalo.shop/contact',
     },
   }),
 
@@ -126,30 +126,30 @@ export const structuredData = {
   organization: () => ({
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Selo ta Salo',
-    url: 'https://selotasalo.shop',
-    logo: 'https://selotasalo.shop/logo/logo.png',
-    image: 'https://selotasalo.shop/logo/logo.png',
-    description: "Фермерські м'ясні продукти з доставкою по Україні",
+    name: 'Drill shop',
+    // url: 'https://selotasalo.shop',
+    // logo: 'https://selotasalo.shop/logo/logo.png',
+    // image: 'https://selotasalo.shop/logo/logo.png',
+    description: "Фермерський дріл мерч з доставкою по Україні",
     telephone: '+380930465811',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Львів',
       addressCountry: 'UA',
     },
-    sameAs: ['https://www.tiktok.com/@selo_ta_salo', 'https://www.instagram.com/selo_ta_salo'],
+    // sameAs: ['https://www.tiktok.com/@selo_ta_salo', 'https://www.instagram.com/selo_ta_salo'],
   }),
 
   website: () => ({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Selo ta Salo',
-    url: 'https://selotasalo.shop',
+    name: 'Drill shop',
+    // url: 'https://selotasalo.shop',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://selotasalo.shop/catalog?search={search_term_string}',
+        // urlTemplate: 'https://selotasalo.shop/catalog?search={search_term_string}',
       },
       'query-input': 'required name=search_term_string',
     },
@@ -168,11 +168,11 @@ export const structuredData = {
     '@type': 'Product',
     name: product.name,
     description: product.description,
-    image: product.images?.[0]?.url || 'https://selotasalo.shop/logo/logo.png',
+    image: product.images?.[0]?.url ,
     sku: product.sku || product.slug,
     brand: {
       '@type': 'Brand',
-      name: 'Selo ta Salo',
+      name: 'Drill shop',
     },
     category: product.category?.name,
     offers: {
@@ -183,7 +183,7 @@ export const structuredData = {
       availability: 'https://schema.org/InStock',
       seller: {
         '@type': 'Organization',
-        name: 'Selo ta Salo',
+        name: 'Drill shop',
       },
     },
   }),

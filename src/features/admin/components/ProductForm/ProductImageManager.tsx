@@ -165,7 +165,7 @@ export const ProductImageManager = ({
                     height={120}
                     fit="cover"
                     radius="md"
-                    fallbackSrc="/assets/img/placeholder-product.jpeg"
+                    fallbackSrc="/assets/img/placeholder-product.jpg"
                   />
 
                   {/* Primary star indicator */}

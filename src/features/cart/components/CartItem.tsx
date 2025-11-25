@@ -50,7 +50,7 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
       <Group gap="sm" align="flex-start">
         {/* Зображення */}
         <CloudinaryImage
-          src={imageUrl || '/assets/img/placeholder-product.jpeg'}
+          src={imageUrl || '/assets/img/placeholder-product.jpg'}
           alt={item.product.name}
           width={60}
           height={60}
@@ -127,7 +127,7 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
       <Group gap="md" align="flex-start">
         {/* Зображення */}
         <CloudinaryImage
-          src={imageUrl || '/assets/img/placeholder-product.jpeg'}
+          src={imageUrl || '/assets/img/placeholder-product.jpg'}
           alt={item.product.name}
           width={250}
           height={250}

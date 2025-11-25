@@ -26,7 +26,7 @@
 
 - Pixel art стиль - всі радіуси = 0
 - Жорсткі тіні (box-shadow без blur)
-- Borders: 2px solid #2B2B27
+- Borders:
 
 ### 2. Global CSS Variables (`src/app/globals.css`)
 

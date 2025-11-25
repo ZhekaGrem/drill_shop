@@ -69,7 +69,7 @@ const red: MantineColorsTuple = [
 
 export const mantineTheme = createTheme({
   // Основний колір для всіх компонентів
-  primaryColor: 'yellow',
+  primaryColor: 'green',
 
   // Додаємо всі кольори з дизайну
   colors: {
@@ -101,8 +101,8 @@ export const mantineTheme = createTheme({
 
   // Тіні (pixel art стиль - жорсткі тіні)
   shadows: {
-    xs: '2px 2px 0px rgba(43, 43, 39, 0.1)',
-    sm: '2px 2px 0px rgba(43, 43, 39, 0.2)',
+    xs: '0px 0px 0px rgba(43, 43, 39, 0.1)',
+    sm: '0px 0px 0px rgba(43, 43, 39, 0.2)',
     md: '3px 3px 0px rgba(43, 43, 39, 0.3)',
     lg: '4px 4px 0px rgba(43, 43, 39, 0.4)',
     xl: '5px 5px 0px rgba(43, 43, 39, 0.5)',
@@ -112,24 +112,21 @@ export const mantineTheme = createTheme({
   components: {
     Button: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
       },
       styles: {
         root: {
+          border: 'none',
+          borderRadius: 0,
           fontFamily: 'IBM Plex Sans, sans-serif',
           fontWeight: 700,
           fontSize: '18px',
-          border: '2px solid #2B2B27',
-          borderRadius: 0,
-          boxShadow: '3px 3px 0px rgba(43, 43, 39, 0.3)',
           transition: 'all 0.15s ease',
           '&:hover': {
             transform: 'translate(1px, 1px)',
-            boxShadow: '2px 2px 0px rgba(43, 43, 39, 0.3)',
           },
           '&:active': {
             transform: 'translate(2px, 2px)',
-            boxShadow: '1px 1px 0px rgba(43, 43, 39, 0.3)',
           },
         },
       },
@@ -137,56 +134,98 @@ export const mantineTheme = createTheme({
 
     Anchor: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
+      },
+      styles: {
+        root: {
+          border: 'none',
+          borderRadius: 0,
+        },
       },
     },
 
     Checkbox: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
+      },
+      styles: {
+        input: {
+          border: 'none',
+          borderRadius: 0,
+        },
       },
     },
 
     Radio: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
+      },
+      styles: {
+        radio: {
+          border: 'none',
+          borderRadius: 0,
+        },
       },
     },
 
     Switch: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
+      },
+      styles: {
+        track: {
+          border: 'none',
+          borderRadius: 0,
+        },
       },
     },
 
     Slider: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
+      },
+      styles: {
+        root: {
+          border: 'none',
+          borderRadius: 0,
+        },
       },
     },
 
     Progress: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
+      },
+      styles: {
+        root: {
+          border: 'none',
+          borderRadius: 0,
+        },
       },
     },
 
     Badge: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
+      },
+      styles: {
+        root: {
+          border: 'none',
+          borderRadius: 0,
+        },
       },
     },
 
     Loader: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
       },
     },
 
     TextInput: {
       styles: {
         input: {
-          border: '2px solid #2B2B27',
+          border: 'none',
           borderRadius: 0,
           fontFamily: 'IBM Plex Sans Condensed, sans-serif',
           fontSize: '16px',
@@ -197,7 +236,7 @@ export const mantineTheme = createTheme({
     NumberInput: {
       styles: {
         input: {
-          border: '2px solid #2B2B27',
+          border: 'none',
           borderRadius: 0,
           fontFamily: 'IBM Plex Sans Condensed, sans-serif',
           fontSize: '16px',
@@ -208,7 +247,7 @@ export const mantineTheme = createTheme({
     Select: {
       styles: {
         input: {
-          border: '2px solid #2B2B27',
+          border: 'none',
           borderRadius: 0,
           fontFamily: 'IBM Plex Sans Condensed, sans-serif',
           fontSize: '16px',
@@ -219,7 +258,7 @@ export const mantineTheme = createTheme({
     MultiSelect: {
       styles: {
         input: {
-          border: '2px solid #2B2B27',
+          border: 'none',
           borderRadius: 0,
           fontFamily: 'IBM Plex Sans Condensed, sans-serif',
           fontSize: '16px',
@@ -230,7 +269,7 @@ export const mantineTheme = createTheme({
     Textarea: {
       styles: {
         input: {
-          border: '2px solid #2B2B27',
+          border: 'none',
           borderRadius: 0,
           fontFamily: 'IBM Plex Sans Condensed, sans-serif',
           fontSize: '16px',
@@ -240,26 +279,48 @@ export const mantineTheme = createTheme({
 
     Tabs: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
+      },
+      styles: {
+        root: {
+          border: 'none',
+          borderRadius: 0,
+        },
+        tab: {
+          border: 'none',
+          borderRadius: 0,
+        },
       },
     },
 
     Stepper: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
+      },
+      styles: {
+        root: {
+          border: 'none',
+          borderRadius: 0,
+        },
       },
     },
 
     Notification: {
       defaultProps: {
-        color: 'yellow',
+        color: 'green',
+      },
+      styles: {
+        root: {
+          border: 'none',
+          borderRadius: 0,
+        },
       },
     },
 
     Card: {
       styles: {
         root: {
-          border: '2px solid #2B2B27',
+          border: 'none',
           borderRadius: 0,
         },
       },
@@ -268,7 +329,7 @@ export const mantineTheme = createTheme({
     Paper: {
       styles: {
         root: {
-          border: '2px solid #2B2B27',
+          border: 'none',
           borderRadius: 0,
         },
       },
@@ -277,7 +338,7 @@ export const mantineTheme = createTheme({
     Modal: {
       styles: {
         content: {
-          border: '2px solid #2B2B27',
+          border: 'none',
           borderRadius: 0,
         },
       },

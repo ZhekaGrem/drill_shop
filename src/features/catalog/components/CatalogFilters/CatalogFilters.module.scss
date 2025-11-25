@@ -5,8 +5,13 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-lg);
-  padding: var(--spacing-md) 0;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-xl);
   flex-wrap: wrap;
+  border: none;;
+  box-shadow: var(--shadow-sm);
 }
 
 // Filter Group (Сортувати за, Розміри, Ціна)
@@ -41,7 +46,7 @@
   font-weight: var(--fw-medium);
   color: var(--text-primary);
   background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
+  border: none;
   border-radius: 0;
   cursor: pointer;
   transition: var(--transition-fast);
@@ -75,7 +80,7 @@
   right: 0;
   z-index: 100;
   background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
+  border: none;;
   border-radius: 0;
   box-shadow: var(--shadow-lg);
   overflow: hidden;
@@ -125,7 +130,7 @@
   font-weight: var(--fw-bold);
   color: var(--text-primary);
   background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
+  border: none;;
   border-radius: 0;
   cursor: pointer;
   transition: var(--transition-fast);
@@ -178,7 +183,7 @@
   font-size: var(--text-base);
   color: var(--text-primary);
   background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
+  border: none;;
   border-radius: 0;
   transition: var(--transition-fast);
   box-shadow: inset 1px 1px 0px rgba(43, 43, 39, 0.1);
@@ -243,12 +248,12 @@
 
   &::-webkit-scrollbar-track {
     background: var(--background-light);
-    border: var(--border-width) solid var(--border-color);
+    border: none;;
   }
 
   &::-webkit-scrollbar-thumb {
     background: var(--btn-primary);
-    border: var(--border-width) solid var(--border-color);
+    border: none;;
   }
 
   &::-webkit-scrollbar-thumb:hover {
@@ -277,7 +282,7 @@
   font-weight: var(--fw-bold);
   color: var(--text-primary);
   background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
+  border: none;;
   border-radius: 0;
   cursor: pointer;
   transition: var(--transition-fast);

@@ -51,7 +51,7 @@ export const Card: React.FC<ProductCardProps> = ({ product, className = '', styl
       <Link href={`/catalog/${product.slug}`} className={styles.link}>
         <div className={styles.productCardImageContainer}>
           <CloudinaryImage
-            src={imageUrl || '/assets/img/placeholder-product.jpeg'}
+            src={imageUrl || '/assets/img/placeholder-product.jpg'}
             alt={primaryImage?.altText || product.name}
             width={400}
             height={400}

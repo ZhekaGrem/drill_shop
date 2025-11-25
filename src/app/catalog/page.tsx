@@ -8,7 +8,7 @@ export const revalidate = 26400;
 
 export async function generateMetadata() {
   return {
-    title: 'Каталог товарів | Selo ta Salo',
+    title: 'Каталог товарів | Drill shop',
     description: "Широкий вибір свіжого м'яса та м'ясних продуктів",
   };
 }

@@ -11,7 +11,6 @@
 }
 
 .header {
-  max-width: 1200px;
   margin: 0 auto;
   padding: var(--spacing-md) var(--spacing-lg);
   display: flex;
@@ -51,22 +50,17 @@
   width: 40px;
   height: 40px;
   background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
-  border-radius: 0;
   cursor: pointer;
   transition: var(--transition-fast);
-  box-shadow: var(--shadow-sm);
   color: var(--text-primary);
 
   &:hover {
     background: var(--background-secondary);
     transform: translate(1px, 1px);
-    box-shadow: var(--shadow-xs);
   }
 
   &:active {
     transform: translate(2px, 2px);
-    box-shadow: none;
   }
 
   svg {
@@ -83,8 +77,6 @@
   gap: var(--spacing-sm);
   padding: 8px var(--spacing-md);
   background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
-  border-radius: 0;
   cursor: pointer;
   transition: var(--transition-fast);
   box-shadow: var(--shadow-sm);
@@ -142,10 +134,7 @@
   font-size: var(--text-base);
   color: var(--text-primary);
   background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
-  border-radius: 0;
   transition: var(--transition-fast);
-  box-shadow: inset 1px 1px 0px rgba(43, 43, 39, 0.1);
 
   &::placeholder {
     color: var(--text-tertiary);
@@ -158,9 +147,7 @@
   &:focus {
     outline: none;
     border-color: var(--btn-primary);
-    box-shadow:
-      inset 1px 1px 0px rgba(43, 43, 39, 0.1),
-      0 0 0 3px rgba(230, 219, 27, 0.2);
+   
   }
 }
 
@@ -178,13 +165,11 @@
   :global {
     .mantine-Drawer-content {
       border-radius: 0 !important;
-      border-left: var(--border-width) solid var(--border-color) !important;
       background: var(--background) !important;
     }
 
     .mantine-Drawer-header {
       background: var(--background-secondary) !important;
-      border-bottom: var(--border-width) solid var(--border-color) !important;
       padding: var(--spacing-md) !important;
     }
 
@@ -250,9 +235,7 @@
 .userMenu {
   :global {
     .mantine-Menu-dropdown {
-      border: var(--border-width) solid var(--border-color) !important;
       border-radius: 0 !important;
-      box-shadow: var(--shadow-lg) !important;
       background: var(--background-light) !important;
       padding: 0 !important;
     }

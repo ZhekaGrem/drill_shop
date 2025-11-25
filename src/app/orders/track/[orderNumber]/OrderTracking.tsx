@@ -315,8 +315,8 @@ const OrderTrackingPage: React.FC = () => {
                     <Text size="sm">{order.shippingAddress.city}</Text>
                     {order.shippingAddress.city?.trim().toLowerCase() !==
                       order.shippingAddress.address1?.trim().toLowerCase() && (
-                      <Text size="sm">{order.shippingAddress.address1}</Text>
-                    )}
+                        <Text size="sm">{order.shippingAddress.address1}</Text>
+                      )}
                   </Stack>
                 </Group>
               </Stack>
@@ -329,7 +329,7 @@ const OrderTrackingPage: React.FC = () => {
                 {order.items.map((item) => (
                   <Group key={item.id} gap="md">
                     <CloudinaryImage
-                      src={item.image || '/assets/img/placeholder-product.jpeg'}
+                      src={item.image || '/assets/img/placeholder-product.jpg'}
                       alt={item.productName}
                       width={60}
                       height={60}

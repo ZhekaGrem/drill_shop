@@ -428,7 +428,6 @@ select {
   font-family: var(--font-condensed);
   font-size: var(--text-base);
   padding: var(--spacing-sm) var(--spacing-md);
-  border: var(--border-width) solid var(--border-color);
   border-radius: 0;
   background: var(--background-light);
   color: var(--text-primary);
@@ -464,7 +463,6 @@ a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: var(--border-width) solid var(--border-color);
   outline-offset: 2px;
 }
 
@@ -489,12 +487,10 @@ a:hover {
 
 ::-webkit-scrollbar-track {
   background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--btn-primary);
-  border: var(--border-width) solid var(--border-color);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -513,7 +509,6 @@ pre {
   font-family: var(--font-mono);
   background: var(--background-dark);
   color: var(--text-white);
-  border: var(--border-width) solid var(--border-color);
   border-radius: 0;
 }
 
@@ -530,7 +525,6 @@ pre {
 /* HR */
 hr {
   border: none;
-  border-top: var(--border-width) solid var(--border-color);
   margin: var(--spacing-lg) 0;
 }
 
@@ -555,19 +549,4 @@ hr {
 }
 
 /* Pixel art helper classes */
-.pixel-border {
-  border: var(--border-width) solid var(--border-color);
-  border-radius: 0;
-}
 
-.pixel-shadow {
-  box-shadow: var(--shadow-md);
-}
-
-.pixel-shadow-sm {
-  box-shadow: var(--shadow-sm);
-}
-
-.pixel-shadow-lg {
-  box-shadow: var(--shadow-lg);
-}

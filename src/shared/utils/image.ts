@@ -1,7 +1,7 @@
 // src/shared/utils/image.ts - ВИПРАВЛЕНО
 export function getImageUrl(imageUrl?: string | null): string {
   if (!imageUrl) {
-    return '/assets/img/placeholder-product.jpeg';
+    return '/assets/img/placeholder-product.jpg';
   }
 
   // Якщо це вже повний URL (Cloudinary, інший CDN)
@@ -24,7 +24,7 @@ export function getImageUrl(imageUrl?: string | null): string {
   }
 
   // Fallback на placeholder
-  return '/assets/img/placeholder-product.jpeg';
+  return '/assets/img/placeholder-product.jpg';
 }
 
 // Для кошика

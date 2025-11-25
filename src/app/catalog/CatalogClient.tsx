@@ -8,8 +8,6 @@ import { Pagination } from '@/shared/components/Pagination/Pagination';
 import { useCatalogFilters } from '@/features/catalog/hooks/useCatalogFilters';
 import { useCatalogProducts, usePrefetchNextPage } from '@/features/catalog/hooks/useCatalogProducts';
 import { ProductsResponse } from '@/features/catalog/api/products';
-import { MobileFilterModal } from '@/features/catalog/components/MobileFilterModal/MobileFilterModal';
-import { Button } from '@/shared/components/Button/Button';
 import styles from './catalog.module.scss';
 
 interface CatalogProps {
@@ -18,7 +16,6 @@ interface CatalogProps {
 }
 
 export default function CatalogClient({ initialData, initialCategories }: CatalogProps) {
-  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
   const searchParams = useSearchParams();
@@ -78,7 +75,6 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
   const handleFiltersChange = () => {
     setPagination({ limit: 18, offset: 0 });
     updateURLWithoutReload(1);
-    setMobileFilterOpen(false);
   };
 
   const updateURLWithoutReload = (page?: number) => {
@@ -92,14 +88,6 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
     window.history.replaceState(null, '', newUrl);
   };
 
-  const getActiveFiltersCount = () => {
-    let count = 0;
-    if (filters.categorySlug) count++;
-    if (filters.priceMin || filters.priceMax) count++;
-    if (filters.hasPromo) count++;
-    if (filters.sortBy && filters.sortBy !== 'created') count++;
-    return count;
-  };
 
   const showInitialData = !initialized && initialData && !searchParams.toString();
 
@@ -107,17 +95,13 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
     return (
       <div className={styles.catalogPage}>
         <div className={styles.container}>
-          <div className={styles.content}>
-            <div className={styles.main}>
-              <div className={styles.products}>
-                {initialData!.data.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            </div>
-            <aside className={styles.sidebar}>
-              <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
-            </aside>
+          {/* Фільтри зверху */}
+          <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
+
+          <div className={styles.products}>
+            {initialData!.data.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
           </div>
         </div>
       </div>
@@ -127,92 +111,50 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
   return (
     <div className={styles.catalogPage}>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <div className={styles.resultsCount}></div>
-        </div>
+        {/* Фільтри зверху */}
+        <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
 
-        <div className={styles.content}>
-          <div className={styles.main}>
-            <Button
-              variant="outline"
-              className={styles.mobileFilterBtn}
-              onClick={() => setMobileFilterOpen(true)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 22 22"
-                fill="none"
-                stroke="currentColor">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M4 8h4v4h-4z" />
-                <path d="M6 4l0 4" />
-                <path d="M6 12l0 8" />
-                <path d="M10 14h4v4h-4z" />
-                <path d="M12 4l0 10" />
-                <path d="M12 18l0 2" />
-                <path d="M16 5h4v4h-4z" />
-                <path d="M18 4l0 1" />
-                <path d="M18 9l0 11" />
-              </svg>
-              <span>Фільтри</span>
-              {getActiveFiltersCount() > 0 && (
-                <span className={styles.filterCount}>{getActiveFiltersCount()}</span>
-              )}
-            </Button>
-
-            {error && (
-              <div className={styles.error}>
-                <h3>Помилка завантаження</h3>
-                <p>{error instanceof Error ? error.message : 'Невідома помилка'}</p>
-              </div>
-            )}
-            {isLoading && !initialData && (
-              <div className={styles.products}>
-                {Array.from({ length: 18 }).map((_, i) => (
-                  <div key={i} className={styles.productSkeleton}>
-                    <div className={styles.productSkeleton__image} />
-                    <div className={styles.productSkeleton__content}>
-                      <div className={styles.productSkeleton__title} />
-                      <div className={styles.productSkeleton__price} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-            {!isLoading && !error && products.length > 0 && (
-              <>
-                <div className={styles.products} style={{ opacity: isFetching ? 0.7 : 1 }}>
-                  {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-
-                {/* ✅ FIX: Пагінація показується тільки коли товарів більше ніж limit */}
-                {totalCount > currentLimit && totalPages > 1 && (
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                    className={styles.pagination}
-                  />
-                )}
-              </>
-            )}
+        {error && (
+          <div className={styles.error}>
+            <h3>Помилка завантаження</h3>
+            <p>{error instanceof Error ? error.message : 'Невідома помилка'}</p>
           </div>
+        )}
 
-          <aside className={styles.sidebar}>
-            <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
-          </aside>
-        </div>
+        {isLoading && !initialData && (
+          <div className={styles.products}>
+            {Array.from({ length: 18 }).map((_, i) => (
+              <div key={i} className={styles.productSkeleton}>
+                <div className={styles.productSkeleton__image} />
+                <div className={styles.productSkeleton__content}>
+                  <div className={styles.productSkeleton__title} />
+                  <div className={styles.productSkeleton__price} />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {!isLoading && !error && products.length > 0 && (
+          <>
+            <div className={styles.products} style={{ opacity: isFetching ? 0.7 : 1 }}>
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+
+            {/* ✅ FIX: Пагінація показується тільки коли товарів більше ніж limit */}
+            {totalCount > currentLimit && totalPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                className={styles.pagination}
+              />
+            )}
+          </>
+        )}
       </div>
-
-      <MobileFilterModal
-        opened={mobileFilterOpen}
-        onClose={() => setMobileFilterOpen(false)}
-        onFiltersChange={handleFiltersChange}
-        initialCategories={initialCategories}
-      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 {
-  "name": "Selo ta Salo",
-  "short_name": "Selo ta Salo",
-  "description": "Свіже м'ясо від ферми. Доставка по Україні",
+  "name": "Drill shop",
+  "short_name": "Drill shop",
+  "description": "Щільний Drill для вас",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

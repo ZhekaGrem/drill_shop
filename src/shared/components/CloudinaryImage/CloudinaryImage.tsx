@@ -30,7 +30,7 @@ export function CloudinaryImage({
   const [imageError, setImageError] = useState(false);
   const getImageUrl = (url: string): string => {
     if (!url || error) {
-      return '/assets/img/placeholder-product.jpeg'; // ВИПРАВЛЕНО: додано /
+      return '/assets/img/placeholder-product.jpg'; // ВИПРАВЛЕНО: додано /
     }
 
     if (url.startsWith('http') || url.startsWith('/')) {
@@ -43,7 +43,7 @@ export function CloudinaryImage({
       return `https://res.cloudinary.com/${cloudName}/image/upload/w_${width},h_${height},c_fill,f_auto,q_auto/${url}`;
     }
 
-    return '/assets/img/placeholder-product.jpeg';
+    return '/assets/img/placeholder-product.jpg';
   };
 
   const blurUrl = src.startsWith('http') ? src.replace('/upload/', '/upload/w_50,q_auto:low,f_auto/') : src;

@@ -1,67 +1,193 @@
 // src/app/home.module.scss
 // Landing page з картинкою на весь екран
 
-.landingPage {
+// Обгортка з padding 100px
+.wrapper {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url('../../public/assets/img/chicken.png');
-  background-size: cover;
+  padding: 50px;
+  z-index: 9999;
+  background-color: var(--background);
+}
+
+.landingPage {
+  width: 100%;
+  height: 100%;
+  background-image: url('../../public/assets/img/bg/background.jpg');
+  background-size: 80%;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
 
-  // Можна додати overlay для затемнення
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 1;
-  }
+
+  
 }
 
 .landingContent {
   position: relative;
-  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-xl);
+  justify-content: center;
 
   button {
+    position: absolute;
+    z-index: 10;
     font-size: var(--text-3xl);
     padding: var(--spacing-lg) var(--spacing-2xl);
     min-width: 300px;
-    box-shadow: var(--shadow-lg);
 
     &:hover {
       transform: translate(3px, 3px);
-      box-shadow: var(--shadow-md);
     }
 
     &:active {
       transform: translate(5px, 5px);
-      box-shadow: var(--shadow-sm);
     }
   }
 }
 
-// Mobile styles
+// Spline 3D model container - позаду кнопки
+.tshirtSpline {
+  position: relative;
+  z-index: 1;
+  width: 800px;
+  height: 800px;
+  pointer-events: auto;
+
+  // Spline viewer web component
+  spline-viewer {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  // Spline canvas
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+// Loader для Spline
+.splineLoader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--text-primary);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  z-index: 1;
+}
+
+// Tablet styles (до 768px)
 @media (max-width: 768px) {
+  .wrapper {
+    padding: 20px;
+  }
+
+  .landingPage {
+    background-size: cover; // На весь екран
+  }
+
   .landingContent {
     button {
       font-size: var(--text-2xl);
       padding: var(--spacing-md) var(--spacing-xl);
-      min-width: 250px;
+      min-width: 220px;
+    }
+  }
+
+  .tshirtSpline {
+    width: 450px;
+    height: 450px;
+  }
+}
+
+// Mobile landscape (до 640px)
+@media (max-width: 640px) {
+  .wrapper {
+    padding: 15px;
+  }
+
+  .landingPage {
+    background-size: cover; // На весь екран
+  }
+
+  .tshirtSpline {
+    width: 380px;
+    height: 380px;
+  }
+
+  .landingContent {
+    button {
+      font-size: var(--text-xl);
+      padding: var(--spacing-md) var(--spacing-lg);
+      min-width: 200px;
+    }
+  }
+}
+
+// Mobile portrait (до 480px)
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 10px;
+  }
+
+  .landingPage {
+    background-size: cover; // На весь екран
+  }
+
+  .tshirtSpline {
+    width: 320px;
+    height: 320px;
+  }
+
+  .landingContent {
+    button {
+      font-size: var(--text-lg);
+      padding: var(--spacing-sm) var(--spacing-md);
+      min-width: 180px;
+
+      svg {
+        width: 20px !important;
+        height: 20px !important;
+      }
+    }
+  }
+}
+
+// Small mobile (до 360px)
+@media (max-width: 360px) {
+  .wrapper {
+    padding: 8px;
+  }
+
+  .landingPage {
+    background-size: cover; // На весь екран
+  }
+
+  .tshirtSpline {
+    width: 280px;
+    height: 280px;
+  }
+
+  .landingContent {
+    button {
+      font-size: var(--text-md);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      min-width: 160px;
+
+      svg {
+        width: 18px !important;
+        height: 18px !important;
+      }
     }
   }
 }

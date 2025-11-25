@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import styles from './button.module.scss';
 
 interface ButtonProps extends Omit<MantineButtonProps, 'variant' | 'size'> {
-  variant?: 'primary' | 'secondary' | 'green' | 'red' | 'beige' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'yellow' | 'red' | 'beige' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'menu' | 'fl' | 'promo';
   fullWidth?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -17,7 +17,7 @@ interface ButtonProps extends Omit<MantineButtonProps, 'variant' | 'size'> {
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', size = 'md', fullWidth = false, className, ...props }, ref) => {
+  ({ variant = 'primary', size = 'md', fullWidth = false, className, leftIcon, rightIcon, ...props }, ref) => {
     return (
       <MantineButton
         ref={ref}
@@ -28,6 +28,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           fullWidth && styles['button--fullWidth'],
           className
         )}
+        leftSection={leftIcon}
+        rightSection={rightIcon}
         unstyled
         {...props}
       />

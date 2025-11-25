@@ -99,7 +99,7 @@ export const FavoritesList = () => {
               <Card.Section>
                 <Link href={`/catalog/${product.slug}`}>
                   <Image
-                    src={product.primaryImage?.url || '/assets/img/placeholder-product.jpeg'}
+                    src={product.primaryImage?.url || '/assets/img/placeholder-product.jpg'}
                     height={200}
                     alt={product.primaryImage?.altText || product.name}
                   />
