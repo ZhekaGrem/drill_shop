@@ -69,21 +69,21 @@
   // Позиціонування різних типів
   &.badgePromo {
     left: 8px;
-    background-color: var(--btn-red);
+    background-color: var(--accent-red); // #A63C48
     color: var(--text-white);
     z-index: 3;
   }
 
   &.badgeFeatured {
     right: 8px;
-    background-color: var(--btn-green);
-    color: var(--text-white);
+    background-color: var(--primary); // #33603B
+    color: var(--secondary); // #E0DDCA
     z-index: 2;
   }
 
   &.badgeOutOfStock {
     right: 8px;
-    background-color: var(--error);
+    background-color: var(--accent-red); // #A63C48
     color: var(--text-white);
     z-index: 4;
   }
@@ -209,15 +209,15 @@
   font-size: var(--text-lg);
   border: var(--border-width) solid var(--border-color);
   border-radius: 0;
-  background: var(--btn-primary);
-  color: var(--text-primary);
+  background: var(--accent); // #E6DB1B
+  color: var(--text-primary); // #2B2B27
   cursor: pointer;
   transition: var(--transition-fast);
   text-align: center;
   box-shadow: var(--shadow-sm);
 
   &:hover:not(.disabled) {
-    background: var(--btn-primary-hover);
+    color: var(--primary); // #33603B
     transform: translate(1px, 1px);
     box-shadow: var(--shadow-xs);
   }

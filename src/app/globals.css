@@ -234,40 +234,28 @@ p {
 /* === CSS ЗМІННІ З FIGMA "ЩІЛЬНИЙ ДРІЛ" === */
 :root {
   /* Кольори фону */
-  --background: #d5d3b5; /* Primary beige background */
-  --background-secondary: #e0ddca; /* Light beige */
+  --background: #e0ddca; /* Primary beige background */
+  --background-secondary: #33603b; /* Dark green */
   --background-light: #edecda;
   --background-dark: #2b2b27;
   --foreground: #2b2b27; /* Primary dark text */
 
   /* Основні кольори */
-  --primary: #e6db1b; /* Primary yellow button */
-  --secondary: #2b2b27; /* Dark */
-  --accent: #33603b; /* Green button */
-  --accent-yellow: #efdb14; /* Secondary yellow */
-
-  /* Кольори кнопок */
-  --btn-primary: #e6db1b; /* Primary yellow */
-  --btn-primary-hover: #efdb14;
-  --btn-green: #33603b; /* Green button */
-  --btn-green-hover: #47ac61;
-  --btn-red: #a63c48; /* Red menu button */
-  --btn-red-hover: #c04f67;
-  --btn-beige: #e0ddca; /* Light beige button */
-  --btn-beige-hover: #ccccae;
+  --primary: #33603b; /* Primary green */
+  --secondary: #e0ddca; /* Beige */
+  --accent: #e6db1b; /* Yellow */
+  --accent-red: #a63c48; /* Red */
 
   /* Статусні кольори */
   --success: #56da64;
-  --error: #9c0c3d;
   --warning: #e6db1b;
   --info: #0088ff;
 
   /* Кольори тексту */
-  --text-primary: #2b2b27; /* Dark primary */
-  --text-secondary: #373737;
+  --text-primary: #2b2b27; /* Dark text on light bg */
+  --text-secondary: #33603b; /* Green secondary text */
   --text-tertiary: #595959;
-  --text-green: #33603b;
-  --text-inverse: #e0ddca; /* Light on dark */
+  --text-inverse: #e0ddca; /* Light text on dark bg */
   --text-white: #ffffff;
 
   /* Шрифти */
@@ -355,12 +343,12 @@ main {
 
 /* === ТИПОГРАФІКА === */
 h1 {
-  font-family: var(--font-heading);
-  font-size: var(--text-6xl);
-  font-weight: var(--fw-normal);
+  font-family: var(--font-price); /* Rubik */
+  font-size: var(--text-6xl); /* 40px */
+  font-weight: var(--fw-black); /* 900 */
   line-height: 1.2;
   letter-spacing: 0;
-  color: var(--text-primary);
+  color: var(--text-primary); /* #2B2B27 on light bg */
 }
 
 h2 {
@@ -444,7 +432,7 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: var(--btn-primary);
+  border-color: var(--accent);
   box-shadow:
     inset 1px 1px 0px rgba(43, 43, 39, 0.1),
     0 0 0 3px rgba(230, 219, 27, 0.2);
@@ -475,7 +463,7 @@ a {
 }
 
 a:hover {
-  color: var(--text-green);
+  color: var(--accent-red); /* #A63C48 red hover */
 }
 
 /* Scrollbar (pixel art стиль) */
@@ -489,16 +477,16 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--btn-primary);
+  background: var(--accent);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--btn-primary-hover);
+  background: var(--primary);
 }
 
 /* Selection */
 ::selection {
-  background: var(--btn-primary);
+  background: var(--accent);
   color: var(--text-primary);
 }
 
@@ -545,4 +533,31 @@ hr {
   max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+/* Utility класи для кольорів тексту */
+.text-on-light {
+  color: #2b2b27; /* Темний текст на світлому фоні #E0DDCA */
+}
+
+.text-on-dark {
+  color: #e0ddca; /* Світлий текст на темному фоні #33603B */
+}
+
+.text-secondary {
+  color: #33603b; /* Другорядний текст (зелений) */
+}
+
+.text-accent-red {
+  color: #a63c48; /* Червоний для ховерів, помилок та цін зі знижкою */
+}
+
+/* Utility класи для кнопок */
+.btn-text {
+  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }

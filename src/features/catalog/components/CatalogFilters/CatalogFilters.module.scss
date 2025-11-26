@@ -109,7 +109,7 @@
   }
 
   &.active {
-    background: var(--btn-primary);
+    background: var(--accent);
     color: var(--text-primary);
     font-weight: var(--fw-bold);
   }
@@ -148,7 +148,7 @@
   }
 
   &.active {
-    background: var(--btn-primary);
+    background: var(--accent);
     color: var(--text-primary);
     font-weight: var(--fw-black);
     box-shadow: inset 2px 2px 0px rgba(43, 43, 39, 0.2);
@@ -198,7 +198,7 @@
 
   &:focus {
     outline: none;
-    border-color: var(--btn-primary);
+    border-color: var(--accent);
     box-shadow:
       inset 1px 1px 0px rgba(43, 43, 39, 0.1),
       0 0 0 3px rgba(230, 219, 27, 0.2);
@@ -252,12 +252,12 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--btn-primary);
+    background: var(--accent);
     border: none;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: var(--btn-primary-hover);
+    background: var(--primary);
   }
 }
 
@@ -303,7 +303,7 @@
 
   // Active state (коли checkbox checked)
   input[type='checkbox']:checked + & {
-    background: var(--btn-primary);
+    background: var(--accent);
     color: var(--text-primary);
     font-weight: var(--fw-black);
     box-shadow: inset 2px 2px 0px rgba(43, 43, 39, 0.2);

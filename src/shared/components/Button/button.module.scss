@@ -1,8 +1,12 @@
 // src/shared/components/ui/Button/Button.module.scss
 // Pixel art стиль з Figma "Щільний дріл"
 .button {
-  font-family: var(--font-body);
-  font-weight: var(--fw-bold);
+  font-family: 'IBM Plex Sans Condensed', var(--font-body);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   transition: var(--transition-fast);
 
   cursor: pointer;
@@ -10,7 +14,6 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-sm);
-  text-transform: none;
 
   // Pixel art hover effect
   &:hover:not(:disabled) {
@@ -19,47 +22,50 @@
 
   // Variants
   &--primary {
-    background: var(--btn-green);
-    color: var(--text-white);
+    background: var(--primary); // #33603B
+    color: var(--secondary); // #E0DDCA
 
     &:hover:not(:disabled) {
-      background: var(--btn-green-hover);
+      background: var(--accent); // #E6DB1B
+      color: var(--text-primary); // #2B2B27
     }
   }
 
   &--secondary {
-    background: var(--background-dark);
-    color: var(--text-white);
+    background: var(--secondary); // #E0DDCA
+    color: var(--primary); // #33603B
 
     &:hover:not(:disabled) {
-      background: var(--text-secondary);
+      background: var(--accent); // #E6DB1B
+      color: var(--text-primary); // #2B2B27
     }
   }
 
   &--yellow {
-    background: var(--btn-primary);
-    color: var(--text-primary);
+    background: var(--accent); // #E6DB1B
+    color: var(--text-primary); // #2B2B27
 
     &:hover:not(:disabled) {
-      background: var(--btn-primary-hover);
+      color: var(--primary); // #33603B
     }
   }
 
   &--red {
-    background: var(--btn-red);
-    color: var(--text-inverse);
+    background: var(--accent-red); // #A63C48
+    color: var(--text-inverse); // #E0DDCA
 
     &:hover:not(:disabled) {
-      background: var(--btn-red-hover);
+      opacity: 0.9;
     }
   }
 
   &--beige {
-    background: var(--btn-beige);
-    color: var(--text-green);
+    background: var(--secondary); // #E0DDCA
+    color: var(--text-secondary); // #33603B
 
     &:hover:not(:disabled) {
-      background: var(--btn-beige-hover);
+      background: var(--accent); // #E6DB1B
+      color: var(--text-primary); // #2B2B27
     }
   }
 
@@ -88,34 +94,34 @@
     }
   }
 
-  // Sizes (згідно з Figma)
+  // Sizes
   &--sm {
     padding: 10px 16px;
-    font-size: var(--text-base); // 16px
+    font-size: 16px;
     height: 40px;
   }
 
   &--md {
     padding: 12px 24px;
-    font-size: var(--text-lg); // 18px
+    font-size: 18px;
     height: 48px;
   }
 
   &--lg {
     padding: 14px 32px;
-    font-size: var(--text-xl); // 20px
+    font-size: 20px;
     height: 52px;
   }
 
   &--xl {
     padding: 16px 40px;
-    font-size: var(--text-2xl); // 24px
+    font-size: 24px;
     height: 60px;
   }
 
   &--promo {
     padding: 6px 12px;
-    font-size: var(--text-base); // 16px
+    font-size: 16px;
     height: 35px;
   }
 
@@ -126,9 +132,7 @@
 
   &--menu {
     padding: 12px 24px;
-    font-family: var(--font-condensed);
-    font-size: var(--text-xl); // 20px
-    font-weight: var(--fw-bold);
+    font-size: 20px;
     height: 48px;
     width: 100%;
     justify-content: flex-start;

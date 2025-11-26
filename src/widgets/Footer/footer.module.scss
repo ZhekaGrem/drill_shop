@@ -34,7 +34,7 @@
   font-family: var(--font-condensed);
   font-size: var(--text-xl);
   font-weight: var(--fw-bold);
-  color: var(--text-primary);
+  color: var(--text-inverse); // #E0DDCA on dark bg
   margin-bottom: var(--spacing-md);
   text-transform: none;
 }
@@ -51,13 +51,13 @@
   font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
-  color: var(--text-primary);
+  color: var(--text-inverse); // #E0DDCA on dark bg
   text-decoration: none;
   transition: var(--transition-fast);
   padding: 4px 0;
 
   &:hover {
-    color: var(--btn-primary);
+    color: var(--accent-red); // #A63C48 red hover
     transform: translateX(2px);
   }
 }
@@ -76,15 +76,15 @@
   font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
-  color: var(--text-primary);
+  color: var(--text-inverse); // #E0DDCA on dark bg
 
   a {
-    color: var(--text-primary);
+    color: var(--text-inverse);
     text-decoration: none;
     transition: var(--transition-fast);
 
     &:hover {
-      color: var(--btn-primary);
+      color: var(--accent-red); // #A63C48 red hover
     }
   }
 }
@@ -93,7 +93,7 @@
   font-family: var(--font-condensed);
   font-size: var(--text-lg);
   font-weight: var(--fw-bold);
-  color: var(--text-primary);
+  color: var(--text-inverse); // #E0DDCA on dark bg
 }
 
 // Social section
@@ -107,7 +107,7 @@
   font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
-  color: var(--text-primary);
+  color: var(--text-inverse); // #E0DDCA on dark bg
   margin-bottom: var(--spacing-sm);
   white-space: pre-line;
 }
@@ -126,23 +126,22 @@
   font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-bold);
-  color: var(--text-primary);
+  color: var(--text-inverse); // #E0DDCA on dark bg
   text-decoration: none;
-  background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
+  background: transparent;
+  border: 2px solid var(--text-inverse);
   border-radius: 0;
   transition: var(--transition-fast);
-  box-shadow: var(--shadow-sm);
 
   &:hover {
-    background: var(--background-secondary);
+    background: var(--accent-red); // #A63C48 red hover
+    color: var(--text-inverse);
+    border-color: var(--accent-red);
     transform: translate(1px, 1px);
-    box-shadow: var(--shadow-xs);
   }
 
   &:active {
     transform: translate(2px, 2px);
-    box-shadow: none;
   }
 
   svg {
@@ -165,7 +164,7 @@
   box-shadow: var(--shadow-sm);
 
   &:hover {
-    background: var(--btn-primary);
+    background: var(--accent);
     transform: translate(1px, 1px);
     box-shadow: var(--shadow-xs);
   }
@@ -201,7 +200,7 @@
   font-family: var(--font-condensed);
   font-size: var(--text-sm);
   font-weight: var(--fw-medium);
-  color: var(--text-primary);
+  color: var(--text-inverse); // #E0DDCA on dark bg
 }
 
 .legalLinks {
@@ -217,12 +216,12 @@
     font-family: var(--font-condensed);
     font-size: var(--text-sm);
     font-weight: var(--fw-medium);
-    color: var(--text-primary);
+    color: var(--text-inverse); // #E0DDCA on dark bg
     text-decoration: none;
     transition: var(--transition-fast);
 
     &:hover {
-      color: var(--btn-primary);
+      color: var(--accent-red); // #A63C48 red hover
     }
   }
 }
@@ -234,16 +233,16 @@
   font-family: var(--font-condensed);
   font-size: var(--text-sm);
   font-weight: var(--fw-medium);
-  color: var(--text-primary);
+  color: var(--text-inverse); // #E0DDCA on dark bg
 
   a {
-    color: var(--text-primary);
+    color: var(--text-inverse);
     text-decoration: none;
     font-weight: var(--fw-bold);
     transition: var(--transition-fast);
 
     &:hover {
-      color: var(--btn-primary);
+      color: var(--accent-red); // #A63C48 red hover
     }
   }
 }
@@ -269,7 +268,7 @@
   font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
-  color: var(--text-primary);
+  color: var(--text-inverse); // #E0DDCA on dark bg
   line-height: 1.5;
 }
 

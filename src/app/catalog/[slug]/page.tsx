@@ -90,11 +90,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   // Генеруємо breadcrumb structured data
   const breadcrumbData = productData.breadcrumbs
     ? structuredData.breadcrumb(
-      productData.breadcrumbs.map((crumb) => ({
-        name: crumb.name,
-        url: `https://shchilnuidrill.com${crumb.url}`,
-      }))
-    )
+        productData.breadcrumbs.map((crumb) => ({
+          name: crumb.name,
+          url: `https://shchilnuidrill.com${crumb.url}`,
+        }))
+      )
     : null;
 
   // Передаємо статичні дані в клієнтський компонент

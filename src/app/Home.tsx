@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { Suspense, lazy } from 'react';
 import { Button } from '@/shared/components/Button/Button';
-import { IconShoppingBag } from '@tabler/icons-react';
+import {  IconArrowRightTail } from '@tabler/icons-react';
 import styles from './home.module.scss';
 
 // Lazy load Spline component для оптимізації
@@ -31,9 +31,9 @@ const Home = () => {
           {/* Кнопка поверх футболки */}
           <Button
             size="promo"
-            variant="primary"
+            variant="yellow"
             onClick={handleGoToShop}
-            leftIcon={<IconShoppingBag size={32} />}>
+            rightIcon={<IconArrowRightTail size={22} />}>
             В МАГАЗИН
           </Button>
         </div>
