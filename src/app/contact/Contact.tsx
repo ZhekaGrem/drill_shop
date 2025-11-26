@@ -65,12 +65,6 @@ const Contact = () => {
       link: 'tel:+380671234567',
     },
     {
-      icon: IconBrandInstagram,
-      title: 'Instagram',
-      content: 'selo_ta_salo',
-      link: siteConfig.socials.instagram,
-    },
-    {
       icon: IconClock,
       title: 'Режим роботи',
       content: 'Пн-Пт: 08:00 - 20:00\nСб-Нд: 09:00 - 18:00',

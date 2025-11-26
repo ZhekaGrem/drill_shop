@@ -567,7 +567,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                 </Button>
 
                 <Button
-                  variant="green"
+                  variant="primary"
                   size="lg"
                   className={styles.buyNowButton}
                   onClick={() => {

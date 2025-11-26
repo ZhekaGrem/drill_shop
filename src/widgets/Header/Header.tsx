@@ -232,7 +232,6 @@ export function Header() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            
           </form>
         </div>
 

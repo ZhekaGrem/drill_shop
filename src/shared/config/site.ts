@@ -2,10 +2,10 @@
 import { assets } from './assets';
 
 export const siteConfig = {
-  name: 'Drill shop',
-  fullName: "Магазин м'ясних виробів Drill shop",
+  name: 'shchilnui Drill',
+  fullName: "Магазин м'ясних виробів shchilnui Drill",
   description: "Найкраща якість м'ясних продуктів від ферми до вашого столу.",
-  // url: 'https://selotasalo.com.ua',
+  url: 'https://shchilnuidrill.com',
   contacts: {
     phone: '+380 (93) 046 58 11',
     phone2: '+380 (93) 396 74 59',
@@ -15,11 +15,8 @@ export const siteConfig = {
     country: 'Україна',
   },
   socials: {
-    // tiktok: 'https://www.tiktok.com/@selo_ta_salo',
-    // instagram: 'https://www.instagram.com/selo_ta_salo',
-    // youtube: 'https://www.youtube.com/@selotasalo',
-    // threads: 'https://www.threads.com/@selo_ta_salo?xmt=AQF0LiblIcaHHQNzKwSFpAJd1OK7xv_-fJlIuxKkpSLFzK4',
-    // telegram: 'https://t.me/selo_ta_salo',
+    instagram: '#',
+    telegram: '#',
   },
   workingHours: 'Пн-Пт: 08:00 - 20:00 | Сб-Нд: 09:00 - 18:00',
   logo: assets.logo.main,
