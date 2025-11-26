@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: category.metaTitle || `${category.name} | Каталог`,
       description: category.metaDescription || category.description || `Товари категорії ${category.name}`,
       alternates: {
-        canonical: `https://selotasalo.shop/catalog/category/${category.slug}`,
+        canonical: `https://shchilnuidrill.com/catalog/category/${category.slug}`,
       },
       openGraph: {
         title: category.metaTitle || category.name,
@@ -78,15 +78,15 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const breadcrumbData = structuredData.breadcrumb([
     {
       name: 'Головна',
-      url: 'https://selotasalo.shop',
+      url: 'https://shchilnuidrill.com',
     },
     {
       name: 'Каталог',
-      url: 'https://selotasalo.shop/catalog',
+      url: 'https://shchilnuidrill.com/catalog',
     },
     {
       name: categoryData.name,
-      url: `https://selotasalo.shop/catalog/category/${categoryData.slug}`,
+      url: `https://shchilnuidrill.com/catalog/category/${categoryData.slug}`,
     },
   ]);
 

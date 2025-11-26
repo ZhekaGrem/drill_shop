@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: `${product.name}`,
       description: product.shortDescription || product.description?.substring(0, 160),
       alternates: {
-        canonical: `https://selotasalo.shop/catalog/${product.slug}`,
+        canonical: `https://shchilnuidrill.com/catalog/${product.slug}`,
       },
       openGraph: {
         title: product.name,
@@ -90,11 +90,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   // Генеруємо breadcrumb structured data
   const breadcrumbData = productData.breadcrumbs
     ? structuredData.breadcrumb(
-        productData.breadcrumbs.map((crumb) => ({
-          name: crumb.name,
-          url: `https://selotasalo.shop${crumb.url}`,
-        }))
-      )
+      productData.breadcrumbs.map((crumb) => ({
+        name: crumb.name,
+        url: `https://shchilnuidrill.com${crumb.url}`,
+      }))
+    )
     : null;
 
   // Передаємо статичні дані в клієнтський компонент

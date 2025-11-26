@@ -9,7 +9,7 @@ export const viewport: Viewport = {
 
 // Базова SEO конфігурація
 export const baseMetadata: Metadata = {
-  // metadataBase: new URL('https://selotasalo.shop'),
+  // metadataBase: new URL('https://shchilnuidrill.com'),
 
   title: {
     default: 'Drill shop | Щільний Drill для вас',
@@ -21,7 +21,7 @@ export const baseMetadata: Metadata = {
   openGraph: {
     title: 'Drill shop',
     description: 'Щільний Drill для вас',
-    // url: 'https://selotasalo.shop',
+    url: 'https://shchilnuidrill.com',
     siteName: 'Drill shop',
     locale: 'uk_UA',
     type: 'website',
@@ -37,8 +37,8 @@ export const baseMetadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Drill shop',
-    description: 'Свіже м`ясо від виробника. Доставка по Україні.',
-    // images: ['https://selotasalo.shop/logo/logo.jpg'],
+    description: 'Свіжий дрілл. Доставка по Україні.',
+    images: ['https://shchilnuidrill.com/logo/logo.jpg'],
   },
   robots: {
     index: true,
@@ -61,7 +61,7 @@ export const baseMetadata: Metadata = {
   },
 
   alternates: {
-    // canonical: 'https://selotasalo.shop',
+    canonical: 'https://shchilnuidrill.com',
   },
 };
 
@@ -71,7 +71,7 @@ export const pageMetadata = {
     title: 'Головна',
     description: 'Замовити мерч онлайн. Власне виробництво. Доставка по Україні.',
     alternates: {
-      // canonical: 'https://selotasalo.shop',
+      canonical: 'https://shchilnuidrill.com',
     },
   }),
 
@@ -79,7 +79,7 @@ export const pageMetadata = {
     title: 'Каталог',
     description: "Великий вибір свіжого м'яса. Свинина, яловичина, курка. Ціни від виробника.",
     alternates: {
-      // canonical: 'https://selotasalo.shop/catalog',
+      canonical: 'https://shchilnuidrill.com',
     },
   }),
 
@@ -88,7 +88,7 @@ export const pageMetadata = {
     description:
       product.description || `Купити ${product.name}. Ціна від ${product.price} грн. Доставка по Україні.`,
     alternates: {
-      // canonical: `https://selotasalo.shop/catalog/${product.slug}`,
+      canonical: `https://shchilnuidrill.com/catalog/${product.slug}`,
     },
   }),
 
@@ -96,7 +96,7 @@ export const pageMetadata = {
     title: 'Про нас',
     description: "Дізнайтеся про нашу ферму. Власне виробництво м'яса. Екологічно чисті продукти.",
     alternates: {
-      // canonical: 'https://selotasalo.shop/about',
+      canonical: 'https://shchilnuidrill.com/about',
     },
   }),
 
@@ -104,7 +104,7 @@ export const pageMetadata = {
     title: 'Контакти',
     description: 'Контакти Drill shop. Телефони, адреса, графік роботи.',
     alternates: {
-      // canonical: 'https://selotasalo.shop/contact',
+      canonical: 'https://shchilnuidrill.com/contact',
     },
   }),
 
@@ -126,9 +126,9 @@ export const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Drill shop',
-    // url: 'https://selotasalo.shop',
-    // logo: 'https://selotasalo.shop/logo/logo.png',
-    // image: 'https://selotasalo.shop/logo/logo.png',
+    url: 'https://shchilnuidrill.com',
+    logo: 'https://shchilnuidrill.com/logo/logo.png',
+    image: 'https://shchilnuidrill.com/logo/logo.png',
     description: 'Фермерський дріл мерч з доставкою по Україні',
     telephone: '+380930465811',
     address: {
@@ -143,12 +143,12 @@ export const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Drill shop',
-    // url: 'https://selotasalo.shop',
+    url: 'https://shchilnuidrill.com',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        // urlTemplate: 'https://selotasalo.shop/catalog?search={search_term_string}',
+        urlTemplate: 'https://shchilnuidrill.com/catalog?search={search_term_string}',
       },
       'query-input': 'required name=search_term_string',
     },
@@ -176,7 +176,7 @@ export const structuredData = {
     category: product.category?.name,
     offers: {
       '@type': 'Offer',
-      url: `https://selotasalo.shop/catalog/${product.slug}`,
+      url: `https://shchilnuidrill.com/catalog/${product.slug}`,
       priceCurrency: 'UAH',
       price: product.price,
       availability: 'https://schema.org/InStock',

@@ -26,6 +26,6 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: 'https://selotasalo.shop/sitemap.xml',
+    sitemap: 'https://shchilnuidrill.com/sitemap.xml',
   };
 }

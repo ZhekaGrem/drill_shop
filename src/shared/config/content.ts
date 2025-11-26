@@ -52,7 +52,7 @@ export const content = {
       contacts: 'Контакти',
     },
     categories: {
-      sausages: 'Ковбаси',
+      sausages: 'футболки',
       meat: "М'ясо",
       smoked: 'Копчені вироби',
       sauces: 'Соуси',

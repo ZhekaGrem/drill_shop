@@ -2,7 +2,7 @@
 import { MetadataRoute } from 'next';
 import { productsApi, categoriesApi } from '@/features/catalog/api/products';
 
-const baseUrl = 'https://selotasalo.shop';
+const baseUrl = 'https://shchilnuidrill.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Статичні сторінки
