@@ -17,17 +17,14 @@
     transform: translate(1px, 1px);
   }
 
-  
-
   // Variants
   &--primary {
-     background: var(--btn-green);
+    background: var(--btn-green);
     color: var(--text-white);
 
     &:hover:not(:disabled) {
       background: var(--btn-green-hover);
     }
-   
   }
 
   &--secondary {

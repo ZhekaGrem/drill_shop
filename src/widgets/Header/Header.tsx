@@ -125,7 +125,7 @@ const MobileMenu = React.memo(
     ];
 
     return (
-      <Drawer opened={opened} onClose={onClose} position="right" size="280px" className={styles.drawer}>
+      <Drawer opened={opened} onClose={onClose} position="left" size="480px" className={styles.drawer}>
         <ScrollArea h="calc(100vh - 80px)">
           {menuItems.map((item) => (
             <Link key={item.href} href={item.href} className={styles.menuLink} onClick={onNavigate}>
@@ -225,14 +225,14 @@ export function Header() {
             <IconMenu2 />
           </button>
           <form onSubmit={handleSearch} className={styles.searchBox}>
+            <IconSearch className={styles.searchIcon} />
             <input
               type="text"
-              placeholder="Пошук"
               className={styles.searchInput}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <IconSearch className={styles.searchIcon} />
+            
           </form>
         </div>
 

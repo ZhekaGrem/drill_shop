@@ -37,7 +37,7 @@ export const AuthDrawer = ({ opened, onClose, onSuccess, defaultTab = 'login' }:
       opened={opened}
       onClose={onClose}
       position="right"
-      size="400px"
+      size="600px"
       className={styles.drawer}
       title={
         <div className={styles.header}>

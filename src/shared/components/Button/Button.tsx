@@ -17,7 +17,10 @@ interface ButtonProps extends Omit<MantineButtonProps, 'variant' | 'size'> {
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', size = 'md', fullWidth = false, className, leftIcon, rightIcon, ...props }, ref) => {
+  (
+    { variant = 'primary', size = 'md', fullWidth = false, className, leftIcon, rightIcon, ...props },
+    ref
+  ) => {
     return (
       <MantineButton
         ref={ref}

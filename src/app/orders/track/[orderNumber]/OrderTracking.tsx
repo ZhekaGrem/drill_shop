@@ -315,8 +315,8 @@ const OrderTrackingPage: React.FC = () => {
                     <Text size="sm">{order.shippingAddress.city}</Text>
                     {order.shippingAddress.city?.trim().toLowerCase() !==
                       order.shippingAddress.address1?.trim().toLowerCase() && (
-                        <Text size="sm">{order.shippingAddress.address1}</Text>
-                      )}
+                      <Text size="sm">{order.shippingAddress.address1}</Text>
+                    )}
                   </Stack>
                 </Group>
               </Stack>

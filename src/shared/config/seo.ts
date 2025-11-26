@@ -12,16 +12,15 @@ export const baseMetadata: Metadata = {
   // metadataBase: new URL('https://selotasalo.shop'),
 
   title: {
-    default: "Drill shop | Щільний Drill для вас",
+    default: 'Drill shop | Щільний Drill для вас',
     template: '%s | Drill shop',
   },
 
-  description:
-    "Купити мерч онлайн. ",
+  description: 'Купити мерч онлайн. ',
 
   openGraph: {
     title: 'Drill shop',
-    description: "Щільний Drill для вас",
+    description: 'Щільний Drill для вас',
     // url: 'https://selotasalo.shop',
     siteName: 'Drill shop',
     locale: 'uk_UA',
@@ -70,7 +69,7 @@ export const baseMetadata: Metadata = {
 export const pageMetadata = {
   home: (): Metadata => ({
     title: 'Головна',
-    description: "Замовити мерч онлайн. Власне виробництво. Доставка по Україні.",
+    description: 'Замовити мерч онлайн. Власне виробництво. Доставка по Україні.',
     alternates: {
       // canonical: 'https://selotasalo.shop',
     },
@@ -130,7 +129,7 @@ export const structuredData = {
     // url: 'https://selotasalo.shop',
     // logo: 'https://selotasalo.shop/logo/logo.png',
     // image: 'https://selotasalo.shop/logo/logo.png',
-    description: "Фермерський дріл мерч з доставкою по Україні",
+    description: 'Фермерський дріл мерч з доставкою по Україні',
     telephone: '+380930465811',
     address: {
       '@type': 'PostalAddress',
@@ -168,7 +167,7 @@ export const structuredData = {
     '@type': 'Product',
     name: product.name,
     description: product.description,
-    image: product.images?.[0]?.url ,
+    image: product.images?.[0]?.url,
     sku: product.sku || product.slug,
     brand: {
       '@type': 'Brand',

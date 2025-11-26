@@ -10,7 +10,6 @@
   &::before {
     content: '';
     display: block;
-    background-image: url('../../../public/svg/inlinerBeforSection.svg');
     height: 26px;
     width: 100%;
     position: absolute;
@@ -22,7 +21,6 @@
   &::after {
     content: '';
     display: block;
-    background-image: url('../../../public/svg/inlinerAfterSection.svg');
     bottom: -17px;
     width: 100%;
     height: 17px;

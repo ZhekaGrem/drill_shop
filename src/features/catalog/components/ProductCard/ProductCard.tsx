@@ -311,8 +311,9 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
                       <button
                         type="button"
                         disabled={isOutOfStock}
-                        className={`${styles.variants__option} ${selectedVariant === 'main' ? styles.variants__option_active : ''
-                          } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
+                        className={`${styles.variants__option} ${
+                          selectedVariant === 'main' ? styles.variants__option_active : ''
+                        } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
@@ -337,8 +338,9 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
                       key={variant.id}
                       type="button"
                       disabled={isOutOfStock}
-                      className={`${styles.variants__option} ${selectedVariant === variant.id ? styles.variants__option_active : ''
-                        } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
+                      className={`${styles.variants__option} ${
+                        selectedVariant === variant.id ? styles.variants__option_active : ''
+                      } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();

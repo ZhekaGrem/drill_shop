@@ -88,7 +88,6 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
     window.history.replaceState(null, '', newUrl);
   };
 
-
   const showInitialData = !initialized && initialData && !searchParams.toString();
 
   if (showInitialData) {
