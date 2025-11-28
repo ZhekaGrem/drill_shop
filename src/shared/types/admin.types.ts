@@ -14,6 +14,7 @@ export interface ProductFormData {
 
   isActive: boolean;
   isFeatured: boolean;
+  hasVariants: boolean;
   categoryIds: string[];
   options?: Record<string, any>;
   promoType?: ProductPromoType | null;

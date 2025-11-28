@@ -25,6 +25,11 @@ export const ProductSettings = ({ form }: ProductSettingsProps) => {
           description="Товар буде відображатися у розділі рекомендованих"
           {...form.getInputProps('isFeatured', { type: 'checkbox' })}
         />
+        <Switch
+          label="Товар-контейнер для варіантів"
+          description="Головний товар не можна буде купити окремо, тільки через вибір варіанту"
+          {...form.getInputProps('hasVariants', { type: 'checkbox' })}
+        />
       </Stack>
     </Card>
   );

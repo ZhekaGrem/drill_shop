@@ -24,6 +24,7 @@ export const ProductPromotion = ({ form }: ProductPromotionProps) => {
       form.setFieldValue('promoConfig', { minQuantity: 2, discountPercentage: 10 });
     } else {
       form.setFieldValue('promoConfig', null);
+      form.setFieldValue('promoEndsAt', null);
     }
   };
 

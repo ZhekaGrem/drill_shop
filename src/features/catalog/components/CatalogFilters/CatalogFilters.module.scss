@@ -216,49 +216,11 @@
   }
 }
 
-// Category Sections (після фільтрів)
-.categorySection {
-  width: 100%;
-  margin-top: var(--spacing-lg);
-  padding-top: var(--spacing-lg);
-  border-top: var(--border-width) solid var(--border-color);
-}
-
-.categoryLabel {
-  display: block;
-  font-family: var(--font-condensed);
-  font-size: var(--text-xl);
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-md);
-}
-
+// Category checkboxes (в одному рядку)
 .checkboxes {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-sm);
-  max-height: 300px;
-  overflow-y: auto;
-  padding-right: var(--spacing-sm);
-
-  // Custom pixel art scrollbar
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: var(--background-light);
-    border: none;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--accent);
-    border: none;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: var(--primary);
-  }
 }
 
 .checkbox {
@@ -345,19 +307,6 @@
   .priceInput {
     flex: 1;
     width: auto;
-  }
-
-  .categorySection {
-    margin-top: var(--spacing-md);
-    padding-top: var(--spacing-md);
-  }
-
-  .categoryLabel {
-    font-size: var(--text-lg);
-  }
-
-  .checkboxes {
-    max-height: 200px;
   }
 
   .checkboxText {

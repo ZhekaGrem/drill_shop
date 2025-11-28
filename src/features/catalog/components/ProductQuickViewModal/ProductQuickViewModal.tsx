@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { Modal, Select, Badge } from '@mantine/core';
 import { Product } from '@/shared/types';
@@ -25,6 +25,15 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
   const [isClicked, setIsClicked] = useState(false);
+
+  // ✅ Автоматично вибираємо перший варіант якщо hasVariants = true
+  useEffect(() => {
+    if (product.hasVariants && product.variants && product.variants.length > 0) {
+      setSelectedVariant(product.variants[0]);
+    } else {
+      setSelectedVariant(null);
+    }
+  }, [product.hasVariants, product.variants]);
 
   const basePromoData = calculatePromoPrice(product);
 
@@ -79,6 +88,12 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
   const handleAddToCart = () => {
     if (!product) return;
 
+    // ✅ Якщо товар-контейнер (hasVariants = true), варіант обов'язковий
+    if (product.hasVariants && !selectedVariant) {
+      alert('Оберіть варіант товару');
+      return;
+    }
+
     setIsClicked(true);
     setTimeout(() => setIsClicked(false), 2000);
 
@@ -128,16 +143,8 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
   };
 
   const createVariantDisplayLabel = (variant: any): string => {
-    const baseName = variant.name || `Варіант ${variant.sku}`;
-    const options = formatVariantOptions(variant.options);
-
-    let label = baseName;
-
-    if (options) {
-      label += ` (${options})`;
-    }
-
-    return label;
+    // Показуємо тільки назву варіанту без опцій
+    return variant.name || `Варіант ${variant.sku}`;
   };
 
   const getCurrentWeight = () => {
@@ -162,9 +169,9 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
               <CloudinaryImage
                 src={getImageUrl(
                   sortedImages[selectedImageIndex]?.url ||
-                    sortedImages[selectedImageIndex]?.publicId ||
-                    primaryImage?.url ||
-                    primaryImage?.publicId
+                  sortedImages[selectedImageIndex]?.publicId ||
+                  primaryImage?.url ||
+                  primaryImage?.publicId
                 )}
                 alt={product.name}
                 className={styles.gallery__mainImage}
@@ -184,9 +191,8 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
               {sortedImages.map((image, index) => (
                 <Button
                   key={image.id}
-                  className={`${styles.gallery__thumbnail} ${
-                    index === selectedImageIndex ? styles.gallery__thumbnailActive : ''
-                  }`}
+                  className={`${styles.gallery__thumbnail} ${index === selectedImageIndex ? styles.gallery__thumbnailActive : ''
+                    }`}
                   variant="ghost"
                   size="fl"
                   onClick={() => setSelectedImageIndex(index)}>
@@ -254,7 +260,6 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
                 radius="xs"
                 label="Варіант:"
                 size="md"
-                value={selectedVariant?.id || 'main'}
                 onChange={(value) => {
                   if (value === 'main') {
                     setSelectedVariant(null);
@@ -265,17 +270,22 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
                   setQuantity(1);
                 }}
                 data={[
-                  {
-                    value: 'main',
-                    label: `${product.name}`,
-                  },
+                  // Показуємо головний товар тільки якщо hasVariants = false
+                  ...(!product.hasVariants
+                    ? [
+                      {
+                        value: 'main',
+                        label: `${product.name}`,
+                      },
+                    ]
+                    : []),
                   ...(product.variants?.map((variant: any) => ({
                     value: variant.id,
                     label: createVariantDisplayLabel(variant),
                   })) || []),
                 ]}
                 placeholder="Оберіть варіант"
-                defaultValue="main"
+                value={selectedVariant?.id || (!product.hasVariants ? 'main' : undefined)}
               />
 
               {selectedVariant && selectedVariant.options && (
@@ -374,9 +384,8 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
             </div>
 
             <Button
-              className={`${styles.addToCartButton} ${!isInStock ? styles.addToCartButton__disabled : ''} ${
-                isClicked ? styles.addToCartButton__success : ''
-              }`}
+              className={`${styles.addToCartButton} ${!isInStock ? styles.addToCartButton__disabled : ''} ${isClicked ? styles.addToCartButton__success : ''
+                }`}
               size="lg"
               onClick={handleAddToCart}
               disabled={!isInStock}>

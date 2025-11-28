@@ -69,40 +69,15 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
   }, [product.variants, product.options]);
 
   // Отримати значення варіанту для відображення (size або color)
-  const getVariantDisplayValue = (variant: any) => {
-    const options = variant.options || {};
-
-    // Шукаємо size (пріоритет)
-    const sizeKey = Object.keys(options).find((k) => k.toLowerCase() === 'size');
-    if (sizeKey) return options[sizeKey];
-
-    // Шукаємо color
-    const colorKey = Object.keys(options).find((k) => k.toLowerCase() === 'color');
-    if (colorKey) return options[colorKey];
-
+   const getVariantDisplayValue = (variant: any) => {
     return variant.name || 'Варіант';
   };
 
   // Лейбл для варіантів
-  const variantLabel = useMemo(() => {
+   const variantLabel = useMemo(() => {
     if (!showVariantsInCatalog || !product.variants || product.variants.length === 0) return '';
-
-    // Перевіряємо головний товар
-    if (product.options) {
-      const keys = Object.keys(product.options).map((k) => k.toLowerCase());
-      if (keys.includes('size')) return 'Розмір:';
-      if (keys.includes('color')) return 'Колір:';
-    }
-
-    const firstVariant = product.variants[0];
-    const options = firstVariant.options || {};
-    const keys = Object.keys(options).map((k) => k.toLowerCase());
-
-    if (keys.includes('size')) return 'Розмір:';
-    if (keys.includes('color')) return 'Колір:';
-
     return 'Варіант:';
-  }, [showVariantsInCatalog, product.variants, product.options]);
+  }, [showVariantsInCatalog, product.variants]);
 
   // Отримати stock варіанту
   const getVariantStock = (variantId: string) => {
@@ -150,6 +125,15 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
         }
       }
 
+       // ✅ Якщо товар-контейнер (hasVariants = true), головний товар не можна купити
+      if (product.hasVariants && selectedVariant === 'main') {
+        notifications.show({
+          message: `Оберіть ${variantLabel.replace(':', '')}`,
+          color: 'yellow',
+        });
+        return;
+      }
+
       // Якщо обрано головний товар ('main')
       if (selectedVariant === 'main') {
         setIsClicked(true);
@@ -175,6 +159,15 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
       // ✅ Якщо варіанти БЕЗ SIZE/COLOR - показати Quick View
       if (product.variants && product.variants.length > 0 && !showVariantsInCatalog) {
         setQuickViewOpened(true);
+        return;
+      }
+
+       // ✅ Якщо товар-контейнер (hasVariants = true), варіант обов'язковий
+      if (product.hasVariants && !selectedVariant) {
+        notifications.show({
+          message: 'Оберіть варіант товару',
+          color: 'yellow',
+        });
         return;
       }
 
@@ -294,7 +287,7 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
 
               <div className={styles.variants__options}>
                 {/* Додаємо головний товар якщо він має size/color */}
-                {product.options &&
+                {!product.hasVariants && product.options &&
                   Object.keys(product.options).some((k) => {
                     const key = k.toLowerCase();
                     return key === 'size' || key === 'color';

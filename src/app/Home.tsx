@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { Suspense, lazy } from 'react';
 import { Button } from '@/shared/components/Button/Button';
-import {  IconArrowRightTail } from '@tabler/icons-react';
+import { IconArrowRightTail } from '@tabler/icons-react';
 import styles from './home.module.scss';
 
 // Lazy load Spline component для оптимізації

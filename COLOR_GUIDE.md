@@ -32,6 +32,7 @@
 ```
 
 **Стилі:**
+
 - Background: `#33603B`
 - Text: `#E0DDCA`
 - **Hover:** background `#E6DB1B` + text `#2B2B27`
@@ -45,6 +46,7 @@
 ```
 
 **Стилі:**
+
 - Background: `#E0DDCA`
 - Text: `#33603B`
 - **Hover:** background `#E6DB1B` + text `#2B2B27`
@@ -58,6 +60,7 @@
 ```
 
 **Стилі:**
+
 - Background: `#E6DB1B`
 - Text: `#2B2B27`
 - **Hover:** text `#33603B` (фон не міняється)
@@ -73,6 +76,7 @@
 ```
 
 **Стилі:**
+
 - Font: Rubik
 - Weight: 900 (Black)
 - Size: 40px
@@ -98,19 +102,9 @@ Case: UPPERCASE
 
 ```css
 /* Фон */
---background: #e0ddca
---background-secondary: #33603b
-
-/* Основні кольори */
---primary: #33603b
---secondary: #e0ddca
---accent: #e6db1b
---accent-red: #a63c48
-
-/* Текст */
---text-primary: #2b2b27 (на світлому)
---text-inverse: #e0ddca (на темному)
---text-secondary: #33603b
+--background: #e0ddca --background-secondary: #33603b /* Основні кольори */ --primary: #33603b
+  --secondary: #e0ddca --accent: #e6db1b --accent-red: #a63c48 /* Текст */ --text-primary: #2b2b27
+  (на світлому) --text-inverse: #e0ddca (на темному) --text-secondary: #33603b;
 ```
 
 ---

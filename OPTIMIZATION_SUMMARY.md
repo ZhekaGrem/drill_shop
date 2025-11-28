@@ -5,15 +5,18 @@
 ### 1. Оптимізація Mantine Theme (`src/shared/config/mantine-theme.ts`)
 
 #### Видалено дублювання:
+
 - **Створено `commonStyles`** - спільні стилі для всіх компонентів (border: none, borderRadius: 0)
 - **Створено `getInputStyles()`** - функція для спільних стилів інпутів з обробкою помилок
 
 #### Скорочення коду:
+
 - **До:** ~350 рядків з повторюваними стилями
 - **Після:** ~240 рядків з переиспользуваними константами
 - **Економія:** ~110 рядків (-31%)
 
 #### Покращення підтримки:
+
 - Всі зміни стилів border/borderRadius тепер в одному місці
 - Всі стилі помилок інпутів в одній функції
 - Легше додавати нові інпути або компоненти
@@ -21,28 +24,23 @@
 ### 2. Оптимізація CSS змінних (`src/app/globals.css`)
 
 #### Видалено дублювання кольорів:
+
 **До:**
+
 ```css
---primary: #33603b
---btn-primary: #33603b            /* Дублікат */
---btn-primary-hover: #e6db1b
---btn-secondary: #e0ddca          /* Дублікат */
---btn-secondary-text: #33603b
---btn-tertiary: #e6db1b           /* Дублікат */
---error: #a63c48
---text-link-hover: #a63c48        /* Дублікат */
---text-price-discount: #a63c48    /* Дублікат */
+--primary: #33603b --btn-primary: #33603b /* Дублікат */ --btn-primary-hover: #e6db1b --btn-secondary: #e0ddca
+  /* Дублікат */ --btn-secondary-text: #33603b --btn-tertiary: #e6db1b /* Дублікат */ --error: #a63c48
+  --text-link-hover: #a63c48 /* Дублікат */ --text-price-discount: #a63c48 /* Дублікат */;
 ```
 
 **Після:**
+
 ```css
---primary: #33603b
---secondary: #e0ddca
---accent: #e6db1b
---accent-red: #a63c48
+--primary: #33603b --secondary: #e0ddca --accent: #e6db1b --accent-red: #a63c48;
 ```
 
 #### Результат:
+
 - Видалено **6 дублікатів** кольорів
 - Залишено тільки основні змінні
 - Всі старі використання замінені на нові
@@ -50,6 +48,7 @@
 ### 3. Оновлення компонентів
 
 #### Оновлені файли:
+
 1. **`src/widgets/Footer/footer.module.scss`**
    - Замінено `--text-link-hover` → `--accent-red`
    - Замінено `--btn-primary` → `--accent`
@@ -73,17 +72,23 @@
 ### 4. Utility класи
 
 #### Оновлено:
+
 ```css
 /* До */
-.text-link-hover { color: #a63c48; }
+.text-link-hover {
+  color: #a63c48;
+}
 
 /* Після */
-.text-accent-red { color: #a63c48; }
+.text-accent-red {
+  color: #a63c48;
+}
 ```
 
 ### 5. Оновлена документація
 
 #### Файли:
+
 - **`COLOR_GUIDE.md`** - оновлено з новими змінними та utility класами
 - **`OPTIMIZATION_SUMMARY.md`** - цей файл
 
@@ -92,11 +97,13 @@
 ## 📊 Метрики оптимізації
 
 ### Зменшення дублювання:
+
 - **Mantine Theme:** -31% коду (-110 рядків)
 - **CSS змінні:** -40% змінних (-6 дублікатів)
 - **Загальне зменшення повторів:** ~60 видалених дублікатів
 
 ### Покращення підтримки:
+
 - ✅ Один source of truth для кольорів
 - ✅ Легше додавати нові компоненти
 - ✅ Менше місць для помилок
@@ -107,16 +114,15 @@
 ## 🎨 Колірна схема (фінальна)
 
 ### Основні кольори:
+
 ```css
---background: #e0ddca          /* Основний фон */
---background-secondary: #33603b /* Темно-зелений фон */
---primary: #33603b             /* Зелений */
---secondary: #e0ddca           /* Беж */
---accent: #e6db1b              /* Жовтий */
---accent-red: #a63c48          /* Червоний */
+--background: #e0ddca /* Основний фон */ --background-secondary: #33603b /* Темно-зелений фон */
+  --primary: #33603b /* Зелений */ --secondary: #e0ddca /* Беж */ --accent: #e6db1b /* Жовтий */
+  --accent-red: #a63c48 /* Червоний */;
 ```
 
 ### Використання:
+
 - **Головні кнопки:** bg `#33603B`, hover bg `#E6DB1B` + text `#2B2B27`
 - **Другорядні кнопки:** bg `#E0DDCA`, hover bg `#E6DB1B` + text `#2B2B27`
 - **Кнопки 3-го рівня:** bg `#E6DB1B`, hover text `#33603B`

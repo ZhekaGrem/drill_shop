@@ -115,10 +115,7 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     onFiltersChange?.();
   };
 
-  const rootCategories = displayCategories.filter(
-    (cat) => !cat.parentId && (!cat.children || cat.children.length === 0)
-  );
-
+  // Групові категорії (батько + діти)
   const groupedCategories = getGroupedCategories();
 
   return (
@@ -178,29 +175,10 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
         </div>
       </div>
 
-      {/* Категорії (основні без батьків) */}
-      {rootCategories.length > 0 && (
-        <div className={styles.categorySection}>
-          <label className={styles.categoryLabel}>Категорії</label>
-          <div className={styles.checkboxes}>
-            {rootCategories.map((category) => (
-              <label key={category.id} className={styles.checkbox}>
-                <input
-                  type="checkbox"
-                  checked={selectedCategories.includes(category.id)}
-                  onChange={() => handleCategoryToggle(category.id)}
-                />
-                <span className={styles.checkboxText}>{category.name}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Групові категорії (батько + діти як окремі блоки) */}
+      {/* Групові категорії (батько як label + діти в одному рядку) */}
       {groupedCategories.map((group) => (
-        <div key={group.parent.id} className={styles.categorySection}>
-          <label className={styles.categoryLabel}>{group.parent.name}</label>
+        <div key={group.parent.id} className={styles.filterGroup}>
+          <label className={styles.label}>{group.parent.name}:</label>
           <div className={styles.checkboxes}>
             {group.children.map((child) => (
               <label key={child.id} className={styles.checkbox}>

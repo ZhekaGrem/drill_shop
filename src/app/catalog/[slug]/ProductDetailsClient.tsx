@@ -48,6 +48,17 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
     }
   }, [slug, initialProduct]);
 
+  // ✅ Автоматично вибираємо перший варіант якщо hasVariants = true
+  useEffect(() => {
+    if (product?.hasVariants && product.variants && product.variants.length > 0) {
+      setSelectedVariant(product.variants[0]);
+      setIsMainProduct(false);
+    } else if (product && !product.hasVariants) {
+      setSelectedVariant(null);
+      setIsMainProduct(true);
+    }
+  }, [product?.hasVariants, product?.variants]);
+
   const fetchProduct = async () => {
     setIsLoading(true);
     setError(null);
@@ -66,6 +77,11 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
 
   const handleAddToCart = () => {
     if (!product) return;
+
+    if (product.hasVariants && !selectedVariant) {
+      alert('Оберіть варіант товару');
+      return;
+    }
 
     setIsClicked(true);
     setTimeout(() => setIsClicked(false), 2000);
@@ -116,16 +132,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
   };
 
   const createVariantDisplayLabel = (variant: any): string => {
-    const baseName = variant.name || `Варіант ${variant.sku}`;
-    const options = formatVariantOptions(variant.options);
-
-    let label = baseName;
-
-    if (options) {
-      label += ` (${options})`;
-    }
-
-    return label;
+    // Показуємо тільки назву варіанту без опцій
+    return variant.name || `Варіант ${variant.sku}`;
   };
 
   // SIMPLIFIED: Calculate stock directly from product data
@@ -266,9 +274,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   {sortedImages.map((image, index) => (
                     <button
                       key={image.id}
-                      className={`${styles.productGallery__thumbnail} ${
-                        index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
-                      }`}
+                      className={`${styles.productGallery__thumbnail} ${index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
+                        }`}
                       onClick={() => setSelectedImageIndex(index)}>
                       <CloudinaryImage
                         src={getImageUrl(image.url || image.publicId)}
@@ -287,9 +294,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   <CloudinaryImage
                     src={getImageUrl(
                       sortedImages[selectedImageIndex]?.url ||
-                        sortedImages[selectedImageIndex]?.publicId ||
-                        primaryImage?.url ||
-                        primaryImage?.publicId
+                      sortedImages[selectedImageIndex]?.publicId ||
+                      primaryImage?.url ||
+                      primaryImage?.publicId
                     )}
                     alt={product.name}
                     className={styles.productGallery__mainImage}
@@ -309,9 +316,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     {sortedImages.map((_, index) => (
                       <button
                         key={index}
-                        className={`${styles.productGallery__dot} ${
-                          index === selectedImageIndex ? styles.productGallery__dotActive : ''
-                        }`}
+                        className={`${styles.productGallery__dot} ${index === selectedImageIndex ? styles.productGallery__dotActive : ''
+                          }`}
                         onClick={() => setSelectedImageIndex(index)}
                         aria-label={`Зображення ${index + 1}`}
                       />
@@ -400,7 +406,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   radius="xs"
                   label="Варіант:"
                   size="lg"
-                  value={selectedVariant?.id || 'main'}
+                  value={selectedVariant?.id || (!product.hasVariants ? 'main' : undefined)}
                   onChange={(value) => {
                     if (value === 'main') {
                       setSelectedVariant(null);
@@ -413,10 +419,15 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     setQuantity(1);
                   }}
                   data={[
-                    {
-                      value: 'main',
-                      label: `${product.name}`,
-                    },
+                    // Показуємо головний товар тільки якщо hasVariants = false
+                    ...(!product.hasVariants
+                      ? [
+                        {
+                          value: 'main',
+                          label: `${product.name}`,
+                        },
+                      ]
+                      : []),
                     ...(product.variants?.map((variant: any) => ({
                       value: variant.id,
                       label: createVariantDisplayLabel(variant),
@@ -424,7 +435,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   ]}
                   placeholder="Оберіть варіант"
                   style={{ marginTop: '8px' }}
-                  defaultValue="main"
+                  defaultValue={product.hasVariants ? product.variants?.[0]?.id : 'main'}
                 />
 
                 {/* Деталі обраного варіанта */}

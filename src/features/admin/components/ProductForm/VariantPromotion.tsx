@@ -52,6 +52,10 @@ export const VariantPromotion = ({
     } else {
       onPromoTypeChange(value);
       onPromoConfigChange(newConfig);
+      // Clear promoEndsAt when removing promotion or changing to non-TIME_LIMITED type
+      if (!value || value !== ProductPromoType.TIME_LIMITED) {
+        onPromoEndsAtChange(null);
+      }
     }
   };
 
