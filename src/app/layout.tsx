@@ -7,7 +7,7 @@ import { LayoutWrapper } from './LayoutWrapper';
 import { ErrorBoundary } from '@/shared/providers/ErrorBoundary';
 import { baseMetadata, viewport, structuredData } from './seo';
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { JsonLd } from '@/shared/components/JsonLd';
+import { JsonLd } from './JsonLd';
 
 // Шрифти з Figma "Щільний дріл"
 const ibmPlexSans = IBM_Plex_Sans({

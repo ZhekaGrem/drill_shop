@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { productsApi, categoriesApi } from '@/features/catalog/api/products';
 import CategoryPageClient from './CategoryPageClient';
-import { JsonLd } from '@/shared/components/JsonLd';
+import { JsonLd } from '../../../JsonLd';
 import { structuredData } from '../../../seo';
 
 // Revalidate кожні 6 годин

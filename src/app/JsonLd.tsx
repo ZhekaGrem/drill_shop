@@ -1,4 +1,4 @@
-// src/shared/components/JsonLd.tsx
+// src/app/JsonLd.tsx
 import React from 'react';
 
 interface JsonLdProps {

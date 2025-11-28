@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { productsApi } from '@/features/catalog/api/products';
 import ProductDetailsClient from './ProductDetailsClient';
-import { JsonLd } from '@/shared/components/JsonLd';
+import { JsonLd } from '../../JsonLd';
 import { structuredData } from '../../seo';
 
 // Revalidate кожні 60 хвилин
@@ -90,11 +90,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   // Генеруємо breadcrumb structured data
   const breadcrumbData = productData.breadcrumbs
     ? structuredData.breadcrumb(
-        productData.breadcrumbs.map((crumb) => ({
-          name: crumb.name,
-          url: `https://shchilnuidrill.com${crumb.url}`,
-        }))
-      )
+      productData.breadcrumbs.map((crumb) => ({
+        name: crumb.name,
+        url: `https://shchilnuidrill.com${crumb.url}`,
+      }))
+    )
     : null;
 
   // Передаємо статичні дані в клієнтський компонент
