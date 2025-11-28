@@ -1,7 +1,7 @@
 {
   "name": "Drill shop",
   "short_name": "Drill shop",
-  "description": "Щільний Drill для вас",
+  "description":"Drill shop - офіційний магазин стильного мерчу. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні. Щільний Drill для справжніх цінителів.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
