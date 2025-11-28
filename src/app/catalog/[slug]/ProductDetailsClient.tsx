@@ -437,7 +437,6 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   ]}
                   placeholder="Оберіть варіант"
                   style={{ marginTop: '8px' }}
-                  defaultValue={product.hasVariants ? product.variants?.[0]?.id : 'main'}
                 />
 
                 {/* Деталі обраного варіанта */}

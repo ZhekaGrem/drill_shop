@@ -133,7 +133,7 @@ export default function AdminProducts() {
   // FIXED: Handle product submission with proper variants structure
   const handleProductSubmit = async ({ data, files }: { data: any; files?: File[] }) => {
     try {
-      console.log('📦 Product submission data (before cleaning):', data);
+     
 
       // Clean variants data properly
       const submissionData = {
@@ -161,8 +161,6 @@ export default function AdminProducts() {
         deletedVariantIds: data.deletedVariantIds || [],
       };
 
-      console.log('✅ Cleaned submission data (with variants promotions):', submissionData);
-      console.log('🎯 Variants with promotions:', submissionData.variants);
 
       if (editingProduct) {
         await updateMutation.mutateAsync({
