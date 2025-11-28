@@ -133,8 +133,6 @@ export default function AdminProducts() {
   // FIXED: Handle product submission with proper variants structure
   const handleProductSubmit = async ({ data, files }: { data: any; files?: File[] }) => {
     try {
-     
-
       // Clean variants data properly
       const submissionData = {
         ...data,
@@ -160,7 +158,6 @@ export default function AdminProducts() {
         // Include deleted variant IDs for updates
         deletedVariantIds: data.deletedVariantIds || [],
       };
-
 
       if (editingProduct) {
         await updateMutation.mutateAsync({

@@ -9,14 +9,15 @@ export const viewport: Viewport = {
 
 // Базова SEO конфігурація
 export const baseMetadata: Metadata = {
-  // metadataBase: new URL('https://shchilnuidrill.com'),
+  metadataBase: new URL('https://shchilnuidrill.com'),
 
   title: {
     default: 'Drill shop | Щільний Drill для вас',
     template: '%s | Drill shop',
   },
 
-  description: 'Купити мерч онлайн. ',
+  description:
+    'Drill shop - офіційний магазин стильного мерчу. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні. Щільний Drill для справжніх цінителів.',
 
   openGraph: {
     title: 'Drill shop',
