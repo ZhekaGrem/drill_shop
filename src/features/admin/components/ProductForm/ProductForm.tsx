@@ -178,26 +178,30 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
         options: values.options || {},
         promoType: values.promoType || undefined,
         promoConfig: values.promoType && values.promoConfig ? values.promoConfig : undefined,
-        promoEndsAt: values.promoType && values.promoEndsAt instanceof Date ? values.promoEndsAt.toISOString() : undefined,
+        promoEndsAt:
+          values.promoType && values.promoEndsAt instanceof Date
+            ? values.promoEndsAt.toISOString()
+            : undefined,
         variants:
           variants.length > 0
             ? variants
-              .map((v, index) => ({
-                ...(v.id && { id: v.id }),
-                sku: v.sku.trim(),
-                name: v.name?.trim() || null,
-                price: Number(v.price),
-                costPrice: v.costPrice ? Number(v.costPrice) : null,
-                unitValue: v.unitValue ? Number(v.unitValue) : null,
-                quantity: Number(v.quantity) || 0,
-                options: v.options || {},
-                promoType: v.promoType || null,
-                promoConfig: v.promoType && v.promoConfig ? v.promoConfig : null,
-                promoEndsAt: v.promoType && v.promoEndsAt instanceof Date ? v.promoEndsAt.toISOString() : null,
-                sortOrder: index,
-                isActive: true,
-              }))
-              .filter((v) => v.sku && v.price > 0)
+                .map((v, index) => ({
+                  ...(v.id && { id: v.id }),
+                  sku: v.sku.trim(),
+                  name: v.name?.trim() || null,
+                  price: Number(v.price),
+                  costPrice: v.costPrice ? Number(v.costPrice) : null,
+                  unitValue: v.unitValue ? Number(v.unitValue) : null,
+                  quantity: Number(v.quantity) || 0,
+                  options: v.options || {},
+                  promoType: v.promoType || null,
+                  promoConfig: v.promoType && v.promoConfig ? v.promoConfig : null,
+                  promoEndsAt:
+                    v.promoType && v.promoEndsAt instanceof Date ? v.promoEndsAt.toISOString() : null,
+                  sortOrder: index,
+                  isActive: true,
+                }))
+                .filter((v) => v.sku && v.price > 0)
             : undefined,
         deletedVariantIds:
           product?.variants

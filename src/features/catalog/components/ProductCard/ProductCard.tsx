@@ -69,12 +69,12 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
   }, [product.variants, product.options]);
 
   // Отримати значення варіанту для відображення (size або color)
-   const getVariantDisplayValue = (variant: any) => {
+  const getVariantDisplayValue = (variant: any) => {
     return variant.name || 'Варіант';
   };
 
   // Лейбл для варіантів
-   const variantLabel = useMemo(() => {
+  const variantLabel = useMemo(() => {
     if (!showVariantsInCatalog || !product.variants || product.variants.length === 0) return '';
     return 'Варіант:';
   }, [showVariantsInCatalog, product.variants]);
@@ -125,7 +125,7 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
         }
       }
 
-       // ✅ Якщо товар-контейнер (hasVariants = true), головний товар не можна купити
+      // ✅ Якщо товар-контейнер (hasVariants = true), головний товар не можна купити
       if (product.hasVariants && selectedVariant === 'main') {
         notifications.show({
           message: `Оберіть ${variantLabel.replace(':', '')}`,
@@ -162,7 +162,7 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
         return;
       }
 
-       // ✅ Якщо товар-контейнер (hasVariants = true), варіант обов'язковий
+      // ✅ Якщо товар-контейнер (hasVariants = true), варіант обов'язковий
       if (product.hasVariants && !selectedVariant) {
         notifications.show({
           message: 'Оберіть варіант товару',
@@ -287,7 +287,8 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
 
               <div className={styles.variants__options}>
                 {/* Додаємо головний товар якщо він має size/color */}
-                {!product.hasVariants && product.options &&
+                {!product.hasVariants &&
+                  product.options &&
                   Object.keys(product.options).some((k) => {
                     const key = k.toLowerCase();
                     return key === 'size' || key === 'color';

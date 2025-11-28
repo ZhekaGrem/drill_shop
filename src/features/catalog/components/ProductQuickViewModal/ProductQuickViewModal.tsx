@@ -169,9 +169,9 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
               <CloudinaryImage
                 src={getImageUrl(
                   sortedImages[selectedImageIndex]?.url ||
-                  sortedImages[selectedImageIndex]?.publicId ||
-                  primaryImage?.url ||
-                  primaryImage?.publicId
+                    sortedImages[selectedImageIndex]?.publicId ||
+                    primaryImage?.url ||
+                    primaryImage?.publicId
                 )}
                 alt={product.name}
                 className={styles.gallery__mainImage}
@@ -191,8 +191,9 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
               {sortedImages.map((image, index) => (
                 <Button
                   key={image.id}
-                  className={`${styles.gallery__thumbnail} ${index === selectedImageIndex ? styles.gallery__thumbnailActive : ''
-                    }`}
+                  className={`${styles.gallery__thumbnail} ${
+                    index === selectedImageIndex ? styles.gallery__thumbnailActive : ''
+                  }`}
                   variant="ghost"
                   size="fl"
                   onClick={() => setSelectedImageIndex(index)}>
@@ -273,11 +274,11 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
                   // Показуємо головний товар тільки якщо hasVariants = false
                   ...(!product.hasVariants
                     ? [
-                      {
-                        value: 'main',
-                        label: `${product.name}`,
-                      },
-                    ]
+                        {
+                          value: 'main',
+                          label: `${product.name}`,
+                        },
+                      ]
                     : []),
                   ...(product.variants?.map((variant: any) => ({
                     value: variant.id,
@@ -384,8 +385,9 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
             </div>
 
             <Button
-              className={`${styles.addToCartButton} ${!isInStock ? styles.addToCartButton__disabled : ''} ${isClicked ? styles.addToCartButton__success : ''
-                }`}
+              className={`${styles.addToCartButton} ${!isInStock ? styles.addToCartButton__disabled : ''} ${
+                isClicked ? styles.addToCartButton__success : ''
+              }`}
               size="lg"
               onClick={handleAddToCart}
               disabled={!isInStock}>
