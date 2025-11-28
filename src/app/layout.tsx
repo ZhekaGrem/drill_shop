@@ -5,7 +5,7 @@ import '@mantine/core/styles.css';
 import { Providers } from '@/shared/providers/Providers';
 import { LayoutWrapper } from './LayoutWrapper';
 import { ErrorBoundary } from '@/shared/providers/ErrorBoundary';
-import { baseMetadata, viewport, structuredData } from '@/shared/config/seo';
+import { baseMetadata, viewport, structuredData } from './seo';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { JsonLd } from '@/shared/components/JsonLd';
 

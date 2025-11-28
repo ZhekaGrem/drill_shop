@@ -4,6 +4,5 @@
 export * from './content';
 export * from './assets';
 export * from './site';
-export * from './seo';
 export * from './mantine-theme';
 export * from './design-tokens';

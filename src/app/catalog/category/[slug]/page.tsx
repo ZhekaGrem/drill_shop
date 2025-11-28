@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { productsApi, categoriesApi } from '@/features/catalog/api/products';
 import CategoryPageClient from './CategoryPageClient';
 import { JsonLd } from '@/shared/components/JsonLd';
-import { structuredData } from '@/shared/config/seo';
+import { structuredData } from '../../../seo';
 
 // Revalidate кожні 6 годин
 export const revalidate = 21600;

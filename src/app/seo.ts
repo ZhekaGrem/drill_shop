@@ -1,4 +1,4 @@
-// src/shared/config/seo.ts
+// src/app/seo.ts
 import { Metadata, Viewport } from 'next';
 
 // Viewport для мобільної оптимізації
@@ -48,7 +48,7 @@ export const baseMetadata: Metadata = {
 
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/favicon.ico' },
       { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
       { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },

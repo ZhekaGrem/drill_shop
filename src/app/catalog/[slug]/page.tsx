@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { productsApi } from '@/features/catalog/api/products';
 import ProductDetailsClient from './ProductDetailsClient';
 import { JsonLd } from '@/shared/components/JsonLd';
-import { structuredData } from '@/shared/config/seo';
+import { structuredData } from '../../seo';
 
 // Revalidate кожні 60 хвилин
 export const revalidate = 86400;
