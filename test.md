@@ -1,4 +1,4 @@
-# Тестові сценарії - Shop Sausages E-commerce Platform
+# Тестові сценарії - Shop  E-commerce Platform
 
 ## Зміст
 

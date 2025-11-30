@@ -425,17 +425,14 @@ select {
 input:hover,
 textarea:hover,
 select:hover {
-  background: var(--background-secondary);
+  background: var(--accent-red);
+  color: var(--text-inverse);
 }
 
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow:
-    inset 1px 1px 0px rgba(43, 43, 39, 0.1),
-    0 0 0 3px rgba(230, 219, 27, 0.2);
 }
 
 input::placeholder,

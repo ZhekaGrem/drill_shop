@@ -2,16 +2,11 @@
 'use client';
 import React, { useState } from 'react';
 import {
-  IconUser,
   IconLogout,
-  IconChevronDown,
   IconSettings,
   IconHeart,
-  IconShoppingCart,
-  IconSearch,
-  IconMenu2,
-  IconX,
-  IconChevronRight,
+
+
 } from '@tabler/icons-react';
 import { Box, Drawer, Menu, ScrollArea, Stack, Divider, Text, Group, Badge, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -24,7 +19,7 @@ import { CartDrawer } from '@/features/cart/components/CartDrawer';
 import { AuthDrawer } from '@/features/auth/components/AuthDrawer/AuthDrawer';
 import { content } from '@/shared/config/content';
 import { siteConfig } from '@/shared/config/site';
-
+import { IconX, MenuIcon, IconSearch, IconCart, IconUser } from '@/shared/components/Svg'
 // SINGLE logout handler
 const useLogoutHandler = () => {
   const logout = useAuthStore((state) => state.logout);
@@ -37,12 +32,12 @@ const useLogoutHandler = () => {
 
 // ✅ Оптимізовано: React.memo
 const AuthControl = React.memo(
-  ({ onNavigate, onOpenAuth }: { onNavigate?: () => void; onOpenAuth: () => void }) => {
+  ({ onNavigate, onOpenAuth, onCloseAuth, isAuthDrawerOpen }: { onNavigate?: () => void; onOpenAuth: () => void; onCloseAuth: () => void; isAuthDrawerOpen: boolean }) => {
     const userProfile = useAuthStore((state) => state.userProfile);
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     const isInitialized = useAuthStore((state) => state.isInitialized);
     const handleLogout = useLogoutHandler();
-
+    const [userMenuOpened, setUserMenuOpened] = useState(false);
     const isAdmin = userProfile?.role === 'ADMIN' || userProfile?.role === 'SUPER_ADMIN';
     const isManager = userProfile?.role === 'MANAGER' || isAdmin;
 
@@ -60,18 +55,18 @@ const AuthControl = React.memo(
         <Menu shadow="md" width={200} classNames={{ dropdown: styles.userMenu }}>
           <Menu.Target>
             <button className={styles.iconButton}>
-              <IconUser />
+              {userMenuOpened ? <IconX /> : <IconUser />}
             </button>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Label>{content.header.accountMenu.label}</Menu.Label>
-            <Menu.Item component={Link} href="/profile" leftSection={<IconUser size={18} />}>
+            <Menu.Item component={Link} href="/profile" leftSection={<IconUser />}>
               {content.header.accountMenu.profile}
             </Menu.Item>
             <Menu.Item component={Link} href="/profile/favorites" leftSection={<IconHeart size={18} />}>
               {content.header.accountMenu.favorites}
             </Menu.Item>
-            <Menu.Item component={Link} href="/profile/orders" leftSection={<IconShoppingCart size={18} />}>
+            <Menu.Item component={Link} href="/profile/orders" leftSection={<IconUser />}>
               {content.header.accountMenu.orders}
             </Menu.Item>
             {isManager && (
@@ -91,10 +86,16 @@ const AuthControl = React.memo(
         </Menu>
       );
     }
-
+    const handleAuthToggle = () => {
+      if (isAuthDrawerOpen) {
+        onCloseAuth();
+      } else {
+        onOpenAuth();
+      }
+    };
     return (
-      <button className={styles.iconButton} onClick={onOpenAuth}>
-        <IconUser />
+      <button className={styles.iconButton} onClick={handleAuthToggle}>
+        {isAuthDrawerOpen ? <IconX /> : <IconUser />}
       </button>
     );
   }
@@ -116,12 +117,12 @@ const MobileMenu = React.memo(
     };
 
     const menuItems = [
-      { label: 'Розпродаж', href: '/catalog?sale=true', icon: '🔥' },
-      { label: 'ТОП продажів', href: '/catalog?sort=popularity_desc', icon: '⭐' },
-      { label: 'Футболки', href: '/catalog?category=t-shirts', icon: '👕' },
-      { label: 'Худі', href: '/catalog?category=hoodies', icon: '🧥' },
-      { label: 'Кепки', href: '/catalog?category=caps', icon: '🧢' },
-      { label: 'Аксесуари', href: '/catalog?category=accessories', icon: '🎒' },
+      { label: 'Розпродаж', href: '/catalog?sale=true' },
+      { label: 'ТОП продажів', href: '/catalog?sort=popularity_desc' },
+      { label: 'Футболки', href: '/catalog?category=t-shirts' },
+      { label: 'Худі', href: '/catalog?category=hoodies' },
+      { label: 'Кепки', href: '/catalog?category=caps' },
+      { label: 'Аксесуари', href: '/catalog?category=accessories' },
     ];
 
     return (
@@ -130,10 +131,8 @@ const MobileMenu = React.memo(
           {menuItems.map((item) => (
             <Link key={item.href} href={item.href} className={styles.menuLink} onClick={onNavigate}>
               <div className={styles.menuIcon}>
-                <span>{item.icon}</span>
                 <span>{item.label}</span>
               </div>
-              <IconChevronRight size={20} />
             </Link>
           ))}
 
@@ -145,24 +144,21 @@ const MobileMenu = React.memo(
               </Text>
               <Link href="/profile" className={styles.menuLink} onClick={onNavigate}>
                 <div className={styles.menuIcon}>
-                  <IconUser size={24} />
+                  <IconUser />
                   <span>{content.navigation.profile}</span>
                 </div>
-                <IconChevronRight size={20} />
               </Link>
               <Link href="/profile/favorites" className={styles.menuLink} onClick={onNavigate}>
                 <div className={styles.menuIcon}>
                   <IconHeart size={24} />
                   <span>{content.navigation.favorites}</span>
                 </div>
-                <IconChevronRight size={20} />
               </Link>
               <Link href="/profile/orders" className={styles.menuLink} onClick={onNavigate}>
                 <div className={styles.menuIcon}>
-                  <IconShoppingCart size={24} />
+                  <IconUser />
                   <span>{content.navigation.orders}</span>
                 </div>
-                <IconChevronRight size={20} />
               </Link>
               {isManager && (
                 <>
@@ -172,7 +168,6 @@ const MobileMenu = React.memo(
                       <IconSettings size={24} />
                       <span>{content.navigation.adminPanel}</span>
                     </div>
-                    <IconChevronRight size={20} />
                   </Link>
                 </>
               )}
@@ -182,7 +177,6 @@ const MobileMenu = React.memo(
                   <IconLogout size={24} />
                   <span>{content.navigation.logout}</span>
                 </div>
-                <IconChevronRight size={20} />
               </div>
             </>
           )}
@@ -222,7 +216,7 @@ export function Header() {
         {/* Left section: Menu + Search (Desktop only) */}
         <div className={`${styles.leftSection} ${styles.desktopOnly}`}>
           <button className={styles.iconButton} onClick={toggleDrawer}>
-            <IconMenu2 />
+            {drawerOpened ? <IconX /> : <MenuIcon />}
           </button>
           <form onSubmit={handleSearch} className={styles.searchBox}>
             <IconSearch className={styles.searchIcon} />
@@ -238,7 +232,7 @@ export function Header() {
         {/* Mobile left: Menu only */}
         <div className={`${styles.leftSection} ${styles.mobileOnly}`}>
           <button className={styles.iconButton} onClick={toggleDrawer}>
-            <IconMenu2 />
+            {drawerOpened ? <IconX /> : <MenuIcon />}
           </button>
         </div>
 
@@ -250,7 +244,7 @@ export function Header() {
         {/* Right section: Cart + User */}
         <div className={styles.rightSection}>
           <button className={styles.cartButton} onClick={toggleCartDrawer}>
-            <IconShoppingCart />
+            <IconCart />
             {calculations && calculations.itemsCount > 0 && (
               <Badge size="sm" circle color="red" className={styles.cartIconBadge}>
                 {calculations.itemsCount > 99 ? '99+' : calculations.itemsCount}
@@ -258,7 +252,8 @@ export function Header() {
             )}
             <span className={styles.desktopOnly}>{calculations?.itemsCount || 0}</span>
           </button>
-          <AuthControl onOpenAuth={openAuthDrawer} />
+          <AuthControl onOpenAuth={openAuthDrawer} onCloseAuth={closeAuthDrawer}
+            isAuthDrawerOpen={authDrawerOpened} />
         </div>
       </header>
 

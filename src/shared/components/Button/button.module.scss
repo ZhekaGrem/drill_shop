@@ -34,19 +34,22 @@
   &--secondary {
     background: var(--secondary); // #E0DDCA
     color: var(--primary); // #33603B
-
+    border: 2px solid var(--primary);
     &:hover:not(:disabled) {
       background: var(--accent); // #E6DB1B
+      color: var(--text-primary);
       color: var(--text-primary); // #2B2B27
     }
   }
 
   &--yellow {
     background: var(--accent); // #E6DB1B
-    color: var(--text-primary); // #2B2B27
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
 
     &:hover:not(:disabled) {
       color: var(--primary); // #33603B
+      border: 2px solid var(--primary);
     }
   }
 

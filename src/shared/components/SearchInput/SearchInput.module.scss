@@ -6,12 +6,11 @@
 }
 
 .searchInput__container {
-  max-width: 300px;
+  max-width: 150px;
 
   position: relative;
   display: flex;
   align-items: center;
-  background: var(--accent);
   border-radius: 8px;
   transition: all 0.2s ease;
 }
@@ -24,7 +23,6 @@
 .searchInput__icon {
   position: absolute;
   left: 12px;
-  color: var(--text-inverse);
   pointer-events: none;
   z-index: 1;
 }
@@ -37,6 +35,9 @@
   font-size: var(--text-base);
   color: var(--text-inverse);
   outline: none;
+  &:hover{
+    color: var(--text-inverse);
+  }
 }
 
 .searchInput__field::placeholder {

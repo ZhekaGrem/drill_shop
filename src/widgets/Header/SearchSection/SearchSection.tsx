@@ -11,7 +11,7 @@ export function SearchSection() {
       <Group className={styles.search} justify="flex-end">
         <SearchInput />
       </Group>
-      <div className={styles.searchContainer} />
+      
     </div>
   );
 }

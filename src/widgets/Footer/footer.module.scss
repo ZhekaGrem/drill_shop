@@ -3,13 +3,11 @@
 
 .footer {
   background: var(--background-secondary);
-  border-top: var(--border-width) solid var(--border-color);
-  padding: var(--spacing-xl) 0;
+  padding: 40px 0;
   margin-top: auto;
 }
 
 .container {
-  max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
 }
@@ -21,22 +19,31 @@
   gap: var(--spacing-xl);
   margin-bottom: var(--spacing-xl);
   padding-bottom: var(--spacing-xl);
-  border-bottom: 1px solid var(--border-color);
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
   }
 }
+.line {
+  width: 100%;
+  border-bottom: 1px solid var(--background);
+}
 
 // Column title
 .columnTitle {
   font-family: var(--font-condensed);
-  font-size: var(--text-xl);
-  font-weight: var(--fw-bold);
   color: var(--text-inverse); // #E0DDCA on dark bg
   margin-bottom: var(--spacing-md);
   text-transform: none;
+  font-weight: 700;
+  font-size: var(--text-xl);
+  line-height: 130%;
+  &__about {
+  color: var(--text-inverse); 
+    font-weight: 400;
+    font-size: var(--text-xl);
+  }
 }
 
 // Links column
@@ -49,16 +56,18 @@
 .linksColumn a,
 .blogLinks a {
   font-family: var(--font-condensed);
-  font-size: var(--text-base);
+  font-size: var(--text-xl);
   font-weight: var(--fw-medium);
   color: var(--text-inverse); // #E0DDCA on dark bg
   text-decoration: none;
   transition: var(--transition-fast);
   padding: 4px 0;
+  display: inline-block;
 
   &:hover {
-    color: var(--accent-red); // #A63C48 red hover
+    background-color: var(--accent-red); // #A63C48 red hover
     transform: translateX(2px);
+    color: var(--text-inverse);
   }
 }
 
@@ -129,7 +138,6 @@
   color: var(--text-inverse); // #E0DDCA on dark bg
   text-decoration: none;
   background: transparent;
-  border: 2px solid var(--text-inverse);
   border-radius: 0;
   transition: var(--transition-fast);
 
@@ -192,7 +200,8 @@
 
   @media (max-width: 768px) {
     flex-direction: column;
-    text-align: center;
+    text-align: start;
+    align-items: start;
   }
 }
 
@@ -279,7 +288,7 @@
   }
 
   .container {
-    padding: 0 var(--spacing-md);
+    padding: 0 var(--spacing-lg);
   }
 
   .footerGrid {

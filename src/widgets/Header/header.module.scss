@@ -6,8 +6,8 @@
   top: 0;
   z-index: 1000;
   background: var(--background);
-  border-bottom: var(--border-width) solid var(--border-color);
-  box-shadow: var(--shadow-md);
+
+  border-bottom: 2px solid var(--text-secondary);
 }
 
 .header {
@@ -17,7 +17,8 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-lg);
-  background: var(--background);
+
+  max-width: 1200px;
 }
 
 // Left section (Menu, Search)
@@ -56,7 +57,7 @@
   color: var(--text-primary);
 
   &:hover {
-    background: var(--background-secondary);
+    background: var(--accent-red);
     transform: translate(1px, 1px);
   }
 
@@ -87,6 +88,7 @@
   color: var(--text-primary);
 
   &:hover {
+    background: var(--accent-red);
     transform: translate(1px, 1px);
   }
 
@@ -113,9 +115,11 @@
   right: -4px;
   min-width: 18px;
   height: 18px;
-  font-size: 11px;
-  font-weight: var(--fw-black);
+  font-size: 20px;
+  line-height: 130%;
+  font-weight: var(--fw-bold);
   z-index: 10;
+  color: var(--text-secondary);
 }
 
 // Search input
@@ -125,7 +129,8 @@
   align-items: center;
   width: 300px;
   &:hover {
-    background: var(--background-secondary);
+    background: var(--accent-red);
+
     .searchIcon {
       display: none;
     }
@@ -143,7 +148,7 @@
   padding: 8px 40px 8px var(--spacing-md);
   font-family: var(--font-condensed);
   font-size: var(--text-base);
-  color: var(--text-primary);
+  color: var(--text-secondary);
   background: var(--background);
 
   &:focus {
@@ -204,15 +209,17 @@
   justify-content: space-between;
   padding: var(--spacing-md);
   font-family: var(--font-condensed);
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
   font-weight: var(--fw-bold);
-  color: var(--text-primary);
+  color: var(--text-secondary);
   text-decoration: none;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 2px solid var(--text-secondary);
   transition: var(--transition-fast);
-
+  line-height: 130%;
   &:hover {
-    background: var(--background-secondary);
+    background: var(--accent-red);
+    color: var(--text-inverse);
+    border-bottom: var(--accent-red);
   }
 
   svg {
@@ -253,7 +260,7 @@
       }
 
       &:hover {
-        background: var(--background-secondary) !important;
+        background: var(--accent-red);
       }
     }
 
@@ -299,7 +306,7 @@
   transition: var(--transition-fast);
 
   &:hover {
-    color: var(--btn-primary);
+    background: var(--accent-red);
   }
 }
 
@@ -362,6 +369,11 @@
 // Hide/show elements on different screens
 .desktopOnly {
   display: flex;
+
+  font-size: 20px;
+  line-height: 130%;
+  font-weight: var(--fw-bold);
+  color: var(--text-secondary);
 
   @media (max-width: 768px) {
     display: none;

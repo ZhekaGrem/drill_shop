@@ -1,0 +1,150 @@
+// src/shared/components/Select/select.module.scss
+.select {
+  font-family: var(--font-body);
+  position: relative;
+
+  // Full width option
+  &--fullWidth {
+    width: 100%;
+  }
+}
+
+.select__input {
+  font-weight: 400;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  // Variant: default (стандартний, мінімалістичний)
+  &--default {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    color: var(--text-primary);
+
+    &:hover:not(:disabled) {
+      border-color: var(--primary);
+    }
+
+    &:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 184, 0, 0.1);
+    }
+  }
+
+  // Variant: filled (заповнений фон)
+  &--filled {
+    background: #f1f3f5;
+    border: 2px solid transparent;
+    color: var(--text-primary);
+
+    &:hover:not(:disabled) {
+      background: #e9ecef;
+    }
+
+    &:focus {
+      background: #ffffff;
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 184, 0, 0.1);
+    }
+  }
+
+  // Variant: bordered (яскрава рамка)
+  &--bordered {
+    background: #ffffff;
+    border: 2px solid var(--primary);
+    color: var(--text-primary);
+
+    &:hover:not(:disabled) {
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(255, 184, 0, 0.15);
+    }
+
+    &:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.2);
+    }
+  }
+
+  // Size: sm
+  &--sm {
+    padding: 6px 12px;
+    font-size: 14px;
+    height: 36px;
+    border-radius: 4px;
+  }
+
+  // Size: md
+  &--md {
+    padding: 8px 16px;
+    font-size: 16px;
+    height: 44px;
+    border-radius: 4px;
+  }
+
+  // Size: lg
+  &--lg {
+    padding: 12px 20px;
+    font-size: 18px;
+    height: 52px;
+    border-radius: 6px;
+  }
+
+  // Size: xl
+  &--xl {
+    padding: 14px 24px;
+    font-size: 20px;
+    height: 60px;
+    border-radius: 8px;
+  }
+}
+
+// Dropdown menu styles
+.select__dropdown {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 4px;
+  padding: 4px 0;
+}
+
+// Option styles
+.select__option {
+  padding: 10px 16px;
+  font-size: 16px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #f8f9fa;
+  }
+
+  &[data-selected='true'] {
+    background: var(--primary);
+    color: var(--text-inverse);
+
+    &:hover {
+      background: var(--accent);
+    }
+  }
+
+  &[data-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+    }
+  }
+}

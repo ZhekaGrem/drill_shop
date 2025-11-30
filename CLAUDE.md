@@ -6,7 +6,7 @@
 
 ## 🎯 Огляд проекту
 
-**Shop Sausages** — це Next.js e-commerce застосунок для продажу одягу
+**Shop** — це Next.js e-commerce застосунок для продажу одягу
 **Feature-Sliced Design (FSD)** архітектури.
 
 ### Стек технологій
@@ -433,7 +433,7 @@ src/features/myfeature/
 ```bash
 # 1. Клонування та встановлення
 git clone <repo-url>
-cd shop_sausages/frontend
+cd shop/frontend
 npm install
 
 # 2. Налаштування

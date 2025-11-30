@@ -4,6 +4,7 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { IconShoppingBag } from '@tabler/icons-react';
 import { Product } from '@/shared/types';
 import { useCart } from '@/features/cart/hooks/useCart';
@@ -20,10 +21,12 @@ import styles from './ProductCard.module.scss';
 interface ProductCardProps {
   product: Product;
   className?: string;
+  enableQuickView?: boolean; // Включити/виключити Quick View модалку
 }
 
 // ✅ ОПТИМІЗОВАНО: React.memo для запобігання непотрібним ререндерам
-export const ProductCard = React.memo<ProductCardProps>(({ product, className = '' }) => {
+export const ProductCard = React.memo<ProductCardProps>(({ product, className = '', enableQuickView = true }) => {
+  const router = useRouter();
   const { addItem, isAddingItem } = useCart();
   const { setTimeoutSafe } = useTimeout();
   const [isClicked, setIsClicked] = useState(false);
@@ -156,9 +159,15 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
         return;
       }
 
-      // ✅ Якщо варіанти БЕЗ SIZE/COLOR - показати Quick View
+      // ✅ Якщо варіанти БЕЗ SIZE/COLOR
       if (product.variants && product.variants.length > 0 && !showVariantsInCatalog) {
-        setQuickViewOpened(true);
+        if (enableQuickView) {
+          // Показати Quick View якщо увімкнено
+          setQuickViewOpened(true);
+        } else {
+          // Перенаправити на сторінку товару якщо QuickView вимкнено
+          router.push(`/catalog/${product.slug}`);
+        }
         return;
       }
 
@@ -242,9 +251,17 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
     return 'Додати';
   };
 
+  const handleCardClick = () => {
+    if (enableQuickView) {
+      setQuickViewOpened(true);
+    } else {
+      router.push(`/catalog/${product.slug}`);
+    }
+  };
+
   return (
     <div className={`${styles.card} ${className}`}>
-      <div className={styles.link} onClick={() => setQuickViewOpened(true)}>
+      <div className={styles.link} onClick={handleCardClick}>
         <div
           className={styles.productCardImageContainer}
           onMouseEnter={() => setIsImageHovered(true)}
@@ -377,11 +394,13 @@ export const ProductCard = React.memo<ProductCardProps>(({ product, className = 
       </div>
 
       {/* Quick View Modal */}
-      <ProductQuickViewModal
-        product={product}
-        opened={quickViewOpened}
-        onClose={() => setQuickViewOpened(false)}
-      />
+      {enableQuickView && (
+        <ProductQuickViewModal
+          product={product}
+          opened={quickViewOpened}
+          onClose={() => setQuickViewOpened(false)}
+        />
+      )}
     </div>
   );
 });

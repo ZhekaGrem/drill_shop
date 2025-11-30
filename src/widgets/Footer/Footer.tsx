@@ -3,7 +3,8 @@
 
 import { useState, useEffect } from 'react';
 import { Container, Stack, Text } from '@mantine/core';
-import { IconBrandInstagram, IconBrandTelegram } from '@tabler/icons-react';
+import IconInstagram from './IconInstagram';
+import IconTelegram from './IconTelegram';
 import Link from 'next/link';
 import styles from './footer.module.scss';
 import { siteConfig } from '@/shared/config/site';
@@ -49,7 +50,7 @@ export function Footer() {
 
           {/* Column 2: Про нас */}
           <div className={styles.linksColumn}>
-            <Text className={styles.columnTitle}>Про нас</Text>
+            <Text className={styles.columnTitle__about}>Про нас</Text>
             <Stack gap="xs">
               <Link href="/about">Зв'язок з нами</Link>
               <Link href="/delivery">Доставка та оплата</Link>
@@ -75,7 +76,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.socialLink}>
-                <IconBrandInstagram size={20} />
+                <IconInstagram />
                 <span>Instagram</span>
               </a>
               <a
@@ -83,14 +84,17 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.socialLink}>
-                <IconBrandTelegram size={20} />
+                <IconTelegram />
                 <span>Telegram</span>
               </a>
             </Stack>
           </div>
         </div>
 
-        {/* Bottom section */}
+      </Container>
+      <div className={styles.line} />
+      {/* Bottom section */}
+      <Container size="lg" className={styles.container}>
         <div className={styles.bottomSection}>
           <Text className={styles.copyright}>© {currentYear} DrillShop.com</Text>
 
@@ -100,8 +104,7 @@ export function Footer() {
               Danil Okuniev
             </a>
           </div>
-        </div>
-      </Container>
+        </div></Container>
     </footer>
   );
 }

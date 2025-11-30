@@ -11,7 +11,7 @@ import { SearchInput } from '@/features/catalog';
 export const Header = () => {
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>Shop Sausages</div>
+      <div className={styles.logo}>Shop </div>
 
       {/* Пошук товарів */}
       <div className={styles.searchWrapper}>

@@ -33,8 +33,6 @@ import {
   IconEdit,
   IconTrash,
   IconPlus,
-  IconChevronDown,
-  IconChevronUp,
 } from '@tabler/icons-react';
 import { Order, OrderItem, Product, OrderStatus, PaymentStatus } from '@/shared/types/generated.types';
 import { useModifyOrder } from '@/features/admin/hooks/useModifyOrder';

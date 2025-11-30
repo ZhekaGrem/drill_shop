@@ -1,4 +1,4 @@
-# 🛒 Shop Sausages - E-Commerce Frontend
+# 🛒 Shop  - E-Commerce Frontend
 
 > Сучасний інтернет-магазин на Next.js 15 з Feature-Sliced Design архітектурою
 
@@ -26,7 +26,7 @@
 
 ## 🎯 Про проект
 
-**Shop Sausages** — це повнофункціональний e-commerce застосунок для продажу м'ясних виробів з:
+**Shop** — це повнофункціональний e-commerce застосунок для продажу м'ясних виробів з:
 
 - ✅ Каталогом товарів з фільтрами та пошуком
 - ✅ Кошиком та оформленням замовлення
@@ -88,7 +88,7 @@ npm --version
 ```bash
 # 1. Клонування репозиторію
 git clone <your-repo-url>
-cd shop_sausages/frontend
+cd shop/frontend
 
 # 2. Встановлення залежностей
 npm install
