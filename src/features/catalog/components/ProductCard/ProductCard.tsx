@@ -26,7 +26,7 @@ interface ProductCardProps {
 
 // ✅ ОПТИМІЗОВАНО: React.memo для запобігання непотрібним ререндерам
 export const ProductCard = React.memo<ProductCardProps>(
-  ({ product, className = '', enableQuickView = true }) => {
+  ({ product, className = '', enableQuickView = false }) => {
     const router = useRouter();
     const { addItem, isAddingItem } = useCart();
     const { setTimeoutSafe } = useTimeout();
@@ -164,7 +164,7 @@ export const ProductCard = React.memo<ProductCardProps>(
         if (product.variants && product.variants.length > 0 && !showVariantsInCatalog) {
           if (enableQuickView) {
             // Показати Quick View якщо увімкнено
-            setQuickViewOpened(true);
+            setQuickViewOpened(false);
           } else {
             // Перенаправити на сторінку товару якщо QuickView вимкнено
             router.push(`/catalog/${product.slug}`);
@@ -254,7 +254,8 @@ export const ProductCard = React.memo<ProductCardProps>(
 
     const handleCardClick = () => {
       if (enableQuickView) {
-        setQuickViewOpened(true);
+        // чи відкривати міні вікно з товаром  Quick View
+        setQuickViewOpened(false);
       } else {
         router.push(`/catalog/${product.slug}`);
       }
@@ -397,6 +398,7 @@ export const ProductCard = React.memo<ProductCardProps>(
         {/* Quick View Modal */}
         {enableQuickView && (
           <ProductQuickViewModal
+
             product={product}
             opened={quickViewOpened}
             onClose={() => setQuickViewOpened(false)}
