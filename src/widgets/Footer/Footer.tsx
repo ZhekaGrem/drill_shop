@@ -90,7 +90,6 @@ export function Footer() {
             </Stack>
           </div>
         </div>
-
       </Container>
       <div className={styles.line} />
       {/* Bottom section */}
@@ -104,7 +103,8 @@ export function Footer() {
               Danil Okuniev
             </a>
           </div>
-        </div></Container>
+        </div>
+      </Container>
     </footer>
   );
 }

@@ -1,4 +1,4 @@
-# 🛒 Shop  - E-Commerce Frontend
+# 🛒 Shop - E-Commerce Frontend
 
 > Сучасний інтернет-магазин на Next.js 15 з Feature-Sliced Design архітектурою
 

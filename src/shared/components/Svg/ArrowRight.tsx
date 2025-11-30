@@ -1,12 +1,19 @@
-import React from 'react'
-interface IconProps extends React.ComponentPropsWithoutRef<'svg'> { }
- export function ArrowRight({ className, ...props }: IconProps) {
-    return (
-        <svg className={className}
-            {...props} width="18" height="16" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 6V8H12V10H14V8H16V6H14V4H12V6H0ZM10 2H12V4H10V2ZM10 2H8V0H10V2ZM10 12H12V10H10V12ZM10 12H8V14H10V12Z" fill="currentColor" />
-        </svg>
-
-    )
+import React from 'react';
+interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {}
+export function ArrowRight({ className, ...props }: IconProps) {
+  return (
+    <svg
+      className={className}
+      {...props}
+      width="18"
+      height="16"
+      viewBox="0 0 16 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0 6V8H12V10H14V8H16V6H14V4H12V6H0ZM10 2H12V4H10V2ZM10 2H8V0H10V2ZM10 12H12V10H10V12ZM10 12H8V14H10V12Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
 }
-

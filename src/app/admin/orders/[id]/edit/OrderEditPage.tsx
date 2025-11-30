@@ -27,13 +27,7 @@ import {
   Box,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import {
-  IconArrowLeft,
-  IconAlertCircle,
-  IconEdit,
-  IconTrash,
-  IconPlus,
-} from '@tabler/icons-react';
+import { IconArrowLeft, IconAlertCircle, IconEdit, IconTrash, IconPlus } from '@tabler/icons-react';
 import { Order, OrderItem, Product, OrderStatus, PaymentStatus } from '@/shared/types/generated.types';
 import { useModifyOrder } from '@/features/admin/hooks/useModifyOrder';
 import { apiClient } from '@/shared/api/client';

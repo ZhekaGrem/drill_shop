@@ -1,13 +1,7 @@
 // src/widgets/Header/Header.tsx
 'use client';
 import React, { useState } from 'react';
-import {
-  IconLogout,
-  IconSettings,
-  IconHeart,
-
-
-} from '@tabler/icons-react';
+import { IconLogout, IconSettings, IconHeart } from '@tabler/icons-react';
 import { Box, Drawer, Menu, ScrollArea, Stack, Divider, Text, Group, Badge, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect } from 'react';
@@ -19,7 +13,7 @@ import { CartDrawer } from '@/features/cart/components/CartDrawer';
 import { AuthDrawer } from '@/features/auth/components/AuthDrawer/AuthDrawer';
 import { content } from '@/shared/config/content';
 import { siteConfig } from '@/shared/config/site';
-import { IconX, MenuIcon, IconSearch, IconCart, IconUser } from '@/shared/components/Svg'
+import { IconX, MenuIcon, IconSearch, IconCart, IconUser } from '@/shared/components/Svg';
 // SINGLE logout handler
 const useLogoutHandler = () => {
   const logout = useAuthStore((state) => state.logout);
@@ -32,7 +26,17 @@ const useLogoutHandler = () => {
 
 // ✅ Оптимізовано: React.memo
 const AuthControl = React.memo(
-  ({ onNavigate, onOpenAuth, onCloseAuth, isAuthDrawerOpen }: { onNavigate?: () => void; onOpenAuth: () => void; onCloseAuth: () => void; isAuthDrawerOpen: boolean }) => {
+  ({
+    onNavigate,
+    onOpenAuth,
+    onCloseAuth,
+    isAuthDrawerOpen,
+  }: {
+    onNavigate?: () => void;
+    onOpenAuth: () => void;
+    onCloseAuth: () => void;
+    isAuthDrawerOpen: boolean;
+  }) => {
     const userProfile = useAuthStore((state) => state.userProfile);
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     const isInitialized = useAuthStore((state) => state.isInitialized);
@@ -54,9 +58,7 @@ const AuthControl = React.memo(
       return (
         <Menu shadow="md" width={200} classNames={{ dropdown: styles.userMenu }}>
           <Menu.Target>
-            <button className={styles.iconButton}>
-              {userMenuOpened ? <IconX /> : <IconUser />}
-            </button>
+            <button className={styles.iconButton}>{userMenuOpened ? <IconX /> : <IconUser />}</button>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Label>{content.header.accountMenu.label}</Menu.Label>
@@ -252,8 +254,11 @@ export function Header() {
             )}
             <span className={styles.desktopOnly}>{calculations?.itemsCount || 0}</span>
           </button>
-          <AuthControl onOpenAuth={openAuthDrawer} onCloseAuth={closeAuthDrawer}
-            isAuthDrawerOpen={authDrawerOpened} />
+          <AuthControl
+            onOpenAuth={openAuthDrawer}
+            onCloseAuth={closeAuthDrawer}
+            isAuthDrawerOpen={authDrawerOpened}
+          />
         </div>
       </header>
 

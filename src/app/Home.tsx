@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Suspense, lazy, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@/shared/components/Button/Button';
-import {ArrowRight} from '@/shared/components/Svg';
+import { ArrowRight } from '@/shared/components/Svg';
 import styles from './home.module.scss';
 
 // Lazy load Spline component для оптимізації
@@ -39,7 +39,8 @@ const Home = () => {
                 <Image
                   src="/assets/img/tshirt.webp"
                   alt="Завантаження..."
-                  width={700} height={700}
+                  width={700}
+                  height={700}
                   className={styles.placeholderImage}
                   priority
                 />
@@ -51,7 +52,8 @@ const Home = () => {
                     <Image
                       src="/assets/img/tshirt.webp"
                       alt="Завантаження..."
-                      width={700} height={700}
+                      width={700}
+                      height={700}
                       className={styles.placeholderImage}
                       priority
                     />
@@ -63,15 +65,10 @@ const Home = () => {
           </div>
 
           {/* Кнопка поверх футболки */}
-          <Button
-            size="promo"
-            variant="yellow"
-            onClick={handleGoToShop}
-          >
+          <Button size="promo" variant="yellow" onClick={handleGoToShop}>
             <span className={styles.bthSpan}>
-              В МАГАЗИН <ArrowRight  />
+              В МАГАЗИН <ArrowRight />
             </span>
-
           </Button>
         </div>
       </div>
