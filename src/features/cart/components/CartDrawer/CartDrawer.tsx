@@ -6,10 +6,11 @@ import { useMediaQuery } from '@mantine/hooks';
 import { IconShoppingCart } from '@tabler/icons-react';
 import { useCartDrawerState, useCartDrawerActions } from '@/shared/stores/cart';
 import { useCart } from '@/features/cart/hooks/useCart';
-import { CartItem } from './CartItem';
+import { CartItem } from '../CartItem/CartItem';
 import { formatPrice } from '@/shared/utils/cart-calculations';
 import Link from 'next/link';
 import { Button } from '@/shared/components/Button/Button';
+import styles from './CartDrawer.module.scss';
 
 export const CartDrawer = () => {
   const isOpen = useCartDrawerState();
@@ -30,6 +31,7 @@ export const CartDrawer = () => {
       position="right"
       size={isMobile ? '100%' : 'md'} // Full width on mobile
       overlayProps={{ opacity: 0.5, blur: 4 }}
+
       styles={{
         header: {
           padding: isMobile ? '16px 20px' : undefined,
@@ -38,15 +40,16 @@ export const CartDrawer = () => {
         body: {
           padding: isMobile ? '0' : undefined,
           height: '100%',
+          backgroundColor: 'var(--background)',
         },
         content: {
           display: 'flex',
           flexDirection: 'column',
         },
-      }}>
-      <Stack h="100%" justify="space-between" gap={0}>
+      }} >
+      <Stack h="100%" justify="space-between" gap={0} className={styles.drawer}>
         {error && (
-          <Box p="md" style={{ background: '#fee', borderBottom: '1px solid #fcc' }}>
+          <Box p="md" className={styles.body} >
             <Text size="sm" c="red">
               {error}
             </Text>
@@ -55,7 +58,7 @@ export const CartDrawer = () => {
         {hasItems && (
           <Box
             p={isMobile ? '16px 20px' : 'md'}
-            style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}>
+          >
             <Group justify="space-between">
               <Text size="sm" c="dimmed">
                 {calculations.itemsCount} товар(ів)
@@ -79,7 +82,7 @@ export const CartDrawer = () => {
           {!hasItems ? (
             <Center py="xl">
               <Stack align="center" gap="md">
-                <IconShoppingCart size={isMobile ? 64 : 48} color="var(--mantine-color-gray-5)" />
+                <IconShoppingCart size={isMobile ? 64 : 48} color="var(--text-secondary)" />
                 <Text c="dimmed" ta="center" size={isMobile ? 'md' : 'sm'}>
                   Ваш кошик порожній
                 </Text>
@@ -102,11 +105,11 @@ export const CartDrawer = () => {
         {/* Footer with total and checkout */}
         {hasItems && (
           <Stack gap="md" pt="md">
-            <Divider />
+            <Divider className={styles.divider} />
 
             <Group justify="space-between" p="md">
-              <Text fw={500}>Загалом:</Text>
-              <Text fw={700} size="lg">
+              <Text fw={700}>Загалом:</Text>
+              <Text fw={900} size="lg">
                 {formatPrice(calculations.totalAmount)}
               </Text>
             </Group>

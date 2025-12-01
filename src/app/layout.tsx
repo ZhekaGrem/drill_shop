@@ -19,7 +19,7 @@ const ibmPlexSans = IBM_Plex_Sans({
 
 const ibmPlexSansCondensed = IBM_Plex_Sans_Condensed({
   variable: '--font-condensed',
-  subsets: ['latin'],
+  subsets: ['cyrillic-ext'],
   weight: ['400', '500', '700'],
   display: 'swap',
 });
@@ -60,7 +60,7 @@ export default function RootLayout({
         className={`${ibmPlexSans.variable} ${ibmPlexSansCondensed.variable} ${ibmPlexMono.variable} ${rubik.variable} ${rubikGlitch.variable}`}>
         <JsonLd data={structuredData.organization()} />
         <JsonLd data={structuredData.website()} />
-        <GoogleAnalytics gaId="G-2DZN3ZESDB" />
+        {/* <GoogleAnalytics gaId="G-2DZN3ZESDB" /> */}
         <Providers>
           <LayoutWrapper>
             <ErrorBoundary>{children}</ErrorBoundary>

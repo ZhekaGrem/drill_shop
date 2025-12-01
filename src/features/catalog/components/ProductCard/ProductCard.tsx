@@ -5,7 +5,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { IconShoppingBag } from '@tabler/icons-react';
+import { IconCart3 } from '@/shared/components/Svg';
 import { Product } from '@/shared/types';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { useTimeout } from '@/shared/hooks';
@@ -17,6 +17,7 @@ import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/
 import { ProductQuickViewModal } from '@/features/catalog/components/ProductQuickViewModal';
 import { notifications } from '@mantine/notifications';
 import styles from './ProductCard.module.scss';
+import { Group, Divider } from '@mantine/core';
 
 interface ProductCardProps {
   product: Product;
@@ -73,8 +74,28 @@ export const ProductCard = React.memo<ProductCardProps>(
     }, [product.variants, product.options]);
 
     // Отримати значення варіанту для відображення (size або color)
-    const getVariantDisplayValue = (variant: any) => {
-      return variant.name || 'Варіант';
+    const getVariantDisplayValue = (variant: any): string => {
+      if (!variant || !variant.options) {
+        return 'Варіант';
+      }
+
+      // 2. Шукаємо саме 'size' або 'color' (незалежно від регістру: Size, SIZE, color...)
+      const optionsKeys = Object.keys(variant.options);
+      const targetKey = optionsKeys.find((key) => {
+        const lowerKey = key.toLowerCase();
+        return lowerKey === 'size' || lowerKey === 'color';
+      });
+
+      // 3. Якщо знайшли size або color — повертаємо його значення
+      if (targetKey) {
+        const value = variant.options[targetKey];
+        // String() гарантує, що ми повернемо стрічку, а не об'єкт, що виправить помилку
+        return String(value);
+      }
+
+      // 4. Якщо size/color немає, беремо першу доступну опцію
+      const firstValue = Object.values(variant.options)[0];
+      return firstValue ? String(firstValue) : 'Варіант';
     };
 
     // Лейбл для варіантів
@@ -123,7 +144,7 @@ export const ProductCard = React.memo<ProductCardProps>(
           if (!selectedVariant && selectedVariant !== 'main') {
             notifications.show({
               message: `Оберіть ${variantLabel.replace(':', '')}`,
-              color: 'yellow',
+              color: 'green',
             });
             return;
           }
@@ -241,15 +262,15 @@ export const ProductCard = React.memo<ProductCardProps>(
     };
 
     const getButtonText = () => {
-      if (isClicked) return 'Додано';
-      if (!isInStock) return 'Немає';
+      if (isClicked) return 'ДОДАЄМО В ДРІЛ';
+      if (!isInStock) return 'НЕМАЄ';
 
       // ✅ Якщо є варіанти БЕЗ size/color - показуємо "Деталі" для Quick View
       if (product.variants && product.variants.length > 0 && !showVariantsInCatalog) {
-        return 'Деталі';
+        return 'ДЕТАЛІ';
       }
 
-      return 'Додати';
+      return 'ДОДАТИ В КОШИК';
     };
 
     const handleCardClick = () => {
@@ -298,107 +319,106 @@ export const ProductCard = React.memo<ProductCardProps>(
             <Link href={`/catalog/${product.slug}`} onClick={(e) => e.stopPropagation()}>
               <h3 className={styles.title}>{product.name}</h3>
             </Link>
+            <Divider className={styles.divider} />
 
-            {/* ✅ Показувати варіанти ТІЛЬКИ якщо SIZE/COLOR */}
-            {showVariantsInCatalog && product.variants && product.variants.length > 0 && (
-              <div className={styles.variants} onClick={(e) => e.stopPropagation()}>
-                <label className={styles.variants__label}>{variantLabel}</label>
+            <Group justify='space-between' className={styles.contentPriceVariants}>
+              <div className={styles.priceSection}>
+                {renderPrice()}
 
-                <div className={styles.variants__options}>
-                  {/* Додаємо головний товар якщо він має size/color */}
-                  {!product.hasVariants &&
-                    product.options &&
-                    Object.keys(product.options).some((k) => {
-                      const key = k.toLowerCase();
-                      return key === 'size' || key === 'color';
-                    }) &&
-                    (() => {
-                      const mainStock = product.availableQuantity || 0;
-                      const isOutOfStock = mainStock <= 0;
+              </div>
+              {/* ✅ Показувати варіанти ТІЛЬКИ якщо SIZE/COLOR */}
+              {showVariantsInCatalog && product.variants && product.variants.length > 0 && (
+                <div className={styles.variants} onClick={(e) => e.stopPropagation()}>
 
-                      const displayValue = getVariantDisplayValue({
-                        options: product.options,
-                        name: product.name,
-                      });
+                  <div className={styles.variants__options}>
+                    {/* Додаємо головний товар якщо він має size/color */}
+                    {!product.hasVariants &&
+                      product.options &&
+                      Object.keys(product.options).some((k) => {
+                        const key = k.toLowerCase();
+                        return key === 'size' || key === 'color';
+                      }) &&
+                      (() => {
+                        const mainStock = product.availableQuantity || 0;
+                        const isOutOfStock = mainStock <= 0;
+
+                        const displayValue = getVariantDisplayValue({
+                          options: product.options,
+                          name: product.name,
+                        });
+                        return (
+                          <button
+                            type="button"
+                            disabled={isOutOfStock}
+                            className={`${styles.variants__option} ${selectedVariant === 'main' ? styles.variants__option_active : ''
+                              } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              if (!isOutOfStock) {
+                                setSelectedVariant('main');
+                              }
+                            }}>
+                            {displayValue}
+                            {isOutOfStock && ''}
+                          </button>
+                        );
+                      })()}
+
+                    {/* Варіанти товару */}
+                    {product.variants.map((variant) => {
+                      const stock = getVariantStock(variant.id);
+                      const isOutOfStock = stock <= 0;
+                      const displayValue = getVariantDisplayValue(variant);
+
                       return (
                         <button
+                          key={variant.id}
                           type="button"
                           disabled={isOutOfStock}
-                          className={`${styles.variants__option} ${
-                            selectedVariant === 'main' ? styles.variants__option_active : ''
-                          } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
+                          className={`${styles.variants__option} ${selectedVariant === variant.id ? styles.variants__option_active : ''
+                            } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
                             if (!isOutOfStock) {
-                              setSelectedVariant('main');
+                              setSelectedVariant(variant.id);
                             }
                           }}>
                           {displayValue}
                           {isOutOfStock && ''}
                         </button>
                       );
-                    })()}
-
-                  {/* Варіанти товару */}
-                  {product.variants.map((variant) => {
-                    const stock = getVariantStock(variant.id);
-                    const isOutOfStock = stock <= 0;
-                    const displayValue = getVariantDisplayValue(variant);
-
-                    return (
-                      <button
-                        key={variant.id}
-                        type="button"
-                        disabled={isOutOfStock}
-                        className={`${styles.variants__option} ${
-                          selectedVariant === variant.id ? styles.variants__option_active : ''
-                        } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          if (!isOutOfStock) {
-                            setSelectedVariant(variant.id);
-                          }
-                        }}>
-                        {displayValue}
-                        {isOutOfStock && ''}
-                      </button>
-                    );
-                  })}
+                    })}
+                  </div>
                 </div>
-              </div>
-            )}
-
+              )}
+            </Group>
             <div className={styles.footer}>
-              <div className={styles.priceSection}>
-                {renderPrice()}
-                {(selectedVariantObject?.unitValue || product.unitValue) && (
-                  <span className={styles.unitValue}>
-                    /{selectedVariantObject?.unitValue || product.unitValue} {product.unitDisplay}
-                  </span>
-                )}
-              </div>
 
-              <div className={styles.actions}>
-                <Button
-                  disabled={isClicked || !isInStock}
-                  onClick={handleAddToCart}
-                  type="button"
-                  size="sm"
-                  className={isClicked ? styles.addedButton : styles.addButton}
-                  leftIcon={<IconShoppingBag size={18} />}>
-                  {getButtonText()}
-                </Button>
-              </div>
+
             </div>
           </div>
         </div>
 
+        <div className={styles.actions}>
+          <Button
+            disabled={isClicked || !isInStock}
+            onClick={handleAddToCart}
+            type="button"
+            fullWidth
+            variant='secondary'
+            className={isClicked ? styles.addedButton : styles.addButton}
+          >
+            <Group gap={10} >
+              <IconCart3 /> {getButtonText()}
+            </Group>
+
+          </Button>
+        </div>
         {/* Quick View Modal */}
         {enableQuickView && (
           <ProductQuickViewModal
-
             product={product}
             opened={quickViewOpened}
             onClose={() => setQuickViewOpened(false)}

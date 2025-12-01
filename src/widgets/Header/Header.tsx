@@ -9,7 +9,7 @@ import styles from './header.module.scss';
 import Link from 'next/link';
 import { useCartDrawerActions, useCartCalculations, useCartStore } from '@/shared/stores/cart';
 import { useAuthStore } from '@/shared/stores/auth';
-import { CartDrawer } from '@/features/cart/components/CartDrawer';
+import { CartDrawer } from '@/features/cart/components/CartDrawer/CartDrawer';
 import { AuthDrawer } from '@/features/auth/components/AuthDrawer/AuthDrawer';
 import { content } from '@/shared/config/content';
 import { siteConfig } from '@/shared/config/site';

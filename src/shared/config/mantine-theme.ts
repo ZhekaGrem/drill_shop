@@ -24,6 +24,7 @@ export const mantineTheme = createTheme({
         },
       },
     },
+
   },
 
   focusRing: 'auto',

@@ -16,7 +16,7 @@ import {
 } from '@mantine/core';
 import { IconShoppingCart, IconArrowLeft } from '@tabler/icons-react';
 import { useCart } from '@/features/cart/hooks/useCart';
-import { CartItem } from '@/features/cart/components/CartItem';
+import { CartItem } from '@/features/cart/components/CartItem/CartItem';
 import { formatPrice } from '@/shared/utils/cart-calculations';
 import Link from 'next/link';
 

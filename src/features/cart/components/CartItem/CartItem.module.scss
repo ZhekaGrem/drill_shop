@@ -1,0 +1,113 @@
+// src/features/cart/components/CartItem.module.scss
+
+// Кольори з картинки (приблизні)
+// Світло-зелений фон
+
+.wrapper {
+  background-color: var(--background);
+  border: 2px solid var(--background-secondary);
+  // border-radius: 0; // На картинці кути прямі або ледь скруглені. Приберіть, якщо потрібні гострі.
+  overflow: hidden;
+  position: relative;
+}
+
+
+.image{
+border-right:2px solid var(--background-secondary) ;
+max-width: 160px;
+max-height: 160px;
+object-fit: cover
+}
+.info{
+    
+}
+
+.productName {
+  font-family: sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.variantText {
+  font-family: sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  
+  span {
+    font-weight: 400;
+    margin-right: 4px;
+  }
+}
+
+.priceContainer {
+  text-align: right;
+}
+
+.oldPrice {
+  color: var(--text-primary);
+  text-decoration: line-through;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.currentPrice {
+  color: var(--accent-red);
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+// Стилізація блоку кількості (Квадратні кнопки)
+.quantityControl {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .qtyBtn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--background-secondary);
+    background: transparent;
+    color: var(--background-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      background: rgba(var(--background-secondary), 0.1);
+    }
+    
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .qtyValue {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-secondary);
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+}
+
+.trashBtn {
+  color: var(--background-secondary);
+  background: transparent;
+  border: none;
+  
+  &:hover {
+    background: transparent;
+    color: var(--accent-red);
+  }
+}

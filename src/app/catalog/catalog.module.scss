@@ -3,6 +3,7 @@
 .catalogPage {
   min-height: 100vh;
   padding: 20px 0;
+  background-color: var(--background);
 }
 
 .container {
@@ -39,9 +40,7 @@
 
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
 
   &--loading {
     opacity: 0.7;
@@ -145,8 +144,7 @@
 /* Responsive */
 @media (max-width: 1024px) {
   .products {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
   }
 }
 
@@ -156,8 +154,7 @@
   }
 
   .products {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
   }
 
   .header {

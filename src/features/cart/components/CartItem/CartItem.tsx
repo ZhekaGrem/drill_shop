@@ -5,11 +5,12 @@ import { Group, Text, ActionIcon, NumberInput, Stack, Badge, Box } from '@mantin
 import { IconMinus, IconPlus, IconTrash } from '@tabler/icons-react';
 import { useState, useCallback, memo } from 'react';
 import { CartItemWithProduct, formatPrice } from '@/shared/utils/cart-calculations';
-import { useCart } from '../hooks/useCart';
+import { useCart } from '../../hooks/useCart';
 import Link from 'next/link';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
 import { getVariantDisplayBadges } from '@/shared/utils/variant-display';
 import { useDebounce } from '@/shared/hooks';
+import styles from './CartItem.module.scss';
 
 interface CartItemProps {
   item: CartItemWithProduct;
@@ -47,17 +48,18 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
 
   if (compact) {
     return (
-      <Group gap="sm" align="flex-start">
+      <Group gap="sm" align="flex-start" className={styles.wrapper}>
         {/* Зображення */}
         <CloudinaryImage
           src={imageUrl || '/assets/img/placeholder-product.jpg'}
           alt={item.product.name}
-          width={60}
-          height={60}
+          width={160}
+          height={160}
+          className={styles.image}
         />
 
         {/* Інформація про товар */}
-        <Stack gap={4} flex={1}>
+        <Stack gap={4} flex={1} className={styles.info}>
           <Text size="sm" fw={500} lineClamp={2}>
             {item.variant?.name || item.product.name}
           </Text>
@@ -70,7 +72,7 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
             return (
               <Group gap={4}>
                 {badges.map((badge) => (
-                  <Badge key={badge.key} size="xs" variant="light" color="blue">
+                  <Badge key={badge.key} size="xs" variant="transparent" color="green">
                     {badge.label}: {badge.value}
                   </Badge>
                 ))}
@@ -123,7 +125,7 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
 
   // Повний вигляд для сторінки кошика
   return (
-    <Box p="md" style={{ border: '1px solid var(--mantine-color-gray-3)', borderRadius: '8px' }}>
+    <Box p="md" >
       <Group gap="md" align="flex-start">
         {/* Зображення */}
         <CloudinaryImage
@@ -154,7 +156,7 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
                 return (
                   <Group gap={6}>
                     {badges.map((badge) => (
-                      <Badge key={badge.key} variant="light" color="blue">
+                      <Badge key={badge.key} variant="transparent" color="green">
                         {badge.label}: {badge.value}
                       </Badge>
                     ))}

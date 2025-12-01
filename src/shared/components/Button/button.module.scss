@@ -1,9 +1,9 @@
 // src/shared/components/ui/Button/Button.module.scss
 // Pixel art стиль з Figma "Щільний дріл"
 .button {
-  font-family: 'IBM Plex Sans Condensed', var(--font-body);
-  font-weight: 700;
-  font-size: 20px;
+  font-family: var(--font-condensed);
+  font-weight: var(--fw-bold);
+  font-size: var(--text-xl);
   line-height: 1.2;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -16,29 +16,31 @@
   gap: var(--spacing-sm);
 
   // Pixel art hover effect
-  &:hover:not(:disabled) {
-    transform: translate(1px, 1px);
-  }
 
   // Variants
   &--primary {
     background: var(--primary); // #33603B
     color: var(--secondary); // #E0DDCA
+    border: none;
 
     &:hover:not(:disabled) {
       background: var(--accent); // #E6DB1B
       color: var(--text-primary); // #2B2B27
+      border: none;
     }
   }
 
   &--secondary {
+    font-family: var(--font-mono);
     background: var(--secondary); // #E0DDCA
     color: var(--primary); // #33603B
-    border: 2px solid var(--primary);
+    border-top: 2px solid var(--primary);
+
+    line-height: 120%;
+    letter-spacing: 0.04em;
     &:hover:not(:disabled) {
       background: var(--accent); // #E6DB1B
       color: var(--text-primary);
-      color: var(--text-primary); // #2B2B27
     }
   }
 
