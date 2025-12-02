@@ -3,26 +3,27 @@ import { Container, Group, Text, Title } from '@mantine/core';
 import styles from './notFound.module.scss';
 import Link from 'next/link';
 import { Button } from '@/shared/components/Button/Button';
+import { ArrowRight } from '@/shared/components/Svg';
+
 const NotFoundPage = () => {
   return (
     <div className={styles.root}>
-      <Container>
-        <div className={styles.label}>404</div>
+      <Container pb={50}>
 
-        <Title className={styles.title}>Сторінку не знайдено</Title>
 
         <Text size="lg" ta="center" className={styles.description}>
-          На жаль, сторінка, яку ви шукаєте, не існує або була переміщена. Можливо, ви перейшли за
-          неправильним посиланням або адреса була змінена.
+          Здається, ми не знайшли те, що ви шукали. Сторінка, яку ви шукали, не існує, недоступна або завантажувалася неправильно.
         </Text>
 
         <Group justify="center" mt="xl">
           <Link href="/">
-            <Button>На головну</Button>
+            <Button size="promo" variant="yellow" >
+              <span className={styles.bthSpan}>
+                В МАГАЗИН <ArrowRight />
+              </span>
+            </Button>
           </Link>
-          <Link href="/catalog">
-            <Button>До каталогу</Button>
-          </Link>
+
         </Group>
 
         {/* Popular links */}

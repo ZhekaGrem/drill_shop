@@ -31,7 +31,6 @@ export const CartDrawer = () => {
       position="right"
       size={isMobile ? '100%' : 'md'} // Full width on mobile
       overlayProps={{ opacity: 0.5, blur: 4 }}
-
       styles={{
         header: {
           padding: isMobile ? '16px 20px' : undefined,
@@ -46,19 +45,17 @@ export const CartDrawer = () => {
           display: 'flex',
           flexDirection: 'column',
         },
-      }} >
+      }}>
       <Stack h="100%" justify="space-between" gap={0} className={styles.drawer}>
         {error && (
-          <Box p="md" className={styles.body} >
+          <Box p="md" className={styles.body}>
             <Text size="sm" c="red">
               {error}
             </Text>
           </Box>
         )}
         {hasItems && (
-          <Box
-            p={isMobile ? '16px 20px' : 'md'}
-          >
+          <Box p={isMobile ? '16px 20px' : 'md'}>
             <Group justify="space-between">
               <Text size="sm" c="dimmed">
                 {calculations.itemsCount} товар(ів)

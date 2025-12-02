@@ -110,7 +110,7 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
             </ActionIcon>
           </Group>
 
-          <Text size="sm" fw={500}>
+          <Text size="md" fw={900} c='red'>
             {originalPrice && (
               <Text span size="xs" td="line-through" c="dimmed" mr={4}>
                 {formatPrice(originalPrice * quantity)}
@@ -125,7 +125,7 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
 
   // Повний вигляд для сторінки кошика
   return (
-    <Box p="md" >
+    <Box p="md">
       <Group gap="md" align="flex-start">
         {/* Зображення */}
         <CloudinaryImage
@@ -183,11 +183,11 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
                 Ціна за одиницю:
               </Text>
               {originalPrice && (
-                <Text size="sm" td="line-through" c="dimmed">
+                <Text size="sm" td="line-through" c="dimmed" >
                   {formatPrice(originalPrice)}
                 </Text>
               )}
-              <Text fw={500}>{formatPrice(displayPrice)}</Text>
+              <Text fw={500} c='red'>{formatPrice(displayPrice)}</Text>
             </Group>
 
             <Group gap="sm">

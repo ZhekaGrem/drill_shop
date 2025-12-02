@@ -18,6 +18,7 @@ import { ProductQuickViewModal } from '@/features/catalog/components/ProductQuic
 import { notifications } from '@mantine/notifications';
 import styles from './ProductCard.module.scss';
 import { Group, Divider } from '@mantine/core';
+import { IconX } from '@/shared/components/Svg';
 
 interface ProductCardProps {
   product: Product;
@@ -145,6 +146,10 @@ export const ProductCard = React.memo<ProductCardProps>(
             notifications.show({
               message: `Оберіть ${variantLabel.replace(':', '')}`,
               color: 'green',
+              closeButtonProps: {
+                icon: <IconX />,
+                'aria-label': 'Закрити',
+              },
             });
             return;
           }
@@ -155,6 +160,10 @@ export const ProductCard = React.memo<ProductCardProps>(
           notifications.show({
             message: `Оберіть ${variantLabel.replace(':', '')}`,
             color: 'yellow',
+            closeButtonProps: {
+                icon: <IconX />,
+                'aria-label': 'Закрити',
+              },
           });
           return;
         }
@@ -198,6 +207,10 @@ export const ProductCard = React.memo<ProductCardProps>(
           notifications.show({
             message: 'Оберіть варіант товару',
             color: 'yellow',
+            closeButtonProps: {
+                icon: <IconX />,
+                'aria-label': 'Закрити',
+              },
           });
           return;
         }
@@ -321,15 +334,11 @@ export const ProductCard = React.memo<ProductCardProps>(
             </Link>
             <Divider className={styles.divider} />
 
-            <Group justify='space-between' className={styles.contentPriceVariants}>
-              <div className={styles.priceSection}>
-                {renderPrice()}
-
-              </div>
+            <Group justify="space-between" className={styles.contentPriceVariants}>
+              <div className={styles.priceSection}>{renderPrice()}</div>
               {/* ✅ Показувати варіанти ТІЛЬКИ якщо SIZE/COLOR */}
               {showVariantsInCatalog && product.variants && product.variants.length > 0 && (
                 <div className={styles.variants} onClick={(e) => e.stopPropagation()}>
-
                   <div className={styles.variants__options}>
                     {/* Додаємо головний товар якщо він має size/color */}
                     {!product.hasVariants &&
@@ -394,10 +403,7 @@ export const ProductCard = React.memo<ProductCardProps>(
                 </div>
               )}
             </Group>
-            <div className={styles.footer}>
-
-
-            </div>
+            <div className={styles.footer}></div>
           </div>
         </div>
 
@@ -407,13 +413,11 @@ export const ProductCard = React.memo<ProductCardProps>(
             onClick={handleAddToCart}
             type="button"
             fullWidth
-            variant='secondary'
-            className={isClicked ? styles.addedButton : styles.addButton}
-          >
-            <Group gap={10} >
+            variant="secondary"
+            className={isClicked ? styles.addedButton : styles.addButton}>
+            <Group gap={10}>
               <IconCart3 /> {getButtonText()}
             </Group>
-
           </Button>
         </div>
         {/* Quick View Modal */}
