@@ -272,7 +272,7 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
           <Button variant="subtle" onClick={onCancel} disabled={isLoading}>
             Скасувати
           </Button>
-          <Button type="submit" style={{ background: 'var(--btn-primary)' }}>
+          <Button type="submit" style={{ background: 'var(--btn-primary)', color: 'var(--text-white)' }}>
             {product ? 'Оновити товар' : 'Створити товар'}
           </Button>
         </Group>

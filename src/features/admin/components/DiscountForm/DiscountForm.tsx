@@ -88,7 +88,7 @@ export const DiscountForm = ({ discount, onSubmit, onCancel, isLoading }: Discou
           <Button variant="subtle" onClick={onCancel} disabled={isLoading}>
             Скасувати
           </Button>
-          <Button type="submit" style={{ background: 'var(--btn-primary)' }}>
+          <Button type="submit" style={{ background: 'var(--btn-primary)', color: 'var(--text-white)' }}>
             {discount ? 'Оновити знижку' : 'Створити знижку'}
           </Button>
         </Group>

@@ -1,5 +1,5 @@
 // src/shared/config/mantine-theme.ts
-import { createTheme } from '@mantine/core';
+import { createTheme, Input } from '@mantine/core';
 
 const inputStyles = {
   input: {
@@ -61,6 +61,15 @@ export const mantineTheme = createTheme({
     ],
   },
   components: {
+    InputWrapper: Input.Wrapper.extend({
+      styles: {
+        error: {
+          color: '#a63c48', // Твій колір
+          fontWeight: '700',
+        },
+       
+      },
+    }),
     Anchor: {
       styles: {
         root: {
@@ -76,10 +85,10 @@ export const mantineTheme = createTheme({
     PasswordInput: {
       styles: {
         ...inputStyles,
-      
+
         innerInput: {
-           backgroundColor: 'transparent',
-        }
+          backgroundColor: 'transparent',
+        },
       },
     },
     Textarea: {

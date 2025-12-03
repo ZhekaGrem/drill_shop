@@ -115,12 +115,12 @@
   right: -4px;
   min-width: 18px;
   height: 18px;
-  font-size: 20px;
+  font-size: 14px;
   line-height: 130%;
   font-weight: var(--fw-bold);
   z-index: 10;
   display: block;
-  color: var(--text-secondary);
+  color: var(--text-inverse);
   @media (min-width: 768px) {
     display: none;
   }

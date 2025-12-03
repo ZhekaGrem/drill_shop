@@ -75,7 +75,7 @@
 
       &[data-active='true'] {
         color: var(--text-secondary) !important;
-        border-bottom:var(--border-width) solid var(--border-color) !important;
+        border-bottom: var(--border-width) solid var(--border-color) !important;
         font-weight: var(--fw-black) !important;
       }
     }
@@ -88,7 +88,6 @@
 
 .tabsList {
   border-bottom: var(--border-width) solid var(--border-color);
-  ;
 }
 
 .tab {
@@ -106,5 +105,17 @@
   &[data-active='true'] {
     color: var(--text-secondary);
     border-bottom: px solid var(--border-color);
+  }
+}
+
+
+.tabs{
+   display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+  :global(.mantine-Tabs-panel) {
+    flex: 1;
+    width: 100%;
   }
 }

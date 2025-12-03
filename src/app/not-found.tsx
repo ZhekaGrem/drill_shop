@@ -9,21 +9,19 @@ const NotFoundPage = () => {
   return (
     <div className={styles.root}>
       <Container pb={50}>
-
-
         <Text size="lg" ta="center" className={styles.description}>
-          Здається, ми не знайшли те, що ви шукали. Сторінка, яку ви шукали, не існує, недоступна або завантажувалася неправильно.
+          Здається, ми не знайшли те, що ви шукали. Сторінка, яку ви шукали, не існує, недоступна або
+          завантажувалася неправильно.
         </Text>
 
         <Group justify="center" mt="xl">
           <Link href="/">
-            <Button size="promo" variant="yellow" >
+            <Button size="promo" variant="yellow">
               <span className={styles.bthSpan}>
                 В МАГАЗИН <ArrowRight />
               </span>
             </Button>
           </Link>
-
         </Group>
 
         {/* Popular links */}

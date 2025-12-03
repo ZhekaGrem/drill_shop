@@ -12,15 +12,8 @@ import { siteConfig } from '@/shared/config/site';
 const currentYear = new Date().getFullYear();
 
 export function Footer() {
-
- 
-
   return (
-    <footer
-      className={`${styles.footer} `}
-      data-footer
-      role="contentinfo"
-      aria-label="Інформація про сайт">
+    <footer className={`${styles.footer} `} data-footer role="contentinfo" aria-label="Інформація про сайт">
       <Container size="lg" className={styles.container}>
         {/* Main footer grid */}
         <div className={styles.footerGrid}>

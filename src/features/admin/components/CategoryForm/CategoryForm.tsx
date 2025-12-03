@@ -335,7 +335,7 @@ export const CategoryForm = ({ category, categories, onSubmit, onCancel, isLoadi
           <Button
             type="submit"
             loading={isLoading || isUploading}
-            style={{ background: 'var(--btn-primary)' }}>
+            style={{ background: 'var(--btn-primary)', color: 'var(--text-white)' }}>
             {category ? 'Оновити категорію' : 'Створити категорію'}
           </Button>
         </Group>

@@ -159,7 +159,6 @@ textarea {
   margin: 0;
   vertical-align: baseline;
   font-family: inherit;
- 
 }
 
 button,
@@ -258,6 +257,12 @@ p {
   --text-tertiary: #595959;
   --text-inverse: #e0ddca; /* Light text on dark bg */
   --text-white: #ffffff;
+
+  /* Кольори кнопок */
+  --btn-primary: #33603b; /* Primary green button */
+  --btn-primary-hover: #254a2c; /* Darker green on hover */
+  --btn-secondary: #e6db1b; /* Yellow button */
+  --btn-danger: #a63c48; /* Red button */
 
   /* Шрифти */
 

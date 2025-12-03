@@ -161,9 +161,9 @@ export const ProductCard = React.memo<ProductCardProps>(
             message: `Оберіть ${variantLabel.replace(':', '')}`,
             color: 'yellow',
             closeButtonProps: {
-                icon: <IconX />,
-                'aria-label': 'Закрити',
-              },
+              icon: <IconX />,
+              'aria-label': 'Закрити',
+            },
           });
           return;
         }
@@ -208,9 +208,9 @@ export const ProductCard = React.memo<ProductCardProps>(
             message: 'Оберіть варіант товару',
             color: 'yellow',
             closeButtonProps: {
-                icon: <IconX />,
-                'aria-label': 'Закрити',
-              },
+              icon: <IconX />,
+              'aria-label': 'Закрити',
+            },
           });
           return;
         }
@@ -359,8 +359,9 @@ export const ProductCard = React.memo<ProductCardProps>(
                           <button
                             type="button"
                             disabled={isOutOfStock}
-                            className={`${styles.variants__option} ${selectedVariant === 'main' ? styles.variants__option_active : ''
-                              } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
+                            className={`${styles.variants__option} ${
+                              selectedVariant === 'main' ? styles.variants__option_active : ''
+                            } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
@@ -385,8 +386,9 @@ export const ProductCard = React.memo<ProductCardProps>(
                           key={variant.id}
                           type="button"
                           disabled={isOutOfStock}
-                          className={`${styles.variants__option} ${selectedVariant === variant.id ? styles.variants__option_active : ''
-                            } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
+                          className={`${styles.variants__option} ${
+                            selectedVariant === variant.id ? styles.variants__option_active : ''
+                          } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();

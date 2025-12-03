@@ -91,7 +91,9 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate style={{
+      minHeight: '100vh',
+    }}>
       <Stack gap="md">
         {errors.root && (
           <Alert color="red" icon={<IconAlertCircle size={16} />}>
@@ -146,11 +148,9 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
           Зареєструватися
         </Button>
 
-        <Alert color="blue" variant="light">
-          Після реєстрації ви отримаєте лист для підтвердження email
-        </Alert>
+       
 
-        <Button variant="secondary" fullWidth onClick={onSwitchToLogin}>
+        <Button fullWidth onClick={onSwitchToLogin}>
           Вже маєте акаунт? Увійти
         </Button>
       </Stack>

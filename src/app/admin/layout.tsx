@@ -195,9 +195,15 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 styles={{
                   root: {
                     borderRadius: 8,
-                    color: '#fbb800',
+                    color: '#e0ddca',
                     '&:hover': {
-                      background: '#fbb800',
+                      background: '#33603b',
+                      color: '#e6db1b',
+                    },
+                    '&[data-active="true"]': {
+                      background: '#33603b',
+                      color: '#e6db1b',
+                      fontWeight: 600,
                     },
                   },
                   label: {

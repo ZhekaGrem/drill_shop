@@ -235,7 +235,7 @@ export default function AdminProducts() {
         <Button
           leftSection={<IconPlus size={16} />}
           onClick={handleCreateProduct}
-          style={{ background: 'var(--btn-primary)' }}>
+          style={{ background: 'var(--btn-primary)', color: 'var(--text-white)' }}>
           Додати товар
         </Button>
       </Group>

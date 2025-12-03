@@ -214,7 +214,7 @@ export default function AdminDiscounts() {
         <Button
           leftSection={<IconPlus size={16} />}
           onClick={handleCreateDiscount}
-          style={{ background: 'var(--btn-primary)' }}>
+          style={{ background: 'var(--btn-primary)', color: 'var(--text-white)' }}>
           Додати знижку
         </Button>
       </Group>
