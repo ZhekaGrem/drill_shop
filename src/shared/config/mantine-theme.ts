@@ -1,6 +1,39 @@
 // src/shared/config/mantine-theme.ts
 import { createTheme } from '@mantine/core';
 
+const inputStyles = {
+  input: {
+    // Фон (бежевий #e0ddca або змінна)
+    backgroundColor: '#e0ddca',
+
+    // Прибираємо всі бордери
+    border: 'none',
+
+    // Додаємо тільки нижній бордер (темно-зелений #33603b)
+    // Використовуємо твою змінну ширини або 2px як фолбек
+    borderBottom: 'var(--border-width, 2px) solid #33603b',
+
+    // Квадратні кути
+    borderRadius: 0,
+
+    // Колір тексту
+    color: 'var(--text-primary, #000)',
+
+    // Трохи відступів, щоб текст не лип
+    padding: 'var(--spacing-xs) var(--spacing-sm)',
+
+    // Стилі при фокусі (щоб не було стандартної синьої обводки Mantine, якщо не треба)
+    '&:focus': {
+      borderBottomColor: '#254a2c', // Можна зробити темнішим при активності
+    },
+
+    // Плейсхолдер (підказка)
+    '&::placeholder': {
+      color: '#33603b', // Колір плейсхолдера (можна зробити прозорішим opacity: 0.6)
+      opacity: 0.7,
+    },
+  },
+};
 export const mantineTheme = createTheme({
   primaryColor: 'green',
 
@@ -13,7 +46,7 @@ export const mantineTheme = createTheme({
   },
 
   defaultRadius: 0,
-colors: {
+  colors: {
     red: [
       '#FFE8EB', // 0 - lightest
       '#FFD1D6', // 1
@@ -36,6 +69,21 @@ colors: {
           },
         },
       },
+    },
+    TextInput: {
+      styles: inputStyles,
+    },
+    PasswordInput: {
+      styles: {
+        ...inputStyles,
+      
+        innerInput: {
+           backgroundColor: 'transparent',
+        }
+      },
+    },
+    Textarea: {
+      styles: inputStyles,
     },
     Notification: {
       styles: {

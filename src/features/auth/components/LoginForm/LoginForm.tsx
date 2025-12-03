@@ -101,7 +101,9 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Stack gap="md">
+
+      
+      <Stack gap="md" >
         {error && (
           <Alert color="red" icon={<IconAlertCircle size={16} />}>
             {error}

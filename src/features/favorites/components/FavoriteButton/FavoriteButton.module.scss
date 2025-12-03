@@ -62,7 +62,7 @@
 
   // Активний стан
   &.active {
-    color: var(--primary);
+    color: var(--accent-red);
 
     .icon {
       animation: heartBeat 0.4s ease-out;

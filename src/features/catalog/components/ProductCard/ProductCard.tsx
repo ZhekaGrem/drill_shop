@@ -414,9 +414,9 @@ export const ProductCard = React.memo<ProductCardProps>(
             type="button"
             fullWidth
             variant="secondary"
-            className={isClicked ? styles.addedButton : styles.addButton}>
+            className={styles.addButton}>
             <Group gap={10}>
-              <IconCart3 /> {getButtonText()}
+              <IconCart3 /> <p className={styles.buttonText}> {getButtonText()} </p>
             </Group>
           </Button>
         </div>

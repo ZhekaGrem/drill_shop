@@ -34,6 +34,8 @@
     font-family: var(--font-mono);
     background: var(--secondary); // #E0DDCA
     color: var(--primary); // #33603B
+    border: 0;
+    border-bottom: 1px solid var(--primary);
     border-top: 2px solid var(--primary);
 
     line-height: 120%;

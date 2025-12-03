@@ -12,30 +12,12 @@ import { siteConfig } from '@/shared/config/site';
 const currentYear = new Date().getFullYear();
 
 export function Footer() {
-  const [isVisible, setIsVisible] = useState(false);
 
-  // Scroll animation
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const footer = document.querySelector('[data-footer]');
-    if (footer) observer.observe(footer);
-
-    return () => {
-      if (footer) observer.unobserve(footer);
-    };
-  }, []);
+ 
 
   return (
     <footer
-      className={`${styles.footer} ${isVisible ? styles.visible : ''}`}
+      className={`${styles.footer} `}
       data-footer
       role="contentinfo"
       aria-label="Інформація про сайт">
