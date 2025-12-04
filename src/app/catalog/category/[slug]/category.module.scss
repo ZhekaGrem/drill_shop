@@ -35,12 +35,18 @@
 
 .productsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, 370px); // 3 колонки по 370px
+  gap: 0; // Без gap
+  justify-content: flex-start;
   margin-bottom: 3rem;
 
-  @media (min-width: 1400px) {
+  // Для екранів < 1200px - адаптивно
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 }
 

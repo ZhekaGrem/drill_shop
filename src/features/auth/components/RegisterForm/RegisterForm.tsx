@@ -91,9 +91,12 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate style={{
-      minHeight: '100vh',
-    }}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      style={{
+        minHeight: '100vh',
+      }}>
       <Stack gap="md">
         {errors.root && (
           <Alert color="red" icon={<IconAlertCircle size={16} />}>
@@ -147,8 +150,6 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
         <Button type="submit" fullWidth>
           Зареєструватися
         </Button>
-
-       
 
         <Button fullWidth onClick={onSwitchToLogin}>
           Вже маєте акаунт? Увійти

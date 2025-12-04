@@ -290,7 +290,7 @@ export const ProductImageManager = ({
                     color="yellow"
                     style={{
                       position: 'absolute',
-                      bottom: 5,
+                      bottom: 30,
                       left: 5,
                       padding: '4px 8px',
                     }}
@@ -301,6 +301,23 @@ export const ProductImageManager = ({
                     ) : (
                       <IconStar size={14} />
                     )}
+                  </Button>
+
+                  {/* Make secondary button */}
+                  <Button
+                    size="xs"
+                    variant={imageState.secondaryImageIndex === index ? 'filled' : 'light'}
+                    color="blue"
+                    style={{
+                      position: 'absolute',
+                      bottom: 5,
+                      left: 5,
+                      padding: '4px 6px',
+                      fontSize: '10px',
+                    }}
+                    onClick={() => handleSetSecondaryImage(index)}
+                    title={imageState.secondaryImageIndex === index ? 'Друга (hover)' : 'Зробити другою'}>
+                    {imageState.secondaryImageIndex === index ? '2-га' : '2'}
                   </Button>
 
                   {/* Delete button */}

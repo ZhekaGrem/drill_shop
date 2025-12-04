@@ -67,7 +67,6 @@ export const mantineTheme = createTheme({
           color: '#a63c48', // Твій колір
           fontWeight: '700',
         },
-       
       },
     }),
     Anchor: {

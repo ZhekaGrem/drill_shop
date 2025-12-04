@@ -100,9 +100,12 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate style={{
-      minHeight: '100vh',
-    }}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      style={{
+        minHeight: '100vh',
+      }}>
       <Stack gap="md">
         {error && (
           <Alert color="red" icon={<IconAlertCircle size={16} />}>
@@ -111,17 +114,17 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
               error.includes('Email not confirmed') ||
               error.includes('Підтвердіть email перед входом') ||
               error.includes('email перед входом')) && (
-                <div style={{ marginTop: '8px' }}>
-                  <Anchor
-                    component="button"
-                    type="button"
-                    size="sm"
-                    onClick={() => router.push('/resend-verification')}
-                    style={{ fontWeight: 600 }}>
-                    → Якщо лист не прийшов
-                  </Anchor>
-                </div>
-              )}
+              <div style={{ marginTop: '8px' }}>
+                <Anchor
+                  component="button"
+                  type="button"
+                  size="sm"
+                  onClick={() => router.push('/resend-verification')}
+                  style={{ fontWeight: 600 }}>
+                  → Якщо лист не прийшов
+                </Anchor>
+              </div>
+            )}
           </Alert>
         )}
 

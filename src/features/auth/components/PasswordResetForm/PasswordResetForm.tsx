@@ -101,9 +101,12 @@ export const PasswordResetForm = ({ onSuccess, onBackToLogin }: PasswordResetFor
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate style={{
-      minHeight: '100vh',
-    }}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      style={{
+        minHeight: '100vh',
+      }}>
       <Stack gap="md">
         <Text size="sm" c="dimmed">
           Введіть email, пов'язаний з вашим акаунтом, і ми надішлемо вам інструкції для відновлення пароля.
