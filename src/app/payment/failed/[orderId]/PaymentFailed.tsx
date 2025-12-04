@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Container, Paper, Title, Text, Button, Group, Stack, Alert } from '@mantine/core';
 import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react';
 import { usePaymentStatus } from '@/features/payment/hooks/usePayment';
+import styles from './payment-failed.module.scss';
 
 const PaymentFailedPage: React.FC = () => {
   const params = useParams();
@@ -46,8 +47,9 @@ const PaymentFailedPage: React.FC = () => {
   };
 
   return (
-    <Container size="sm" py="xl">
-      <Paper p="xl" radius="md" withBorder>
+    <div className={styles.paymentFailedPage}>
+      <Container size="sm" py="xl">
+        <Paper p="xl" radius="md" withBorder>
         <Stack align="center" gap="lg">
           <IconAlertTriangle size={80} color="var(--mantine-color-red-6)" />
 
@@ -130,6 +132,7 @@ const PaymentFailedPage: React.FC = () => {
         </Stack>
       </Paper>
     </Container>
+    </div>
   );
 };
 

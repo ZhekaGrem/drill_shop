@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Container, Paper, Title, Text, Button, Group, Stack, Loader, Alert } from '@mantine/core';
 import { IconCircleCheck, IconAlertCircle } from '@tabler/icons-react';
 import { usePaymentStatus } from '@/features/payment/hooks/usePayment';
+import styles from './payment-success.module.scss';
 
 const PaymentSuccessPage: React.FC = () => {
   const params = useParams();
@@ -39,17 +40,20 @@ const PaymentSuccessPage: React.FC = () => {
 
   if (!orderId) {
     return (
-      <Container size="sm" py="xl">
-        <Alert icon={<IconAlertCircle size={16} />} color="red" title="Помилка">
-          Невірний ідентифікатор замовлення
-        </Alert>
-      </Container>
+      <div className={styles.paymentSuccessPage}>
+        <Container size="sm" py="xl">
+          <Alert icon={<IconAlertCircle size={16} />} color="red" title="Помилка">
+            Невірний ідентифікатор замовлення
+          </Alert>
+        </Container>
+      </div>
     );
   }
 
   if (isLoading || isVerifying) {
     return (
-      <Container size="sm" py="xl">
+      <div className={styles.paymentSuccessPage}>
+        <Container size="sm" py="xl">
         <Paper p="xl" radius="md" withBorder>
           <Stack align="center" gap="lg">
             <Loader size="lg" />
@@ -62,12 +66,14 @@ const PaymentSuccessPage: React.FC = () => {
           </Stack>
         </Paper>
       </Container>
+      </div>
     );
   }
 
   if (error || !paymentData) {
     return (
-      <Container size="sm" py="xl">
+      <div className={styles.paymentSuccessPage}>
+        <Container size="sm" py="xl">
         <Paper p="xl" radius="md" withBorder>
           <Stack align="center" gap="lg">
             <IconAlertCircle size={80} color="var(--mantine-color-red-6)" />
@@ -86,6 +92,7 @@ const PaymentSuccessPage: React.FC = () => {
           </Stack>
         </Paper>
       </Container>
+      </div>
     );
   }
 
@@ -95,7 +102,8 @@ const PaymentSuccessPage: React.FC = () => {
   const isFailed = paymentData.status === 'FAILED';
 
   return (
-    <Container size="sm" py="xl">
+    <div className={styles.paymentSuccessPage}>
+      <Container size="sm" py="xl">
       <Paper p="xl" radius="md" withBorder>
         <Stack align="center" gap="lg">
           {isSuccess && (
@@ -167,6 +175,7 @@ const PaymentSuccessPage: React.FC = () => {
         </Stack>
       </Paper>
     </Container>
+    </div>
   );
 };
 

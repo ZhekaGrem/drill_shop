@@ -13,9 +13,9 @@ interface CatalogFiltersProps {
 const SORT_OPTIONS = [
   { value: 'created_desc', label: 'Рекомендовані' },
   { value: 'popularity_desc', label: 'За популярністю' },
-  { value: 'price_asc', label: 'Від дешевших' },
-  { value: 'price_desc', label: 'Від дорожчих' },
-  { value: 'name_asc', label: 'За назвою (А-Я)' },
+  { value: 'price_asc', label: 'Ціна, від низької до високої' },
+  { value: 'price_desc', label: 'Ціна, від високої до низької' },
+  // { value: 'name_asc', label: 'За назвою (А-Я)' },
 ];
 
 export const CatalogFilters: React.FC<CatalogFiltersProps> = ({

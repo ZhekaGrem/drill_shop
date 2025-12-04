@@ -6,7 +6,7 @@
 
 ## 🎯 Огляд проекту
 
-**Shop** — це Next.js e-commerce застосунок для продажу одягу
+**Shop** — це Next.js e-commerce застосунок для продажу 
 **Feature-Sliced Design (FSD)** архітектури.
 
 ### Стек технологій
@@ -375,6 +375,62 @@ src/features/myfeature/
 
 ---
 
+## 🎨 Правила стилізації
+
+### Пріоритет (від вищого до нижчого)
+
+1. **Mantine props** — якщо компонент Mantine, використовуй його пропси (`p`, `m`, `bg`, `c`, `fz`, `fw`, тощо)
+2. **SCSS modules** — для кастомних стилів (`ComponentName.module.scss`) 
+4. **inline style** — **ТІЛЬКИ** якщо стиль динамічний і залежить від JS змінної в рантаймі
+
+### 🚫 ЗАБОРОНИ стилізації
+
+- **НЕ використовуй inline `style={{}}`** якщо можна зробити через Mantine/SCSS
+- **НЕ створюй нові CSS змінні** якщо є в `mantine-theme.ts` або глобальних стилях не добавляй `@extend` в scss так не роби '%button-base'
+- **НЕ дублюй** — перевір чи немає схожого класу в існуючих `.module.scss`
+- **НЕ змішуй підходи** в одному компоненті (або Mantine props, або SCSS — не обидва для одного елемента)
+
+### ✅ Приклади
+```tsx
+// ❌ ПОГАНО — inline style для статичних значень
+<Box style={{ padding: '16px', marginBottom: '24px', backgroundColor: '#f5f5f5' }}>
+
+// ✅ ДОБРЕ — Mantine props
+<Box p="md" mb="lg" bg="gray.1">
+
+// ❌ ПОГАНО — inline для кольору який є в темі
+<Text style={{ color: '#FFB800' }}>
+
+// ✅ ДОБРЕ — Mantine color
+<Text c="yellow.6">
+
+// ❌ ПОГАНО — дублювання контейнерів
+<div className={styles.wrapper}>
+  <Box p="md">
+    <div className={styles.inner}>
+
+// ✅ ДОБРЕ — один елемент
+<Box p="md" className={styles.wrapper}>
+```
+
+### Коли inline style допустимий
+```tsx
+// ✅ Динамічне значення з JS
+<Box style={{ width: `${progress}%` }}>
+
+// ✅ Значення з API/пропсів
+<Box style={{ backgroundColor: product.color }}>
+
+// ✅ Calculated значення
+<Box style={{ height: `calc(100vh - ${headerHeight}px)` }}>
+```
+
+### Перед стилізацією перевір
+
+1. **Mantine theme** (`src/shared/config/mantine-theme.ts`) — кольори, spacing, typography
+2. **Глобальні змінні** (`globals.scss`) — CSS custom properties
+3. **Існуючі модулі** — можливо клас вже є
+
 ## 📝 Правила роботи з кодом
 
 ### ⚡ Головний принцип
@@ -388,18 +444,21 @@ src/features/myfeature/
 ### 🚫 ЗАБОРОНИ
 
 #### Не ускладнюй
+
 - **НЕ додавай властивості/параметри "на всяк випадок"** — якщо одна властивість вирішує задачу, друга не потрібна
 - **НЕ дублюй функціонал** — якщо A вже робить роботу, B для того ж самого = зайве
 - **НЕ додавай fallbacks** без реальної браузерної потреби
 - **НЕ пиши defensive code** там де він не потрібен
 
 #### Не відволікайся
+
 - **НЕ рефактор** код який працює і не пов'язаний з задачею
 - **НЕ пропонуй "покращення"** які не просили
 - **НЕ змінюй стиль/форматування** існуючого коду без потреби
 - **НЕ додавай коментарі** до очевидного коду
 
 #### Не гадай
+
 - **пропонуй 2-3 варіанти** — і пиши яке ОДНЕ ти вважаєш найкращим рішенням для цієї проблеми
 - **НЕ пиши "можливо", "напевно", "варто б"** — або знаєш, або питай
 - **НЕ припускай** що потрібно користувачу — питай якщо неясно
@@ -428,6 +487,7 @@ src/features/myfeature/
 ### 🔍 Перевірка на дублювання
 
 Перед написанням нового коду перевір:
+
 - Чи є схожа функція/компонент в проекті?
 - Чи можна розширити існуюче замість створення нового?
 - Чи не дублюю я логіку яка вже є?
@@ -439,6 +499,7 @@ src/features/myfeature/
 ### 📤 Формат виводу змін
 
 **Мінімальний контекст:**
+
 - 1 рядок до зміни
 - Змінені рядки
 - 1 рядок після зміни
@@ -446,9 +507,10 @@ src/features/myfeature/
 **Повний код** — тільки якщо змінюється >50% файлу.
 
 **Без пояснень** — якщо зміна очевидна, код говорить сам за себе.
+
 ## 🎯 Контекст проекту
 
-- **Stack:** Next.js 15, TypeScript, Zustand, Mantine 8.2.8, TanStack React Query, Express, Prisma, PostgreSQL (Supabase)
+- **Stack:** Next.js 15, TypeScript, Zustand, Mantine 8.2.8, TanStack React Query, Express, Prisma, PostgreSQL (Supabase), REDIS
 - **Architecture:** Feature-Sliced Design (frontend) + Clean Architecture (backend)
 - **Domain:** Український e-commerce магазин м'ясних виробів
 - **Roles:** customer, manager, admin, super_admin

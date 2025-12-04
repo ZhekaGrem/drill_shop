@@ -1,30 +1,25 @@
-// src/features/catalog/components/CatalogFilters/CatalogFilters.module.scss
-// Pixel art стиль з Figma "Щільний дріл"
+
 
 .filters {
   display: flex;
   align-items: center;
-  gap: var(--spacing-lg);
-  padding: var(--spacing-lg) var(--spacing-xl);
-  background: var(--surface);
-  border-radius: var(--radius-md);
+  gap: 24px;
+  padding: 16px 24px;
+  background: var(--background);
+  border-radius: 0;
   margin-bottom: var(--spacing-xl);
   flex-wrap: wrap;
-  border: none;
-  box-shadow: var(--shadow-sm);
 }
 
-// Filter Group (Сортувати за, Розміри, Ціна)
 .filterGroup {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 12px;
 }
 
-// Label
 .label {
   font-family: var(--font-condensed);
-  font-size: var(--text-xl);
+  font-size: 14px;
   font-weight: var(--fw-medium);
   color: var(--text-primary);
   white-space: nowrap;
@@ -39,29 +34,22 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: 10px var(--spacing-md);
-  min-width: 200px;
+  padding: 8px var(--spacing-md);
+  min-width: 220px;
   font-family: var(--font-condensed);
-  font-size: var(--text-base);
+  font-size: 14px;
   font-weight: var(--fw-medium);
   color: var(--text-primary);
-  background: var(--background-light);
+  background: var(--background);
   border: none;
+  border-bottom: 1px solid var(--text-primary);
   border-radius: 0;
   cursor: pointer;
   transition: var(--transition-fast);
   text-align: left;
-  box-shadow: var(--shadow-sm);
 
   &:hover {
     background: var(--background-secondary);
-    transform: translate(1px, 1px);
-    box-shadow: var(--shadow-xs);
-  }
-
-  &:active {
-    transform: translate(2px, 2px);
-    box-shadow: none;
   }
 
   span {
@@ -75,14 +63,13 @@
 
 .dropdownMenu {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100%);
   left: 0;
   right: 0;
   z-index: 100;
-  background: var(--background-light);
-  border: none;
+  background: var(--background);
   border-radius: 0;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -90,18 +77,18 @@
   width: 100%;
   padding: 10px var(--spacing-md);
   font-family: var(--font-condensed);
-  font-size: var(--text-base);
+  font-size: 14px;
   font-weight: var(--fw-medium);
   color: var(--text-primary);
-  background: var(--background-light);
+  background: var(--background);
   border: none;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--text-primary);
   text-align: left;
   cursor: pointer;
   transition: var(--transition-fast);
 
   &:last-child {
-    border-bottom: none;
+    border-bottom: 1px solid var(--text-primary);
   }
 
   &:hover {
@@ -109,49 +96,8 @@
   }
 
   &.active {
-    background: var(--accent);
-    color: var(--text-primary);
+    color: var(--text-secondary);
     font-weight: var(--fw-bold);
-  }
-}
-
-// Size Buttons
-.sizeButtons {
-  display: flex;
-  gap: var(--spacing-sm);
-}
-
-.sizeButton {
-  min-width: 48px;
-  height: 40px;
-  padding: 0 var(--spacing-md);
-  font-family: var(--font-condensed);
-  font-size: var(--text-base);
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
-  background: var(--background-light);
-  border: none;
-  border-radius: 0;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  box-shadow: var(--shadow-sm);
-
-  &:hover {
-    background: var(--background-secondary);
-    transform: translate(1px, 1px);
-    box-shadow: var(--shadow-xs);
-  }
-
-  &:active {
-    transform: translate(2px, 2px);
-    box-shadow: none;
-  }
-
-  &.active {
-    background: var(--accent);
-    color: var(--text-primary);
-    font-weight: var(--fw-black);
-    box-shadow: inset 2px 2px 0px rgba(43, 43, 39, 0.2);
   }
 }
 
@@ -170,23 +116,23 @@
 
 .priceLabel {
   font-family: var(--font-condensed);
-  font-size: var(--text-base);
+  font-size: 14px;
   font-weight: var(--fw-medium);
   color: var(--text-primary);
   white-space: nowrap;
 }
 
 .priceInput {
-  width: 100px;
-  padding: 8px var(--spacing-sm);
+  width: 80px;
+  padding: 6px 12px;
   font-family: var(--font-condensed);
-  font-size: var(--text-base);
+  font-size: 14px;
   color: var(--text-primary);
-  background: var(--background-light);
+  background: var(--background);
   border: none;
+  border-bottom: 1px solid var(--border-color);
   border-radius: 0;
   transition: var(--transition-fast);
-  box-shadow: inset 1px 1px 0px rgba(43, 43, 39, 0.1);
 
   &::placeholder {
     color: var(--text-tertiary);
@@ -198,13 +144,9 @@
 
   &:focus {
     outline: none;
-    border-color: var(--accent);
-    box-shadow:
-      inset 1px 1px 0px rgba(43, 43, 39, 0.1),
-      0 0 0 3px rgba(230, 219, 27, 0.2);
+    border-bottom-color: var(--text-primary);
   }
 
-  // Hide number input spinners
   &::-webkit-inner-spin-button,
   &::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -216,7 +158,7 @@
   }
 }
 
-// Category checkboxes (в одному рядку)
+// Checkboxes
 .checkboxes {
   display: flex;
   flex-wrap: wrap;
@@ -226,7 +168,6 @@
 .checkbox {
   position: relative;
 
-  //Ховаємо оригінальний checkbox
   input[type='checkbox'] {
     position: absolute;
     opacity: 0;
@@ -237,42 +178,33 @@
 
 .checkboxText {
   display: inline-block;
-  padding: 10px var(--spacing-md);
-  min-width: 80px;
+  padding: 6px 16px;
+  min-width: 50px;
   font-family: var(--font-condensed);
-  font-size: var(--text-base);
+  font-size: 14px;
   font-weight: var(--fw-bold);
   color: var(--text-primary);
-  background: var(--background-light);
-  border: none;
-  border-radius: 0;
+  background: transparent;
+  border: 1px solid var(--text-primary);
+  border-radius: 4px;
   cursor: pointer;
   transition: var(--transition-fast);
   text-align: center;
   user-select: none;
-  box-shadow: var(--shadow-sm);
 
   &:hover {
     background: var(--background-secondary);
-    transform: translate(1px, 1px);
-    box-shadow: var(--shadow-xs);
   }
 
-  &:active {
-    transform: translate(2px, 2px);
-    box-shadow: none;
-  }
-
-  // Active state (коли checkbox checked)
   input[type='checkbox']:checked + & {
-    background: var(--accent);
-    color: var(--text-primary);
-    font-weight: var(--fw-black);
-    box-shadow: inset 2px 2px 0px rgba(43, 43, 39, 0.2);
+    background: var(--background-secondary);
+    color: var(--text-inverse);
+    border-color: var(--background-secondary);
+    font-weight: var(--fw-bold);
   }
 }
 
-// Mobile Styles
+// Mobile
 @media (max-width: 768px) {
   .filters {
     flex-direction: column;
@@ -288,7 +220,7 @@
   }
 
   .label {
-    font-size: var(--text-lg);
+    font-size: 14px;
   }
 
   .dropdownButton {
@@ -310,8 +242,8 @@
   }
 
   .checkboxText {
-    min-width: 60px;
-    font-size: var(--text-sm);
-    padding: 8px var(--spacing-sm);
+    min-width: 45px;
+    font-size: 13px;
+    padding: 5px 12px;
   }
 }

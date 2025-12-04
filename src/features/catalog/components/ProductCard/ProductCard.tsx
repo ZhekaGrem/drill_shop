@@ -331,9 +331,7 @@ export const ProductCard = React.memo<ProductCardProps>(
           <div className={styles.content}>
             <Link href={`/catalog/${product.slug}`} onClick={(e) => e.stopPropagation()}>
               <h3 className={styles.title}>
-                {isImageHovered && product.shortDescription
-                  ? product.shortDescription
-                  : product.name}
+                {isImageHovered && product.shortDescription ? product.shortDescription : product.name}
               </h3>
             </Link>
             <Divider className={styles.divider} />

@@ -1,6 +1,11 @@
 // src/app/catalog/category/[slug]/category.module.scss
 .categoryPage {
   min-height: calc(100vh - 200px);
+  background-image: url('/assets/img/bg/page.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .content {
@@ -36,8 +41,8 @@
 .productsGrid {
   display: grid;
   grid-template-columns: repeat(3, 370px); // 3 колонки по 370px
-  gap: 0; // Без gap
-  justify-content: flex-start;
+  gap: 0;
+  justify-content: center; // По центру екрану
   margin-bottom: 3rem;
 
   // Для екранів < 1200px - адаптивно
@@ -45,8 +50,10 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 
+  // Для мобільних - 2 колонки по 140px
   @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, 140px);
+    justify-content: center;
   }
 }
 

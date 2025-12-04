@@ -25,7 +25,8 @@
   // Прибираємо правий бордер у всіх крім останньої в ряду (кожна 3-тя)
   border-right: 0;
 
-  &:nth-child(3n), &:last-child {
+  &:nth-child(3n),
+  &:last-child {
     border-right: var(--border-width) solid var(--border-color); // Повертаємо правий бордер кожній 3-тій та останній
   }
 
@@ -35,11 +36,22 @@
   @media (max-width: 1200px) {
     height: 100%;
     width: 100%;
-    border-right: var(--border-width) solid var(--border-color); // На менших екранах повертаємо бордер
+    border-right: var(--border-width) solid var(--border-color);
   }
 
+  // Мобільні пропорції - 140px ширина, 360px висота, 2 колонки
   @media (max-width: 768px) {
-    margin-left: calc(var(--border-width) * -1);
+    height: 360px;
+    width: 140px;
+    border-right: 0;
+
+    &:nth-child(3n) {
+      border-right: 0; // Скидаємо правило для 3-х колонок
+    }
+
+    &:nth-child(2n), &:last-child {
+      border-right: var(--border-width) solid var(--border-color); // Кожна 2-га (остання в ряду для 2 колонок)
+    }
   }
 }
 
@@ -51,14 +63,19 @@
   border-bottom: var(--border-width) solid var(--border-color);
 
   @media (max-width: 1200px) {
-    height: 280px; // На менших екранах менша висота
+    height: 280px;
+  }
+
+  // Мобільна висота картинки
+  @media (max-width: 768px) {
+    height: 260px; // Висота картинки для мобільних (360px загалом - ~100px контент)
   }
 
   &__ImageWrapper {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #F5F1E8; // Світлий бежевий фон
+    background: #f5f1e8; // Світлий бежевий фон
   }
 }
 
@@ -99,9 +116,9 @@
   font-weight: var(--fw-bold);
   color: var(--text-primary);
   margin: 0;
-  line-height: 1.4; 
+  line-height: 1.4;
   display: -webkit-box;
-  -webkit-line-clamp: 1; 
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis; // Три крапки в кінці
