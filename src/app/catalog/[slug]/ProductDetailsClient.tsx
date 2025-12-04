@@ -1,7 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Card } from '@/shared/components/Card/Card';
+import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
 import { ProductReviews } from '@/features/reviews/components/ProductReviews/ProductReviews';
 import { productsApi, ProductResponse } from '@/features/catalog/api/products';
 import { Product, ProductWithRelations } from '@/shared/types';
@@ -18,7 +18,7 @@ import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
 import { sanitizeHTML } from '@/shared/utils/sanitize';
 import { SizeGuideModal } from '@/shared/components/SizeGuideModal';
-
+import{IconCart3} from '@/shared/components/Svg'
 interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
 }
@@ -134,6 +134,48 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
   const createVariantDisplayLabel = (variant: any): string => {
     // Показуємо тільки назву варіанту без опцій
     return variant.name || `Варіант ${variant.sku}`;
+  };
+
+  // ✅ Перевіряємо чи показувати чекбокси для варіантів (size/color)
+  const showVariantCheckboxes = useMemo(() => {
+    if (!product?.variants || product.variants.length === 0) return false;
+
+    // Перевіряємо чи ХОЧА Б ОДИН варіант має size або color
+    return product.variants.some((variant) => {
+      const options = variant.options || {};
+      const keys = Object.keys(options).map((k) => k.toLowerCase());
+      return keys.includes('size') || keys.includes('color');
+    });
+  }, [product?.variants]);
+
+  // Отримати значення варіанту для відображення (size або color)
+  const getVariantDisplayValue = (variant: any): string => {
+    if (!variant || !variant.options) {
+      return 'Варіант';
+    }
+
+    // Шукаємо саме 'size' або 'color'
+    const optionsKeys = Object.keys(variant.options);
+    const targetKey = optionsKeys.find((key) => {
+      const lowerKey = key.toLowerCase();
+      return lowerKey === 'size' || lowerKey === 'color';
+    });
+
+    // Якщо знайшли size або color — повертаємо його значення
+    if (targetKey) {
+      const value = variant.options[targetKey];
+      return String(value);
+    }
+
+    // Якщо size/color немає, беремо першу доступну опцію
+    const firstValue = Object.values(variant.options)[0];
+    return firstValue ? String(firstValue) : 'Варіант';
+  };
+
+  // Отримати stock варіанту
+  const getVariantStock = (variant: any) => {
+    if (!variant) return 0;
+    return (variant.quantity || 0) - (variant.reservedQuantity || 0);
   };
 
   // SIMPLIFIED: Calculate stock directly from product data
@@ -278,9 +320,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   {sortedImages.map((image, index) => (
                     <button
                       key={image.id}
-                      className={`${styles.productGallery__thumbnail} ${
-                        index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
-                      }`}
+                      className={`${styles.productGallery__thumbnail} ${index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
+                        }`}
                       onClick={() => setSelectedImageIndex(index)}>
                       <CloudinaryImage
                         src={getImageUrl(image.url || image.publicId)}
@@ -299,9 +340,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   <CloudinaryImage
                     src={getImageUrl(
                       sortedImages[selectedImageIndex]?.url ||
-                        sortedImages[selectedImageIndex]?.publicId ||
-                        primaryImage?.url ||
-                        primaryImage?.publicId
+                      sortedImages[selectedImageIndex]?.publicId ||
+                      primaryImage?.url ||
+                      primaryImage?.publicId
                     )}
                     alt={product.name}
                     className={styles.productGallery__mainImage}
@@ -321,9 +362,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     {sortedImages.map((_, index) => (
                       <button
                         key={index}
-                        className={`${styles.productGallery__dot} ${
-                          index === selectedImageIndex ? styles.productGallery__dotActive : ''
-                        }`}
+                        className={`${styles.productGallery__dot} ${index === selectedImageIndex ? styles.productGallery__dotActive : ''
+                          }`}
                         onClick={() => setSelectedImageIndex(index)}
                         aria-label={`Зображення ${index + 1}`}
                       />
@@ -338,11 +378,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
           <div className={styles.productDetails__info}>
             <h1 className={styles.productDetails__title}>{product.name}</h1>
 
-            <div className={styles.productDetails__meta}>
-              <span className={styles.productDetails__sku}>
-                {selectedVariant ? selectedVariant.sku : product.sku}
-              </span>
-            </div>
+
 
             <div className={styles.productDetails__price}>
               {selectedVariant ? (
@@ -391,9 +427,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
               {product.unitDisplay}
             </div>
 
-            {product.shortDescription && (
-              <div className={styles.productDetails__shortDescription}>{product.shortDescription}</div>
-            )}
+
             {/* Size Guide Button */}
             {hasSizeGuide && (
               <Button
@@ -407,41 +441,78 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
             {/* Variants Selector */}
             {hasVariants && product.variants && (
               <div className={styles.productDetails__variants}>
-                <Select
-                  className={styles.productDetails__variants__select}
-                  radius="xs"
-                  label="Варіант:"
-                  size="lg"
-                  value={selectedVariant?.id || (!product.hasVariants ? 'main' : undefined)}
-                  onChange={(value) => {
-                    if (value === 'main') {
-                      setSelectedVariant(null);
-                      setIsMainProduct(true);
-                    } else {
-                      const variant = product.variants?.find((v) => v.id === value);
-                      setSelectedVariant(variant);
-                      setIsMainProduct(false);
-                    }
-                    setQuantity(1);
-                  }}
-                  data={[
-                    // Показуємо головний товар тільки якщо hasVariants = false
-                    ...(!product.hasVariants
-                      ? [
+                {/* ✅ Якщо варіанти мають size/color - показуємо чекбокси */}
+                {showVariantCheckboxes ? (
+                  <div>
+                    <label className={styles.variantLabel}>Варіант:</label>
+                    <div className={styles.variantCheckboxes}>
+                      {product.variants.map((variant: any) => {
+                        const stock = getVariantStock(variant);
+                        const isOutOfStock = stock <= 0;
+                        const displayValue = getVariantDisplayValue(variant);
+
+                        return (
+                          <label
+                            key={variant.id}
+                            className={`${styles.variantCheckbox} ${isOutOfStock ? styles.variantCheckbox_disabled : ''
+                              }`}>
+                            <input
+                              type="checkbox"
+                              checked={selectedVariant?.id === variant.id}
+                              disabled={isOutOfStock}
+                              onChange={(e) => {
+                                e.stopPropagation();
+                                if (!isOutOfStock) {
+                                  setSelectedVariant(variant);
+                                  setIsMainProduct(false);
+                                  setQuantity(1);
+                                }
+                              }}
+                            />
+                            <span className={styles.variantCheckboxText}>{displayValue}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  // ✅ Інакше - показуємо Select
+                  <Select
+                    className={styles.productDetails__variants__select}
+                    radius="xs"
+                    label="Варіант:"
+                    size="lg"
+                    value={selectedVariant?.id || (!product.hasVariants ? 'main' : undefined)}
+                    onChange={(value) => {
+                      if (value === 'main') {
+                        setSelectedVariant(null);
+                        setIsMainProduct(true);
+                      } else {
+                        const variant = product.variants?.find((v) => v.id === value);
+                        setSelectedVariant(variant);
+                        setIsMainProduct(false);
+                      }
+                      setQuantity(1);
+                    }}
+                    data={[
+                      // Показуємо головний товар тільки якщо hasVariants = false
+                      ...(!product.hasVariants
+                        ? [
                           {
                             value: 'main',
                             label: `${product.name}`,
                           },
                         ]
-                      : []),
-                    ...(product.variants?.map((variant: any) => ({
-                      value: variant.id,
-                      label: createVariantDisplayLabel(variant),
-                    })) || []),
-                  ]}
-                  placeholder="Оберіть варіант"
-                  style={{ marginTop: '8px' }}
-                />
+                        : []),
+                      ...(product.variants?.map((variant: any) => ({
+                        value: variant.id,
+                        label: createVariantDisplayLabel(variant),
+                      })) || []),
+                    ]}
+                    placeholder="Оберіть варіант"
+                    style={{ marginTop: '8px' }}
+                  />
+                )}
 
                 {/* Деталі обраного варіанта */}
                 {selectedVariant && !isMainProduct && selectedVariant.options && (
@@ -541,11 +612,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                 </div>
               </div>
             )}
-            {isInStock ? (
-              <div className={styles.productDetails__availability}>В наявності: {availableQuantity} шт.</div>
-            ) : (
-              <div className={styles.productDetails__availability}>Немає в наявності</div>
-            )}
+
 
             {/* Add to Cart Section */}
             <div className={styles.productDetails__actions}>
@@ -573,17 +640,10 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   </button>
                 </div>
 
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
-                  onClick={handleAddToCart}
-                  disabled={!isInStock}>
-                  {getButtonText()}
-                </Button>
+
 
                 <Button
-                  variant="primary"
+                  variant="secondary"
                   size="lg"
                   className={styles.buyNowButton}
                   onClick={() => {
@@ -591,8 +651,19 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     setTimeout(() => router.push('/cart'), 500);
                   }}
                   disabled={!isInStock}>
+               <IconCart3 />   {getButtonText()}
+
+                </Button>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
+                  onClick={handleAddToCart}
+                  disabled={!isInStock}>
                   КУПИТИ ЗАРАЗ
                 </Button>
+
+
               </div>
             </div>
           </div>
@@ -609,8 +680,6 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
           </div>
         )}
 
-        {/* Reviews Section */}
-        <ProductReviews productId={product.id} canReview={isAuthenticated} />
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
@@ -618,11 +687,15 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
             <h2 className={styles.relatedProducts__title}>ЩЕ ТОВАРИ</h2>
             <div className={styles.relatedProducts__grid}>
               {relatedProducts.slice(0, 4).map((relatedProduct) => (
-                <Card key={relatedProduct.id} product={relatedProduct} styleText="title2" />
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
               ))}
             </div>
           </section>
         )}
+
+
+        {/* Reviews Section */}
+        <ProductReviews productId={product.id} canReview={isAuthenticated} />
 
         {/* Size Guide Modal */}
         {hasSizeGuide && (

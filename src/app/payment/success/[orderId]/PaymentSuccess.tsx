@@ -54,18 +54,18 @@ const PaymentSuccessPage: React.FC = () => {
     return (
       <div className={styles.paymentSuccessPage}>
         <Container size="sm" py="xl">
-        <Paper p="xl" radius="md" withBorder>
-          <Stack align="center" gap="lg">
-            <Loader size="lg" />
-            <Title order={3} ta="center">
-              Перевіряємо статус оплати...
-            </Title>
-            <Text c="dimmed" ta="center">
-              Будь ласка, зачекайте, поки ми підтвердимо ваш платіж
-            </Text>
-          </Stack>
-        </Paper>
-      </Container>
+          <Paper p="xl" radius="md" withBorder>
+            <Stack align="center" gap="lg">
+              <Loader size="lg" />
+              <Title order={3} ta="center">
+                Перевіряємо статус оплати...
+              </Title>
+              <Text c="dimmed" ta="center">
+                Будь ласка, зачекайте, поки ми підтвердимо ваш платіж
+              </Text>
+            </Stack>
+          </Paper>
+        </Container>
       </div>
     );
   }
@@ -74,24 +74,24 @@ const PaymentSuccessPage: React.FC = () => {
     return (
       <div className={styles.paymentSuccessPage}>
         <Container size="sm" py="xl">
-        <Paper p="xl" radius="md" withBorder>
-          <Stack align="center" gap="lg">
-            <IconAlertCircle size={80} color="var(--mantine-color-red-6)" />
-            <Title order={2} ta="center">
-              Помилка перевірки платежу
-            </Title>
-            <Text c="dimmed" ta="center">
-              Не вдалося перевірити статус вашого платежу. Зверніться до служби підтримки.
-            </Text>
-            <Group>
-              <Button component={Link} href="/" variant="light">
-                На головну
-              </Button>
-              <Button onClick={() => window.location.reload()}>Спробувати знову</Button>
-            </Group>
-          </Stack>
-        </Paper>
-      </Container>
+          <Paper p="xl" radius="md" withBorder>
+            <Stack align="center" gap="lg">
+              <IconAlertCircle size={80} color="var(--mantine-color-red-6)" />
+              <Title order={2} ta="center">
+                Помилка перевірки платежу
+              </Title>
+              <Text c="dimmed" ta="center">
+                Не вдалося перевірити статус вашого платежу. Зверніться до служби підтримки.
+              </Text>
+              <Group>
+                <Button component={Link} href="/" variant="light">
+                  На головну
+                </Button>
+                <Button onClick={() => window.location.reload()}>Спробувати знову</Button>
+              </Group>
+            </Stack>
+          </Paper>
+        </Container>
       </div>
     );
   }
@@ -104,77 +104,80 @@ const PaymentSuccessPage: React.FC = () => {
   return (
     <div className={styles.paymentSuccessPage}>
       <Container size="sm" py="xl">
-      <Paper p="xl" radius="md" withBorder>
-        <Stack align="center" gap="lg">
-          {isSuccess && (
-            <>
-              <IconCircleCheck size={80} color="var(--mantine-color-green-6)" />
-              <Title order={2} ta="center" c="green">
-                Оплата успішна!
-              </Title>
-              <Text ta="center">Ваш платіж успішно обробленο.</Text>
-              <Text ta="center" c="dimmed">
-                Ми надіслали підтвердження на вашу електронну пошту. Через кілька секунд ви будете
-                перенаправлені на сторінку замовлення.
-              </Text>
-            </>
-          )}
+        <Paper p="xl" radius="md" withBorder>
+          <Stack align="center" gap="lg">
+            {isSuccess && (
+              <>
+                <IconCircleCheck size={80} color="var(--mantine-color-green-6)" />
+                <Title order={2} ta="center" c="green">
+                  Оплата успішна!
+                </Title>
+                <Text ta="center">Ваш платіж успішно обробленο.</Text>
+                <Text ta="center" c="dimmed">
+                  Ми надіслали підтвердження на вашу електронну пошту. Через кілька секунд ви будете
+                  перенаправлені на сторінку замовлення.
+                </Text>
+              </>
+            )}
 
-          {isPending && (
-            <>
-              <Loader size="lg" />
-              <Title order={3} ta="center" c="blue">
-                Обробка платежу...
-              </Title>
-              <Text ta="center" c="dimmed">
-                Ваш платіж ще обробляється. Будь ласка, зачекайте.
-              </Text>
-            </>
-          )}
+            {isPending && (
+              <>
+                <Loader size="lg" />
+                <Title order={3} ta="center" c="blue">
+                  Обробка платежу...
+                </Title>
+                <Text ta="center" c="dimmed">
+                  Ваш платіж ще обробляється. Будь ласка, зачекайте.
+                </Text>
+              </>
+            )}
 
-          {isFailed && (
-            <>
-              <IconAlertCircle size={80} color="var(--mantine-color-red-6)" />
-              <Title order={2} ta="center" c="red">
-                Оплата не вдалася
-              </Title>
-              <Text ta="center" c="dimmed">
-                На жаль, ваш платіж не було обробленο. Спробуйте ще раз або виберіть інший спосіб оплати.
-              </Text>
-            </>
-          )}
+            {isFailed && (
+              <>
+                <IconAlertCircle size={80} color="var(--mantine-color-red-6)" />
+                <Title order={2} ta="center" c="red">
+                  Оплата не вдалася
+                </Title>
+                <Text ta="center" c="dimmed">
+                  На жаль, ваш платіж не було обробленο. Спробуйте ще раз або виберіть інший спосіб оплати.
+                </Text>
+              </>
+            )}
 
-          <Paper p="md" withBorder radius="md" w="100%">
-            <Group justify="space-between">
-              <Text size="sm" c="dimmed">
-                Номер замовлення:
-              </Text>
-              <Text size="sm" ff="monospace">
-                {paymentData?.orderNumber || orderId}
-              </Text>
+            <Paper p="md" withBorder radius="md" w="100%">
+              <Group justify="space-between">
+                <Text size="sm" c="dimmed">
+                  Номер замовлення:
+                </Text>
+                <Text size="sm" ff="monospace">
+                  {paymentData?.orderNumber || orderId}
+                </Text>
+              </Group>
+            </Paper>
+
+            <Group w="100%">
+              <Button component={Link} href="/" variant="light" flex={1}>
+                На головну
+              </Button>
+
+              {(paymentData?.orderNumber || orderId) && isSuccess && (
+                <Button
+                  component={Link}
+                  href={`/orders/track/${paymentData?.orderNumber || orderId}`}
+                  flex={1}>
+                  Переглянути замовлення
+                </Button>
+              )}
+
+              {!isSuccess && (
+                <Button component={Link} href="/checkout" flex={1}>
+                  Спробувати знову
+                </Button>
+              )}
             </Group>
-          </Paper>
-
-          <Group w="100%">
-            <Button component={Link} href="/" variant="light" flex={1}>
-              На головну
-            </Button>
-
-            {(paymentData?.orderNumber || orderId) && isSuccess && (
-              <Button component={Link} href={`/orders/track/${paymentData?.orderNumber || orderId}`} flex={1}>
-                Переглянути замовлення
-              </Button>
-            )}
-
-            {!isSuccess && (
-              <Button component={Link} href="/checkout" flex={1}>
-                Спробувати знову
-              </Button>
-            )}
-          </Group>
-        </Stack>
-      </Paper>
-    </Container>
+          </Stack>
+        </Paper>
+      </Container>
     </div>
   );
 };

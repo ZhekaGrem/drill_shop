@@ -358,22 +358,24 @@ export const ProductCard = React.memo<ProductCardProps>(
                           name: product.name,
                         });
                         return (
-                          <button
-                            type="button"
-                            disabled={isOutOfStock}
-                            className={`${styles.variants__option} ${
-                              selectedVariant === 'main' ? styles.variants__option_active : ''
-                            } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              if (!isOutOfStock) {
-                                setSelectedVariant('main');
-                              }
-                            }}>
-                            {displayValue}
-                            {isOutOfStock && ''}
-                          </button>
+                          <label
+                            key="main"
+                            className={`${styles.variantCheckbox} ${
+                              isOutOfStock ? styles.variantCheckbox_disabled : ''
+                            }`}>
+                            <input
+                              type="checkbox"
+                              checked={selectedVariant === 'main'}
+                              disabled={isOutOfStock}
+                              onChange={(e) => {
+                                e.stopPropagation();
+                                if (!isOutOfStock) {
+                                  setSelectedVariant('main');
+                                }
+                              }}
+                            />
+                            <span className={styles.variantCheckboxText}>{displayValue}</span>
+                          </label>
                         );
                       })()}
 
@@ -384,23 +386,24 @@ export const ProductCard = React.memo<ProductCardProps>(
                       const displayValue = getVariantDisplayValue(variant);
 
                       return (
-                        <button
+                        <label
                           key={variant.id}
-                          type="button"
-                          disabled={isOutOfStock}
-                          className={`${styles.variants__option} ${
-                            selectedVariant === variant.id ? styles.variants__option_active : ''
-                          } ${isOutOfStock ? styles.variants__option_disabled : ''}`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            if (!isOutOfStock) {
-                              setSelectedVariant(variant.id);
-                            }
-                          }}>
-                          {displayValue}
-                          {isOutOfStock && ''}
-                        </button>
+                          className={`${styles.variantCheckbox} ${
+                            isOutOfStock ? styles.variantCheckbox_disabled : ''
+                          }`}>
+                          <input
+                            type="checkbox"
+                            checked={selectedVariant === variant.id}
+                            disabled={isOutOfStock}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              if (!isOutOfStock) {
+                                setSelectedVariant(variant.id);
+                              }
+                            }}
+                          />
+                          <span className={styles.variantCheckboxText}>{displayValue}</span>
+                        </label>
                       );
                     })}
                   </div>

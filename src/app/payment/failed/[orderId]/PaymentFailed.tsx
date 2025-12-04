@@ -50,88 +50,88 @@ const PaymentFailedPage: React.FC = () => {
     <div className={styles.paymentFailedPage}>
       <Container size="sm" py="xl">
         <Paper p="xl" radius="md" withBorder>
-        <Stack align="center" gap="lg">
-          <IconAlertTriangle size={80} color="var(--mantine-color-red-6)" />
+          <Stack align="center" gap="lg">
+            <IconAlertTriangle size={80} color="var(--mantine-color-red-6)" />
 
-          <Title order={2} ta="center" c="red">
-            Помилка оплати
-          </Title>
+            <Title order={2} ta="center" c="red">
+              Помилка оплати
+            </Title>
 
-          <Text ta="center" size="lg">
-            {getErrorMessage(error, reason)}
-          </Text>
+            <Text ta="center" size="lg">
+              {getErrorMessage(error, reason)}
+            </Text>
 
-          <Text ta="center" c="dimmed">
-            Ваше замовлення збережено, але оплата не пройшла. Спробуйте оплатити ще раз або оберіть інший
-            спосіб оплати.
-          </Text>
+            <Text ta="center" c="dimmed">
+              Ваше замовлення збережено, але оплата не пройшла. Спробуйте оплатити ще раз або оберіть інший
+              спосіб оплати.
+            </Text>
 
-          {/* Деталі помилки */}
-          {(trackingId || error) && (
-            <Paper p="md" withBorder radius="md" w="100%" bg="red.0">
-              {trackingId && (
-                <Group justify="space-between">
-                  <Text size="sm" c="dimmed">
-                    Номер замовлення:
-                  </Text>
-                  <Text size="sm" ff="monospace">
-                    {trackingId}
-                  </Text>
-                </Group>
-              )}
+            {/* Деталі помилки */}
+            {(trackingId || error) && (
+              <Paper p="md" withBorder radius="md" w="100%" bg="red.0">
+                {trackingId && (
+                  <Group justify="space-between">
+                    <Text size="sm" c="dimmed">
+                      Номер замовлення:
+                    </Text>
+                    <Text size="sm" ff="monospace">
+                      {trackingId}
+                    </Text>
+                  </Group>
+                )}
 
-              {error && (
-                <Group justify="space-between" mt="xs">
-                  <Text size="sm" c="dimmed">
-                    Код помилки:
-                  </Text>
-                  <Text size="sm" ff="monospace">
-                    {error}
-                  </Text>
-                </Group>
-              )}
-            </Paper>
-          )}
-
-          {/* Рекомендації */}
-          <Alert
-            icon={<IconInfoCircle size={16} />}
-            title="Що робити далі?"
-            color="blue"
-            variant="light"
-            w="100%">
-            <Stack gap="xs">
-              <Text size="sm">• Перевірте дані карти та спробуйте ще раз</Text>
-              <Text size="sm">• Переконайтеся, що на карті достатньо коштів</Text>
-              <Text size="sm">• Спробуйте використати іншу карту</Text>
-              <Text size="sm">• Оберіть інший спосіб оплати (готівка при отриманні)</Text>
-              <Text size="sm">• Зверніться до банку, що випустив карту</Text>
-            </Stack>
-          </Alert>
-
-          {/* Кнопки дій */}
-          <Group w="100%">
-            {trackingId && (
-              <Button component={Link} href={`/orders/track/${trackingId}`} variant="light" flex={1}>
-                Переглянути замовлення
-              </Button>
+                {error && (
+                  <Group justify="space-between" mt="xs">
+                    <Text size="sm" c="dimmed">
+                      Код помилки:
+                    </Text>
+                    <Text size="sm" ff="monospace">
+                      {error}
+                    </Text>
+                  </Group>
+                )}
+              </Paper>
             )}
 
-            <Button component={Link} href="/checkout" flex={1}>
-              Спробувати знову
-            </Button>
-          </Group>
+            {/* Рекомендації */}
+            <Alert
+              icon={<IconInfoCircle size={16} />}
+              title="Що робити далі?"
+              color="blue"
+              variant="light"
+              w="100%">
+              <Stack gap="xs">
+                <Text size="sm">• Перевірте дані карти та спробуйте ще раз</Text>
+                <Text size="sm">• Переконайтеся, що на карті достатньо коштів</Text>
+                <Text size="sm">• Спробуйте використати іншу карту</Text>
+                <Text size="sm">• Оберіть інший спосіб оплати (готівка при отриманні)</Text>
+                <Text size="sm">• Зверніться до банку, що випустив карту</Text>
+              </Stack>
+            </Alert>
 
-          {/* Підтримка */}
-          <Text ta="center" size="sm" c="dimmed">
-            Потрібна допомога? Зверніться до{' '}
-            <Text component={Link} href="/contact" c="blue" td="underline">
-              служби підтримки
+            {/* Кнопки дій */}
+            <Group w="100%">
+              {trackingId && (
+                <Button component={Link} href={`/orders/track/${trackingId}`} variant="light" flex={1}>
+                  Переглянути замовлення
+                </Button>
+              )}
+
+              <Button component={Link} href="/checkout" flex={1}>
+                Спробувати знову
+              </Button>
+            </Group>
+
+            {/* Підтримка */}
+            <Text ta="center" size="sm" c="dimmed">
+              Потрібна допомога? Зверніться до{' '}
+              <Text component={Link} href="/contact" c="blue" td="underline">
+                служби підтримки
+              </Text>
             </Text>
-          </Text>
-        </Stack>
-      </Paper>
-    </Container>
+          </Stack>
+        </Paper>
+      </Container>
     </div>
   );
 };

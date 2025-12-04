@@ -6,7 +6,7 @@
 
 ## 🎯 Огляд проекту
 
-**Shop** — це Next.js e-commerce застосунок для продажу 
+**Shop** — це Next.js e-commerce застосунок для продажу
 **Feature-Sliced Design (FSD)** архітектури.
 
 ### Стек технологій
@@ -380,8 +380,8 @@ src/features/myfeature/
 ### Пріоритет (від вищого до нижчого)
 
 1. **Mantine props** — якщо компонент Mantine, використовуй його пропси (`p`, `m`, `bg`, `c`, `fz`, `fw`, тощо)
-2. **SCSS modules** — для кастомних стилів (`ComponentName.module.scss`) 
-4. **inline style** — **ТІЛЬКИ** якщо стиль динамічний і залежить від JS змінної в рантаймі
+2. **SCSS modules** — для кастомних стилів (`ComponentName.module.scss`)
+3. **inline style** — **ТІЛЬКИ** якщо стиль динамічний і залежить від JS змінної в рантаймі
 
 ### 🚫 ЗАБОРОНИ стилізації
 
@@ -391,6 +391,7 @@ src/features/myfeature/
 - **НЕ змішуй підходи** в одному компоненті (або Mantine props, або SCSS — не обидва для одного елемента)
 
 ### ✅ Приклади
+
 ```tsx
 // ❌ ПОГАНО — inline style для статичних значень
 <Box style={{ padding: '16px', marginBottom: '24px', backgroundColor: '#f5f5f5' }}>
@@ -414,6 +415,7 @@ src/features/myfeature/
 ```
 
 ### Коли inline style допустимий
+
 ```tsx
 // ✅ Динамічне значення з JS
 <Box style={{ width: `${progress}%` }}>

@@ -49,7 +49,8 @@
       border-right: 0; // Скидаємо правило для 3-х колонок
     }
 
-    &:nth-child(2n), &:last-child {
+    &:nth-child(2n),
+    &:last-child {
       border-right: var(--border-width) solid var(--border-color); // Кожна 2-га (остання в ряду для 2 колонок)
     }
   }
@@ -144,7 +145,7 @@
   overflow: hidden;
 }
 
-// Variants (Size/Color buttons)
+// Variants (Size/Color checkboxes)
 .variants {
   margin: var(--spacing-sm) 0;
 
@@ -162,45 +163,56 @@
     flex-wrap: wrap;
     gap: var(--spacing-xs);
   }
+}
 
-  &__option {
-    min-width: 48px;
-    padding: 6px var(--spacing-sm);
-    font-family: var(--font-condensed);
-    font-size: var(--text-sm);
+// Checkbox стилі для варіантів (як у фільтрах)
+.variantCheckbox {
+  position: relative;
+  cursor: pointer;
+
+  input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  // Checked стан
+  input[type='checkbox']:checked + .variantCheckboxText {
+    background: var(--background-secondary);
+    color: var(--text-inverse);
+    border-color: var(--background-secondary);
     font-weight: var(--fw-bold);
-    color: var(--text-primary);
-    background: var(--background-light);
-    border: var(--border-width) solid var(--border-color);
-    border-radius: 0;
-    cursor: pointer;
-    transition: var(--transition-fast);
-    box-shadow: var(--shadow-xs);
+  }
 
-    &:hover:not(:disabled) {
-      background: var(--background-secondary);
-      transform: translate(1px, 1px);
-      box-shadow: none;
-    }
+  &_disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
 
-    &:active:not(:disabled) {
-      transform: translate(2px, 2px);
-      box-shadow: none;
-    }
-
-    &_active {
-      background: var(--btn-primary);
-      color: var(--text-primary);
-      font-weight: var(--fw-black);
-      box-shadow: inset 1px 1px 0px rgba(43, 43, 39, 0.2);
-    }
-
-    &_disabled {
-      opacity: 0.4;
+    .variantCheckboxText {
       cursor: not-allowed;
       text-decoration: line-through;
-      background: var(--background);
     }
+  }
+}
+
+.variantCheckboxText {
+  display: inline-block;
+  padding: 6px 12px;
+  min-width: 48px;
+  font-family: var(--font-condensed);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  background: transparent;
+  border: 2px solid var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-align: center;
+  user-select: none;
+
+  &:hover {
+    background: var(--background-secondary);
   }
 }
 
@@ -278,12 +290,12 @@
     &__options {
       gap: 4px;
     }
+  }
 
-    &__option {
-      padding: 4px 8px;
-      font-size: var(--text-xs);
-      min-width: 40px;
-    }
+  .variantCheckboxText {
+    padding: 4px 8px;
+    font-size: var(--text-xs);
+    min-width: 40px;
   }
 
   .footer {
