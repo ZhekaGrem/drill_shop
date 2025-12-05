@@ -31,8 +31,6 @@ export const ProductReviews = ({ productId }: ProductReviewsProps) => {
   return (
     <section className={styles.productReviews}>
       <div className={styles.header}>
-
-
         {isAuthenticated ? (
           userCanReview && !showForm ? (
             <Button onClick={() => setShowForm(true)}>Написати відгук</Button>

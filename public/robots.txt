@@ -1,0 +1,38 @@
+# robots.txt для shchilnuidrill.com
+
+User-agent: *
+Allow: /
+
+# Блокуємо приватні розділи
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /auth/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+
+# Блокуємо процес покупки
+Disallow: /cart
+Disallow: /checkout
+Disallow: /checkout/
+Disallow: /payment/
+Disallow: /orders/success
+
+# Блокуємо API
+Disallow: /api/
+
+# Дозволяємо статичні ресурси (важливо для favicon!)
+Allow: /favicon.ico
+Allow: /favicon.svg
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.webp
+Allow: /*.svg
+
+# Sitemap
+Sitemap: https://shchilnuidrill.com/sitemap.xml

@@ -46,6 +46,8 @@ export const baseMetadata: Metadata = {
     follow: true,
   },
 
+  themeColor: '#FFB800',
+
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '48x48' },

@@ -40,7 +40,9 @@
       "Bash(timeout 5 echo:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push)"
+      "Bash(git push)",
+      "WebFetch(domain:shchilnuidrill.com)",
+      "WebFetch(domain:selotasalo.shop)"
     ],
     "deny": [],
     "ask": []
