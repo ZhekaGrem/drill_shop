@@ -39,14 +39,18 @@
     border-right: var(--border-width) solid var(--border-color);
   }
 
-  // Мобільні пропорції - 1 колонка на всю ширину
+  // Мобільні пропорції - 2 колонки
   @media (max-width: 768px) {
     height: auto;
     width: 100%;
-    border-right: var(--border-width) solid var(--border-color);
+    border-right: 0;
 
-    &:nth-child(3n),
-    &:nth-child(2n) {
+    &:nth-child(3n) {
+      border-right: 0;
+    }
+
+    &:nth-child(2n),
+    &:last-child {
       border-right: var(--border-width) solid var(--border-color);
     }
   }
@@ -65,7 +69,7 @@
 
   // Мобільна висота картинки
   @media (max-width: 768px) {
-    height: 400px; // Висота картинки для мобільних (збільшена для 1 колонки)
+    height: 180px; // Висота картинки для мобільних (2 колонки)
   }
 
   &__ImageWrapper {
