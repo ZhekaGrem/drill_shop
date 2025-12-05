@@ -5,13 +5,11 @@
   :global {
     .mantine-Drawer-content {
       border-radius: 0 !important;
-      border-left: var(--border-width) solid var(--border-color) !important;
       background: var(--background) !important;
     }
 
     .mantine-Drawer-header {
-      background: var(--background-secondary) !important;
-      border-bottom: var(--border-width) solid var(--border-color) !important;
+       background: var(--background);
       padding: var(--spacing-md) !important;
     }
 
@@ -21,7 +19,7 @@
 
     .mantine-Drawer-body {
       padding: var(--spacing-md) !important;
-      background: var(--background) !important;
+      background: var(--background);
       height: 100%;
     }
 
@@ -104,7 +102,6 @@
 
   &[data-active='true'] {
     color: var(--text-secondary);
-    border-bottom: px solid var(--border-color);
   }
 }
 

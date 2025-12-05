@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation';
+import { Modal } from '@mantine/core';
+import { IconFilter, IconChevronDown } from '@tabler/icons-react';
+import { Button } from '@/shared/components/Button/Button';
 import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
 import { CatalogFilters } from '@/features/catalog/components/CatalogFilters/CatalogFilters';
 import { Pagination } from '@/shared/components/Pagination/Pagination';
@@ -17,6 +20,7 @@ interface CatalogProps {
 
 export default function CatalogClient({ initialData, initialCategories }: CatalogProps) {
   const [initialized, setInitialized] = useState(false);
+  const [filtersModalOpened, setFiltersModalOpened] = useState(false);
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -93,9 +97,33 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
   if (showInitialData) {
     return (
       <div className={styles.catalogPage}>
-        <div className={styles.container}>
-          {/* Фільтри зверху */}
+        {/* Кнопка фільтрів для мобільних */}
+        <Button className={styles.filtersButton} onClick={() => setFiltersModalOpened(true)} fullWidth>
+          <IconFilter size={20} />
+          <span>Фільтри</span>
+          <IconChevronDown size={20} />
+        </Button>
+
+        {/* Фільтри для десктопу */}
+        <div className={styles.desktopFilters}>
           <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
+        </div>
+
+        {/* Модал з фільтрами для мобільних */}
+        <Modal
+          opened={filtersModalOpened}
+          onClose={() => setFiltersModalOpened(false)}
+          title="Фільтри"
+          size="xl"
+          classNames={{
+            body: styles.modalBody,
+            content: styles.modalContent,
+            title: styles.modalTitle,
+            header: styles.modalHeader,
+          }}>
+          <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
+        </Modal>
+        <div className={styles.container}>
 
           <div className={styles.products}>
             {initialData!.data.map((product) => (
@@ -109,9 +137,33 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
 
   return (
     <div className={styles.catalogPage}>
-      <div className={styles.container}>
-        {/* Фільтри зверху */}
+      {/* Кнопка фільтрів для мобільних */}
+      <Button variant='outline' className={styles.filtersButton} onClick={() => setFiltersModalOpened(true)} fullWidth>
+        <IconFilter size={20} />
+        <span>Фільтри</span>
+        <IconChevronDown size={20} />
+      </Button>
+
+      {/* Фільтри для десктопу */}
+      <div className={styles.desktopFilters}>
         <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
+      </div>
+
+      {/* Модал з фільтрами для мобільних */}
+      <Modal
+        opened={filtersModalOpened}
+        onClose={() => setFiltersModalOpened(false)}
+        title="Фільтри"
+        size="100%"
+        classNames={{
+          body: styles.modalBody,
+          content: styles.modalContent,
+          title: styles.modalTitle,
+          header: styles.modalHeader,
+        }}>
+        <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
+      </Modal>
+      <div className={styles.container}>
 
         {error && (
           <div className={styles.error}>

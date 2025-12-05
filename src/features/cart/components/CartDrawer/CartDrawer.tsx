@@ -34,7 +34,7 @@ export const CartDrawer = () => {
       styles={{
         header: {
           padding: isMobile ? '16px 20px' : undefined,
-          borderBottom: '1px solid var(--mantine-color-gray-3)',
+          backgroundColor: 'var(--background)',
         },
         body: {
           padding: isMobile ? '0' : undefined,
