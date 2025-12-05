@@ -92,11 +92,9 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
                     {badge.value}
                   </Text>
                 ))}
-
               </Group>
             );
           })()}
-
 
           {/* Рядок 3: Контрол кількості (зліва) | Видалення (справа) */}
           <Group justify="space-between" align="center" className={styles.bottomControls}>
@@ -173,12 +171,14 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
                   {badge.value}
                 </Text>
               ))}
-
             </Group>
           );
         })()}
 
-        <Text className={styles.variantText}> <span>Ціна:</span> {formatPrice(displayPrice)}</Text>
+        <Text className={styles.variantText}>
+          {' '}
+          <span>Ціна:</span> {formatPrice(displayPrice)}
+        </Text>
 
         {/* Рядок 3: Контрол кількості (зліва) | Видалення (справа) */}
         <Group justify="space-between" align="center" className={styles.bottomControlsFull}>
@@ -205,7 +205,6 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
               <IconTrash size={16} />
             </ActionIcon>
             <Text className={styles.deleteText}>Видалити</Text>
-
           </Group>
         </Group>
       </Stack>

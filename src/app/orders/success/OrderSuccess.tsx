@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Container, Paper, Title, Text, Group, Stack, Badge, Image } from '@mantine/core';
 import { IconCircleCheck, IconPackage, IconShoppingCart } from '@tabler/icons-react';
-import { Button } from '@/shared/components/Button/Button'
+import { Button } from '@/shared/components/Button/Button';
 
 import styles from './orderSuccess.module.scss';
 
@@ -18,10 +18,9 @@ const OrderSuccess = () => {
   const totalAmount = searchParams.get('total');
 
   return (
-    <Container size="md" >
+    <Container size="md">
       <Stack align="center" gap="xl">
         <Image src="/assets/img/smile.png" alt="Hero" height={100} radius="md" className={styles.image} />
-
 
         <Title className={styles.title}>ДЯКУЄМО ЗА ЗАМОВЛЕННЯ!</Title>
 
@@ -67,9 +66,7 @@ const OrderSuccess = () => {
           </Stack>
         </Paper>
 
-
         {orderNumber && (
-
           <Link href={`/orders/track/${orderNumber}`}>
             <Button
               variant="primary"
@@ -77,14 +74,14 @@ const OrderSuccess = () => {
               leftSection={<IconPackage size={16} />}
               className={styles.button}>
               Відстежити замовлення
-            </Button></Link>
+            </Button>
+          </Link>
         )}
         <Link href={`/catalog`}>
-          <Button
-            size="lg"
-            className={styles.primaryButton}>
+          <Button size="lg" className={styles.primaryButton}>
             Продовжити покупки
-          </Button></Link>
+          </Button>
+        </Link>
 
         <Text ta="center" size="sm" c="dimmed">
           Маєте питання?{' '}

@@ -6,7 +6,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Container, Paper, Title, Text, Group, Stack, Alert, Image } from '@mantine/core';
 import { usePaymentStatus } from '@/features/payment/hooks/usePayment';
-import { Button } from '@/shared/components/Button/Button'
+import { Button } from '@/shared/components/Button/Button';
 
 import styles from './paymentFailed.module.scss';
 
@@ -52,7 +52,14 @@ const PaymentFailedPage: React.FC = () => {
       <Container size="sm" py="xl">
         <Paper className={styles.wrapper}>
           <Stack align="center" gap="lg">
-            <Image src="/assets/img/rage.png" alt="Hero" height={200} fit="contain" radius="md" className={styles.image} />
+            <Image
+              src="/assets/img/rage.png"
+              alt="Hero"
+              height={200}
+              fit="contain"
+              radius="md"
+              className={styles.image}
+            />
 
             <Title order={1} ta="center" c="red">
               Не вдалося провести оплату!
@@ -61,8 +68,6 @@ const PaymentFailedPage: React.FC = () => {
             <Text ta="center" size="lg">
               {getErrorMessage(error, reason)}
             </Text>
-
-
 
             {/* Деталі помилки */}
             {(trackingId || error) && (
@@ -87,7 +92,8 @@ const PaymentFailedPage: React.FC = () => {
                       {error}
                     </Text>
                   </Group>
-                )}</>
+                )}
+              </>
             )}
 
             {/* Рекомендації */}
@@ -112,12 +118,14 @@ const PaymentFailedPage: React.FC = () => {
               <Link href={`/orders/track/${trackingId}`} className={styles.bth}>
                 <Button variant="primary" flex={1}>
                   Переглянути замовлення
-                </Button></Link>
+                </Button>
+              </Link>
             )}
             <Link href="/checkout">
               <Button variant="outline" flex={1} className={styles.bth}>
                 Спробувати знову
-              </Button></Link>
+              </Button>
+            </Link>
 
             {/* Підтримка */}
             <Text ta="center" size="sm" c="dimmed">

@@ -241,7 +241,7 @@ const OrderTrackingPage: React.FC = () => {
           ЗАМОВЛЕННЯ {order.orderNumber}
         </Title>
 
-        <Paper  className={styles.orderCard}>
+        <Paper className={styles.orderCard}>
           <Stack gap="lg">
             <Group justify="space-between" align="flex-start">
               <Stack gap="xs">
@@ -265,7 +265,7 @@ const OrderTrackingPage: React.FC = () => {
               </Badge>
             </Group>
 
-            <Paper  className={styles.summaryCard}>
+            <Paper className={styles.summaryCard}>
               <Group justify="space-between">
                 <Stack gap="xs">
                   <Text className={styles.label}>Загальна сума</Text>
@@ -290,9 +290,9 @@ const OrderTrackingPage: React.FC = () => {
               </Group>
             </Paper>
 
-            <Paper   className={styles.infoCard}>
+            <Paper className={styles.infoCard}>
               <Stack gap="md" className={styles.infoCard}>
-                <Title order={3} className={styles.sectionTitle} >
+                <Title order={3} className={styles.sectionTitle}>
                   ІНФОРМАЦІЯ ПРО ЗАМОВЛЕННЯ
                 </Title>
                 <Group>
@@ -313,14 +313,14 @@ const OrderTrackingPage: React.FC = () => {
                     <Text size="sm">{order.shippingAddress.city}</Text>
                     {order.shippingAddress.city?.trim().toLowerCase() !==
                       order.shippingAddress.address1?.trim().toLowerCase() && (
-                        <Text size="sm">{order.shippingAddress.address1}</Text>
-                      )}
+                      <Text size="sm">{order.shippingAddress.address1}</Text>
+                    )}
                   </Stack>
                 </Group>
               </Stack>
             </Paper>
 
-            <Paper   className={styles.infoCard}>
+            <Paper className={styles.infoCard}>
               <Stack gap="md">
                 <Title order={3} className={styles.sectionTitle}>
                   ТОВАРИ В ЗАМОВЛЕННІ
@@ -401,7 +401,7 @@ const OrderTrackingPage: React.FC = () => {
               </Stack>
             )}
 
-            <Paper   className={styles.totalsCard}>
+            <Paper className={styles.totalsCard}>
               <Stack gap="md">
                 <Title order={3} className={styles.sectionTitle}>
                   ДЕТАЛІ ОПЛАТИ

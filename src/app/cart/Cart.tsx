@@ -14,8 +14,8 @@ import {
   Breadcrumbs,
   Anchor,
 } from '@mantine/core';
-import { IconShoppingCart  } from '@tabler/icons-react';
-import {  ArrowLeft } from '@/shared/components/Svg';
+import { IconShoppingCart } from '@tabler/icons-react';
+import { ArrowLeft } from '@/shared/components/Svg';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { CartItem } from '@/features/cart/components/CartItem/CartItem';
 import { formatPrice } from '@/shared/utils/cart-calculations';
@@ -26,10 +26,9 @@ import styles from './Cart.module.scss';
 export default function CartPage() {
   const { items, calculations, isLoading, clearCart, isClearingCart, error } = useCart();
 
-
   if (error) {
     return (
-      <Container size="lg" >
+      <Container size="lg">
         <Center py="xl">
           <Stack align="center" gap="md">
             <Text c="red">Помилка завантаження кошика</Text>
@@ -41,18 +40,24 @@ export default function CartPage() {
   }
 
   return (
-    <Container size="lg" className={styles.containerCart} >
-
+    <Container size="lg" className={styles.containerCart}>
       {/* Header */}
       <Group justify="space-between" p="xs">
-        <Group justify="space-between" > <Link href='/catalog' className={styles.containerCart__link} >  <ArrowLeft/>  <Title order={1} className={styles.containerCart__title}> Кошик</Title></Link>  <Text> {calculations.itemsCount} товари</Text></Group>
+        <Group justify="space-between">
+          {' '}
+          <Link href="/catalog" className={styles.containerCart__link}>
+            {' '}
+            <ArrowLeft />{' '}
+            <Title order={1} className={styles.containerCart__title}>
+              {' '}
+              Кошик
+            </Title>
+          </Link>{' '}
+          <Text> {calculations.itemsCount} товари</Text>
+        </Group>
 
         {items.length > 0 && (
-          <Button
-            variant="red"
-            size='promo'
-            loading={isClearingCart}
-            onClick={clearCart}>
+          <Button variant="red" size="promo" loading={isClearingCart} onClick={clearCart}>
             Очистити кошикА
           </Button>
         )}
@@ -61,7 +66,7 @@ export default function CartPage() {
       {items.length === 0 ? (
         /* Порожній кошик */
         <Center py="xl">
-          <Stack align="center" gap="xl" maw={400} >
+          <Stack align="center" gap="xl" maw={400}>
             <IconShoppingCart size={80} color="var(--mantine-color-gray-5)" />
 
             <Stack align="center" gap="sm">
@@ -104,10 +109,9 @@ export default function CartPage() {
 
             <Stack gap="xs">
               <Group justify="space-between">
-                <Text>Товари {calculations.itemsCount} на суму</Text> <Text>{formatPrice(calculations.totalAmount)}</Text>
+                <Text>Товари {calculations.itemsCount} на суму</Text>{' '}
+                <Text>{formatPrice(calculations.totalAmount)}</Text>
               </Group>
-
-
             </Stack>
 
             <Divider />
@@ -116,7 +120,7 @@ export default function CartPage() {
               <Text fw={700} size="lg">
                 Загалом:
               </Text>
-              <Text fw={900}  className={styles.totalSection__price}>
+              <Text fw={900} className={styles.totalSection__price}>
                 {formatPrice(calculations.totalAmount)}
               </Text>
             </Group>
@@ -134,7 +138,6 @@ export default function CartPage() {
                   перейти до оформлення
                 </Button>
               </Link>
-
             </Stack>
 
             {/* Інформація про доставку */}

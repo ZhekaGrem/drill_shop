@@ -117,12 +117,20 @@ const Contact = () => {
         </div>
 
         {/* Значки внизу */}
-        <a href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer" className={styles.contactCard}>
+        <a
+          href={siteConfig.socials.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.contactCard}>
           <IconBrandInstagram size={48} />
           <span>Instagram</span>
         </a>
 
-        <a href={siteConfig.socials.telegram} target="_blank" rel="noopener noreferrer" className={styles.contactCard}>
+        <a
+          href={siteConfig.socials.telegram}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.contactCard}>
           <IconBrandTelegram size={48} />
           <span>Telegram</span>
         </a>

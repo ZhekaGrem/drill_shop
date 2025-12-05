@@ -4,8 +4,8 @@
 import React from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Container, Paper, Title, Text, Group, Stack, Center, Loader,Image } from '@mantine/core';
-import { Button } from '@/shared/components/Button/Button'
+import { Container, Paper, Title, Text, Group, Stack, Center, Loader, Image } from '@mantine/core';
+import { Button } from '@/shared/components/Button/Button';
 import styles from './CheckoutSuccess.module.scss';
 const CheckoutSuccessPage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -24,10 +24,17 @@ const CheckoutSuccessPage: React.FC = () => {
 
   return (
     <div className={styles.successPage}>
-      <Container size="sm" py="xl" >
+      <Container size="sm" py="xl">
         <Paper className={styles.wrapper}>
           <Stack align="center" gap="lg">
-            <Image src="/assets/img/smile.png" alt="Hero" height={200} fit="contain" radius="md" className={styles.image} />
+            <Image
+              src="/assets/img/smile.png"
+              alt="Hero"
+              height={200}
+              fit="contain"
+              radius="md"
+              className={styles.image}
+            />
 
             <Title order={2} ta="center" c="green">
               Замовлення успішно створено!
@@ -64,11 +71,13 @@ const CheckoutSuccessPage: React.FC = () => {
               <Link href="/">
                 <Button variant="primary" flex={1}>
                   На головну
-                </Button></Link>
+                </Button>
+              </Link>
               <Link href={`/orders/track/${orderNumber}`}>
                 <Button variant="outline" flex={1}>
                   Відстежити замовлення
-                </Button></Link>
+                </Button>
+              </Link>
             </Group>
 
             <Text ta="center" size="sm" c="dimmed">
@@ -79,7 +88,8 @@ const CheckoutSuccessPage: React.FC = () => {
             </Text>
           </Stack>
         </Paper>
-      </Container></div>
+      </Container>
+    </div>
   );
 };
 

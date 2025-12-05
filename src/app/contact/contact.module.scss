@@ -12,8 +12,6 @@
     line-height: 1;
     letter-spacing: 0.02em;
   }
-
- 
 }
 
 // Зелена полоска
@@ -184,7 +182,6 @@
   &:nth-child(3) {
     grid-column: 1;
     border-right: none;
-    
   }
 
   &:nth-child(4) {
@@ -194,7 +191,6 @@
 
   &:nth-child(5) {
     grid-column: 3;
-   
   }
 
   @media (max-width: 1024px) {

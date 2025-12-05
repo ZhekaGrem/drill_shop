@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Container, Paper, Title, Text, Group, Stack, Loader, Alert, Image } from '@mantine/core';
 import { IconCircleCheck, IconAlertCircle } from '@tabler/icons-react';
 import { usePaymentStatus } from '@/features/payment/hooks/usePayment';
-import { Button } from '@/shared/components/Button/Button'
+import { Button } from '@/shared/components/Button/Button';
 
 import styles from './payment-success.module.scss';
 
@@ -87,9 +87,8 @@ const PaymentSuccessPage: React.FC = () => {
               </Text>
               <Group>
                 <Link href="/">
-                  <Button variant="primary">
-                    На головну
-                  </Button></Link>
+                  <Button variant="primary">На головну</Button>
+                </Link>
                 <Button onClick={() => window.location.reload()}>Спробувати знову</Button>
               </Group>
             </Stack>
@@ -111,7 +110,14 @@ const PaymentSuccessPage: React.FC = () => {
           <Stack align="center" gap="lg">
             {isSuccess && (
               <>
-                <Image src="/assets/img/smile.png" alt="Hero" height={200} fit="contain" radius="md" className={styles.image} />
+                <Image
+                  src="/assets/img/smile.png"
+                  alt="Hero"
+                  height={200}
+                  fit="contain"
+                  radius="md"
+                  className={styles.image}
+                />
                 <Title order={1} ta="center" c="green">
                   Оплата пройшла успішно!
                 </Title>
@@ -156,25 +162,22 @@ const PaymentSuccessPage: React.FC = () => {
               </Text>
             </Group>
 
-
             <Link href="/">
               <Button variant="primary" flex={1}>
                 На головну
-              </Button></Link>
+              </Button>
+            </Link>
 
             {(paymentData?.orderNumber || orderId) && isSuccess && (
               <Link href={`/orders/track/${paymentData?.orderNumber || orderId}`}>
-                <Button
-                  flex={1}>
-                  Переглянути замовлення
-                </Button></Link>
+                <Button flex={1}>Переглянути замовлення</Button>
+              </Link>
             )}
 
             {!isSuccess && (
               <Link href="/checkout">
-                <Button flex={1}>
-                  Спробувати знову
-                </Button></Link>
+                <Button flex={1}>Спробувати знову</Button>
+              </Link>
             )}
           </Stack>
         </Paper>

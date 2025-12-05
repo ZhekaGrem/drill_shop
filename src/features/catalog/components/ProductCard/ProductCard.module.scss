@@ -39,19 +39,15 @@
     border-right: var(--border-width) solid var(--border-color);
   }
 
-  // Мобільні пропорції - 140px ширина, 360px висота, 2 колонки
+  // Мобільні пропорції - 1 колонка на всю ширину
   @media (max-width: 768px) {
-    height: 360px;
-    width: 140px;
-    border-right: 0;
+    height: auto;
+    width: 100%;
+    border-right: var(--border-width) solid var(--border-color);
 
-    &:nth-child(3n) {
-      border-right: 0; // Скидаємо правило для 3-х колонок
-    }
-
-    &:nth-child(2n),
-    &:last-child {
-      border-right: var(--border-width) solid var(--border-color); // Кожна 2-га (остання в ряду для 2 колонок)
+    &:nth-child(3n),
+    &:nth-child(2n) {
+      border-right: var(--border-width) solid var(--border-color);
     }
   }
 }
@@ -69,7 +65,7 @@
 
   // Мобільна висота картинки
   @media (max-width: 768px) {
-    height: 260px; // Висота картинки для мобільних (360px загалом - ~100px контент)
+    height: 400px; // Висота картинки для мобільних (збільшена для 1 колонки)
   }
 
   &__ImageWrapper {
@@ -275,7 +271,7 @@
 // Mobile styles
 @media (max-width: 768px) {
   .productCardImageContainer {
-    height: 220px;
+    height: 400px;
   }
 
   .content {

@@ -127,7 +127,6 @@ const MobileMenu = React.memo(
       { label: 'Футболки', href: '/catalog?category=t-shirts' },
       { label: 'Худі', href: '/catalog?category=hoodies' },
       { label: 'Кепки', href: '/catalog?category=caps' },
-      
     ];
 
     return (
@@ -140,8 +139,6 @@ const MobileMenu = React.memo(
               </div>
             </Link>
           ))}
-
-         
         </ScrollArea>
       </Drawer>
     );

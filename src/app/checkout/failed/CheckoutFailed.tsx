@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Container, Paper, Title, Text, Group, Stack, Alert, Image } from '@mantine/core';
 import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react';
-import { Button } from '@/shared/components/Button/Button'
+import { Button } from '@/shared/components/Button/Button';
 import styles from './CheckoutFailed.module.scss';
 const CheckoutFailedPage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -33,10 +33,17 @@ const CheckoutFailedPage: React.FC = () => {
 
   return (
     <div className={styles.failedPage}>
-      <Container size="sm"  >
+      <Container size="sm">
         <Paper className={styles.wrapper}>
           <Stack align="center" gap="lg">
-            <Image src="/assets/img/rage.png" alt="Hero" height={200} fit="contain" radius="md" className={styles.image} />
+            <Image
+              src="/assets/img/rage.png"
+              alt="Hero"
+              height={200}
+              fit="contain"
+              radius="md"
+              className={styles.image}
+            />
 
             <Title order={2} ta="center" c="red">
               Помилка оформлення замовлення
@@ -108,7 +115,9 @@ const CheckoutFailedPage: React.FC = () => {
               </Button>
             </Link>
             <Link href="/checkout">
-              <Button variant="outline" flex={1} className={styles.bth}>Спробувати знову</Button>
+              <Button variant="outline" flex={1} className={styles.bth}>
+                Спробувати знову
+              </Button>
             </Link>
 
             {/* Contact support */}
@@ -122,7 +131,8 @@ const CheckoutFailedPage: React.FC = () => {
             </Text>
           </Stack>
         </Paper>
-      </Container></div>
+      </Container>
+    </div>
   );
 };
 

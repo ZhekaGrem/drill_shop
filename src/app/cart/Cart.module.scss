@@ -5,7 +5,7 @@
     font-family: var(--font-heading);
   }
 
-  &__link{
+  &__link {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -24,14 +24,12 @@
   background-color: var(--background-secondary);
   align-self: stretch;
   height: 100vh;
-  
-
 }
 
 .totalSection {
   padding-top: 16px;
   border-top: 3px dotted var(--primary);
-  &__price{
+  &__price {
     font-size: var(--text-3xl);
     color: var(--text-primary);
   }

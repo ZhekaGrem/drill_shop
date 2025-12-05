@@ -50,10 +50,11 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 
-  // Для мобільних - 2 колонки по 140px
+  // Для мобільних - 1 колонка
   @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 140px);
+    grid-template-columns: 1fr;
     justify-content: center;
+    padding: 0 16px;
   }
 }
 
