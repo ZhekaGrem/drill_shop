@@ -112,7 +112,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
       maximumFractionDigits: 0,
     }).format(price);
 
-    return `${formatted} грн`;
+    return `${formatted} ₴`;
   };
 
   const formatVariantOptions = (options: Record<string, any>): string => {
@@ -393,7 +393,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                           style={{ textDecoration: 'line-through', color: '#999', marginRight: '8px' }}>
                           {formatPrice(variantPriceData.originalPrice)}
                         </span>
-                        <span className={styles.productDetails__currentPrice}>
+                        <span className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
                           {formatPrice(variantPriceData.finalPrice)}
                         </span>
                       </>
@@ -413,7 +413,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     style={{ textDecoration: 'line-through', color: '#999', marginRight: '8px' }}>
                     {formatPrice(basePromoData.originalPrice)}
                   </span>
-                  <span className={styles.productDetails__currentPrice}>
+                  <span className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
                     {formatPrice(basePromoData.finalPrice)}
                   </span>
                 </>

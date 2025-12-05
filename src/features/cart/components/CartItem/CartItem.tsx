@@ -2,7 +2,8 @@
 
 'use client';
 import { Group, Text, ActionIcon, NumberInput, Stack, Badge, Box } from '@mantine/core';
-import { IconMinus, IconPlus, IconTrash } from '@tabler/icons-react';
+import { IconMinus, IconPlus } from '@tabler/icons-react';
+import {  IconTrash } from '@/shared/components/Svg';
 import { useState, useCallback, memo } from 'react';
 import { CartItemWithProduct, formatPrice } from '@/shared/utils/cart-calculations';
 import { useCart } from '../../hooks/useCart';
@@ -60,10 +61,23 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
 
         {/* Інформація про товар */}
         <Stack gap={4} flex={1} className={styles.info}>
-          <Text size="sm" fw={500} lineClamp={2}>
-            {item.variant?.name || item.product.name}
-          </Text>
+          {/* Рядок 1: Назва (зліва) | Ціна (справа) */}
+          <Group justify="space-between" align="flex-start" wrap="nowrap">
+            <Text className={styles.productName} lineClamp={2} flex={1}>
+              {item.variant?.name || item.product.name}
+            </Text>
 
+            <Box className={styles.priceContainer}>
+              {originalPrice && (
+                <Text className={styles.oldPrice}>{formatPrice(originalPrice * quantity)}</Text>
+              )}
+              <Text className={styles.currentPrice} c={originalPrice ? 'red' : undefined}>
+                {formatPrice(displayPrice * quantity)}
+              </Text>
+            </Box>
+          </Group>
+
+          {/* Рядок 2: Опції товару */}
           {(() => {
             const badges = getVariantDisplayBadges(item.variant?.options || item.product.options);
 
@@ -72,52 +86,39 @@ const CartItemComponent = ({ item, compact = false }: CartItemProps) => {
             return (
               <Group gap={4}>
                 {badges.map((badge) => (
-                  <Badge key={badge.key} size="xs" variant="transparent" color="green">
-                    {badge.label}: {badge.value}
-                  </Badge>
+                  <Text key={badge.key} className={styles.variantText}>
+                    <span>{badge.label}:</span>
+                    {badge.value}
+                  </Text>
                 ))}
               </Group>
             );
           })()}
 
-          <Group justify="space-between">
-            <Group gap="xs">
-              <ActionIcon
-                size="sm"
-                variant="light"
-                color="gray"
+          {/* Рядок 3: Контрол кількості (зліва) | Видалення (справа) */}
+          <Group justify="space-between" align="center" className={styles.bottomControls}>
+            <div className={styles.quantityControl}>
+              <button
+                className={styles.qtyBtn}
                 onClick={() => handleQuantityChange(quantity - 1)}
                 disabled={quantity <= 1 || isUpdatingItem}>
-                <IconMinus size={14} />
-              </ActionIcon>
+                <IconMinus size={16} />
+              </button>
 
-              <Text size="sm" w={30} ta="center">
-                {quantity}
-              </Text>
+              <div className={styles.qtyValue}>{quantity}</div>
 
-              <ActionIcon
-                size="sm"
-                variant="light"
-                color="gray"
+              <button
+                className={styles.qtyBtn}
                 onClick={() => handleQuantityChange(quantity + 1)}
                 disabled={isUpdatingItem || isMaxReached}>
-                <IconPlus size={14} />
-              </ActionIcon>
-            </Group>
+                <IconPlus size={16} />
+              </button>
+            </div>
 
-            <ActionIcon size="sm" color="red" variant="light" onClick={handleRemove} loading={isRemovingItem}>
-              <IconTrash size={14} />
+            <ActionIcon className={styles.trashBtn} onClick={handleRemove} loading={isRemovingItem}>
+              <IconTrash size={20} />
             </ActionIcon>
           </Group>
-
-          <Text size="md" fw={900} c="red">
-            {originalPrice && (
-              <Text span size="xs" td="line-through" c="dimmed" mr={4}>
-                {formatPrice(originalPrice * quantity)}
-              </Text>
-            )}
-            {formatPrice(displayPrice * quantity)}
-          </Text>
         </Stack>
       </Group>
     );

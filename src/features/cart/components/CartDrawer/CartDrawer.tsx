@@ -29,7 +29,7 @@ export const CartDrawer = () => {
       onClose={close}
       title="Кошик"
       position="right"
-      size={isMobile ? '100%' : 'md'} // Full width on mobile
+      size={isMobile ? '100%' : 'lg'} // Full width on mobile
       overlayProps={{ opacity: 0.5, blur: 4 }}
       styles={{
         header: {
@@ -60,7 +60,7 @@ export const CartDrawer = () => {
               <Text size="sm" c="dimmed">
                 {calculations.itemsCount} товар(ів)
               </Text>
-              <Button variant="outline" size="sm" color="red" loading={isClearingCart} onClick={clearCart}>
+              <Button variant="red" size="promo" color="red" loading={isClearingCart} onClick={clearCart}>
                 Очистити
               </Button>
             </Group>
@@ -78,7 +78,7 @@ export const CartDrawer = () => {
           }}>
           {!hasItems ? (
             <Center py="xl">
-              <Stack align="center" gap="md">
+              <Stack align="center" >
                 <IconShoppingCart size={isMobile ? 64 : 48} color="var(--text-secondary)" />
                 <Text c="dimmed" ta="center" size={isMobile ? 'md' : 'sm'}>
                   Ваш кошик порожній
@@ -91,7 +91,7 @@ export const CartDrawer = () => {
               </Stack>
             </Center>
           ) : (
-            <Stack gap={isMobile ? 'lg' : 'md'}>
+            <Stack gap={0}>
               {items.map((item) => (
                 <CartItem key={item.id} item={item} compact={true} />
               ))}
@@ -105,8 +105,8 @@ export const CartDrawer = () => {
             <Divider className={styles.divider} />
 
             <Group justify="space-between" p="md">
-              <Text fw={700}>Загалом:</Text>
-              <Text fw={900} size="lg">
+              <Text fw={700} size="lg" >Загалом:</Text>
+              <Text fw={700} size="xl">
                 {formatPrice(calculations.totalAmount)}
               </Text>
             </Group>

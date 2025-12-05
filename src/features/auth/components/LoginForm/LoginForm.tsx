@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/shared/stores/auth';
 import { notifications } from '@mantine/notifications';
-import { TextInput, Checkbox, Group, Stack, Alert, Anchor, PasswordInput } from '@mantine/core';
+import { TextInput, Checkbox, Group, Stack, Alert, Anchor, PasswordInput, ScrollArea } from '@mantine/core';
 import { IconAlertCircle, IconLoader } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 
@@ -104,65 +104,69 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
       onSubmit={handleSubmit(onSubmit)}
       noValidate
       style={{
-        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
       }}>
-      <Stack gap="md">
-        {error && (
-          <Alert color="red" icon={<IconAlertCircle size={16} />}>
-            {error}
-            {(error.includes('Підтвердіть email') ||
-              error.includes('Email not confirmed') ||
-              error.includes('Підтвердіть email перед входом') ||
-              error.includes('email перед входом')) && (
-              <div style={{ marginTop: '8px' }}>
-                <Anchor
-                  component="button"
-                  type="button"
-                  size="sm"
-                  onClick={() => router.push('/resend-verification')}
-                  style={{ fontWeight: 600 }}>
-                  → Якщо лист не прийшов
-                </Anchor>
-              </div>
-            )}
-          </Alert>
-        )}
+      <ScrollArea flex={1} offsetScrollbars>
+        <Stack gap="md">
+          {error && (
+            <Alert color="red" icon={<IconAlertCircle size={16} />}>
+              {error}
+              {(error.includes('Підтвердіть email') ||
+                error.includes('Email not confirmed') ||
+                error.includes('Підтвердіть email перед входом') ||
+                error.includes('email перед входом')) && (
+                <div style={{ marginTop: '8px' }}>
+                  <Anchor
+                    component="button"
+                    type="button"
+                    size="sm"
+                    onClick={() => router.push('/resend-verification')}
+                    style={{ fontWeight: 600 }}>
+                    → Якщо лист не прийшов
+                  </Anchor>
+                </div>
+              )}
+            </Alert>
+          )}
 
-        <TextInput
-          label="Email"
-          placeholder="your@email.com"
-          type="email"
-          required
-          disabled={isLoading}
-          {...register('email')}
-          error={errors.email?.message}
-        />
+          <TextInput
+            label="Email"
+            placeholder="your@email.com"
+            type="email"
+            required
+            disabled={isLoading}
+            {...register('email')}
+            error={errors.email?.message}
+          />
 
-        <PasswordInput
-          label="Пароль"
-          placeholder="Ваш пароль"
-          required
-          disabled={isLoading}
-          {...register('password')}
-          error={errors.password?.message}
-        />
+          <PasswordInput
+            label="Пароль"
+            placeholder="Ваш пароль"
+            required
+            disabled={isLoading}
+            {...register('password')}
+            error={errors.password?.message}
+          />
 
-        <Group justify="space-between">
-          <Checkbox label="Запам'ятати мене" disabled={isLoading} {...register('rememberMe')} />
-          <Anchor
-            component="button"
-            type="button"
-            size="sm"
-            onClick={handleForgotPassword}
-            style={{ opacity: isLoading ? 0.6 : 1 }}>
-            Забули пароль?
-          </Anchor>
-        </Group>
+          <Group justify="space-between">
+            <Checkbox label="Запам'ятати мене" disabled={isLoading} {...register('rememberMe')} />
+            <Anchor
+              component="button"
+              type="button"
+              size="sm"
+              onClick={handleForgotPassword}
+              style={{ opacity: isLoading ? 0.6 : 1 }}>
+              Забули пароль?
+            </Anchor>
+          </Group>
+        </Stack>
+      </ScrollArea>
 
-        <Button type="submit" fullWidth leftSection={isLoading ? <IconLoader size={16} /> : null}>
-          Увійти
-        </Button>
-      </Stack>
+      <Button type="submit" fullWidth leftSection={isLoading ? <IconLoader size={16} /> : null} mt="md">
+        Увійти
+      </Button>
     </form>
   );
 };

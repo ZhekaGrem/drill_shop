@@ -50,13 +50,7 @@
     gap: var(--spacing-2xl);
     margin-bottom: var(--spacing-3xl);
 
-    &__images {
-      // Ліва колонка - зображення
-    }
-
-    &__info {
-      // Права колонка - інформація про товар
-    }
+   
 
     &__title {
       font-family: var(--font-heading);
@@ -90,6 +84,7 @@
       margin-bottom: var(--spacing-lg);
       display: flex;
       align-items: baseline;
+      color: var(--text-secondary);
       gap: var(--spacing-sm);
       flex-wrap: wrap;
     }
@@ -108,6 +103,10 @@
       font-weight: var(--fw-black);
       color: var(--btn-primary);
       line-height: 1;
+
+      &_discount {
+        color: var(--accent-red);
+      }
     }
 
     &__pricePerKg {
@@ -317,7 +316,7 @@
       background: var(--background-light);
       border-radius: 0;
       overflow: hidden;
-      height: 100vh;
+      height: 70vh;
     }
 
     &__mainImageWrapper {

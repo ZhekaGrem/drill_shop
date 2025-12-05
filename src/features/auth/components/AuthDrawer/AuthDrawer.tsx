@@ -44,8 +44,23 @@ export const AuthDrawer = ({ opened, onClose, onSuccess, defaultTab = 'login' }:
           <IconUser size={24} />
           <span>Автентифікація</span>
         </div>
-      }>
-      <Tabs value={activeTab} onChange={handleTabChange} className={styles.tabs}>
+      }
+      styles={{
+        body: {
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        },
+        content: {
+          display: 'flex',
+          flexDirection: 'column',
+        },
+      }}>
+      <Tabs
+        value={activeTab}
+        onChange={handleTabChange}
+        className={styles.tabs}
+        style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <Tabs.List grow className={styles.tabsList}>
           <Tabs.Tab value="login" className={styles.tab}>
             Вхід
@@ -55,18 +70,30 @@ export const AuthDrawer = ({ opened, onClose, onSuccess, defaultTab = 'login' }:
           </Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Panel value="login" pt="lg" className={styles.tabs}>
+        <Tabs.Panel
+          value="login"
+          pt="lg"
+          className={styles.tabs}
+          style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           <LoginForm
             onSuccess={handleSuccess}
             onSwitchToForgotPassword={() => handleTabChange('forgot-password')}
           />
         </Tabs.Panel>
 
-        <Tabs.Panel value="register" pt="lg" className={styles.tabs}>
+        <Tabs.Panel
+          value="register"
+          pt="lg"
+          className={styles.tabs}
+          style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           <RegisterForm onSuccess={handleSuccess} onSwitchToLogin={() => handleTabChange('login')} />
         </Tabs.Panel>
 
-        <Tabs.Panel value="forgot-password" pt="lg" className={styles.tabs}>
+        <Tabs.Panel
+          value="forgot-password"
+          pt="lg"
+          className={styles.tabs}
+          style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           <PasswordResetForm
             onSuccess={() => handleTabChange('login')}
             onBackToLogin={() => handleTabChange('login')}

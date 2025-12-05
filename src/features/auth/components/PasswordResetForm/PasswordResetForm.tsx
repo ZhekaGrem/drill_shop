@@ -3,7 +3,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { TextInput, Stack, Alert, Text, Anchor } from '@mantine/core';
+import { TextInput, Stack, Alert, Text, Anchor, ScrollArea } from '@mantine/core';
 import { IconAlertCircle, IconMailCheck } from '@tabler/icons-react';
 import { useState } from 'react';
 import { Button } from '@/shared/components/Button/Button';
@@ -86,17 +86,26 @@ export const PasswordResetForm = ({ onSuccess, onBackToLogin }: PasswordResetFor
 
   if (isSuccess) {
     return (
-      <Stack gap="md">
-        <Alert color="green" icon={<IconMailCheck size={16} />}>
-          <Text fw={500}>Лист надіслано!</Text>
-          <Text size="sm" mt="xs">
-            Перевірте вашу пошту. Якщо email існує, ви отримаєте інструкції для відновлення пароля.
-          </Text>
-        </Alert>
-        <Button fullWidth onClick={onBackToLogin}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1,
+        }}>
+        <ScrollArea flex={1} offsetScrollbars>
+          <Stack gap="md">
+            <Alert color="green" icon={<IconMailCheck size={16} />}>
+              <Text fw={500}>Лист надіслано!</Text>
+              <Text size="sm" mt="xs">
+                Перевірте вашу пошту. Якщо email існує, ви отримаєте інструкції для відновлення пароля.
+              </Text>
+            </Alert>
+          </Stack>
+        </ScrollArea>
+        <Button fullWidth onClick={onBackToLogin} mt="md">
           Повернутися до входу
         </Button>
-      </Stack>
+      </div>
     );
   }
 
@@ -105,35 +114,34 @@ export const PasswordResetForm = ({ onSuccess, onBackToLogin }: PasswordResetFor
       onSubmit={handleSubmit(onSubmit)}
       noValidate
       style={{
-        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
       }}>
-      <Stack gap="md">
-        <Text size="sm" c="dimmed">
-          Введіть email, пов'язаний з вашим акаунтом, і ми надішлемо вам інструкції для відновлення пароля.
-        </Text>
+      <ScrollArea flex={1} offsetScrollbars>
+        <Stack gap="md">
+          <Text size="sm" c="dimmed">
+            Введіть email, пов'язаний з вашим акаунтом, і ми надішлемо вам інструкції для відновлення пароля.
+          </Text>
 
-        {errorMessage && (
-          <Alert color="red" icon={<IconAlertCircle size={16} />}>
-            {errorMessage}
-          </Alert>
-        )}
+          {errorMessage && (
+            <Alert color="red" icon={<IconAlertCircle size={16} />}>
+              {errorMessage}
+            </Alert>
+          )}
 
-        <TextInput
-          label="Email"
-          placeholder="your@email.com"
-          type="email"
-          required
-          disabled={isLoading}
-          {...register('email')}
-          error={errors.email?.message}
-        />
+          <TextInput
+            label="Email"
+            placeholder="your@email.com"
+            type="email"
+            required
+            disabled={isLoading}
+            {...register('email')}
+            error={errors.email?.message}
+          />
 
-        <Button type="submit" fullWidth disabled={isLoading}>
-          Надіслати інструкції
-        </Button>
-
-        {/* ДОДАНО: Посилання на resend verification */}
-        {/* <div style={{ textAlign: 'center', marginTop: '8px' }}>
+          {/* ДОДАНО: Посилання на resend verification */}
+          {/* <div style={{ textAlign: 'center', marginTop: '8px' }}>
           <Text size="sm" c="dimmed">
             Не отримали лист підтвердження?{' '}
             <Button
@@ -146,7 +154,12 @@ export const PasswordResetForm = ({ onSuccess, onBackToLogin }: PasswordResetFor
             </Button>
           </Text>
         </div> */}
-      </Stack>
+        </Stack>
+      </ScrollArea>
+
+      <Button type="submit" fullWidth disabled={isLoading} mt="md">
+        Надіслати інструкції
+      </Button>
     </form>
   );
 };

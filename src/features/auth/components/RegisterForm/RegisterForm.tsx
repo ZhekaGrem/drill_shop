@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/shared/stores/auth';
 import { notifications } from '@mantine/notifications';
-import { TextInput, Group, Stack, Alert, PasswordInput } from '@mantine/core';
+import { TextInput, Group, Stack, Alert, PasswordInput, ScrollArea } from '@mantine/core';
 import { IconAlertCircle, IconMail } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { useRouter } from 'next/navigation';
@@ -95,58 +95,64 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
       onSubmit={handleSubmit(onSubmit)}
       noValidate
       style={{
-        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
       }}>
-      <Stack gap="md">
-        {errors.root && (
-          <Alert color="red" icon={<IconAlertCircle size={16} />}>
-            {errors.root.message}
-          </Alert>
-        )}
+      <ScrollArea flex={1} offsetScrollbars>
+        <Stack gap="md">
+          {errors.root && (
+            <Alert color="red" icon={<IconAlertCircle size={16} />}>
+              {errors.root.message}
+            </Alert>
+          )}
 
-        <Group grow>
+          <Group grow>
+            <TextInput
+              label="Ім'я"
+              placeholder="Іван"
+              required
+              {...register('firstName')}
+              error={errors.firstName?.message}
+            />
+            <TextInput
+              label="Прізвище"
+              placeholder="Петренко"
+              required
+              {...register('lastName')}
+              error={errors.lastName?.message}
+            />
+          </Group>
+
           <TextInput
-            label="Ім'я"
-            placeholder="Іван"
+            label="Email"
+            placeholder="ivan@example.com"
+            type="email"
             required
-            {...register('firstName')}
-            error={errors.firstName?.message}
+            {...register('email')}
+            error={errors.email?.message}
           />
+
           <TextInput
-            label="Прізвище"
-            placeholder="Петренко"
-            required
-            {...register('lastName')}
-            error={errors.lastName?.message}
+            label="Телефон (необов'язково)"
+            placeholder="+380501234567"
+            {...register('phone')}
+            error={errors.phone?.message}
+            description="Формат: +380XXXXXXXXX"
           />
-        </Group>
 
-        <TextInput
-          label="Email"
-          placeholder="ivan@example.com"
-          type="email"
-          required
-          {...register('email')}
-          error={errors.email?.message}
-        />
+          <PasswordInput
+            label="Пароль"
+            placeholder="Ваш пароль"
+            required
+            {...register('password')}
+            error={errors.password?.message}
+            description="Мінімум 8 символів, містити великі і малі літери, цифри"
+          />
+        </Stack>
+      </ScrollArea>
 
-        <TextInput
-          label="Телефон (необов'язково)"
-          placeholder="+380501234567"
-          {...register('phone')}
-          error={errors.phone?.message}
-          description="Формат: +380XXXXXXXXX"
-        />
-
-        <PasswordInput
-          label="Пароль"
-          placeholder="Ваш пароль"
-          required
-          {...register('password')}
-          error={errors.password?.message}
-          description="Мінімум 8 символів, містити великі і малі літери, цифри"
-        />
-
+      <Stack gap="sm" mt="md">
         <Button type="submit" fullWidth>
           Зареєструватися
         </Button>

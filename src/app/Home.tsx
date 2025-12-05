@@ -13,16 +13,7 @@ const Spline = lazy(() => import('@splinetool/react-spline'));
 
 const Home = () => {
   const router = useRouter();
-  const [showSpline, setShowSpline] = useState(false);
-
-  useEffect(() => {
-    // Показуємо 3D модель через 2 секунди
-    const timer = setTimeout(() => {
-      setShowSpline(true);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const [isSplineLoaded, setIsSplineLoaded] = useState(false);
 
   const handleGoToShop = () => {
     router.push('/catalog');
@@ -34,7 +25,8 @@ const Home = () => {
         <div className={styles.landingContent}>
           {/* Spline 3D модель - позаду кнопки */}
           <div className={styles.tshirtSpline}>
-            {!showSpline ? (
+            {/* Placeholder - показується поки 3D не готова */}
+            {!isSplineLoaded && (
               <div className={styles.splineLoader}>
                 <Image
                   src="/assets/img/tshirt.webp"
@@ -45,23 +37,17 @@ const Home = () => {
                   priority
                 />
               </div>
-            ) : (
-              <Suspense
-                fallback={
-                  <div className={styles.splineLoader}>
-                    <Image
-                      src="/assets/img/tshirt.webp"
-                      alt="Завантаження..."
-                      width={700}
-                      height={700}
-                      className={styles.placeholderImage}
-                      priority
-                    />
-                  </div>
-                }>
-                <Spline scene="https://prod.spline.design/j2veMJqqV2QABEh9/scene.splinecode" />
-              </Suspense>
             )}
+
+            {/* 3D модель - завантажується одразу, але прихована поки не готова */}
+            <div style={{ opacity: isSplineLoaded ? 1 : 0, transition: 'opacity 0.5s ease' }}>
+              <Suspense fallback={null}>
+                <Spline
+                  scene="https://prod.spline.design/j2veMJqqV2QABEh9/scene.splinecode"
+                  onLoad={() => setIsSplineLoaded(true)}
+                />
+              </Suspense>
+            </div>
           </div>
 
           {/* Кнопка поверх футболки */}
