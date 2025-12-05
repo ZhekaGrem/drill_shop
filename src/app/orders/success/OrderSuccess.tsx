@@ -3,133 +3,96 @@
 import React from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Container, Paper, Title, Text, Button, Group, Stack, Badge, Timeline, Alert } from '@mantine/core';
-import { IconCircleCheck, IconPackage, IconMail, IconClock, IconShoppingCart } from '@tabler/icons-react';
+import { Container, Paper, Title, Text, Group, Stack, Badge, Image } from '@mantine/core';
+import { IconCircleCheck, IconPackage, IconShoppingCart } from '@tabler/icons-react';
+import { Button } from '@/shared/components/Button/Button'
+
+import styles from './orderSuccess.module.scss';
 
 const OrderSuccess = () => {
   const searchParams = useSearchParams();
 
-  // Extract order details from URL params
   const orderId = searchParams.get('orderId');
   const orderNumber = searchParams.get('orderNumber');
   const customerEmail = searchParams.get('email');
   const totalAmount = searchParams.get('total');
 
   return (
-    <Container size="sm" py="xl">
-      <Paper p="xl" radius="md" withBorder>
-        <Stack align="center" gap="xl">
-          {/* Success Icon */}
-          <IconCircleCheck size={100} color="var(--success)" />
+    <Container size="md" >
+      <Stack align="center" gap="xl">
+        <Image src="/assets/img/smile.png" alt="Hero" height={100} radius="md" className={styles.image} />
 
-          {/* Main Success Message */}
-          <Stack align="center" gap="md">
-            <Title order={1} ta="center" c="var(--success)">
-              Дякуємо за ваше замовлення!
-            </Title>
 
-            <Text size="lg" ta="center" c="var(--text-secondary)">
-              Замовлення
-            </Text>
-            <Badge size="lg" variant="light" color="green">
-              #{orderNumber || orderId || '...'}
-            </Badge>
+        <Title className={styles.title}>ДЯКУЄМО ЗА ЗАМОВЛЕННЯ!</Title>
 
-            <Text size="lg" ta="center" c="var(--text-secondary)">
-              було успішно оформлено
-            </Text>
-          </Stack>
+        <Stack align="center" gap="md">
+          <Text className={styles.subtitle}>Замовлення</Text>
+          <Badge size="xl" className={styles.orderBadge}>
+            #{orderNumber || orderId || '...'}
+          </Badge>
+          <Text className={styles.subtitle}>успішно оформлено</Text>
+        </Stack>
 
-          {/* Order Details Card */}
-          <Paper
-            p="lg"
-            withBorder
-            radius="md"
-            w="100%"
-            bg="var(--background-secondary)"
-            style={{ backgroundColor: '#f8f9fa' }}>
-            <Stack gap="sm">
-              <Group justify="center">
-                <IconPackage size={20} color="var(--primary)" />
-                <Text fw={600} c="var(--text-primary)">
-                  Деталі замовлення
+        <Paper p="xl" withBorder className={styles.detailsCard}>
+          <Stack gap="md">
+            <Group justify="center" mb="md">
+              <IconPackage size={20} />
+              <Text fw={600} className={styles.cardTitle}>
+                ДЕТАЛІ ЗАМОВЛЕННЯ
+              </Text>
+            </Group>
+
+            <Group justify="center" className={styles.detailRow}>
+              <Text>Номер замовлення:</Text>
+              <Text fw={500} ff="monospace">
+                {orderNumber || orderId || 'Завантажується...'}
+              </Text>
+            </Group>
+
+            {totalAmount && (
+              <Group justify="space-between" className={styles.detailRow}>
+                <Text>Сума замовлення:</Text>
+                <Text fw={700} className={styles.amount}>
+                  {totalAmount} ₴
                 </Text>
               </Group>
-
-              <Group justify="space-between">
-                <Text size="sm" c="var(--text-secondary)">
-                  Номер замовлення:
-                </Text>
-                <Text fw={500} ff="monospace">
-                  {orderNumber || orderId || 'Завантажується...'}
-                </Text>
-              </Group>
-
-              {totalAmount && (
-                <Group justify="space-between">
-                  <Text size="sm" c="var(--text-secondary)">
-                    Сума замовлення:
-                  </Text>
-                  <Text fw={600} c="var(--primary)">
-                    {totalAmount} ₴
-                  </Text>
-                </Group>
-              )}
-
-              {customerEmail && (
-                <Group justify="space-between">
-                  <Text size="sm" c="var(--text-secondary)">
-                    Email:
-                  </Text>
-                  <Text size="sm">{customerEmail}</Text>
-                </Group>
-              )}
-            </Stack>
-          </Paper>
-
-          {/* What happens next */}
-
-          {/* Order Process Timeline */}
-
-          {/* Action Buttons */}
-          <Group w="100%" grow>
-            {orderNumber && (
-              <Button
-                component={Link}
-                href={`/orders/track/${orderNumber}`}
-                variant="outline"
-                color="var(--primary)"
-                leftSection={<IconPackage size={16} />}>
-                Відстежити замовлення
-              </Button>
             )}
 
-            <Button
-              component={Link}
-              href="/catalog"
-              leftSection={<IconShoppingCart size={16} />}
-              style={{
-                backgroundColor: 'var(--primary)',
-                color: 'white',
-              }}>
-              Продовжити покупки
-            </Button>
-          </Group>
+            {customerEmail && (
+              <Group justify="space-between" className={styles.detailRow}>
+                <Text>Email:</Text>
+                <Text size="sm">{customerEmail}</Text>
+              </Group>
+            )}
+          </Stack>
+        </Paper>
 
-          {/* Support Contact */}
-          <Text ta="center" size="sm" c="var(--text-secondary)">
-            Маєте питання? Зверніться до нашої{' '}
-            <Text
-              component={Link}
-              href="/contact"
-              c="var(--primary)"
-              td="underline"
-              style={{ textDecoration: 'underline' }}>
-              служби підтримки
-            </Text>
+
+        {orderNumber && (
+
+          <Link href={`/orders/track/${orderNumber}`}>
+            <Button
+              variant="primary"
+              size="lg"
+              leftSection={<IconPackage size={16} />}
+              className={styles.button}>
+              Відстежити замовлення
+            </Button></Link>
+        )}
+        <Link href={`/catalog`}>
+          <Button
+            size="lg"
+            className={styles.primaryButton}>
+            Продовжити покупки
+          </Button></Link>
+
+        <Text ta="center" size="sm" c="dimmed">
+          Маєте питання?{' '}
+          <Text component={Link} href="/contact" td="underline" span c="var(--text-yellow)">
+            Зверніться до нашої служби підтримки
           </Text>
-        </Stack>
-      </Paper>
+        </Text>
+      </Stack>
     </Container>
   );
 };

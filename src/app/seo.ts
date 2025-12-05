@@ -5,6 +5,7 @@ import { Metadata, Viewport } from 'next';
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#FFB800',
 };
 
 // Базова SEO конфігурація
@@ -45,8 +46,6 @@ export const baseMetadata: Metadata = {
     index: true,
     follow: true,
   },
-
-  themeColor: '#FFB800',
 
   icons: {
     icon: [

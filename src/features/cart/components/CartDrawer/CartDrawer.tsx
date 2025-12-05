@@ -78,7 +78,7 @@ export const CartDrawer = () => {
           }}>
           {!hasItems ? (
             <Center py="xl">
-              <Stack align="center" >
+              <Stack align="center">
                 <IconShoppingCart size={isMobile ? 64 : 48} color="var(--text-secondary)" />
                 <Text c="dimmed" ta="center" size={isMobile ? 'md' : 'sm'}>
                   Ваш кошик порожній
@@ -105,7 +105,9 @@ export const CartDrawer = () => {
             <Divider className={styles.divider} />
 
             <Group justify="space-between" p="md">
-              <Text fw={700} size="lg" >Загалом:</Text>
+              <Text fw={700} size="lg">
+                Загалом:
+              </Text>
               <Text fw={700} size="xl">
                 {formatPrice(calculations.totalAmount)}
               </Text>

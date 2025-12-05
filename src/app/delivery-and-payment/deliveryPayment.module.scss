@@ -1,15 +1,70 @@
-// src/app/delivery-and-payment/deliveryPayment.module.scss
-.page {
-  min-height: 100vh;
-  background: var(--background);
-}
-
-.title {
-  font-size: var(--text-4xl);
+.pageTitle {
+  font-family: var(--font-heading);
   font-weight: var(--fw-bold);
-  color: var(--text-primary);
+
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-align: left;
 
   @media (max-width: 768px) {
-    font-size: var(--text-3xl);
+    font-size: 32px;
   }
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  min-height: 600px;
+  border-top: var(--border-width) solid var(--border-color);
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+}
+
+.textContent {
+  border-right: var(--border-width) solid var(--border-color);
+
+  @media (max-width: 992px) {
+    border-right: none;
+    border-bottom: var(--border-width) solid var(--border-color);
+  }
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 40px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
+}
+
+.description {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+}
+
+.imageContent {
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 992px) {
+    min-height: 400px;
+  }
+}
+
+.sideImage {
+  object-fit: cover;
+  object-position: center;
 }

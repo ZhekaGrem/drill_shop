@@ -1,67 +1,113 @@
-/* Section 4: Image left, text right */
-/* Section 5:  image right */
-.ImageSection {
-  background-color: #f8f9fa;
-  padding: 0;
-  overflow: hidden;
-}
-
-.ImageGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 500px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.TextContainer {
-  padding: 120px 40px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 565px;
-  @media (max-width: 768px) {
-    padding: 40px 20px;
-  }
-}
-.titlePrimary {
-  font-size: 40px;
-  color: var(--text-yellow);
-
-  @media (max-width: 768px) {
-    font-size: 28px;
-  }
-}
-
-.Title {
+.pageTitle {
   font-family: var(--font-heading);
-  font-size: 48px;
-  margin-bottom: 20px;
-  color: var(--text-primary);
-  line-height: 0.8;
+    font-weight: var(--fw-bold);
+    color: var(--text-green);
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 0.02em;
+
+
+}
+
+.heroSection {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 400px;
+
   @media (max-width: 768px) {
-    font-size: 30px;
-    margin-bottom: 12px;
+    height: 40vh;
+    min-height: 300px;
   }
 }
 
-.Text {
+.heroImage {
+  border-top: var(--border-width) solid var(--border-color);
+  object-fit: cover;
+  object-position: center;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  min-height: 600px;
+  border-top: var(--border-width) solid var(--border-color);
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+}
+
+.textContent {
+  border-right: var(--border-width) solid var(--border-color);
+
+  @media (max-width: 992px) {
+    border-right: none;
+    border-bottom: var(--border-width) solid var(--border-color);
+  }
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 40px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
+}
+
+.description {
   font-size: 18px;
   line-height: 1.6;
   color: var(--text-secondary);
-  margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 }
 
-.ImageContainer {
+.imageContent {
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 992px) {
+    min-height: auto;
+  }
+}
+
+.imageWrapper {
   position: relative;
-  overflow: hidden;
+  flex: 1;
+  min-height: 500px;
+
+  @media (max-width: 992px) {
+    min-height: 400px;
+  }
 }
 
-.Image {
-  width: 100%;
-  object-position: center;
-  height: 100%;
+.sideImage {
   object-fit: cover;
-  min-height: 500px;
+  object-position: center;
+}
+
+.imageCaption {
+  padding: 24px;
+  background-color: var(--bg-primary);
+  border-top: var(--border-width) solid var(--border-color);
+}
+
+.captionText {
+  font-size: 18px;
+  line-height: 2.6;
+  font-family: var(--font-heading);
+  color: var(--text-secondary);
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 }

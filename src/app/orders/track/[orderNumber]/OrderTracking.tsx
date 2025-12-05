@@ -1,4 +1,3 @@
-// src/pages/Orders/OrderTracking/OrderTracking.tsx
 'use client';
 
 import React from 'react';
@@ -22,6 +21,7 @@ import { apiClient } from '@/shared/api';
 import { OrderStatus, PaymentStatus } from '@/shared/types';
 import { formatPrice } from '@/shared/utils/format';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
+import styles from './orderTracking.module.scss';
 
 // API response type matching actual structure
 interface OrderTrackingResponse {
@@ -235,15 +235,17 @@ const OrderTrackingPage: React.FC = () => {
   const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <Container size="md" py="xl">
+    <Container size="lg" py={80}>
       <Stack gap="xl">
-        <Paper p="xl" radius="md" withBorder>
+        <Title order={1} className={styles.pageTitle}>
+          ЗАМОВЛЕННЯ {order.orderNumber}
+        </Title>
+
+        <Paper  className={styles.orderCard}>
           <Stack gap="lg">
-            {/* Order header */}
             <Group justify="space-between" align="flex-start">
               <Stack gap="xs">
-                <Title order={2}>Замовлення {order.orderNumber}</Title>
-                <Text c="dimmed">
+                <Text className={styles.label}>
                   Створено:{' '}
                   {new Date(order.createdAt).toLocaleDateString('uk-UA', {
                     day: 'numeric',
@@ -253,7 +255,7 @@ const OrderTrackingPage: React.FC = () => {
                     minute: '2-digit',
                   })}
                 </Text>
-                <Text c="dimmed" size="sm">
+                <Text className={styles.label}>
                   Очікувана доставка: {new Date(order.estimatedDelivery).toLocaleDateString('uk-UA')}
                 </Text>
               </Stack>
@@ -263,40 +265,36 @@ const OrderTrackingPage: React.FC = () => {
               </Badge>
             </Group>
 
-            {/* Order summary */}
-            <Paper p="md" withBorder radius="md" bg="gray.0">
+            <Paper  className={styles.summaryCard}>
               <Group justify="space-between">
                 <Stack gap="xs">
-                  <Text size="sm" c="dimmed">
-                    Загальна сума
-                  </Text>
-                  <Text fw={700} size="lg">
+                  <Text className={styles.label}>Загальна сума</Text>
+                  <Text fw={700} size="xl" className={styles.price}>
                     {formatPrice(order.totals.totalAmount)}
                   </Text>
                 </Stack>
 
                 <Stack gap="xs">
-                  <Text size="sm" c="dimmed">
-                    Статус оплати
-                  </Text>
-                  <Badge color={getPaymentStatusColor(order.paymentStatus)}>
+                  <Text className={styles.label}>Статус оплати</Text>
+                  <Badge color={getPaymentStatusColor(order.paymentStatus)} size="lg">
                     {paymentStatusUa[order.paymentStatus]}
                   </Badge>
                 </Stack>
 
                 <Stack gap="xs">
-                  <Text size="sm" c="dimmed">
-                    Кількість товарів
+                  <Text className={styles.label}>Кількість товарів</Text>
+                  <Text fw={500} size="lg">
+                    {totalItems} шт.
                   </Text>
-                  <Text fw={500}>{totalItems} шт.</Text>
                 </Stack>
               </Group>
             </Paper>
 
-            {/* Customer info */}
-            <Paper p="md" withBorder radius="md">
-              <Stack gap="md">
-                <Title order={4}>Інформація про замовлення</Title>
+            <Paper   className={styles.infoCard}>
+              <Stack gap="md" className={styles.infoCard}>
+                <Title order={3} className={styles.sectionTitle} >
+                  ІНФОРМАЦІЯ ПРО ЗАМОВЛЕННЯ
+                </Title>
                 <Group>
                   <Stack gap="xs" flex={1}>
                     <Text size="sm" c="dimmed">
@@ -315,25 +313,20 @@ const OrderTrackingPage: React.FC = () => {
                     <Text size="sm">{order.shippingAddress.city}</Text>
                     {order.shippingAddress.city?.trim().toLowerCase() !==
                       order.shippingAddress.address1?.trim().toLowerCase() && (
-                      <Text size="sm">{order.shippingAddress.address1}</Text>
-                    )}
+                        <Text size="sm">{order.shippingAddress.address1}</Text>
+                      )}
                   </Stack>
                 </Group>
               </Stack>
             </Paper>
 
-            {/* Order items */}
-            <Paper p="md" withBorder radius="md">
+            <Paper   className={styles.infoCard}>
               <Stack gap="md">
-                <Title order={4}>Товари в замовленні</Title>
+                <Title order={3} className={styles.sectionTitle}>
+                  ТОВАРИ В ЗАМОВЛЕННІ
+                </Title>
                 {order.items.map((item) => (
-                  <Group key={item.id} gap="md">
-                    <CloudinaryImage
-                      src={item.image || '/assets/img/placeholder-product.jpg'}
-                      alt={item.productName}
-                      width={60}
-                      height={60}
-                    />
+                  <Group key={item.id} gap="md" className={styles.card}>
                     <Stack gap="xs" flex={1}>
                       <Text fw={500}>{item.productName}</Text>
                       <Group gap="md">
@@ -346,14 +339,22 @@ const OrderTrackingPage: React.FC = () => {
                         <Text fw={500}>Сума: {formatPrice(item.totalPrice)}</Text>
                       </Group>
                     </Stack>
+                    <CloudinaryImage
+                      src={item.image || '/assets/img/placeholder-product.jpg'}
+                      alt={item.productName}
+                      width={60}
+                      height={60}
+                      className={styles.img}
+                    />
                   </Group>
                 ))}
               </Stack>
             </Paper>
 
-            {/* Order timeline */}
             <Stack gap="md">
-              <Title order={4}>Статус замовлення</Title>
+              <Title order={3} className={styles.sectionTitle}>
+                СТАТУС ЗАМОВЛЕННЯ
+              </Title>
               <Timeline active={getTimelineActive(order.status)} bulletSize={24}>
                 <Timeline.Item bullet={<IconClock size={12} />} title="Замовлення створено">
                   <Text c="dimmed" size="sm">
@@ -391,40 +392,38 @@ const OrderTrackingPage: React.FC = () => {
               </Timeline>
             </Stack>
 
-            {/* Order notes */}
             {order.notes && (
               <Stack gap="xs">
-                <Title order={4}>Коментар до замовлення</Title>
+                <Title order={3} className={styles.sectionTitle}>
+                  КОМЕНТАР ДО ЗАМОВЛЕННЯ
+                </Title>
                 <Text>{order.notes}</Text>
               </Stack>
             )}
 
-            {/* Order totals breakdown */}
-            <Paper p="md" withBorder radius="md" bg="gray.0">
-              <Stack gap="xs">
-                <Title order={4}>Деталі оплати</Title>
+            <Paper   className={styles.totalsCard}>
+              <Stack gap="md">
+                <Title order={3} className={styles.sectionTitle}>
+                  ДЕТАЛІ ОПЛАТИ
+                </Title>
 
                 {order.totals.discountAmount > 0 && (
-                  <Group justify="space-between">
+                  <Group justify="space-between" className={styles.totalRow}>
                     <Text>Знижка:</Text>
                     <Text c="green">-{formatPrice(order.totals.discountAmount)}</Text>
                   </Group>
                 )}
                 {order.totals.shippingAmount > 0 && (
-                  <Group justify="space-between">
+                  <Group justify="space-between" className={styles.totalRow}>
                     <Text>Доставка:</Text>
                     <Text>{formatPrice(order.totals.shippingAmount)}</Text>
                   </Group>
                 )}
-                {/* {order.totals.taxAmount > 0 && (
-                  <Group justify="space-between">
-                    <Text>Податки:</Text>
-                    <Text>{formatPrice(order.totals.taxAmount)}</Text>
-                  </Group>
-                )} */}
-                <Group justify="space-between" style={{ borderTop: '1px solid #dee2e6', paddingTop: 8 }}>
-                  <Text fw={700}>До сплати:</Text>
+                <Group justify="space-between" className={styles.totalRowFinal}>
                   <Text fw={700} size="lg">
+                    До сплати:
+                  </Text>
+                  <Text fw={700} size="xl" className={styles.price}>
                     {formatPrice(order.totals.totalAmount)}
                   </Text>
                 </Group>

@@ -393,7 +393,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                           style={{ textDecoration: 'line-through', color: '#999', marginRight: '8px' }}>
                           {formatPrice(variantPriceData.originalPrice)}
                         </span>
-                        <span className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
+                        <span
+                          className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
                           {formatPrice(variantPriceData.finalPrice)}
                         </span>
                       </>
@@ -413,7 +414,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     style={{ textDecoration: 'line-through', color: '#999', marginRight: '8px' }}>
                     {formatPrice(basePromoData.originalPrice)}
                   </span>
-                  <span className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
+                  <span
+                    className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
                     {formatPrice(basePromoData.finalPrice)}
                   </span>
                 </>

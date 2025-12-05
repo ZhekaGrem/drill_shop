@@ -4,9 +4,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Container, Paper, Title, Text, Button, Group, Stack, Loader, Alert } from '@mantine/core';
+import { Container, Paper, Title, Text, Group, Stack, Loader, Alert, Image } from '@mantine/core';
 import { IconCircleCheck, IconAlertCircle } from '@tabler/icons-react';
 import { usePaymentStatus } from '@/features/payment/hooks/usePayment';
+import { Button } from '@/shared/components/Button/Button'
+
 import styles from './payment-success.module.scss';
 
 const PaymentSuccessPage: React.FC = () => {
@@ -84,9 +86,10 @@ const PaymentSuccessPage: React.FC = () => {
                 Не вдалося перевірити статус вашого платежу. Зверніться до служби підтримки.
               </Text>
               <Group>
-                <Button component={Link} href="/" variant="light">
-                  На головну
-                </Button>
+                <Link href="/">
+                  <Button variant="primary">
+                    На головну
+                  </Button></Link>
                 <Button onClick={() => window.location.reload()}>Спробувати знову</Button>
               </Group>
             </Stack>
@@ -104,13 +107,13 @@ const PaymentSuccessPage: React.FC = () => {
   return (
     <div className={styles.paymentSuccessPage}>
       <Container size="sm" py="xl">
-        <Paper p="xl" radius="md" withBorder>
+        <Paper className={styles.wrapper}>
           <Stack align="center" gap="lg">
             {isSuccess && (
               <>
-                <IconCircleCheck size={80} color="var(--mantine-color-green-6)" />
-                <Title order={2} ta="center" c="green">
-                  Оплата успішна!
+                <Image src="/assets/img/smile.png" alt="Hero" height={200} fit="contain" radius="md" className={styles.image} />
+                <Title order={1} ta="center" c="green">
+                  Оплата пройшла успішно!
                 </Title>
                 <Text ta="center">Ваш платіж успішно обробленο.</Text>
                 <Text ta="center" c="dimmed">
@@ -144,37 +147,35 @@ const PaymentSuccessPage: React.FC = () => {
               </>
             )}
 
-            <Paper p="md" withBorder radius="md" w="100%">
-              <Group justify="space-between">
-                <Text size="sm" c="dimmed">
-                  Номер замовлення:
-                </Text>
-                <Text size="sm" ff="monospace">
-                  {paymentData?.orderNumber || orderId}
-                </Text>
-              </Group>
-            </Paper>
+            <Group justify="center">
+              <Text size="xl" c="dimmed">
+                Номер замовлення:
+              </Text>
+              <Text size="xl" ff="monospace">
+                {paymentData?.orderNumber || orderId}
+              </Text>
+            </Group>
 
-            <Group w="100%">
-              <Button component={Link} href="/" variant="light" flex={1}>
+
+            <Link href="/">
+              <Button variant="primary" flex={1}>
                 На головну
-              </Button>
+              </Button></Link>
 
-              {(paymentData?.orderNumber || orderId) && isSuccess && (
+            {(paymentData?.orderNumber || orderId) && isSuccess && (
+              <Link href={`/orders/track/${paymentData?.orderNumber || orderId}`}>
                 <Button
-                  component={Link}
-                  href={`/orders/track/${paymentData?.orderNumber || orderId}`}
                   flex={1}>
                   Переглянути замовлення
-                </Button>
-              )}
+                </Button></Link>
+            )}
 
-              {!isSuccess && (
-                <Button component={Link} href="/checkout" flex={1}>
+            {!isSuccess && (
+              <Link href="/checkout">
+                <Button flex={1}>
                   Спробувати знову
-                </Button>
-              )}
-            </Group>
+                </Button></Link>
+            )}
           </Stack>
         </Paper>
       </Container>

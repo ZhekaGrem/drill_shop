@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { sendContactMessage } from '@/shared/api/contact';
-import { HeroImageContact } from '@/widgets/HeroImage/HeroImage';
-import { IconPhone, IconBrandInstagram, IconClock } from '@tabler/icons-react';
+import { IconPhone, IconBrandInstagram, IconBrandTelegram } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import styles from './contact.module.scss';
 import { siteConfig } from '@/shared/config/site';
+import Image from 'next/image';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,7 +24,7 @@ const Contact = () => {
     validate: {
       name: (value) => (value.trim().length < 2 ? "Ім'я повинно містити мінімум 2 символи" : null),
       message: (value) =>
-        value.trim().length < 5 ? 'Повідомлення повинно містити мінімум 10 символів' : null,
+        value.trim().length < 10 ? 'Повідомлення повинно містити мінімум 10 символів' : null,
     },
   });
 
@@ -57,98 +57,80 @@ const Contact = () => {
     }
   };
 
-  const contactInfo = [
-    {
-      icon: IconPhone,
-      title: 'Телефон',
-      content: siteConfig.contacts.phone,
-      link: 'tel:+380671234567',
-    },
-    {
-      icon: IconClock,
-      title: 'Режим роботи',
-      content: 'Пн-Пт: 08:00 - 20:00\nСб-Нд: 09:00 - 18:00',
-    },
-  ];
-
   return (
     <>
-      {/* Hero section like About page */}
-      <HeroImageContact />
-
-      {/* Contact cards - styled like home sections */}
-      <section className={styles.infoSection}>
-        <div className={styles.container}>
-          <h2 className={styles.sectionTitle}>Зв'язатися нами</h2>
-          <div className={styles.infoGrid}>
-            {contactInfo.map((item, index) => (
-              <div key={index} className={styles.infoCard}>
-                <item.icon size={32} className={styles.icon} />
-                <h3>{item.title}</h3>
-                {item.link ? (
-                  <a href={item.link} target="_blank" rel="noopener noreferrer">
-                    {item.content}
-                  </a>
-                ) : (
-                  <p>{item.content}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Заголовок */}
+      <section className={styles.heroSection}>
+        <h1>ЗВОРОТНІЙ ЗВ'ЯЗОК</h1>
       </section>
 
-      {/* Form section - styled like other wide sections */}
-      <section className={styles.formSection}>
-        <div className={styles.formGrid}>
-          <div className={styles.formInfo}>
-            <h2>Написати нам</h2>
-            <p>Заповніть форму і ми відповімо протягом робочого дня</p>
+      {/* Зелена полоска */}
+      <div className={styles.greenDivider} />
 
-            <ul className={styles.benefits}>
-              <li>✓ Безкоштовна консультація</li>
-              <li>✓ Доставка по всій Україні</li>
-              <li>✓ Гарантія якості</li>
-              <li>✓ Індивідуальний підхід</li>
-            </ul>
-          </div>
-
-          <div className={styles.formContainer}>
-            {isSubmitted ? (
-              <div className={styles.success}>
-                <div className={styles.successIcon}>✓</div>
-                <h3>Дякуємо!</h3>
-                <p className={styles.textForm}>Ми відповімо найближчим часом</p>
-                <Button onClick={() => setIsSubmitted(false)}>Написати ще</Button>
-              </div>
-            ) : (
-              <form onSubmit={form.onSubmit(handleSubmit)} noValidate>
-                <div className={styles.row}>
-                  <div className={styles.field}>
-                    <label>Ім'я</label>
-                    <input type="text" {...form.getInputProps('name')} />
-                    {form.errors.name && <span className={styles.error}>{form.errors.name}</span>}
-                  </div>
-
-                  <div className={styles.field}>
-                    <label>Телефон</label>
-                    <input type="text" {...form.getInputProps('phone')} />
-                  </div>
-                </div>
-
-                <div className={styles.field}>
-                  <label>Повідомлення</label>
-                  <textarea rows={5} {...form.getInputProps('message')} />
-                  {form.errors.message && <span className={styles.error}>{form.errors.message}</span>}
-                </div>
-
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Надсилання...' : 'Надіслати'}
-                </Button>
-              </form>
-            )}
-          </div>
+      {/* Секція: верх - картинка + форма, низ - 3 значки */}
+      <section className={styles.mainSection}>
+        {/* Картинка */}
+        <div className={styles.imageContainer}>
+          <Image
+            src="/assets/img/bg/contact.png"
+            alt="Контакти"
+            fill
+            className={styles.contactImage}
+            priority
+          />
         </div>
+
+        {/* Форма */}
+        <div className={styles.formContainer}>
+          {isSubmitted ? (
+            <div className={styles.success}>
+              <div className={styles.successIcon}>✓</div>
+              <h3>Дякуємо!</h3>
+              <p>Ми відповімо найближчим часом</p>
+              <Button onClick={() => setIsSubmitted(false)}>Написати ще</Button>
+            </div>
+          ) : (
+            <form onSubmit={form.onSubmit(handleSubmit)} noValidate>
+              <div className={styles.field}>
+                <label>Ім'я</label>
+                <input type="text" placeholder="Ваше ім'я" {...form.getInputProps('name')} />
+                {form.errors.name && <span className={styles.error}>{form.errors.name}</span>}
+              </div>
+
+              <div className={styles.field}>
+                <label>Телефон</label>
+                <input type="tel" placeholder="+380 (XX) XXX XX XX" {...form.getInputProps('phone')} />
+                {form.errors.phone && <span className={styles.error}>{form.errors.phone}</span>}
+              </div>
+
+              <div className={styles.field}>
+                <label>Повідомлення</label>
+                <textarea rows={6} placeholder="Опишіть питання" {...form.getInputProps('message')} />
+                {form.errors.message && <span className={styles.error}>{form.errors.message}</span>}
+              </div>
+
+              <Button type="submit" disabled={isSubmitting} fullWidth>
+                {isSubmitting ? 'Надсилання...' : 'ВІДПРАВити'}
+              </Button>
+            </form>
+          )}
+        </div>
+
+        {/* Значки внизу */}
+        <a href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer" className={styles.contactCard}>
+          <IconBrandInstagram size={48} />
+          <span>Instagram</span>
+        </a>
+
+        <a href={siteConfig.socials.telegram} target="_blank" rel="noopener noreferrer" className={styles.contactCard}>
+          <IconBrandTelegram size={48} />
+          <span>Telegram</span>
+        </a>
+
+        <a href={`tel:${siteConfig.contacts.phone.replace(/\s/g, '')}`} className={styles.contactCard}>
+          <IconPhone size={48} />
+          <span>{siteConfig.contacts.phone}</span>
+        </a>
       </section>
     </>
   );

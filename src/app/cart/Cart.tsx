@@ -14,29 +14,22 @@ import {
   Breadcrumbs,
   Anchor,
 } from '@mantine/core';
-import { IconShoppingCart, IconArrowLeft } from '@tabler/icons-react';
+import { IconShoppingCart  } from '@tabler/icons-react';
+import {  ArrowLeft } from '@/shared/components/Svg';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { CartItem } from '@/features/cart/components/CartItem/CartItem';
 import { formatPrice } from '@/shared/utils/cart-calculations';
 import Link from 'next/link';
 
 import { Button } from '@/shared/components/Button/Button';
+import styles from './Cart.module.scss';
 export default function CartPage() {
   const { items, calculations, isLoading, clearCart, isClearingCart, error } = useCart();
 
-  // Breadcrumbs
-  const breadcrumbItems = [
-    { title: 'Головна', href: '/' },
-    { title: 'Кошик', href: '/cart' },
-  ].map((item, index) => (
-    <Anchor component={Link} href={item.href} key={index}>
-      {item.title}
-    </Anchor>
-  ));
 
   if (error) {
     return (
-      <Container size="lg" py="xl">
+      <Container size="lg" >
         <Center py="xl">
           <Stack align="center" gap="md">
             <Text c="red">Помилка завантаження кошика</Text>
@@ -48,21 +41,19 @@ export default function CartPage() {
   }
 
   return (
-    <Container size="lg" py="xl">
-      {/* Breadcrumbs */}
-      <Breadcrumbs mb="lg">{breadcrumbItems}</Breadcrumbs>
+    <Container size="lg" className={styles.containerCart} >
 
       {/* Header */}
-      <Group justify="space-between" mb="xl">
-        <h1>Кошик</h1>
+      <Group justify="space-between" p="xs">
+        <Group justify="space-between" > <Link href='/catalog' className={styles.containerCart__link} >  <ArrowLeft/>  <Title order={1} className={styles.containerCart__title}> Кошик</Title></Link>  <Text> {calculations.itemsCount} товари</Text></Group>
 
         {items.length > 0 && (
           <Button
-            variant="outline"
-            rightSection={<IconShoppingCart size={22} />}
+            variant="red"
+            size='promo'
             loading={isClearingCart}
             onClick={clearCart}>
-            Очистити кошик
+            Очистити кошикА
           </Button>
         )}
       </Group>
@@ -70,7 +61,7 @@ export default function CartPage() {
       {items.length === 0 ? (
         /* Порожній кошик */
         <Center py="xl">
-          <Stack align="center" gap="xl" maw={400}>
+          <Stack align="center" gap="xl" maw={400} >
             <IconShoppingCart size={80} color="var(--mantine-color-gray-5)" />
 
             <Stack align="center" gap="sm">
@@ -84,7 +75,7 @@ export default function CartPage() {
 
             <Group gap="sm" justify="center">
               <Link href="/">
-                <Button variant="ghost" leftSection={<IconArrowLeft size={16} />}>
+                <Button variant="ghost" leftSection={<ArrowLeft />}>
                   На головну
                 </Button>
               </Link>
@@ -96,85 +87,71 @@ export default function CartPage() {
         </Center>
       ) : (
         /* Заповнений кошик */
-        <Group align="flex-start" gap="xl">
+        <div className={styles.cart}>
           {/* Список товарів */}
-          <Stack flex={1} gap="md">
-            <Paper p="md" withBorder>
-              <Group justify="space-between" mb="md">
-                <Text fw={500}>Товари в кошику ({calculations.itemsCount})</Text>
-                <Text size="sm" c="dimmed">
-                  Загальна кількість: {calculations.totalQuantity} шт
-                </Text>
-              </Group>
-
-              <Stack gap="md">
-                {items.map((item) => (
-                  <CartItem key={item.id} item={item} />
-                ))}
-              </Stack>
-            </Paper>
+          <Stack flex={1} gap={0}>
+            {items.map((item, index) => (
+              <CartItem key={item.id} item={item} compact={false} isFirst={index === 0} />
+            ))}
           </Stack>
 
+          {/* Зелена вертикальна лінія */}
+          <div className={styles.divider} />
+
           {/* Підсумок замовлення */}
-          <Paper p="xl" withBorder miw={300} pos="sticky" top={20}>
-            <Stack gap="md">
-              <Title order={3}>Підсумок замовлення</Title>
+          <Stack gap="md" flex={1} p={20} pos="sticky" top={20}>
+            <Title order={3}>Всього</Title>
 
-              <Stack gap="xs">
-                <Group justify="space-between">
-                  <Text>Товари ({calculations.itemsCount})</Text>
-                </Group>
-
-                <Group justify="space-between">
-                  <Text size="sm" c="dimmed">
-                    Доставка:
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    За тарифами служби доставки
-                  </Text>
-                </Group>
-              </Stack>
-
-              <Divider />
-
+            <Stack gap="xs">
               <Group justify="space-between">
-                <Text fw={700} size="lg">
-                  Загалом:
-                </Text>
-                <Text fw={700} size="xl" c="var(--primary)">
-                  {formatPrice(calculations.totalAmount)}
-                </Text>
+                <Text>Товари {calculations.itemsCount} на суму</Text> <Text>{formatPrice(calculations.totalAmount)}</Text>
               </Group>
 
-              <Stack gap="sm" mt="md">
-                <Link href="/checkout">
-                  <Button variant="primary" size="lg" fullWidth>
-                    Оформити замовлення
-                  </Button>
-                </Link>
-                <Link href="/catalog">
-                  <Button variant="primary" size="lg" fullWidth>
-                    Продовжити покупки
-                  </Button>
-                </Link>
-              </Stack>
 
-              {/* Інформація про доставку */}
-              <Stack gap="xs" mt="lg">
-                <Text size="sm" fw={500} c="dimmed">
-                  Інформація:
-                </Text>
-
-                <Text size="xs" c="dimmed">
-                  • Доставка протягом 1-2 днів
-                </Text>
-                <Text size="xs" c="dimmed">
-                  • Можливість оплати при отриманні
-                </Text>
-              </Stack>
             </Stack>
-          </Paper>
-        </Group>
+
+            <Divider />
+
+            <Group justify="space-between" className={styles.totalSection}>
+              <Text fw={700} size="lg">
+                Загалом:
+              </Text>
+              <Text fw={900}  className={styles.totalSection__price}>
+                {formatPrice(calculations.totalAmount)}
+              </Text>
+            </Group>
+            <Group justify="space-between">
+              <Text size="sm" c="dimmed">
+                Доставка:
+              </Text>
+              <Text size="sm" c="dimmed">
+                За тарифами служби доставки
+              </Text>
+            </Group>
+            <Stack gap="sm" mt="md">
+              <Link href="/checkout">
+                <Button variant="primary" size="lg" fullWidth>
+                  перейти до оформлення
+                </Button>
+              </Link>
+
+            </Stack>
+
+            {/* Інформація про доставку */}
+            <Stack gap="xs" mt="lg">
+              <Text size="sm" fw={500} c="dimmed">
+                Інформація:
+              </Text>
+
+              <Text size="xs" c="dimmed">
+                • Доставка протягом 1-2 днів
+              </Text>
+              <Text size="xs" c="dimmed">
+                • Можливість оплати при отриманні
+              </Text>
+            </Stack>
+          </Stack>
+        </div>
       )}
     </Container>
   );

@@ -1,0 +1,71 @@
+.pageTitle {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  color: var(--text-green);
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: 0.02em;
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
+}
+.img{
+  border-left:2px solid var(--border-color);;
+}
+.orderCard {
+  background-color: var(--background);
+}
+
+.label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.price {
+  color: var(--text-yellow);
+  font-family: var(--font-price);
+}
+
+.summaryCard {
+  background-color: var(--background);
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  font-size: 24px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.infoCard {
+  background-color: var(--background);
+}
+
+.totalsCard {
+  background-color: var(--bg-secondary);
+}
+
+.totalRow {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.totalRowFinal {
+  padding: 16px 0;
+  border-top: 2px solid var(--border-color);
+  margin-top: 8px;
+}
+
+.card{
+  border: 2px solid var(--border-color);
+}

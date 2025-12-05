@@ -1,0 +1,89 @@
+
+
+.title {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  color: var(--text-green);
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
+}
+
+.subtitle {
+  font-size: 18px;
+  color: var(--text-secondary);
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+}
+
+.orderBadge {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  background-color: var(--bg-yellow);
+  color: var(--text-primary);
+  padding: 12px 24px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    padding: 10px 20px;
+  }
+}
+.image {
+  max-height: 400px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.detailsCard {
+  width: 100%;
+  background-color: var(--background);
+}
+
+.cardTitle {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  letter-spacing: 0.02em;
+}
+
+.detailRow {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.amount {
+  color: var(--text-yellow);
+  font-family: var(--font-price);
+  font-size: 20px;
+}
+
+.button {
+  border: var(--border-width) solid var(--border-color);
+  color: var(--text-primary);
+
+  &:hover {
+    background-color: var(--bg-secondary);
+  }
+}
+
+.primaryButton {
+  background-color: var(--bg-yellow);
+  color: var(--text-primary);
+  border: var(--border-width) solid var(--border-color);
+  width: 360px;
+  &:hover {
+    background-color: var(--text-yellow);
+  }
+}

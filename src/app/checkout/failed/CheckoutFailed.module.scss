@@ -1,9 +1,15 @@
-.paymentFailedPage {
-  min-height: 100vh;
+.failedPage{
+    min-height: 100vh;
+  padding: 20px 0;
   background-image: url('/assets/img/bg/page.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  padding: 20px 0;
+}
+.wrapper{
+background-color: var(--background);
+}
+.bth{
+  min-width: 300px;
 }

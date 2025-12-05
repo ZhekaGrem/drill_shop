@@ -1,0 +1,38 @@
+// src/app/cart/Cart.module.scss
+
+.containerCart {
+  &__title {
+    font-family: var(--font-heading);
+  }
+
+  &__link{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+.cart {
+  border-top: var(--border-width) solid var(--primary);
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.divider {
+  width: 2px;
+  background-color: var(--background-secondary);
+  align-self: stretch;
+  height: 100vh;
+  
+
+}
+
+.totalSection {
+  padding-top: 16px;
+  border-top: 3px dotted var(--primary);
+  &__price{
+    font-size: var(--text-3xl);
+    color: var(--text-primary);
+  }
+}

@@ -1,57 +1,55 @@
 'use client';
 
-import { ImageTextSection } from '@/shared/components/ImageTextSection/ImageTextSection';
-import { content } from '@/shared/config/content';
-import { assets } from '@/shared/config/assets';
+import { Box, Container, Title, Text } from '@mantine/core';
+import Image from 'next/image';
+import styles from './about.module.scss';
+
 const About = () => {
   return (
     <>
-      <ImageTextSection
-        imageSrc={assets.about.sections.section1}
-        imageAlt="Про нас"
-        imagePosition="left"
-        title={content.about.sections.story.title}
-        titleColor="secondary"
-        description={content.about.sections.story.description}
-      />
+      <Container size="xl" py="lg">
+        <Title className={styles.pageTitle}>ПРО НАС</Title>
+      </Container>
 
-      <ImageTextSection
-        imageSrc={assets.about.sections.section2}
-        imageAlt="Доставка з ферми"
-        imagePosition="right"
-        title={content.about.sections.freshness.title}
-        titleColor="green"
-        description={content.about.sections.freshness.description}
-      />
+      <Box className={styles.heroSection}>
+        <Image src="/assets/img/about/hero.png" alt="Hero" fill className={styles.heroImage} />
+      </Box>
 
-      <ImageTextSection
-        imageSrc={assets.about.sections.section3}
-        imageAlt="Гарантія якості"
-        imagePosition="left"
-        title={content.about.sections.quality.title}
-        titleColor="primary"
-        description={content.about.sections.quality.description}
-      />
-
-      <ImageTextSection
-        imageSrc={assets.about.sections.section4}
-        imageAlt="Сервіс з душею"
-        imagePosition="right"
-        title={content.about.sections.service.title}
-        titleColor="yellow"
-        description={content.about.sections.service.description}
-      />
-
-      <ImageTextSection
-        imageSrc={assets.about.sections.section5}
-        imageAlt="Досвід поколінь"
-        imagePosition="left"
-        title={content.about.sections.experience.title}
-        titleColor="secondary"
-        description={content.about.sections.experience.description}
-        buttonText={content.about.sections.experience.buttonText}
-        buttonHref="/contact"
-      />
+      <Box className={styles.contentGrid}>
+        <Box className={styles.textContent}>
+          <Container size="lg" py={80}>
+            <Title className={styles.sectionTitle} mb="xl">
+              shchilnui drill shop
+            </Title>
+            <Text className={styles.description} mb="lg">
+              Робимо не тільки Дрілл випускаємо щільні футбокли, носки, піни. Нормальні такі на вигляд. дрільна суміш РЕПА прицепа котлети та якості. Бери в нас поки не дали в рот!
+            </Text>
+            <Text className={styles.description} mb="lg">
+              Хто ми? Пацани які вирішили шо треба щось своє мутити. Не якісь там офісні клерки шо в костюмах ходять, а реальні пацики з вулиці. Ми знаємо шо таке справжній андеграунд, бо самі звідти вилізли.
+            </Text>
+            <Text className={styles.description} mb="lg">
+              Футболки наші - це не просто тряпки. Це твій щит від цього сірого світу. Одягнув - і ти вже не просто чувак, а той хто має стиль. Той хто не боїться бути собою серед цих всіх манекенів.
+            </Text>
+            <Text className={styles.description} mb="lg">
+              Весь цей мерч - це наш fuck you системі. Кожен принт - це наша історія, наші базари, наші гони. Це для тих хто не хоче бути як всі ці клони шо по ТЦ шаряться.
+            </Text>
+            <Text className={styles.description} mb="lg">
+              Якість? Та братан, ми самі носимо це! Думаєш ми будемо якесь лайно продавати? Ні блін, ми ж не лохи. Кожна футболка пройшла тест-драйв у наших пацанів. Якщо витримала наші покатушки - значить годиться.
+            </Text>
+            <Text className={styles.description}>
+              Тож якщо ти не якась маргариноська а реальний чувак шо розуміє шо до чого - то вітаємо в сім'ї. Бери мерч, носи з гордістю і посилай нахуй всіх хто щось там каже. Ми за своїх!
+            </Text>
+          </Container>
+        </Box>
+        <Box className={styles.imageContent}>
+          <Box className={styles.imageWrapper}>
+            <Image src="/assets/img/about/topMen.png" alt="Top Men" fill className={styles.sideImage} />
+          </Box>
+          <Box className={styles.imageCaption}>
+            <Text className={styles.captionText}>Купуй футболку як ці фанати, всім щільного здоровля!</Text>
+          </Box>
+        </Box>
+      </Box>
     </>
   );
 };

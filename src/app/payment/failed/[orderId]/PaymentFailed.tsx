@@ -4,10 +4,11 @@
 import React from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Container, Paper, Title, Text, Button, Group, Stack, Alert } from '@mantine/core';
-import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react';
+import { Container, Paper, Title, Text, Group, Stack, Alert, Image } from '@mantine/core';
 import { usePaymentStatus } from '@/features/payment/hooks/usePayment';
-import styles from './payment-failed.module.scss';
+import { Button } from '@/shared/components/Button/Button'
+
+import styles from './paymentFailed.module.scss';
 
 const PaymentFailedPage: React.FC = () => {
   const params = useParams();
@@ -49,32 +50,29 @@ const PaymentFailedPage: React.FC = () => {
   return (
     <div className={styles.paymentFailedPage}>
       <Container size="sm" py="xl">
-        <Paper p="xl" radius="md" withBorder>
+        <Paper className={styles.wrapper}>
           <Stack align="center" gap="lg">
-            <IconAlertTriangle size={80} color="var(--mantine-color-red-6)" />
+            <Image src="/assets/img/rage.png" alt="Hero" height={200} fit="contain" radius="md" className={styles.image} />
 
-            <Title order={2} ta="center" c="red">
-              Помилка оплати
+            <Title order={1} ta="center" c="red">
+              Не вдалося провести оплату!
             </Title>
 
             <Text ta="center" size="lg">
               {getErrorMessage(error, reason)}
             </Text>
 
-            <Text ta="center" c="dimmed">
-              Ваше замовлення збережено, але оплата не пройшла. Спробуйте оплатити ще раз або оберіть інший
-              спосіб оплати.
-            </Text>
+
 
             {/* Деталі помилки */}
             {(trackingId || error) && (
-              <Paper p="md" withBorder radius="md" w="100%" bg="red.0">
+              <>
                 {trackingId && (
-                  <Group justify="space-between">
-                    <Text size="sm" c="dimmed">
+                  <Group justify="center">
+                    <Text size="xl" c="dimmed">
                       Номер замовлення:
                     </Text>
-                    <Text size="sm" ff="monospace">
+                    <Text size="xl" ff="monospace">
                       {trackingId}
                     </Text>
                   </Group>
@@ -89,12 +87,11 @@ const PaymentFailedPage: React.FC = () => {
                       {error}
                     </Text>
                   </Group>
-                )}
-              </Paper>
+                )}</>
             )}
 
             {/* Рекомендації */}
-            <Alert
+            {/* <Alert
               icon={<IconInfoCircle size={16} />}
               title="Що робити далі?"
               color="blue"
@@ -107,20 +104,20 @@ const PaymentFailedPage: React.FC = () => {
                 <Text size="sm">• Оберіть інший спосіб оплати (готівка при отриманні)</Text>
                 <Text size="sm">• Зверніться до банку, що випустив карту</Text>
               </Stack>
-            </Alert>
+            </Alert> */}
 
             {/* Кнопки дій */}
-            <Group w="100%">
-              {trackingId && (
-                <Button component={Link} href={`/orders/track/${trackingId}`} variant="light" flex={1}>
-                  Переглянути замовлення
-                </Button>
-              )}
 
-              <Button component={Link} href="/checkout" flex={1}>
+            {trackingId && (
+              <Link href={`/orders/track/${trackingId}`} className={styles.bth}>
+                <Button variant="primary" flex={1}>
+                  Переглянути замовлення
+                </Button></Link>
+            )}
+            <Link href="/checkout">
+              <Button variant="outline" flex={1} className={styles.bth}>
                 Спробувати знову
-              </Button>
-            </Group>
+              </Button></Link>
 
             {/* Підтримка */}
             <Text ta="center" size="sm" c="dimmed">

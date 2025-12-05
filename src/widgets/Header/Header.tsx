@@ -119,12 +119,15 @@ const MobileMenu = React.memo(
     };
 
     const menuItems = [
+      { label: 'КАТАЛОГ', href: '/catalog' },
+      { label: 'КОНТАКТИ', href: '/contact' },
+      { label: 'ПРО НАС', href: '/aboutus' },
       { label: 'Розпродаж', href: '/catalog?sale=true' },
       { label: 'ТОП продажів', href: '/catalog?sort=popularity_desc' },
       { label: 'Футболки', href: '/catalog?category=t-shirts' },
       { label: 'Худі', href: '/catalog?category=hoodies' },
       { label: 'Кепки', href: '/catalog?category=caps' },
-      { label: 'Аксесуари', href: '/catalog?category=accessories' },
+      
     ];
 
     return (
@@ -138,50 +141,7 @@ const MobileMenu = React.memo(
             </Link>
           ))}
 
-          {isAuthenticated && userProfile && (
-            <>
-              <Divider my="sm" />
-              <Text size="sm" fw={700} p="md" c="dimmed" tt="uppercase">
-                {userProfile.firstName} {userProfile.lastName}
-              </Text>
-              <Link href="/profile" className={styles.menuLink} onClick={onNavigate}>
-                <div className={styles.menuIcon}>
-                  <IconUser />
-                  <span>{content.navigation.profile}</span>
-                </div>
-              </Link>
-              <Link href="/profile/favorites" className={styles.menuLink} onClick={onNavigate}>
-                <div className={styles.menuIcon}>
-                  <IconHeart size={24} />
-                  <span>{content.navigation.favorites}</span>
-                </div>
-              </Link>
-              <Link href="/profile/orders" className={styles.menuLink} onClick={onNavigate}>
-                <div className={styles.menuIcon}>
-                  <IconUser />
-                  <span>{content.navigation.orders}</span>
-                </div>
-              </Link>
-              {isManager && (
-                <>
-                  <Divider my="sm" />
-                  <Link href="/admin" className={styles.menuLink} onClick={onNavigate}>
-                    <div className={styles.menuIcon}>
-                      <IconSettings size={24} />
-                      <span>{content.navigation.adminPanel}</span>
-                    </div>
-                  </Link>
-                </>
-              )}
-              <Divider my="sm" />
-              <div className={`${styles.menuLink} ${styles.logoutLink}`} onClick={handleLogoutClick}>
-                <div className={styles.menuIcon}>
-                  <IconLogout size={24} />
-                  <span>{content.navigation.logout}</span>
-                </div>
-              </div>
-            </>
-          )}
+         
         </ScrollArea>
       </Drawer>
     );

@@ -44,7 +44,7 @@ const Home = () => {
               <Suspense fallback={null}>
                 <Spline
                   scene="https://prod.spline.design/j2veMJqqV2QABEh9/scene.splinecode"
-                  onLoad={() => setIsSplineLoaded(true)}
+                  onLoad={() => setIsSplineLoaded(true)} className={styles.splineLoader}
                 />
               </Suspense>
             </div>

@@ -4,9 +4,10 @@
 import React from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Container, Paper, Title, Text, Button, Group, Stack, Alert, MantineProvider } from '@mantine/core';
+import { Container, Paper, Title, Text, Group, Stack, Alert, Image } from '@mantine/core';
 import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react';
-
+import { Button } from '@/shared/components/Button/Button'
+import styles from './CheckoutFailed.module.scss';
 const CheckoutFailedPage: React.FC = () => {
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
@@ -31,11 +32,11 @@ const CheckoutFailedPage: React.FC = () => {
   };
 
   return (
-    <MantineProvider>
-      <Container size="sm" py="xl">
-        <Paper p="xl" radius="md" withBorder>
+    <div className={styles.failedPage}>
+      <Container size="sm"  >
+        <Paper className={styles.wrapper}>
           <Stack align="center" gap="lg">
-            <IconAlertTriangle size={80} color="var(--mantine-color-red-6)" />
+            <Image src="/assets/img/rage.png" alt="Hero" height={200} fit="contain" radius="md" className={styles.image} />
 
             <Title order={2} ta="center" c="red">
               Помилка оформлення замовлення
@@ -101,16 +102,14 @@ const CheckoutFailedPage: React.FC = () => {
             </Alert>
 
             {/* Action buttons */}
-            <Group w="100%">
-              <Link href="/cart">
-                <Button variant="light" flex={1}>
-                  Повернутись до кошика
-                </Button>
-              </Link>
-              <Link href="/checkout">
-                <Button flex={1}>Спробувати знову</Button>
-              </Link>
-            </Group>
+            <Link href="/cart">
+              <Button variant="primary" flex={1} className={styles.bth}>
+                Повернутись до кошика
+              </Button>
+            </Link>
+            <Link href="/checkout">
+              <Button variant="outline" flex={1} className={styles.bth}>Спробувати знову</Button>
+            </Link>
 
             {/* Contact support */}
             <Text ta="center" size="sm" c="dimmed">
@@ -123,8 +122,7 @@ const CheckoutFailedPage: React.FC = () => {
             </Text>
           </Stack>
         </Paper>
-      </Container>
-    </MantineProvider>
+      </Container></div>
   );
 };
 
