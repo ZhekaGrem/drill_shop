@@ -5,8 +5,9 @@
   padding: 16px 24px;
   background: var(--background);
   border-radius: 0;
-  margin-bottom: var(--spacing-xl);
   flex-wrap: wrap;
+  border-bottom: var(--border-width) solid var(--text-primary);
+
 }
 
 .filterGroup {

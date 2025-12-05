@@ -20,7 +20,12 @@ const OrderSuccess = () => {
   return (
     <Container size="md">
       <Stack align="center" gap="xl">
-        <Image src="/assets/img/smile.png" alt="Hero" height={100} radius="md" className={styles.image} />
+        <Image src="/assets/img/smile.png"
+                      alt="Hero"
+                      height={200}
+                      fit="contain"
+                      radius="md"
+                      className={styles.image} />
 
         <Title className={styles.title}>ДЯКУЄМО ЗА ЗАМОВЛЕННЯ!</Title>
 
