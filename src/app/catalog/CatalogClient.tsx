@@ -124,7 +124,6 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
           <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
         </Modal>
         <div className={styles.container}>
-
           <div className={styles.products}>
             {initialData!.data.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -138,7 +137,11 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
   return (
     <div className={styles.catalogPage}>
       {/* Кнопка фільтрів для мобільних */}
-      <Button variant='outline' className={styles.filtersButton} onClick={() => setFiltersModalOpened(true)} fullWidth>
+      <Button
+        variant="outline"
+        className={styles.filtersButton}
+        onClick={() => setFiltersModalOpened(true)}
+        fullWidth>
         <IconFilter size={20} />
         <span>Фільтри</span>
         <IconChevronDown size={20} />
@@ -164,7 +167,6 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
         <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
       </Modal>
       <div className={styles.container}>
-
         {error && (
           <div className={styles.error}>
             <h3>Помилка завантаження</h3>

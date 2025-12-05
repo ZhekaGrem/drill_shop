@@ -121,7 +121,7 @@ const MobileMenu = React.memo(
     const menuItems = [
       { label: 'КАТАЛОГ', href: '/catalog' },
       { label: 'КОНТАКТИ', href: '/contact' },
-      { label: 'ПРО НАС', href: '/aboutus' },
+      { label: 'ПРО НАС', href: '/about' },
       { label: 'Розпродаж', href: '/catalog?sale=true' },
       { label: 'ТОП продажів', href: '/catalog?sort=popularity_desc' },
       { label: 'Футболки', href: '/catalog?category=t-shirts' },
