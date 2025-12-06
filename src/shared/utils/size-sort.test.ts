@@ -24,11 +24,11 @@ const mockVariants = [
 ];
 
 console.log('\nВаріанти (до):');
-mockVariants.forEach(v => console.log(`  - ${v.name}`));
+mockVariants.forEach((v) => console.log(`  - ${v.name}`));
 
 const sorted = sortVariantsBySize(mockVariants);
 console.log('Варіанти (після):');
-sorted.forEach(v => console.log(`  - ${v.name}`));
+sorted.forEach((v) => console.log(`  - ${v.name}`));
 // Очікуваний результат:
 //   - Розмір XS
 //   - Розмір M

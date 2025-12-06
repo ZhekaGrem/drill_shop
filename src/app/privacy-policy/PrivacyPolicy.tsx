@@ -1,328 +1,448 @@
 // src/app/privacy-policy/PrivacyPolicy.tsx
 
-import { Container, Title, Text, Paper, Stack, Divider, List, ListItem } from '@mantine/core';
-
 import styles from './privacyPolicy.module.scss';
+import { siteConfig } from '@/shared/config/site';
 
 const PrivacyPolicy = () => {
   return (
     <div className={styles.page}>
-      <Container size="md" py="xl">
-        <Stack align="center" mb="xl">
-          <Title order={1} className={styles.title}>
-            Політика конфіденційності
-          </Title>
-          <Text size="lg" className={styles.subtitle}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Політика конфіденційності</h1>
+          <p className={styles.subtitle}>
             Ця політика описує, як ми збираємо, використовуємо та захищаємо ваші персональні дані відповідно
             до законодавства України
-          </Text>
-        </Stack>
+          </p>
+        </div>
 
-        <Paper p="xl" withBorder radius="md">
-          <Stack gap="xl">
-            <div>
-              <Text className={styles.textBlock}>
-                Використовуючи наш веб-сайт та сервіси, ви погоджуєтеся з умовами цієї Політики
-                конфіденційності.
-              </Text>
+        <div className={styles.content}>
+          <section className={styles.section}>
+            <p className={styles.textBlock}>
+              Використовуючи веб-сайт <strong>{siteConfig.url}</strong> та сервіси інтернет-магазину{' '}
+              <strong>{siteConfig.name}</strong>, ви погоджуєтеся з умовами цієї Політики конфіденційності.
+            </p>
 
-              <Text className={styles.textBlock}>Ця політика розроблена відповідно до:</Text>
+            <p className={styles.textBlock}>Ця політика розроблена відповідно до:</p>
 
-              <List spacing="xs" size="sm">
-                <ListItem>Закону України "Про захист персональних даних"</ListItem>
-                <ListItem>Загального регламенту про захист даних (GDPR)</ListItem>
-                <ListItem>Закону України "Про електронну комерцію"</ListItem>
-                <ListItem>Закону України "Про інформацію"</ListItem>
-              </List>
+            <ul className={styles.list}>
+              <li>Закону України "Про захист персональних даних" № 2297-VI від 01.06.2010</li>
+              <li>Загального регламенту про захист даних (GDPR) ЄС 2016/679</li>
+              <li>Закону України "Про електронну комерцію" № 675-VIII від 03.09.2015</li>
+              <li>Закону України "Про інформацію" № 2657-XII від 02.10.1992</li>
+              <li>Закону України "Про захист прав споживачів" № 1023-XII від 12.05.1991</li>
+            </ul>
+
+            <div className={styles.orangeAlert}>
+              <strong className={styles.boldText}>Останнє оновлення:</strong>{' '}
+              {new Date().toLocaleDateString('uk-UA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
             </div>
+          </section>
 
-            <Divider />
+          <hr className={styles.divider} />
 
-            <div>
-              <Title order={3} className={styles.sectionTitle}>
-                {' '}
-                Які дані ми збираємо
-              </Title>
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>1. Володілець персональних даних</h2>
 
-              <Text className={styles.textBlock}>
-                Ми можемо збирати наступні категорії персональних даних:
-              </Text>
+            <p className={styles.textBlock}>
+              <strong>Володілець персональних даних (далі – Продавець):</strong>
+            </p>
 
-              <Title order={4} size="md" className={styles.subsectionTitle}>
-                {' '}
-                Дані, які ви надаєте добровільно:
-              </Title>
-              <List spacing="xs" size="sm" className={styles.textBlock}>
-                <ListItem>Ім'я та прізвище</ListItem>
-                <ListItem>Адреса електронної пошти</ListItem>
-                <ListItem>Номер телефону</ListItem>
-                <ListItem>Адреса доставки</ListItem>
-                <ListItem>Дата народження (за бажанням)</ListItem>
-                <ListItem>Інформація про платежі (через захищені платіжні системи)</ListItem>
-              </List>
+            <ul className={styles.list}>
+              <li>Повна назва: {siteConfig.fullName}</li>
+              <li>Адреса: {siteConfig.contacts.address}</li>
+              <li>Телефон: {siteConfig.contacts.phone}</li>
+              <li>Email: {siteConfig.contacts.email}</li>
+              <li>Веб-сайт: {siteConfig.url}</li>
+            </ul>
+          </section>
 
-              <Title order={4} size="md" className={styles.subsectionTitle}>
-                {' '}
-                Дані, які збираються автоматично:
-              </Title>
-              <List spacing="xs" size="sm" className={styles.textBlock}>
-                <ListItem>IP-адреса</ListItem>
-                <ListItem>Тип браузера та операційна система</ListItem>
-                <ListItem>Сторінки, які ви відвідуєте на сайті</ListItem>
-                <ListItem>Час та тривалість відвідування</ListItem>
-                <ListItem>Файли cookies та подібні технології</ListItem>
-              </List>
+          <hr className={styles.divider} />
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>2. Категорії персональних даних</h2>
+
+            <h3 className={styles.subsectionTitle}>2.1. Дані, які ви надаєте добровільно:</h3>
+            <ul className={styles.list}>
+              <li>Ім'я та прізвище</li>
+              <li>Номер телефону</li>
+              <li>Адреса електронної пошти</li>
+              <li>Адреса доставки (місто, відділення Нової Пошти)</li>
+              <li>Дата народження (за бажанням для участі в акціях)</li>
+              <li>Історія замовлень та покупок</li>
+            </ul>
+
+            <h3 className={styles.subsectionTitle}>2.2. Дані, які збираються автоматично:</h3>
+            <ul className={styles.list}>
+              <li>IP-адреса пристрою</li>
+              <li>Тип та версія браузера</li>
+              <li>Операційна система пристрою</li>
+              <li>Відвідані сторінки сайту</li>
+              <li>Час та тривалість сеансів</li>
+              <li>Файли cookies та аналогічні технології</li>
+              <li>Реферальні посилання (звідки ви прийшли на сайт)</li>
+            </ul>
+
+            <h3 className={styles.subsectionTitle}>2.3. Платіжна інформація:</h3>
+            <p className={styles.textBlock}>
+              Дані платіжних карток обробляються безпосередньо платіжними системами (LiqPay, MonoBank) та{' '}
+              <strong>НЕ зберігаються</strong> на серверах Продавця. Продавець отримує лише підтвердження
+              про успішну оплату.
+            </p>
+          </section>
+
+          <hr className={styles.divider} />
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>3. Мета обробки персональних даних</h2>
+
+            <p className={styles.textBlock}>
+              Ваші персональні дані використовуються виключно для законних цілей:
+            </p>
+
+            <ul className={styles.list}>
+              <li>
+                <strong>Виконання договору:</strong> обробка та виконання замовлень, доставка товарів,
+                оформлення документів
+              </li>
+              <li>
+                <strong>Комунікація з клієнтом:</strong> підтвердження замовлення, повідомлення про статус
+                доставки, відповіді на запитання
+              </li>
+              <li>
+                <strong>Покращення якості сервісу:</strong> аналіз поведінки користувачів, персоналізація
+                пропозицій, покращення зручності сайту
+              </li>
+              <li>
+                <strong>Маркетингова діяльність:</strong> розсилка новин, спеціальних пропозицій, знижок
+                (лише за вашою згодою)
+              </li>
+              <li>
+                <strong>Захист від шахрайства:</strong> виявлення та запобігання незаконним діям,
+                забезпечення безпеки платежів
+              </li>
+              <li>
+                <strong>Виконання законних вимог:</strong> ведення бухгалтерського обліку, податкова
+                звітність, виконання вимог державних органів
+              </li>
+            </ul>
+          </section>
+
+          <hr className={styles.divider} />
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>4. Правова підстава обробки даних</h2>
+
+            <p className={styles.textBlock}>
+              Згідно зі ст. 11 Закону України "Про захист персональних даних", обробка ваших даних
+              здійснюється на підставі:
+            </p>
+
+            <ul className={styles.list}>
+              <li>Вашої добровільної згоди (при реєстрації та оформленні замовлення)</li>
+              <li>Необхідності виконання договору купівлі-продажу</li>
+              <li>Виконання законних вимог (бухгалтерський облік, податкова звітність)</li>
+              <li>Законних інтересів Продавця (запобігання шахрайству, покращення сервісу)</li>
+            </ul>
+          </section>
+
+          <hr className={styles.divider} />
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>5. Передача персональних даних третім особам</h2>
+
+            <p className={styles.textBlock}>
+              Продавець передає ваші персональні дані третім особам тільки у випадках, передбачених цією
+              Політикою:
+            </p>
+
+            <h3 className={styles.subsectionTitle}>5.1. Партнери для виконання замовлень:</h3>
+            <ul className={styles.list}>
+              <li>
+                <strong>Служби доставки (Нова Пошта, Укрпошта):</strong> ПІБ, номер телефону, адреса
+                доставки
+              </li>
+              <li>
+                <strong>Платіжні системи (LiqPay, MonoBank):</strong> інформація для проведення транзакції
+              </li>
+              <li>
+                <strong>SMS-сервіси:</strong> номер телефону для повідомлень про статус замовлення
+              </li>
+            </ul>
+
+            <h3 className={styles.subsectionTitle}>5.2. Технічні партнери:</h3>
+            <ul className={styles.list}>
+              <li>Хостинг-провайдери (для забезпечення роботи сайту)</li>
+              <li>Сервіси аналітики (Google Analytics) — для аналізу відвідуваності сайту</li>
+            </ul>
+
+            <div className={styles.redAlert}>
+              <strong className={styles.boldText}>ВАЖЛИВО:</strong> Продавець НІКОЛИ не продає, не
+              обмінює та не передає ваші персональні дані третім особам для маркетингових цілей без вашої
+              явної згоди.
             </div>
+          </section>
 
-            <Divider />
+          <hr className={styles.divider} />
 
-            <div>
-              <Title order={3} className={styles.sectionTitle}>
-                {' '}
-                Як ми використовуємо ваші дані
-              </Title>
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>6. Заходи захисту персональних даних</h2>
 
-              <Text className={styles.textBlock}>Ваші персональні дані використовуються для:</Text>
+            <p className={styles.textBlock}>
+              Відповідно до ст. 19 Закону України "Про захист персональних даних", Продавець застосовує
+              технічні та організаційні заходи для захисту ваших даних:
+            </p>
 
-              <List spacing="sm" size="sm">
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Обробки замовлень</Text>
-                  <Text className={styles.dimmedText}>
-                    Створення замовлення, обробка платежів, доставка товарів
-                  </Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Зв'язку з клієнтами</Text>
-                  <Text className={styles.dimmedText}>
-                    Підтвердження замовлень, повідомлення про статус доставки
-                  </Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Покращення сервісу</Text>
-                  <Text className={styles.dimmedText}>
-                    Аналіз використання сайту, персоналізація контенту
-                  </Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Маркетингової діяльності</Text>
-                  <Text className={styles.dimmedText}>Розсилка новин, пропозицій (лише за вашою згодою)</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Забезпечення безпеки</Text>
-                  <Text className={styles.dimmedText}>Запобігання шахрайству, захист від кібератак</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Виконання правових зобов'язань</Text>
-                  <Text className={styles.dimmedText}>Ведення обліку, податкова звітність</Text>
-                </ListItem>
-              </List>
+            <h3 className={styles.subsectionTitle}>Технічні заходи:</h3>
+            <ul className={styles.list}>
+              <li>SSL/TLS шифрування (HTTPS) для передачі даних</li>
+              <li>Захищені сервери з обмеженим доступом</li>
+              <li>Шифрування паролів користувачів (bcrypt)</li>
+              <li>Регулярне оновлення систем безпеки та патчів</li>
+              <li>Резервне копіювання даних</li>
+              <li>Захист від DDoS-атак та зловмисного програмного забезпечення</li>
+            </ul>
+
+            <h3 className={styles.subsectionTitle}>Організаційні заходи:</h3>
+            <ul className={styles.list}>
+              <li>Обмеження доступу до персональних даних (тільки авторизований персонал)</li>
+              <li>Регулярний аудит безпеки</li>
+              <li>Навчання персоналу щодо захисту конфіденційності</li>
+              <li>Контроль дотримання політики конфіденційності</li>
+            </ul>
+
+            <div className={styles.orangeAlert}>
+              <strong className={styles.boldText}>Зверніть увагу:</strong> Незважаючи на всі вжиті заходи,
+              жоден метод передачі або зберігання даних в Інтернеті не є на 100% безпечним. Ми докладаємо
+              максимальних зусиль, але не можемо гарантувати абсолютну безпеку.
             </div>
+          </section>
 
-            <Divider />
+          <hr className={styles.divider} />
 
-            <div>
-              <Title order={3} className={styles.sectionTitle}>
-                {' '}
-                Передача даних третім особам
-              </Title>
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>7. Ваші права як суб'єкта персональних даних</h2>
 
-              <Text className={styles.textBlock}>
-                Ми можемо передавати ваші персональні дані третім особам лише у наступних випадках:
-              </Text>
+            <p className={styles.textBlock}>
+              Згідно зі ст. 8 Закону України "Про захист персональних даних", ви маєте наступні права:
+            </p>
 
-              <List spacing="sm" size="sm">
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Сервісні партнери</Text>
-                  <Text className={styles.dimmedText}>
-                    Служби доставки, платіжні системи, хостинг-провайдери
-                  </Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>За вашою згодою</Text>
-                  <Text className={styles.dimmedText}>Коли ви явно погоджуєтесь на передачу даних</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Правові вимоги</Text>
-                  <Text className={styles.dimmedText}>
-                    За запитом органів державної влади відповідно до закону
-                  </Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Захист прав</Text>
-                  <Text className={styles.dimmedText}>
-                    Для захисту наших прав, безпеки користувачів або суспільства
-                  </Text>
-                </ListItem>
-              </List>
+            <ul className={styles.list}>
+              <li>
+                <strong>Право на інформацію (ст. 8.1):</strong> знати про джерела збирання, місцезнаходження
+                своїх персональних даних, мету їх обробки
+              </li>
+              <li>
+                <strong>Право на доступ (ст. 8.2):</strong> отримувати відомості про умови надання доступу
+                до персональних даних
+              </li>
+              <li>
+                <strong>Право на виправлення (ст. 8.3):</strong> виправляти неточні, неповні або
+                застарілі дані
+              </li>
+              <li>
+                <strong>Право на видалення (ст. 8.4):</strong> вимагати видалення своїх персональних даних
+                ("право на забуття")
+              </li>
+              <li>
+                <strong>Право на обмеження обробки:</strong> призупинити обробку даних в певних випадках
+              </li>
+              <li>
+                <strong>Право на портативність даних:</strong> отримати копію своїх даних у зручному
+                форматі (CSV, JSON)
+              </li>
+              <li>
+                <strong>Право на заперечення:</strong> заперечити проти обробки ваших даних для прямого
+                маркетингу
+              </li>
+              <li>
+                <strong>Право на відкликання згоди:</strong> відкликати згоду на обробку даних у будь-який
+                момент
+              </li>
+              <li>
+                <strong>Право на скаргу:</strong> подати скаргу до Уповноваженого Верховної Ради України з
+                прав людини
+              </li>
+            </ul>
 
-              <div className={styles.orangeAlert}>
-                <Text size="sm">
-                  <span className={styles.boldText}>Важливо:</span> Ми ніколи не продаємо ваші персональні
-                  дані рекламодавцям або іншим комерційним організаціям.
-                </Text>
-              </div>
+            <div className={styles.infoBox}>
+              <p>
+                <strong className={styles.boldText}>Як скористатися своїми правами:</strong>
+              </p>
+              <p style={{ marginTop: '8px' }}>
+                1. Надішліть письмовий запит на email: {siteConfig.contacts.email}
+                <br />
+                2. Вкажіть в темі листа: "Запит щодо персональних даних"
+                <br />
+                3. Детально опишіть своє прохання
+                <br />
+                4. Ми розглянемо ваш запит протягом <strong>30 календарних днів</strong> (згідно ст. 16
+                Закону)
+              </p>
             </div>
+          </section>
 
-            <Divider />
+          <hr className={styles.divider} />
 
-            <div>
-              <Title order={3} className={styles.sectionTitle}>
-                {' '}
-                Захист ваших даних
-              </Title>
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>8. Використання cookies</h2>
 
-              <Text className={styles.textBlock}>
-                Ми застосовуємо сучасні технічні та організаційні заходи для захисту ваших персональних даних:
-              </Text>
+            <p className={styles.textBlock}>
+              Наш веб-сайт використовує файли cookies для покращення функціональності та зручності:
+            </p>
 
-              <List spacing="sm" size="sm">
-                <ListItem>SSL-шифрування для передачі даних</ListItem>
-                <ListItem>Захищені сервери з обмеженим доступом</ListItem>
-                <ListItem>Регулярне оновлення систем безпеки</ListItem>
-                <ListItem>Навчання співробітників з питань конфіденційності</ListItem>
-                <ListItem>Регулярний аудит безпеки</ListItem>
-                <ListItem>Резервне копіювання даних</ListItem>
-              </List>
+            <h3 className={styles.subsectionTitle}>Типи cookies:</h3>
+            <ul className={styles.list}>
+              <li>
+                <strong>Обов'язкові cookies:</strong> необхідні для базової роботи сайту (авторизація,
+                кошик, сесія)
+              </li>
+              <li>
+                <strong>Функціональні cookies:</strong> запам'ятовування ваших налаштувань (мова,
+                валюта)
+              </li>
+              <li>
+                <strong>Аналітичні cookies:</strong> збір статистики відвідуваності (Google Analytics)
+              </li>
+              <li>
+                <strong>Маркетингові cookies:</strong> персоналізація реклами (лише за вашою згодою)
+              </li>
+            </ul>
 
-              <div className={styles.redAlert}>
-                <Text size="sm">
-                  <span className={styles.boldText}>Зверніть увагу:</span> Жоден метод передачі або зберігання
-                  даних не є на 100% безпечним. Хоча ми докладаємо всіх зусиль для захисту ваших даних, ми не
-                  можемо гарантувати абсолютну безпеку.
-                </Text>
-              </div>
-            </div>
+            <p className={styles.textBlock}>
+              Ви можете налаштувати використання cookies у налаштуваннях свого браузера. Зверніть увагу, що
+              відключення обов'язкових cookies може порушити роботу сайту.
+            </p>
+          </section>
 
-            <Divider />
+          <hr className={styles.divider} />
 
-            <div>
-              <Title order={3} className={styles.sectionTitle}>
-                {' '}
-                Ваші права
-              </Title>
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>9. Термін зберігання персональних даних</h2>
 
-              <Text className={styles.textBlock}>
-                Відповідно до законодавства України, ви маєте наступні права:
-              </Text>
+            <p className={styles.textBlock}>
+              Згідно зі ст. 6 Закону України "Про захист персональних даних", персональні дані зберігаються
+              не довше, ніж це необхідно:
+            </p>
 
-              <List spacing="sm" size="sm">
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Право на доступ</Text>
-                  <Text className={styles.dimmedText}>
-                    Отримання інформації про те, які дані ми обробляємо
-                  </Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Право на виправлення</Text>
-                  <Text className={styles.dimmedText}>Коригування неточних або неповних даних</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Право на видалення</Text>
-                  <Text className={styles.dimmedText}>
-                    Вимога видалити ваші персональні дані ("право на забуття")
-                  </Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Право на обмеження обробки</Text>
-                  <Text className={styles.dimmedText}>
-                    Призупинення обробки ваших даних в певних обставинах
-                  </Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Право на портативність</Text>
-                  <Text className={styles.dimmedText}>Отримання копії ваших даних у зручному форматі</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Право заперечення</Text>
-                  <Text className={styles.dimmedText}>
-                    Заперечення проти обробки ваших даних в певних цілях
-                  </Text>
-                </ListItem>
-              </List>
+            <ul className={styles.list}>
+              <li>
+                <strong>Дані облікового запису:</strong> до видалення акаунта або 3 роки бездіяльності
+              </li>
+              <li>
+                <strong>Історія замовлень:</strong> 3 роки (відповідно до Податкового кодексу України,
+                ст. 44)
+              </li>
+              <li>
+                <strong>Дані для маркетингу:</strong> до відписки від розсилки або 2 роки бездіяльності
+              </li>
+              <li>
+                <strong>Технічні логи:</strong> 12 місяців для забезпечення безпеки
+              </li>
+              <li>
+                <strong>Cookies:</strong> від сеансу до 2 років (залежно від типу)
+              </li>
+            </ul>
 
-              <div className={styles.infoBox}>
-                <Text size="sm">
-                  <span className={styles.boldText}>Як скористатися своїми правами:</span> Надішліть запит на
-                  нашу електронну пошту з детальним описом вашого прохання. Ми розглянемо ваш запит протягом
-                  30 днів.
-                </Text>
-              </div>
-            </div>
+            <p className={styles.textBlock}>
+              Після закінчення терміну зберігання персональні дані підлягають знеособленню або видаленню.
+            </p>
+          </section>
 
-            <Divider />
+          <hr className={styles.divider} />
 
-            <div>
-              <Title order={3} className={styles.sectionTitle}>
-                {' '}
-                Використання cookies
-              </Title>
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>10. Права неповнолітніх</h2>
 
-              <Text className={styles.textBlock}>
-                Наш веб-сайт використовує cookies для покращення вашого досвіду використання:
-              </Text>
+            <p className={styles.textBlock}>
+              Наш інтернет-магазин призначений для осіб віком від <strong>18 років</strong>. Ми
+              свідомо не збираємо персональні дані осіб віком до 18 років.
+            </p>
 
-              <List spacing="sm" size="sm" className={styles.textBlock}>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Обов'язкові cookies</Text>
-                  <Text className={styles.dimmedText}>Необхідні для роботи сайту (авторизація, кошик)</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Функціональні cookies</Text>
-                  <Text className={styles.dimmedText}>Запам'ятовування ваших налаштувань</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Аналітичні cookies</Text>
-                  <Text className={styles.dimmedText}>Аналіз використання сайту (Google Analytics)</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Маркетингові cookies</Text>
-                  <Text className={styles.dimmedText}>Персоналізація реклами (лише за згодою)</Text>
-                </ListItem>
-              </List>
+            <p className={styles.textBlock}>
+              Якщо нам стане відомо, що ми зібрали персональні дані неповнолітньої особи без згоди
+              батьків/опікунів, ми негайно видалимо такі дані.
+            </p>
+          </section>
 
-              <Text size="sm" className={styles.dimmedText}>
-                Ви можете налаштувати використання cookies у своєму браузері або скористатися нашим
-                інструментом управління згодою.
-              </Text>
-            </div>
+          <hr className={styles.divider} />
 
-            <Divider />
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>11. Зміни до Політики конфіденційності</h2>
 
-            <div>
-              <Title order={3} className={styles.sectionTitle}>
-                {' '}
-                Зберігання даних
-              </Title>
-              <Text className={styles.textBlock}>Ми зберігаємо ваші персональні дані протягом:</Text>
-              <List spacing="sm" size="sm">
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Дані акаунта</Text>
-                  <Text className={styles.dimmedText}>До видалення акаунта або 3 роки неактивності</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Дані замовлень</Text>
-                  <Text className={styles.dimmedText}>5 років для бухгалтерського обліку</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Маркетингові дані</Text>
-                  <Text className={styles.dimmedText}>До відписки або 2 роки неактивності</Text>
-                </ListItem>
-                <ListItem className={styles.listItem}>
-                  <Text className={styles.boldText}>Логи та технічні дані</Text>
-                  <Text className={styles.dimmedText}>12 місяців для забезпечення безпеки</Text>
-                </ListItem>
-              </List>
-            </div>
+            <p className={styles.textBlock}>
+              Продавець залишає за собою право вносити зміни до цієї Політики конфіденційності в
+              односторонньому порядку. Нова редакція набуває чинності з моменту розміщення на сайті.
+            </p>
 
-            <div className={styles.blueAlert}>
-              <Text size="sm">
-                Рекомендуємо періодично переглядати цю сторінку для отримання актуальної інформації про наші
-                практики захисту конфіденційності.
-              </Text>
-            </div>
-          </Stack>
-        </Paper>
-      </Container>
+            <p className={styles.textBlock}>
+              Про суттєві зміни ми повідомимо вас по електронній пошті (для зареєстрованих користувачів)
+              або через повідомлення на сайті.
+            </p>
+
+            <p className={styles.textBlock}>
+              Актуальна версія завжди доступна на сторінці: <strong>{siteConfig.url}/privacy-policy</strong>
+            </p>
+          </section>
+
+          <hr className={styles.divider} />
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>12. Контактна інформація</h2>
+
+            <p className={styles.textBlock}>
+              Якщо у вас виникли питання щодо обробки персональних даних або ви хочете скористатися своїми
+              правами, зв'яжіться з нами:
+            </p>
+
+            <ul className={styles.list}>
+              <li>
+                <strong>Email:</strong> {siteConfig.contacts.email}
+              </li>
+              <li>
+                <strong>Телефон:</strong> {siteConfig.contacts.phone}
+              </li>
+              <li>
+                <strong>Адреса:</strong> {siteConfig.contacts.address}
+              </li>
+            </ul>
+
+            <p className={styles.textBlock}>
+              Якщо ви вважаєте, що ваші права порушено, ви маєте право звернутися до:
+            </p>
+
+            <ul className={styles.list}>
+              <li>
+                <strong>Уповноважений Верховної Ради України з прав людини</strong>
+                <br />
+                <span className={styles.dimmedText}>
+                  Адреса: 01008, м. Київ, вул. Інститутська, 21/8
+                  <br />
+                  Телефон: (044) 253-74-11
+                  <br />
+                  Email: hotline@ombudsman.gov.ua
+                </span>
+              </li>
+            </ul>
+          </section>
+
+          <div className={styles.blueAlert}>
+            <strong>Дата набрання чинності:</strong>{' '}
+            {new Date().toLocaleDateString('uk-UA', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+            <br />
+            <br />
+            Використовуючи сайт {siteConfig.url}, ви підтверджуєте, що ознайомлені з цією Політикою
+            конфіденційності та погоджуєтеся з нею.
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

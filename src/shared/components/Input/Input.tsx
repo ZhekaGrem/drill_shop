@@ -9,7 +9,7 @@ import {
 import styles from './Input.module.scss';
 import { forwardRef } from 'react';
 import clsx from 'clsx';
-export type InputVariant = 'default' | 'underline' | 'minimal' |'textarea';
+export type InputVariant = 'default' | 'underline' | 'minimal' | 'textarea';
 
 // Пропси для звичайного інпута
 interface CustomInputProps extends Omit<TextInputProps, 'variant'> {
@@ -87,7 +87,6 @@ PasswordField.displayName = 'PasswordField';
 // Пропси для textarea
 interface CustomTextareaProps extends Omit<TextareaProps, 'variant'> {
   variant?: InputVariant;
-
 }
 
 export const TextareaField = forwardRef<HTMLTextAreaElement, CustomTextareaProps>(

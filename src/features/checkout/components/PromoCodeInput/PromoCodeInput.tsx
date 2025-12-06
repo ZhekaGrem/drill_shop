@@ -133,7 +133,7 @@ export const PromoCodeInput = ({
           loading={isPending}
           disabled={!code.trim() || disabled}
           variant="ghost"
-          size="promo" 
+          size="promo"
           className={styles.btn}>
           Застосувати
         </Button>

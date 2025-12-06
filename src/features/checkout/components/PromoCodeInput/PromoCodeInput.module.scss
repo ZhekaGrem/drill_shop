@@ -31,10 +31,10 @@
     color: #dc2626;
   }
 }
-.btn{
-  border: var(--border-width) solid var(--border-color)  ;
+.btn {
+  border: var(--border-width) solid var(--border-color);
   color: var(--text-secondary);
-  &:hover{
+  &:hover {
     color: var(--text-inverse);
   }
 }

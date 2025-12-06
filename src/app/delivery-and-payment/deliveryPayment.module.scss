@@ -15,7 +15,7 @@
 .contentGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  min-height: 600px;
+  height: 100vh;
   border-top: var(--border-width) solid var(--border-color);
 
   @media (max-width: 992px) {

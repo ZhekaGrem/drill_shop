@@ -2,6 +2,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { apiClient } from '@/shared/api/client';
+import { compareSizes } from '@/shared/utils/size-sort';
 
 // ✅ TTL для кешу категорій: 5 годин
 
@@ -295,12 +296,14 @@ export const useCategoriesStore = create<CategoriesState>()(
               name: parent.name,
               slug: parent.slug,
             },
-            children: (parent.children || []).map((child) => ({
-              id: child.id,
-              name: child.name,
-              slug: child.slug,
-              parentId: child.parentId,
-            })),
+            children: (parent.children || [])
+              .map((child) => ({
+                id: child.id,
+                name: child.name,
+                slug: child.slug,
+                parentId: child.parentId,
+              }))
+              .sort((a, b) => compareSizes(a.name, b.name)), // Сортування за розмірами
           }));
 
         return parentsWithChildren;

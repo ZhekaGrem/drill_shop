@@ -18,8 +18,6 @@
   margin-top: var(--spacing-xs);
 }
 
-
-
 // ============ SECTIONS (для leftSection/rightSection) ============
 // Застосовується глобально для всіх варіантів
 :global(.mantine-TextInput-section) {
@@ -60,7 +58,6 @@
 
 :global(.mantine-Textarea-section) {
   color: var(--text-secondary);
- 
 
   &[data-position='left'] {
     width: 40px;
@@ -109,8 +106,6 @@
     cursor: not-allowed;
   }
 }
-
-
 
 // ============ VARIANT: DEFAULT (з рамкою) ============
 .default {

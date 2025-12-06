@@ -311,7 +311,11 @@ const CheckoutFormComponent = () => {
                   <Button variant="ghost" size="sm" type="button" onClick={() => insertQuickText('Укрпошта')}>
                     Укрпошта
                   </Button>
-                  <Button variant="ghost" size="sm" type="button" onClick={() => insertQuickText('Містекспрес')}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    type="button"
+                    onClick={() => insertQuickText('Містекспрес')}>
                     Містекспрес
                   </Button>
                 </div>
@@ -436,8 +440,6 @@ const CheckoutFormComponent = () => {
           <div className={styles.orderSummary}>
             <h3 className={styles.summaryTitle}>ВАШЕ ЗАМОВЛЕННЯ</h3>
 
-
-
             <Stack gap={0}>
               {items.map((item) => (
                 <CheckoutCard key={item.id} item={item} />
@@ -463,9 +465,6 @@ const CheckoutFormComponent = () => {
                 disabled={isSubmitting}
               />
             </div>
-
-
-
 
             {/* Discount section */}
             {appliedDiscount && (
@@ -504,8 +503,6 @@ const CheckoutFormComponent = () => {
                 )}
               </span>
             </div>
-
-
           </div>
         </div>
       </div>

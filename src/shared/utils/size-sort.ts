@@ -100,7 +100,7 @@ function getSizeFromOptions(options?: Record<string, any>): string | null {
   if (!options) return null;
 
   // Шукаємо ключ 'size' (case-insensitive)
-  const sizeKey = Object.keys(options).find(key => key.toLowerCase() === 'size');
+  const sizeKey = Object.keys(options).find((key) => key.toLowerCase() === 'size');
 
   if (sizeKey && options[sizeKey]) {
     return String(options[sizeKey]);
@@ -131,6 +131,6 @@ export function sortVariantsByOption<T extends { options?: Record<string, any> }
 function getOptionValue(options: Record<string, any> | undefined, key: string): string | null {
   if (!options) return null;
 
-  const foundKey = Object.keys(options).find(k => k.toLowerCase() === key.toLowerCase());
+  const foundKey = Object.keys(options).find((k) => k.toLowerCase() === key.toLowerCase());
   return foundKey && options[foundKey] ? String(options[foundKey]) : null;
 }
