@@ -1,4 +1,11 @@
-import { TextInput, TextInputProps, PasswordInput, PasswordInputProps, Textarea, TextareaProps } from '@mantine/core';
+import {
+  TextInput,
+  TextInputProps,
+  PasswordInput,
+  PasswordInputProps,
+  Textarea,
+  TextareaProps,
+} from '@mantine/core';
 import styles from './Input.module.scss';
 import { forwardRef } from 'react';
 

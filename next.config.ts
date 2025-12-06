@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     // ✅ Enable type checking during build for production safety
     ignoreBuildErrors: false,
   },
- 
+
   experimental: {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },
