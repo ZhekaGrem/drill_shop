@@ -3,6 +3,7 @@
 import { Select, Loader, Text, Group, Badge } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { IconBuilding, IconMailbox } from '@tabler/icons-react';
+import styles from './DeliveryMethod.module.scss';
 
 export interface Warehouse {
   ref: string;
@@ -193,81 +194,91 @@ export const WarehouseSelect = ({
   // Loading state
   if (loading) {
     return (
-      <Select
-        label="Відділення/Поштомат"
-        placeholder="Завантаження відділень..."
-        disabled
-        rightSection={<Loader size="xs" />}
-        error={error}
-        required={required}
-        data={[]}
-      />
+      <div className={styles.warehouseSelect}>
+        <Select
+          label="Відділення/Поштомат"
+          placeholder="Завантаження відділень..."
+          disabled
+          rightSection={<Loader size="xs" />}
+          error={error}
+          required={required}
+          data={[]}
+        />
+      </div>
     );
   }
 
   // No city selected
   if (!cityRef || !cityRef.trim()) {
     return (
-      <Select
-        label="Відділення/Поштомат"
-        placeholder="Спочатку оберіть місто"
-        disabled
-        data={[]}
-        error={error}
-        required={required}
-      />
+      <div className={styles.warehouseSelect}>
+        <Select
+          label="Відділення/Поштомат"
+          placeholder="Спочатку оберіть місто"
+          disabled
+          data={[]}
+          error={error}
+          required={required}
+        />
+      </div>
     );
   }
 
   // API error state
   if (apiError) {
     return (
-      <Select
-        label="Відділення/Поштомат"
-        placeholder="Помилка завантаження відділень"
-        disabled
-        data={[]}
-        error={error || apiError}
-        required={required}
-      />
+      <div className={styles.warehouseSelect}>
+        <Select
+          label="Відділення/Поштомат"
+          placeholder="Помилка завантаження відділень"
+          disabled
+          data={[]}
+          error={error || apiError}
+          required={required}
+        />
+      </div>
     );
   }
 
   // No warehouses found
   if (warehouses.length === 0 && !loading) {
     return (
-      <Select
-        label="Відділення/Поштомат"
-        placeholder="Відділення не знайдено для цього міста"
-        disabled
-        data={[]}
-        error={error}
-        required={required}
-      />
+      <div className={styles.warehouseSelect}>
+        <Select
+          label="Відділення/Поштомат"
+          placeholder="Відділення не знайдено для цього міста"
+          disabled
+          data={[]}
+          error={error}
+          required={required}
+        />
+      </div>
     );
   }
 
   // Main render with data
   return (
-    <Select
-      label="Відділення/Поштомат"
-      placeholder="Введіть номер або адресу відділення"
-      data={selectData}
-      value={value || null}
-      onChange={handleChange}
-      onBlur={onBlur}
-      searchable
-      searchValue={searchValue}
-      onSearchChange={setSearchValue}
-      nothingFoundMessage="Відділення не знайдено за вашим запитом"
-      disabled={disabled}
-      error={error}
-      required={required}
-      leftSection={<IconBuilding size={16} />}
-      renderOption={renderSelectOption}
-      maxDropdownHeight={400}
-      clearable={true}
-      limit={100}
-    />
+    <div className={styles.warehouseSelect}>
+      <Select
+        label="Відділення/Поштомат"
+        placeholder="Введіть номер або адресу відділення"
+        data={selectData}
+        value={value || null}
+        onChange={handleChange}
+        onBlur={onBlur}
+        searchable
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        nothingFoundMessage="Відділення не знайдено за вашим запитом"
+        disabled={disabled}
+        error={error}
+        required={required}
+        leftSection={<IconBuilding size={16} />}
+        renderOption={renderSelectOption}
+        maxDropdownHeight={400}
+        clearable={true}
+        limit={100}
+      />
+    </div>
   );
 };

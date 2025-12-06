@@ -2,37 +2,35 @@
 // Pixel art Auth Drawer з Figma "Щільний дріл"
 
 .drawer {
-  :global {
-    .mantine-Drawer-content {
-      border-radius: 0 !important;
-      background: var(--background) !important;
+  :global(.mantine-Drawer-content) {
+    border-radius: 0 !important;
+    background: var(--background) !important;
+  }
+
+  :global(.mantine-Drawer-header) {
+    background: var(--background);
+    padding: var(--spacing-md) !important;
+  }
+
+  :global(.mantine-Drawer-title) {
+    width: 100%;
+  }
+
+  :global(.mantine-Drawer-body) {
+    padding: var(--spacing-md) !important;
+    background: var(--background);
+    height: 100%;
+  }
+
+  :global(.mantine-Drawer-close) {
+    svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2px;
     }
 
-    .mantine-Drawer-header {
-      background: var(--background);
-      padding: var(--spacing-md) !important;
-    }
-
-    .mantine-Drawer-title {
-      width: 100%;
-    }
-
-    .mantine-Drawer-body {
-      padding: var(--spacing-md) !important;
-      background: var(--background);
-      height: 100%;
-    }
-
-    .mantine-Drawer-close {
-      svg {
-        width: 24px;
-        height: 24px;
-        stroke-width: 2px;
-      }
-
-      &:hover {
-        background: var(--btn-primary) !important;
-      }
+    &:hover {
+      background: var(--btn-primary) !important;
     }
   }
 }
@@ -48,39 +46,37 @@
 }
 
 .tabs {
-  :global {
-    .mantine-Tabs-list {
-      border-bottom: var(--border-width) solid var(--text-tertiary) !important;
-      background: var(--background) !important;
-      padding: 0 !important;
-      gap: 0 !important;
+  :global(.mantine-Tabs-list) {
+    border-bottom: var(--border-width) solid var(--text-tertiary) !important;
+    background: var(--background) !important;
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+
+  :global(.mantine-Tabs-tab) {
+    font-family: var(--font-condensed) !important;
+    font-size: var(--text-base) !important;
+    font-weight: var(--fw-bold) !important;
+    color: var(--text-secondary) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: var(--spacing-md) !important;
+    transition: var(--transition-fast) !important;
+
+    &:hover {
+      background: var(--background-secondary) !important;
+      color: var(--text-primary) !important;
     }
 
-    .mantine-Tabs-tab {
-      font-family: var(--font-condensed) !important;
-      font-size: var(--text-base) !important;
-      font-weight: var(--fw-bold) !important;
+    &[data-active='true'] {
       color: var(--text-secondary) !important;
-      border: none !important;
-      border-radius: 0 !important;
-      padding: var(--spacing-md) !important;
-      transition: var(--transition-fast) !important;
-
-      &:hover {
-        background: var(--background-secondary) !important;
-        color: var(--text-primary) !important;
-      }
-
-      &[data-active='true'] {
-        color: var(--text-secondary) !important;
-        border-bottom: var(--border-width) solid var(--border-color) !important;
-        font-weight: var(--fw-black) !important;
-      }
+      border-bottom: var(--border-width) solid var(--border-color) !important;
+      font-weight: var(--fw-black) !important;
     }
+  }
 
-    .mantine-Tabs-panel {
-      padding-top: var(--spacing-lg) !important;
-    }
+  :global(.mantine-Tabs-panel) {
+    padding-top: var(--spacing-lg) !important;
   }
 }
 
@@ -105,13 +101,3 @@
   }
 }
 
-.tabs {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  :global(.mantine-Tabs-panel) {
-    flex: 1;
-    width: 100%;
-  }
-}

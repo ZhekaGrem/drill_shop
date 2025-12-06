@@ -5,10 +5,7 @@ const nextConfig: NextConfig = {
     // ✅ Enable type checking during build for production safety
     ignoreBuildErrors: false,
   },
-  eslint: {
-    // ✅ Enable ESLint during build for code quality
-    ignoreDuringBuilds: false,
-  },
+ 
   experimental: {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },

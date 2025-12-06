@@ -1,0 +1,33 @@
+// Стилі PromoCodeInput в стилі фільтрів каталогу
+.promoInput {
+  :global(.mantine-TextInput-input) {
+    background: var(--background);
+    border: none;
+    border-bottom: 2px solid var(--border-color);
+    border-radius: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--text-primary);
+    transition: var(--transition-fast);
+
+    &::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    &:hover {
+      background: var(--background-secondary);
+    }
+
+    &:focus {
+      border-bottom-color: var(--text-primary);
+      background: var(--background-secondary);
+    }
+  }
+
+  :global(.mantine-TextInput-error) {
+    font-family: var(--font-condensed);
+    font-size: var(--text-xs);
+    font-weight: var(--fw-medium);
+    color: #dc2626;
+  }
+}

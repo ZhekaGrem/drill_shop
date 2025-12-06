@@ -6,6 +6,7 @@ import { IconTag, IconCheck, IconX } from '@tabler/icons-react';
 import { useValidatePromoCode } from '@/features/admin/hooks/discountHooks';
 import { formatPrice } from '@/shared/utils/format';
 import { Button } from '@/shared/components/Button/Button';
+import styles from './PromoCodeInput.module.scss';
 interface PromoCodeInputProps {
   orderAmount: number;
   onApply: (discountData: {
@@ -109,20 +110,21 @@ export const PromoCodeInput = ({
   return (
     <Stack gap="xs">
       <Group wrap="nowrap" align="flex-start">
-        <TextInput
-          placeholder="Введіть промокод"
-          value={code}
-          onChange={(e) => setCode(e.target.value.toUpperCase())}
-          onKeyPress={handleKeyPress}
-          leftSection={<IconTag size={16} />}
-          disabled={disabled || isPending}
-          style={{ flex: 1 }}
-          error={
-            validationResult && !validationResult.isValid
-              ? validationResult.errorMessage || validationResult.message || 'Промокод недійсний'
-              : undefined
-          }
-        />
+        <div className={styles.promoInput} style={{ flex: 1 }}>
+          <TextInput
+            placeholder="Введіть промокод"
+            value={code}
+            onChange={(e) => setCode(e.target.value.toUpperCase())}
+            onKeyPress={handleKeyPress}
+            leftSection={<IconTag size={16} />}
+            disabled={disabled || isPending}
+            error={
+              validationResult && !validationResult.isValid
+                ? validationResult.errorMessage || validationResult.message || 'Промокод недійсний'
+                : undefined
+            }
+          />
+        </div>
         <Button
           onClick={handleApply}
           loading={isPending}

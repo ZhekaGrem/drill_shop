@@ -326,7 +326,7 @@ const OrderTrackingPage: React.FC = () => {
                   ТОВАРИ В ЗАМОВЛЕННІ
                 </Title>
                 {order.items.map((item) => (
-                  <Group key={item.id}  className={styles.card}>
+                  <Group key={item.id} className={styles.card}>
                     <Stack gap="xs" flex={1}>
                       <Text fw={500}>{item.productName}</Text>
                       <Group gap="md">

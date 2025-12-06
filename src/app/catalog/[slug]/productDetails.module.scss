@@ -130,47 +130,45 @@
       margin-bottom: var(--spacing-lg);
 
       &__select {
-        :global {
-          .mantine-Select-input {
-            font-family: var(--font-condensed);
-            background: var(--background-light);
-            border: var(--border-width) solid var(--border-color);
-            border-radius: 0;
-            box-shadow: var(--shadow-sm);
-            font-weight: var(--fw-medium);
-            transition: all var(--transition-fast);
+        :global(.mantine-Select-input) {
+          font-family: var(--font-condensed);
+          background: var(--background-light);
+          border: var(--border-width) solid var(--border-color);
+          border-radius: 0;
+          box-shadow: var(--shadow-sm);
+          font-weight: var(--fw-medium);
+          transition: all var(--transition-fast);
 
-            &:hover {
-              background: var(--background-secondary);
-              transform: translate(1px, 1px);
-              box-shadow: var(--shadow-xs);
-            }
-
-            &:focus {
-              border-color: var(--btn-primary);
-              box-shadow: var(--shadow-md);
-            }
+          &:hover {
+            background: var(--background-secondary);
+            transform: translate(1px, 1px);
+            box-shadow: var(--shadow-xs);
           }
 
-          .mantine-Select-dropdown {
-            background: var(--background-light);
-            border: var(--border-width) solid var(--border-color);
-            border-radius: 0;
-            box-shadow: var(--shadow-lg);
+          &:focus {
+            border-color: var(--btn-primary);
+            box-shadow: var(--shadow-md);
+          }
+        }
+
+        :global(.mantine-Select-dropdown) {
+          background: var(--background-light);
+          border: var(--border-width) solid var(--border-color);
+          border-radius: 0;
+          box-shadow: var(--shadow-lg);
+        }
+
+        :global(.mantine-Select-option) {
+          font-family: var(--font-condensed);
+          border-radius: 0;
+
+          &[data-selected] {
+            background: var(--btn-primary);
+            font-weight: var(--fw-black);
           }
 
-          .mantine-Select-option {
-            font-family: var(--font-condensed);
-            border-radius: 0;
-
-            &[data-selected] {
-              background: var(--btn-primary);
-              font-weight: var(--fw-black);
-            }
-
-            &:hover {
-              background: var(--background-secondary);
-            }
+          &:hover {
+            background: var(--background-secondary);
           }
         }
       }

@@ -2,37 +2,35 @@
 // Pixel art стиль з Figma
 
 .drawer {
-  :global {
-    .mantine-Drawer-content {
-      border-radius: 0 !important;
-      border: var(--border-width) solid var(--border-color) !important;
-      border-bottom: none !important;
-      background: var(--background) !important;
+  :global(.mantine-Drawer-content) {
+    border-radius: 0 !important;
+    border: var(--border-width) solid var(--border-color) !important;
+    border-bottom: none !important;
+    background: var(--background) !important;
+  }
+
+  :global(.mantine-Drawer-header) {
+    background: var(--background-secondary) !important;
+    border-bottom: var(--border-width) solid var(--border-color) !important;
+    padding: var(--spacing-md) !important;
+  }
+
+  :global(.mantine-Drawer-body) {
+    background: var(--background) !important;
+    padding: var(--spacing-md) !important;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  :global(.mantine-Drawer-close) {
+    svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2px;
     }
 
-    .mantine-Drawer-header {
-      background: var(--background-secondary) !important;
-      border-bottom: var(--border-width) solid var(--border-color) !important;
-      padding: var(--spacing-md) !important;
-    }
-
-    .mantine-Drawer-body {
-      background: var(--background) !important;
-      padding: var(--spacing-md) !important;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-
-    .mantine-Drawer-close {
-      svg {
-        width: 24px;
-        height: 24px;
-        stroke-width: 2px;
-      }
-
-      &:hover {
-        background: var(--btn-primary) !important;
-      }
+    &:hover {
+      background: var(--btn-primary) !important;
     }
   }
 }

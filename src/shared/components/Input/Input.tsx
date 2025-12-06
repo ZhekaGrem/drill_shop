@@ -1,17 +1,83 @@
-import { TextInput, TextInputProps, PasswordInput, PasswordInputProps } from '@mantine/core';
+import { TextInput, TextInputProps, PasswordInput, PasswordInputProps, Textarea, TextareaProps } from '@mantine/core';
 import styles from './Input.module.scss';
-import clsx from 'clsx';
+import { forwardRef } from 'react';
+
+export type InputVariant = 'default' | 'underline' | 'minimal';
 
 // Пропси для звичайного інпута
-type CustomInputProps = TextInputProps;
+interface CustomInputProps extends Omit<TextInputProps, 'variant'> {
+  variant?: InputVariant;
+}
 
-export const Input = ({ className, ...props }: CustomInputProps) => {
-  return <TextInput classNames={{ input: clsx(styles.customInput, className) }} {...props} />;
-};
+export const Input = forwardRef<HTMLInputElement, CustomInputProps>(
+  ({ variant = 'underline', className, classNames, ...props }, ref) => {
+    const variantClass = styles[variant] || styles.underline;
+
+    return (
+      <TextInput
+        ref={ref}
+        classNames={{
+          input: variantClass,
+          label: styles.label,
+          error: styles.error,
+          ...classNames,
+        }}
+        {...props}
+      />
+    );
+  }
+);
+
+Input.displayName = 'Input';
 
 // Пропси для інпута пароля
-type CustomPasswordInputProps = PasswordInputProps;
+interface CustomPasswordInputProps extends Omit<PasswordInputProps, 'variant'> {
+  variant?: InputVariant;
+}
 
-export const PasswordField = ({ className, ...props }: CustomPasswordInputProps) => {
-  return <PasswordInput classNames={{ input: clsx(styles.customInput, className) }} {...props} />;
-};
+export const PasswordField = forwardRef<HTMLInputElement, CustomPasswordInputProps>(
+  ({ variant = 'underline', className, classNames, ...props }, ref) => {
+    const variantClass = styles[variant] || styles.underline;
+
+    return (
+      <PasswordInput
+        ref={ref}
+        classNames={{
+          input: variantClass,
+          label: styles.label,
+          error: styles.error,
+          ...classNames,
+        }}
+        {...props}
+      />
+    );
+  }
+);
+
+PasswordField.displayName = 'PasswordField';
+
+// Пропси для textarea
+interface CustomTextareaProps extends Omit<TextareaProps, 'variant'> {
+  variant?: InputVariant;
+}
+
+export const TextareaField = forwardRef<HTMLTextAreaElement, CustomTextareaProps>(
+  ({ variant = 'underline', className, classNames, ...props }, ref) => {
+    const variantClass = styles[variant] || styles.underline;
+
+    return (
+      <Textarea
+        ref={ref}
+        classNames={{
+          input: variantClass,
+          label: styles.label,
+          error: styles.error,
+          ...classNames,
+        }}
+        {...props}
+      />
+    );
+  }
+);
+
+TextareaField.displayName = 'TextareaField';

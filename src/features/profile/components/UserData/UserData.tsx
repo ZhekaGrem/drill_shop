@@ -9,6 +9,7 @@ import { Button, TextInput, Stack, Title, PasswordInput, Group, Divider } from '
 import { useAuthStore } from '@/shared/stores/auth';
 import { notifications } from '@mantine/notifications';
 import { apiClient } from '@/shared/api';
+import styles from './UserData.module.scss';
 
 // Схема для даних користувача
 const userDataSchema = z.object({
@@ -124,7 +125,7 @@ const UserData = () => {
   };
 
   return (
-    <Stack gap="xl">
+    <Stack gap="xl" className={styles.userDataForm}>
       {/* Редагування даних */}
       <form onSubmit={handleUserSubmit(onUserSubmit)} noValidate>
         <Stack>

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { TextInput, Paper, Text, Stack, CloseButton, Group } from '@mantine/core';
 import { deliveryEndpoints } from '@/shared/api/endpoints';
 import { API_BASE } from '@/shared/api/client';
+import styles from './DeliveryMethod.module.scss';
 
 interface CitySelectProps {
   value?: City | null;
@@ -164,7 +165,7 @@ export const CitySelect = ({ value, onChange, error, onBlur }: CitySelectProps) 
   const displaySuggestions = inputValue.length < 2 ? popularCities : suggestions;
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative' }} className={styles.citySelect}>
       <TextInput
         label="Місто доставки"
         placeholder="Введіть назву міста"
@@ -179,7 +180,6 @@ export const CitySelect = ({ value, onChange, error, onBlur }: CitySelectProps) 
 
       {showSuggestions && (
         <Paper
-          shadow="md"
           style={{
             position: 'absolute',
             top: '100%',
@@ -190,43 +190,22 @@ export const CitySelect = ({ value, onChange, error, onBlur }: CitySelectProps) 
             overflowY: 'auto',
           }}>
           {popularLoading ? (
-            <Text p="sm" c="dimmed">
-              Завантаження...
-            </Text>
+            <div className={styles.loadingText}>Завантаження...</div>
           ) : isLoading ? (
-            <Text p="sm" c="dimmed">
-              Пошук...
-            </Text>
+            <div className={styles.loadingText}>Пошук...</div>
           ) : displaySuggestions.length > 0 ? (
             <Stack gap={0}>
               {inputValue.length < 2 && popularCities.length > 0 && (
-                <Text size="xs" c="dimmed" p="xs" bg="gray.0">
-                  Популярні міста
-                </Text>
+                <div className={styles.suggestionHeader}>Популярні міста</div>
               )}
               {displaySuggestions.map((city) => (
-                <Text
-                  key={city.ref}
-                  p="sm"
-                  style={{
-                    cursor: 'pointer',
-                    transition: 'background-color 0.2s',
-                  }}
-                  onClick={() => handleCitySelect(city)}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--mantine-color-gray-1)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                  }}>
+                <div key={city.ref} className={styles.suggestionItem} onClick={() => handleCitySelect(city)}>
                   {city.name}
-                </Text>
+                </div>
               ))}
             </Stack>
           ) : inputValue.length >= 2 ? (
-            <Text p="sm" c="dimmed">
-              Міста не знайдені
-            </Text>
+            <div className={styles.loadingText}>Міста не знайдені</div>
           ) : null}
         </Paper>
       )}
