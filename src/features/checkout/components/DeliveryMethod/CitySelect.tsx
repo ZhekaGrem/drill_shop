@@ -180,6 +180,7 @@ export const CitySelect = ({ value, onChange, error, onBlur }: CitySelectProps) 
 
       {showSuggestions && (
         <Paper
+        className={styles.dropdown}
           style={{
             position: 'absolute',
             top: '100%',

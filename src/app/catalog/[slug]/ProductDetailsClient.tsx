@@ -19,6 +19,8 @@ import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryI
 import { sanitizeHTML } from '@/shared/utils/sanitize';
 import { SizeGuideModal } from '@/shared/components/SizeGuideModal';
 import { IconCart3 } from '@/shared/components/Svg';
+import { sortVariantsBySize } from '@/shared/utils/size-sort';
+
 interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
 }
@@ -136,17 +138,23 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
     return variant.name || `Варіант ${variant.sku}`;
   };
 
+  // ✅ Відсортовані варіанти за розміром
+  const sortedVariants = useMemo(() => {
+    if (!product?.variants || product.variants.length === 0) return [];
+    return sortVariantsBySize(product.variants);
+  }, [product?.variants]);
+
   // ✅ Перевіряємо чи показувати чекбокси для варіантів (size/color)
   const showVariantCheckboxes = useMemo(() => {
-    if (!product?.variants || product.variants.length === 0) return false;
+    if (!sortedVariants || sortedVariants.length === 0) return false;
 
     // Перевіряємо чи ХОЧА Б ОДИН варіант має size або color
-    return product.variants.some((variant) => {
+    return sortedVariants.some((variant) => {
       const options = variant.options || {};
       const keys = Object.keys(options).map((k) => k.toLowerCase());
       return keys.includes('size') || keys.includes('color');
     });
-  }, [product?.variants]);
+  }, [sortedVariants]);
 
   // Отримати значення варіанту для відображення (size або color)
   const getVariantDisplayValue = (variant: any): string => {
@@ -440,14 +448,14 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
               </Button>
             )}
             {/* Variants Selector */}
-            {hasVariants && product.variants && (
+            {hasVariants && sortedVariants.length > 0 && (
               <div className={styles.productDetails__variants}>
                 {/* ✅ Якщо варіанти мають size/color - показуємо чекбокси */}
                 {showVariantCheckboxes ? (
                   <div>
                     <label className={styles.variantLabel}>Варіант:</label>
                     <div className={styles.variantCheckboxes}>
-                      {product.variants.map((variant: any) => {
+                      {sortedVariants.map((variant: any) => {
                         const stock = getVariantStock(variant);
                         const isOutOfStock = stock <= 0;
                         const displayValue = getVariantDisplayValue(variant);
@@ -490,7 +498,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                         setSelectedVariant(null);
                         setIsMainProduct(true);
                       } else {
-                        const variant = product.variants?.find((v) => v.id === value);
+                        const variant = sortedVariants.find((v) => v.id === value);
                         setSelectedVariant(variant);
                         setIsMainProduct(false);
                       }
@@ -506,7 +514,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                             },
                           ]
                         : []),
-                      ...(product.variants?.map((variant: any) => ({
+                      ...(sortedVariants.map((variant: any) => ({
                         value: variant.id,
                         label: createVariantDisplayLabel(variant),
                       })) || []),

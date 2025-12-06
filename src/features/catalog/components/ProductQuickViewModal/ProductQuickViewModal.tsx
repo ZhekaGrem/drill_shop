@@ -12,6 +12,7 @@ import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryI
 import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/promo-calculator';
 import { getImageUrl } from '@/shared/utils/image';
 import styles from './ProductQuickViewModal.module.scss';
+import { sortVariantsBySize } from '@/shared/utils/size-sort';
 
 interface ProductQuickViewModalProps {
   product: Product;
@@ -26,14 +27,20 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
   const [isClicked, setIsClicked] = useState(false);
 
+  // ✅ Відсортовані варіанти за розміром
+  const sortedVariants = useMemo(() => {
+    if (!product.variants || product.variants.length === 0) return [];
+    return sortVariantsBySize(product.variants);
+  }, [product.variants]);
+
   // ✅ Автоматично вибираємо перший варіант якщо hasVariants = true
   useEffect(() => {
-    if (product.hasVariants && product.variants && product.variants.length > 0) {
-      setSelectedVariant(product.variants[0]);
+    if (product.hasVariants && sortedVariants.length > 0) {
+      setSelectedVariant(sortedVariants[0]);
     } else {
       setSelectedVariant(null);
     }
-  }, [product.hasVariants, product.variants]);
+  }, [product.hasVariants, sortedVariants]);
 
   const basePromoData = calculatePromoPrice(product);
 
@@ -47,7 +54,7 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
   }, [images]);
 
   const primaryImage = sortedImages[0] || images[0];
-  const hasVariants = product.variants && product.variants.length > 0;
+  const hasVariants = sortedVariants.length > 0;
   const hasOptions =
     product.options && typeof product.options === 'object' && Object.keys(product.options).length > 0;
 
@@ -254,7 +261,7 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
           )}
 
           {/* Варіанти */}
-          {hasVariants && product.variants && (
+          {hasVariants && sortedVariants.length > 0 && (
             <div className={styles.variants}>
               <Select
                 className={styles.variants__select}
@@ -265,7 +272,7 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
                   if (value === 'main') {
                     setSelectedVariant(null);
                   } else {
-                    const variant = product.variants?.find((v) => v.id === value);
+                    const variant = sortedVariants.find((v) => v.id === value);
                     setSelectedVariant(variant);
                   }
                   setQuantity(1);
@@ -280,7 +287,7 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
                         },
                       ]
                     : []),
-                  ...(product.variants?.map((variant: any) => ({
+                  ...(sortedVariants.map((variant: any) => ({
                     value: variant.id,
                     label: createVariantDisplayLabel(variant),
                   })) || []),

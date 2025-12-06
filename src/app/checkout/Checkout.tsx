@@ -8,7 +8,6 @@ const CheckoutPage = () => {
   return (
     <div className={styles.checkoutPage}>
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}>ОФОРМЛЕННЯ ЗАМОВЛЕННЯ</h1>
         <CheckoutForm />
       </div>
     </div>

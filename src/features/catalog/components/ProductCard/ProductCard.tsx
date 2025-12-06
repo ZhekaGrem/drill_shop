@@ -19,6 +19,7 @@ import { notifications } from '@mantine/notifications';
 import styles from './ProductCard.module.scss';
 import { Group, Divider } from '@mantine/core';
 import { IconX } from '@/shared/components/Svg';
+import { sortVariantsBySize } from '@/shared/utils/size-sort';
 
 interface ProductCardProps {
   product: Product;
@@ -39,6 +40,12 @@ export const ProductCard = React.memo<ProductCardProps>(
 
     const priceData = calculatePromoPrice(product);
 
+    // ✅ Відсортовані варіанти за розміром
+    const sortedVariants = useMemo(() => {
+      if (!product.variants || product.variants.length === 0) return [];
+      return sortVariantsBySize(product.variants);
+    }, [product.variants]);
+
     const primaryImage = product.images?.find((img) => img.isPrimary) || product.images?.[0];
     const secondaryImage = product.images?.find((img) => img.isSecondary);
     const imageUrl =
@@ -49,12 +56,12 @@ export const ProductCard = React.memo<ProductCardProps>(
     // ✅ Отримати об'єкт обраного варіанту
     const selectedVariantObject = useMemo(() => {
       if (!selectedVariant || selectedVariant === 'main') return null;
-      return product.variants?.find((v) => v.id === selectedVariant) || null;
-    }, [selectedVariant, product.variants]);
+      return sortedVariants.find((v) => v.id === selectedVariant) || null;
+    }, [selectedVariant, sortedVariants]);
 
     // ✅ Перевіряємо чи показувати варіанти в каталозі (size/color)
     const showVariantsInCatalog = useMemo(() => {
-      if (!product.variants || product.variants.length === 0) return false;
+      if (sortedVariants.length === 0) return false;
 
       // Перевіряємо чи головний товар має size/color
       const mainHasColorOrSize =
@@ -67,12 +74,12 @@ export const ProductCard = React.memo<ProductCardProps>(
       if (mainHasColorOrSize) return true;
 
       // Перевіряємо ЧИ ХОЧА Б ОДИН варіант має size або color
-      return product.variants.some((variant) => {
+      return sortedVariants.some((variant) => {
         const options = variant.options || {};
         const keys = Object.keys(options).map((k) => k.toLowerCase());
         return keys.includes('size') || keys.includes('color');
       });
-    }, [product.variants, product.options]);
+    }, [sortedVariants, product.options]);
 
     // Отримати значення варіанту для відображення (size або color)
     const getVariantDisplayValue = (variant: any): string => {
@@ -101,13 +108,13 @@ export const ProductCard = React.memo<ProductCardProps>(
 
     // Лейбл для варіантів
     const variantLabel = useMemo(() => {
-      if (!showVariantsInCatalog || !product.variants || product.variants.length === 0) return '';
+      if (!showVariantsInCatalog || sortedVariants.length === 0) return '';
       return 'Варіант:';
-    }, [showVariantsInCatalog, product.variants]);
+    }, [showVariantsInCatalog, sortedVariants]);
 
     // Отримати stock варіанту
     const getVariantStock = (variantId: string) => {
-      const variant = product.variants?.find((v) => v.id === variantId);
+      const variant = sortedVariants.find((v) => v.id === variantId);
       if (!variant) return 0;
       return (variant.quantity || 0) - (variant.reservedQuantity || 0);
     };
@@ -380,7 +387,7 @@ export const ProductCard = React.memo<ProductCardProps>(
                       })()}
 
                     {/* Варіанти товару */}
-                    {product.variants.map((variant) => {
+                    {sortedVariants.map((variant) => {
                       const stock = getVariantStock(variant.id);
                       const isOutOfStock = stock <= 0;
                       const displayValue = getVariantDisplayValue(variant);

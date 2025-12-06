@@ -123,14 +123,18 @@ export const PromoCodeInput = ({
                 ? validationResult.errorMessage || validationResult.message || 'Промокод недійсний'
                 : undefined
             }
+            styles={{
+              input: { paddingLeft: '40px' }, // Залишаємо місце для leftSection
+            }}
           />
         </div>
         <Button
           onClick={handleApply}
           loading={isPending}
           disabled={!code.trim() || disabled}
-          variant="outline"
-          size="promo">
+          variant="ghost"
+          size="promo" 
+          className={styles.btn}>
           Застосувати
         </Button>
       </Group>
