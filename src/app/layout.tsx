@@ -13,28 +13,28 @@ import { JsonLd } from './JsonLd';
 const ibmPlexSans = IBM_Plex_Sans({
   variable: '--font-body',
   subsets: ['latin', 'cyrillic'],
-  weight: [ '500', '600', '700'],
+  weight: ['500', '600', '700'],
   display: 'swap',
 });
 
 const ibmPlexSansCondensed = IBM_Plex_Sans_Condensed({
   variable: '--font-condensed',
   subsets: ['cyrillic-ext'],
-  weight: [ '500', '700'],
+  weight: ['500', '700'],
   display: 'swap',
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
   variable: '--font-mono',
   subsets: ['latin', 'cyrillic'],
-  weight: [ '500', '600', '700'],
+  weight: ['500', '600', '700'],
   display: 'swap',
 });
 
 const rubik = Rubik({
   variable: '--font-price',
   subsets: ['latin', 'cyrillic'],
-  weight: [ '500', '600', '700', '900'],
+  weight: ['500', '600', '700', '900'],
   display: 'swap',
 });
 

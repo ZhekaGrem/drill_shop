@@ -14,7 +14,7 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
 
   const navigation = [
     {
-      label: 'Особисті дані',
+      label: 'Профіль',
       href: '/profile',
       active: pathname === '/profile',
     },

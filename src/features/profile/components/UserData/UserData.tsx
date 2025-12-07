@@ -5,10 +5,12 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Button, TextInput, Stack, Title, PasswordInput, Group, Divider } from '@mantine/core';
+import {  TextInput, Stack, Title, PasswordInput, Group, Divider } from '@mantine/core';
 import { useAuthStore } from '@/shared/stores/auth';
 import { notifications } from '@mantine/notifications';
 import { apiClient } from '@/shared/api';
+import { Button } from '@/shared/components/Button/Button';
+
 import styles from './UserData.module.scss';
 
 // Схема для даних користувача

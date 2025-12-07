@@ -15,9 +15,9 @@ const UserProfile = () => {
   const { logout } = useAuthStore();
 
   const menuItems = [
-    {  label: 'Мої дані', page: 'data' },
-    {  label: 'Мої замовлення', page: 'orders' },
-    {  label: 'Обрані товари', page: 'favorites' },
+    { label: 'Профіль', page: 'data' },
+    { label: 'Мої замовлення', page: 'orders' },
+    { label: 'Обрані товари', page: 'favorites' },
   ];
 
   const renderContent = () => {

@@ -25,6 +25,8 @@ import { EmptyState } from '@/shared/components/EmptyState';
 import { IconPackage, IconChevronRight } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { useMediaQuery } from '@mantine/hooks';
+
+import styles from './UserOrders.module.scss';
 // Функція для отримання замовлень
 const fetchOrders = async () => {
   const response = await apiClient.get('/profile/orders');
@@ -277,9 +279,9 @@ const UserOrders = () => {
             </Table.Thead>
             <Table.Tbody>
               {orders?.map((order) => (
-                <Table.Tr key={order.id}>
-                  <Table.Td>{order.orderNumber}</Table.Td>
-                  <Table.Td>{new Date(order.createdAt).toLocaleDateString()}</Table.Td>
+                <Table.Tr key={order.id} className={styles.wrapperTable}>
+                  <Table.Td >{order.orderNumber}</Table.Td>
+                  <Table.Td >{new Date(order.createdAt).toLocaleDateString()}</Table.Td>
                   <Table.Td>
                     <Badge color={getStatusColor(order.status as OrderStatus)}>
                       {orderStatusUa[order.status as OrderStatus]}
@@ -291,7 +293,7 @@ const UserOrders = () => {
                     </Badge>
                   </Table.Td>
                   <Table.Td>{formatPrice(order.totalAmount)}</Table.Td>
-                  <Table.Td>
+                  <Table.Td className={styles.tableBtn}>
                     <Link href={`/orders/track/${order.orderNumber}`}>Деталі</Link>
                   </Table.Td>
                 </Table.Tr>

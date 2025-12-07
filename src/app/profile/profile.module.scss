@@ -4,7 +4,6 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--spacing-xl) var(--spacing-md);
 }
 
 .grid {
@@ -59,7 +58,7 @@
 
   &__active {
     background: var(--background-dark);
-     border-bottom: var(--border-width) solid var(--background-dark);
+    border-bottom: var(--border-width) solid var(--background-dark);
     color: var(--text-inverse);
     font-weight: var(--fw-black);
 
@@ -77,7 +76,7 @@
 .content {
   background: var(--background);
   padding: var(--spacing-2xl);
-  min-height: 500px;
+  min-height: 100vh;
 
   @media (max-width: 768px) {
     padding: var(--spacing-lg);

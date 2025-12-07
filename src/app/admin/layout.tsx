@@ -200,7 +200,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                       background: '#33603b',
                       color: '#e6db1b',
                     },
-                    '&[data-active="true"]': {
+                    '&[dataActive="true"]': {
                       background: '#33603b',
                       color: '#e6db1b',
                       fontWeight: 600,

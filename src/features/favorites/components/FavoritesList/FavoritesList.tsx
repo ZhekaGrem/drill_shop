@@ -1,24 +1,25 @@
 // src/features/favorites/components/FavoritesList/FavoritesList.tsx
 'use client';
 
-import { Grid, Card, Image, Text, Group, Stack, Badge, Center, ActionIcon, Loader } from '@mantine/core';
-import { IconTrash, IconHeart } from '@tabler/icons-react';
+import { Center, Loader, Stack } from '@mantine/core';
+import { IconHeart } from '@tabler/icons-react';
 import { useFavoritesStore } from '@/shared/stores/favorites';
 import { Button } from '@/shared/components/Button/Button';
 import Link from 'next/link';
-import { formatPrice } from '@/shared/utils/format';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { notifications } from '@mantine/notifications';
 import { Product } from '@/shared/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { EmptyState } from '@/shared/components/EmptyState';
+import { FavoriteItem } from '../FavoriteItem';
 
 export const FavoritesList = () => {
   const { items, isInitialized, initialize, toggleFavorite } = useFavoritesStore();
-  const { addItem, isAddingItem } = useCart();
+  const { addItem } = useCart();
   const queryClient = useQueryClient();
+  const [addingItemId, setAddingItemId] = useState<string | null>(null);
 
   // Ініціалізуємо обране при першому рендері
   useEffect(() => {
@@ -36,35 +37,38 @@ export const FavoritesList = () => {
         params: { withProducts: true },
       });
 
-      // Просто повертаємо products без синхронізації
       return response.data?.data || [];
     },
     enabled: isInitialized && items.size > 0,
-    staleTime: 0, // Відключаємо кеш для миттєвого оновлення
+    staleTime: 0,
   });
 
-  const handleAddAllToCart = () => {
-    let addedCount = 0;
-    favoriteProducts.forEach((product) => {
-      if (product && product.isInStock) {
-        addItem(product.id, 1);
-        addedCount++;
-      }
-    });
+  const handleAddToCart = async (product: Product) => {
+    if (!product.isInStock) return;
 
-    if (addedCount > 0) {
+    setAddingItemId(product.id);
+    try {
+      await addItem(product.id, 1);
       notifications.show({
-        title: 'Товари додано',
-        message: `${addedCount} товар(ів) було додано до кошика.`,
+        title: 'Товар додано',
+        message: `${product.name} додано до кошика`,
         color: 'green',
       });
-    } else {
+    } catch (error) {
       notifications.show({
-        title: 'Неможливо додати',
-        message: 'Обрані товари відсутні на складі.',
-        color: 'orange',
+        title: 'Помилка',
+        message: 'Не вдалося додати товар до кошика',
+        color: 'red',
       });
+    } finally {
+      setAddingItemId(null);
     }
+  };
+
+  const handleRemoveFromFavorites = async (product: Product) => {
+    await toggleFavorite(product);
+    await queryClient.invalidateQueries({ queryKey: ['favorites'] });
+    await queryClient.invalidateQueries({ queryKey: ['favorites-details'] });
   };
 
   if (!isInitialized || isLoading) {
@@ -91,66 +95,17 @@ export const FavoritesList = () => {
   }
 
   return (
-    <>
-      <Grid>
-        {favoriteProducts.map((product: Product) => (
-          <Grid.Col key={product.id} span={{ base: 12, sm: 6, md: 4 }}>
-            <Card shadow="sm" padding="lg" radius="md" withBorder h="100%">
-              <Card.Section>
-                <Link href={`/catalog/${product.slug}`}>
-                  <Image
-                    src={product.primaryImage?.url || '/assets/img/placeholder-product.jpg'}
-                    height={200}
-                    alt={product.primaryImage?.altText || product.name}
-                  />
-                </Link>
-              </Card.Section>
-
-              <Stack gap="sm" mt="md" justify="space-between" style={{ height: 'calc(100% - 200px)' }}>
-                <Stack gap="xs">
-                  <Group justify="space-between" align="flex-start">
-                    <Text
-                      fw={500}
-                      lineClamp={2}
-                      component={Link}
-                      href={`/catalog/${product.slug}`}
-                      style={{ textDecoration: 'none', color: 'inherit' }}>
-                      {product.name}
-                    </Text>
-                    <ActionIcon
-                      variant="light"
-                      color="red"
-                      size="sm"
-                      onClick={async () => {
-                        await toggleFavorite(product);
-                        // Інвалідуємо всі favorites queries
-                        await queryClient.invalidateQueries({ queryKey: ['favorites'] });
-                        await queryClient.invalidateQueries({ queryKey: ['favorites-details'] });
-                      }}>
-                      <IconTrash size={16} />
-                    </ActionIcon>
-                  </Group>
-
-                  <Badge color={product.isInStock ? 'green' : 'red'} variant="light" size="sm">
-                    {product.isInStock ? 'В наявності' : 'Немає в наявності'}
-                  </Badge>
-
-                  <Group justify="space-between">
-                    <Text fw={700} c="var(--primary)">
-                      {formatPrice(product.price)}
-                    </Text>
-                    {product.comparePrice && (
-                      <Text size="sm" td="line-through" c="dimmed">
-                        {formatPrice(product.comparePrice)}
-                      </Text>
-                    )}
-                  </Group>
-                </Stack>
-              </Stack>
-            </Card>
-          </Grid.Col>
-        ))}
-      </Grid>
-    </>
+    <Stack gap={0}>
+      {favoriteProducts.map((product: Product, index: number) => (
+        <FavoriteItem
+          key={product.id}
+          product={product}
+          onRemove={() => handleRemoveFromFavorites(product)}
+          onAddToCart={() => handleAddToCart(product)}
+          isFirst={index === 0}
+          isAddingToCart={addingItemId === product.id}
+        />
+      ))}
+    </Stack>
   );
 };

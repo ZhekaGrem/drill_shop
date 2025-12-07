@@ -63,21 +63,20 @@ const AuthControl = React.memo(
             dropdown: styles.dropdown,
             item: styles.menuItem,
             label: styles.menuLabel,
-            divider: styles.menuDivider
-          }}
-        >
+            divider: styles.menuDivider,
+          }}>
           <Menu.Target>
             <button className={styles.iconButton}>{userMenuOpened ? <IconX /> : <IconUser />}</button>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Label>{content.header.accountMenu.label}</Menu.Label>
-            <Menu.Item component={Link} href="/profile" >
+            <Menu.Item component={Link} href="/profile">
               {content.header.accountMenu.profile}
             </Menu.Item>
-            <Menu.Item component={Link} href="/profile/favorites" >
+            <Menu.Item component={Link} href="/profile/favorites">
               {content.header.accountMenu.favorites}
             </Menu.Item>
-            <Menu.Item component={Link} href="/profile/orders" >
+            <Menu.Item component={Link} href="/profile/orders">
               {content.header.accountMenu.orders}
             </Menu.Item>
             {isManager && (

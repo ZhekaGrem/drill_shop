@@ -6,7 +6,7 @@ const page = () => {
     <Container size="xl" py="xl">
       <Stack gap="xl">
         <div>
-          <Title order={1} mb="xs" ta="center">
+          <Title order={4} mb="xs" ta="start">
             Обрані товари
           </Title>
         </div>

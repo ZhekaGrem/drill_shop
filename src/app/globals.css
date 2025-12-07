@@ -433,7 +433,6 @@ input:hover,
 textarea:hover,
 select:hover {
   background: var(--accent-red);
-  color: var(--text-inverse);
 }
 
 input:focus,

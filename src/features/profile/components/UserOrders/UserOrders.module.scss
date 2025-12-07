@@ -1,0 +1,13 @@
+.wrapperTable{
+  border: var(--border-width) solid var(--border-color);
+  &>td{
+      border-right: var(--border-width) solid var(--border-color)
+  }
+}
+
+.tableBtn{
+  &:hover{
+    background-color: var(--accent-red);
+    color: var(--text-inverse);
+  }
+}
