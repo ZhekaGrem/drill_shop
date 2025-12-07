@@ -27,7 +27,7 @@ export const footerLinks = [
   { link: '/public-offer', label: 'Публічна оферта' },
   { link: '/privacy-policy', label: 'Конфіденційність' },
   { link: '/delivery-and-payment', label: 'Доставка і оплата' },
-  // { link: '/returns-exchanges', label: 'Повернення' },
+  { link: '/returns-exchanges', label: 'Повернення' },
   { link: '/faq', label: 'FAQ' },
 ];
 

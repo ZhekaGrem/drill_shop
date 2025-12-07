@@ -183,20 +183,21 @@
   font-weight: var(--fw-bold);
   color: var(--text-primary);
   background: transparent;
-  border: 2px solid var(--text-primary);
+  border: var(--border-width) solid var(--border-color);
   cursor: pointer;
   transition: var(--transition-fast);
   text-align: center;
   user-select: none;
 
   &:hover {
-    background: var(--background-secondary);
+    background: var(--accent-red);
+    color: var(--text-inverse);
   }
 
   input[type='checkbox']:checked + & {
-    background: var(--background-secondary);
+    background: var(--border-color);
     color: var(--text-inverse);
-    border-color: var(--background-secondary);
+    border-color: var(--border-color);
     font-weight: var(--fw-bold);
   }
 }

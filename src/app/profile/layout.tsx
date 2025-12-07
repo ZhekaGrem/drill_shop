@@ -3,7 +3,6 @@
 import { ReactNode, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/shared/stores/auth';
-import { IconUser, IconHeart, IconShoppingCart } from '@tabler/icons-react';
 import Link from 'next/link';
 import styles from './profile.module.scss';
 
@@ -17,19 +16,16 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
     {
       label: 'Особисті дані',
       href: '/profile',
-      icon: IconUser,
       active: pathname === '/profile',
     },
     {
       label: 'Обрані товари',
       href: '/profile/favorites',
-      icon: IconHeart,
       active: pathname === '/profile/favorites',
     },
     {
       label: 'Мої замовлення',
       href: '/profile/orders',
-      icon: IconShoppingCart,
       active: pathname === '/profile/orders',
     },
   ];
@@ -56,13 +52,11 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
           <nav>
             <ul className={styles.navList}>
               {navigation.map((item) => {
-                const IconComponent = item.icon;
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
                       className={`${styles.navItem} ${item.active ? styles.navItem__active : ''}`}>
-                      <IconComponent size={20} />
                       <span>{item.label}</span>
                     </Link>
                   </li>

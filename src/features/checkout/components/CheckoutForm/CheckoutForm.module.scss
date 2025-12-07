@@ -111,9 +111,7 @@
   cursor: pointer;
   transition: var(--transition-fast);
   border: var(--border-width) solid var(--border-color);
-  &:hover {
-    background: var(--background-secondary);
-  }
+ 
 
   &Active {
     .radioLabel {

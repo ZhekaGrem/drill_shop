@@ -122,6 +122,40 @@ export const mantineTheme = createTheme({
         },
       },
     },
+    Checkbox: {
+      styles: {
+        input: {
+          backgroundColor: 'transparent',
+          border: 'var(--border-width) solid var(--border-color)',
+          borderRadius: 0,
+          cursor: 'pointer',
+          '&:checked': {
+            backgroundColor: 'var(--border-color)',
+            borderColor: 'var(--border-color)',
+            backgroundImage: "url('/svg/chekbox.svg')",
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundSize: 'contain',
+          },
+          '&:disabled': {
+            backgroundColor: 'transparent',
+            borderColor: 'var(--text-tertiary)',
+            opacity: 0.5,
+            cursor: 'not-allowed',
+            '&:checked': {
+              backgroundColor: 'var(--text-tertiary)',
+              backgroundImage: "url('/svg/chekbox.svg')",
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              backgroundSize: 'contain',
+            },
+          },
+        },
+        icon: {
+          display: 'none',
+        },
+      },
+    },
   },
 
   focusRing: 'auto',

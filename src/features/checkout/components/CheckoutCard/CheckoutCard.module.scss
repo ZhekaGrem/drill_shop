@@ -6,9 +6,6 @@
   background: var(--background);
   border: 2px solid var(--border-color);
 
-  &:hover {
-    background: var(--background-secondary);
-  }
   &:not(:first-child) {
     border-top-width: 1px;
   }
@@ -28,7 +25,8 @@
 
 // ============ INFO ============
 .info {
-  min-width: 0; // Для правильного text-overflow
+  min-width: 0;
+  padding: 12px 24px; // Для правильного text-overflow
 }
 
 // ============ PRODUCT NAME ============

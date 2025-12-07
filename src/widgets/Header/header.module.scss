@@ -19,6 +19,45 @@
   gap: var(--spacing-lg);
   max-width: 1200px;
 }
+.dropdown {
+  border-radius: 0;
+  background: var(--background);
+  border: var(--border-width) solid var(--border-color);
+  padding: 0;
+}
+
+.menuItem {
+  font-family: var(--font-condensed);
+  font-size: var(--text-base);
+  font-weight: var(--fw-medium);
+  padding: 10px var(--spacing-md);
+  background: var(--background);
+  border-bottom: var(--border-width) solid var(--border-color);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    color: var(--text-inverse);
+    background: var(--accent-red);
+  }
+}
+
+.menuLabel {
+  font-family: var(--font-condensed);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-bold);
+  padding: 8px var(--spacing-md);
+  background: var(--background);
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.menuDivider {
+  border-color: var(--border-color);
+  border-width: var(--border-width);
+  margin: 0;
+}
 
 // Left section (Menu, Search)
 .leftSection {
@@ -29,7 +68,7 @@
 
 // Logo (center)
 .logo {
-  height: 48px;
+  height: 68px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
@@ -130,7 +169,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  width: 300px;
+  width: 100px;
   &:hover {
     background: var(--accent-red);
 
@@ -172,23 +211,23 @@
 // Mobile menu drawer
 .drawer {
   :global(.mantine-Drawer-content) {
-    border-radius: 0 !important;
-    background: var(--background) !important;
+    border-radius: 0;
+    background: var(--background);
   }
 
   :global(.mantine-Drawer-header) {
-    background: var(--background-secondary) !important;
-    padding: var(--spacing-md) !important;
+    background: var(--background-secondary);
+    padding: var(--spacing-md);
   }
 
   :global(.mantine-Drawer-title) {
-    font-family: var(--font-condensed) !important;
-    font-size: var(--text-xl) !important;
-    font-weight: var(--fw-bold) !important;
+    font-family: var(--font-condensed);
+    font-size: var(--text-xl);
+    font-weight: var(--fw-bold);
   }
 
   :global(.mantine-Drawer-body) {
-    padding: var(--spacing-md) !important;
+    padding: var(--spacing-md);
   }
 
   :global(.mantine-Drawer-close) {
@@ -199,7 +238,7 @@
     }
 
     &:hover {
-      background: var(--btn-primary) !important;
+      background: var(--btn-primary);
     }
   }
 }
@@ -237,45 +276,6 @@
   svg {
     width: 24px;
     height: 24px;
-  }
-}
-
-// User menu dropdown
-.userMenu {
-  :global(.mantine-Menu-dropdown) {
-    border-radius: 0 !important;
-    background: var(--background-light) !important;
-    padding: 0 !important;
-  }
-
-  :global(.mantine-Menu-item) {
-    font-family: var(--font-condensed) !important;
-    font-size: var(--text-base) !important;
-    font-weight: var(--fw-medium) !important;
-    padding: 10px var(--spacing-md) !important;
-    border-bottom: 1px solid var(--border-color) !important;
-
-    &:last-child {
-      border-bottom: none !important;
-    }
-
-    &:hover {
-      background: var(--accent-red);
-    }
-  }
-
-  :global(.mantine-Menu-label) {
-    font-family: var(--font-condensed) !important;
-    font-size: var(--text-sm) !important;
-    font-weight: var(--fw-bold) !important;
-    padding: 8px var(--spacing-md) !important;
-    background: var(--background-secondary) !important;
-    border-bottom: 1px solid var(--border-color) !important;
-  }
-
-  :global(.mantine-Menu-divider) {
-    border-color: var(--border-color) !important;
-    margin: 0 !important;
   }
 }
 
@@ -331,7 +331,7 @@
   }
 
   .logo {
-    height: 36px;
+    height: 46px;
   }
 
   .iconButton {

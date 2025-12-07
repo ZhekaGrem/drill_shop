@@ -73,6 +73,7 @@
   }
 
   &__ImageWrapper {
+    position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -85,9 +86,61 @@
   height: 100%;
   object-fit: cover; // Фото на всю висоту контейнера
   transition: var(--transition-fast);
+  position: relative;
 
   &.loading {
     animation: blurFadeIn 1.5s ease-in-out infinite;
+  }
+}
+
+// Кіберпанк глюк-ефект тільки при зміні картинки
+.glitching {
+  .productImage {
+    animation: cyberGlitch 0.6s ease-out;
+  }
+
+  // Scanlines ефект
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15) 0px,
+      rgba(0, 0, 0, 0) 1px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.15) 3px
+    );
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    animation: scanlinesFlash 0.6s ease-out;
+  }
+
+  // Glitch смуги
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(255, 0, 0, 0.15) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(0, 255, 255, 0.15) 75%,
+      transparent 75%
+    );
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    animation: glitchStripesFlash 0.6s ease-out;
   }
 }
 
@@ -183,9 +236,9 @@
 
   // Checked стан
   input[type='checkbox']:checked + .variantCheckboxText {
-    background: var(--background-secondary);
+    background: var(--border-color);
     color: var(--text-inverse);
-    border-color: var(--background-secondary);
+    border-color: var(--border-color);
     font-weight: var(--fw-bold);
   }
 
@@ -209,14 +262,15 @@
   font-weight: var(--fw-bold);
   color: var(--text-primary);
   background: transparent;
-  border: 2px solid var(--text-primary);
+  border: var(--border-width) solid var(--border-color);
   cursor: pointer;
   transition: var(--transition-fast);
   text-align: center;
   user-select: none;
 
   &:hover {
-    background: var(--background-secondary);
+    background: var(--accent-red);
+    color: var(--text-inverse);
   }
 }
 
@@ -367,6 +421,121 @@
   50% {
     opacity: 1;
     filter: blur(2px);
+  }
+}
+
+// Кіберпанк глюк анімація - однократна з інтенсивним початком
+@keyframes cyberGlitch {
+  0% {
+    transform: translate(0) scale(1) skew(0deg);
+    filter: contrast(1) brightness(1) hue-rotate(0deg);
+  }
+  5% {
+    transform: translate(-5px, 3px) scale(1.03) skew(-2deg);
+    filter: contrast(1.3) brightness(1.2) hue-rotate(10deg) saturate(1.5);
+  }
+  10% {
+    transform: translate(4px, -3px) scale(0.97) skew(2deg);
+    filter: contrast(0.8) brightness(0.85) hue-rotate(-10deg) saturate(1.3);
+  }
+  15% {
+    transform: translate(-3px, 2px) scale(1.02) skew(-1deg);
+    filter: contrast(1.2) brightness(1.15) hue-rotate(8deg) saturate(1.4);
+  }
+  20% {
+    transform: translate(5px, 1px) scale(1.01) skew(-1.5deg);
+    filter: contrast(1.1) brightness(1.1) hue-rotate(5deg) saturate(1.3);
+  }
+  25% {
+    transform: translate(-3px, -2px) scale(0.98) skew(1deg);
+    filter: contrast(1.2) brightness(0.9) hue-rotate(-5deg) saturate(1.2);
+  }
+  30% {
+    transform: translate(0) scale(1) skew(0deg);
+    filter: contrast(1.15) brightness(1.05) hue-rotate(0deg) saturate(1.1);
+  }
+  35% {
+    transform: translate(3px, 3px) scale(1.02) skew(-1deg);
+    filter: contrast(1) brightness(1.1) hue-rotate(7deg) saturate(1.2);
+  }
+  40% {
+    transform: translate(-2px, -2px) scale(0.99) skew(0.5deg);
+    filter: contrast(1.1) brightness(0.95) hue-rotate(-3deg) saturate(1.1);
+  }
+  50% {
+    transform: translate(-2px, 1px) scale(1.01) skew(-0.5deg);
+    filter: contrast(1.05) brightness(1.05) hue-rotate(-3deg) saturate(1.1);
+  }
+  60% {
+    transform: translate(2px, -1px) scale(0.99) skew(0.3deg);
+    filter: contrast(1.02) brightness(1) hue-rotate(2deg) saturate(1.05);
+  }
+  70% {
+    transform: translate(-1px, 1px) scale(1.01) skew(-0.2deg);
+    filter: contrast(1.01) brightness(1.02) hue-rotate(-1deg) saturate(1.02);
+  }
+  80% {
+    transform: translate(1px, -1px) scale(1) skew(0.1deg);
+    filter: contrast(1) brightness(1) hue-rotate(1deg) saturate(1.01);
+  }
+  90% {
+    transform: translate(0) scale(1) skew(0deg);
+    filter: contrast(1) brightness(1) hue-rotate(0deg) saturate(1);
+  }
+  100% {
+    transform: translate(0) scale(1) skew(0deg);
+    filter: contrast(1) brightness(1) hue-rotate(0deg);
+  }
+}
+
+// Scanlines flash - однократна анімація
+@keyframes scanlinesFlash {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}
+
+// Glitch смуги flash - однократна анімація
+@keyframes glitchStripesFlash {
+  0% {
+    transform: translateX(0) scaleX(1);
+    opacity: 0;
+  }
+  10% {
+    transform: translateX(-15px) scaleX(1.2);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translateX(12px) scaleX(0.9);
+    opacity: 0.5;
+  }
+  40% {
+    transform: translateX(-8px) scaleX(1.1);
+    opacity: 0.8;
+  }
+  60% {
+    transform: translateX(10px) scaleX(0.95);
+    opacity: 0.4;
+  }
+  80% {
+    transform: translateX(-5px) scaleX(1.05);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateX(0) scaleX(1);
+    opacity: 0;
   }
 }
 .buttonText {

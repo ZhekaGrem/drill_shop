@@ -267,7 +267,7 @@ p {
   /* Шрифти */
 
   /* Вага шрифту */
-  --fw-normal: 400;
+  --fw-normal: 500;
   --fw-medium: 500;
   --fw-semibold: 600;
   --fw-bold: 700;
@@ -571,4 +571,42 @@ hr {
   line-height: 1.2;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+/* === CHECKBOX СТИЛІ === */
+/* Mantine Checkbox глобальні стилі */
+.mantine-Checkbox-input {
+  background-color: transparent !important;
+  border: var(--border-width) solid var(--border-color) !important;
+  border-radius: 0 !important;
+  cursor: pointer;
+}
+
+.mantine-Checkbox-input:checked {
+  background-color: var(--border-color) !important;
+  border-color: var(--border-color) !important;
+  background-image: url('/svg/chekbox.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+}
+
+/* Ховаємо стандартну іконку Mantine */
+.mantine-Checkbox-icon {
+  display: none !important;
+}
+
+.mantine-Checkbox-input:disabled {
+  background-color: transparent !important;
+  border-color: var(--text-tertiary) !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mantine-Checkbox-input:disabled:checked {
+  background-color: var(--text-tertiary) !important;
+  background-image: url('/svg/chekbox.svg') !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
 }

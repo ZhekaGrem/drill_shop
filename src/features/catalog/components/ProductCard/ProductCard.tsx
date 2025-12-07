@@ -309,7 +309,10 @@ export const ProductCard = React.memo<ProductCardProps>(
             className={styles.productCardImageContainer}
             onMouseEnter={() => setIsImageHovered(true)}
             onMouseLeave={() => setIsImageHovered(false)}>
-            <div className={styles.productCardImageContainer__ImageWrapper}>
+            <div
+              className={`${styles.productCardImageContainer__ImageWrapper} ${
+                isImageHovered && secondaryImage ? styles.glitching : ''
+              }`}>
               <CloudinaryImage
                 src={imageUrl || '/assets/img/placeholder-product.jpg'}
                 alt={

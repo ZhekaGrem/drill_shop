@@ -4,7 +4,7 @@
 export const assets = {
   // ===== ЛОГОТИПИ =====
   logo: {
-    main: '/logo/logo.webp',
+    main: '/logo/logo2.webp',
     og: '/logo/logo.jpg', // для Open Graph
     favicon: '/favicon.ico',
     appleTouchIcon: '/apple-touch-icon.png',
