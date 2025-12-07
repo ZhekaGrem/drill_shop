@@ -15,7 +15,7 @@ const Register = () => {
         </Title>
         <RegisterForm
           onSuccess={() => router.push('/verify-email')}
-          onSwitchToLogin={() => router.push('/login')}
+          onSwitchToLogin={() => router.push('/catalog')}
         />
       </Paper>
     </Container>

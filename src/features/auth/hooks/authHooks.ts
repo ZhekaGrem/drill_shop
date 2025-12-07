@@ -17,7 +17,7 @@ export const useAdminGuard = () => {
 
     // Not authenticated - redirect to login
     if (!isAuthenticated) {
-      router.replace('/login');
+      router.replace('/');
       return;
     }
 
@@ -48,7 +48,7 @@ export const useAuthGuard = (requiredAuth: boolean = true) => {
 
     // Need auth but not authenticated
     if (requiredAuth && !isAuthenticated) {
-      router.replace('/login');
+      router.replace('/');
     }
 
     // Don't need auth but is authenticated

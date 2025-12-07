@@ -35,7 +35,7 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
     if (hasRedirected.current) return;
     if (!isAuthenticated) {
       hasRedirected.current = true;
-      router.replace(`/login?from=${pathname}`);
+      router.replace('/');
     }
   }, [isInitialized, isAuthenticated, pathname, router]);
 

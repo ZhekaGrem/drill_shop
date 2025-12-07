@@ -60,7 +60,7 @@ const VerifyEmailContent = () => {
             <Text ta="center" c="dimmed">
               Перевірте вашу пошту для підтвердження акаунта
             </Text>
-            <Button fullWidth mt="md" onClick={() => router.push('/login')} size="md">
+            <Button fullWidth mt="md" onClick={() => router.push('/catalog')} size="md">
               Перейти до входу
             </Button>
           </Stack>
@@ -85,7 +85,7 @@ const VerifyEmailContent = () => {
             <Button fullWidth mt="md" onClick={() => router.push('/resend-verification')} variant="outline">
               Запросити нове посилання
             </Button>
-            <Button fullWidth mt="sm" onClick={() => router.push('/login')} variant="subtle">
+            <Button fullWidth mt="sm" onClick={() => router.push('/catalog')} variant="subtle">
               Повернутись до входу
             </Button>
           </Stack>
@@ -114,7 +114,7 @@ const VerifyEmailContent = () => {
             <Text ta="center" c="dimmed">
               Ваш email успішно підтверджено. Тепер ви можете користуватися всіма функціями сайту.
             </Text>
-            <Button fullWidth mt="md" onClick={() => router.push('/login')} size="md">
+            <Button fullWidth mt="md" onClick={() => router.push('/catalog')} size="md">
               Увійти в акаунт
             </Button>
           </Stack>
@@ -132,7 +132,7 @@ const VerifyEmailContent = () => {
             <Button fullWidth mt="md" onClick={() => router.push('/resend-verification')} variant="outline">
               Надіслати нове посилання
             </Button>
-            <Button fullWidth mt="sm" onClick={() => router.push('/login')} variant="subtle">
+            <Button fullWidth mt="sm" onClick={() => router.push('/catalog')} variant="subtle">
               Повернутись до входу
             </Button>
           </Stack>

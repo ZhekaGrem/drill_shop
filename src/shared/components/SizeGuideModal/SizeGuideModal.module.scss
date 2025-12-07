@@ -15,7 +15,18 @@
 
 .textWrapper {
   padding: 16px;
-  background-color: #f9f9f9;
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
+}
+
+.modal {
+  :global(.mantine-Modal-root) {
+    background-color: #e0ddca;
+  }
+
+  :global(.mantine-Modal-body) {
+    background-color: #e0ddca;
+  }
+  :global(.mantine-Modal-header) {
+   background-color: #e0ddca;
+  }
 }

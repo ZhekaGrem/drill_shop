@@ -22,7 +22,7 @@ export default async function AdminLayoutServer({ children }: { children: React.
   } = await supabase.auth.getSession();
 
   if (!session) {
-    redirect('/login?from=/admin');
+    redirect('/');
   }
 
   // Перевірка ролі через API

@@ -369,7 +369,12 @@
     flex-direction: column;
     gap: var(--spacing-md);
   }
-
+  .actionButtonsWrapper {
+    display: flex;
+    gap: 8px;
+    align-items:center;
+    justify-content: space-between;
+  }
   .quantitySelector {
     display: flex;
     align-items: center;

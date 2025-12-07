@@ -74,11 +74,11 @@ export default function ConfirmEmail() {
         addDebug('💬 Setting success message');
         setMessage('Email успішно підтверджено!');
 
-        // 3. Редірект на login
+        // 3. Редірект на головну
         addDebug('⏰ Starting redirect timer (2000ms)');
         setTimeout(() => {
-          addDebug('🔄 Redirecting to login...');
-          router.push(`/login?email=${encodeURIComponent(email)}&verified=true`);
+          addDebug('🔄 Redirecting to home...');
+          router.push('/');
         }, 2000);
       } catch (error: any) {
         addDebug('❌ ERROR caught:', {
@@ -159,8 +159,8 @@ export default function ConfirmEmail() {
                   {message}
                 </Alert>
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                  <Button onClick={() => router.push('/login')} color="yellow">
-                    Перейти до входу
+                  <Button onClick={() => router.push('/')} color="yellow">
+                    На головну
                   </Button>
                   <Button onClick={() => window.location.reload()} variant="outline" color="gray">
                     Спробувати ще раз

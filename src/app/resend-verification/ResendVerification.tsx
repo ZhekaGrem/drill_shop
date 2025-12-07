@@ -83,7 +83,7 @@ const ResendVerification = () => {
             <Text ta="center" c="dimmed" size="sm">
               Не забудьте перевірити папку "Спам"
             </Text>
-            <Button fullWidth mt="md" onClick={() => router.push('/login')} size="md">
+            <Button fullWidth mt="md" onClick={() => router.push('/catalog')} size="md">
               Повернутись до входу
             </Button>
             <div style={{ textAlign: 'center', marginTop: '16px' }}>
@@ -93,7 +93,7 @@ const ResendVerification = () => {
                   component="button"
                   type="button"
                   size="sm"
-                  onClick={() => router.push('/login?action=forgot-password')}
+                  onClick={() => router.push('/forgot-password')}
                   disabled={isLoading}
                   style={{ fontWeight: 600, color: 'var(--accent-yellow)' }}>
                   Відновити пароль
@@ -149,7 +149,7 @@ const ResendVerification = () => {
                     Надіслати підтвердження
                   </Button>
 
-                  <Button fullWidth onClick={() => router.push('/login')} disabled={isLoading}>
+                  <Button fullWidth onClick={() => router.push('/catalog')} disabled={isLoading}>
                     Повернутись до входу
                   </Button>
                 </Stack>

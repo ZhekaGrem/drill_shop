@@ -155,7 +155,7 @@ const ResetPasswordContent = () => {
             <Text ta="center" c="dimmed">
               {errorMessage || 'Посилання для відновлення пароля недійсне або прострочене'}
             </Text>
-            <Button fullWidth mt="md" onClick={() => router.push('/login')} variant="outline" size="md">
+            <Button fullWidth mt="md" onClick={() => router.push('/catalog')} variant="outline" size="md">
               Запросити нове посилання
             </Button>
           </Stack>
@@ -178,7 +178,7 @@ const ResetPasswordContent = () => {
               <Text ta="center" c="dimmed">
                 Тепер ви можете увійти з новим паролем
               </Text>
-              <Button fullWidth mt="md" onClick={() => router.push('/login')} size="md">
+              <Button fullWidth mt="md" onClick={() => router.push('/catalog')} size="md">
                 Перейти до входу
               </Button>
             </Stack>
@@ -327,7 +327,7 @@ const ResetPasswordContent = () => {
                   variant="secondary"
                   fullWidth
                   size="md"
-                  onClick={() => router.push('/login')}
+                  onClick={() => router.push('/catalog')}
                   disabled={isLoading}>
                   Скасувати
                 </Button>

@@ -280,8 +280,8 @@ const UserOrders = () => {
             <Table.Tbody>
               {orders?.map((order) => (
                 <Table.Tr key={order.id} className={styles.wrapperTable}>
-                  <Table.Td >{order.orderNumber}</Table.Td>
-                  <Table.Td >{new Date(order.createdAt).toLocaleDateString()}</Table.Td>
+                  <Table.Td>{order.orderNumber}</Table.Td>
+                  <Table.Td>{new Date(order.createdAt).toLocaleDateString()}</Table.Td>
                   <Table.Td>
                     <Badge color={getStatusColor(order.status as OrderStatus)}>
                       {orderStatusUa[order.status as OrderStatus]}

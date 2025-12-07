@@ -18,7 +18,9 @@ const UserFavorites = () => {
   return (
     <Stack>
       <div>
-        <Title order={4} ta="start">Обрані товари</Title>
+        <Title order={4} ta="start">
+          Обрані товари
+        </Title>
         {data && data.total > 0 && (
           <Text c="dimmed" size="sm" mt={4}>
             Всього: {data.total} {data.total === 1 ? 'товар' : data.total < 5 ? 'товари' : 'товарів'}

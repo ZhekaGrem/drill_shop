@@ -4,7 +4,7 @@
 .wrapper {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 150;
   background: var(--background);
 
   border-bottom: 2px solid var(--text-secondary);
@@ -34,8 +34,11 @@
   background: var(--background);
   border-bottom: var(--border-width) solid var(--border-color);
 
-  &:last-child {
+  .menuItem:last-child {
     border-bottom: none;
+  }
+  &:first-child {
+    border: var(--border-width) solid var(--border-color);
   }
 
   &:hover {
@@ -210,14 +213,16 @@
 
 // Mobile menu drawer
 .drawer {
+  
   :global(.mantine-Drawer-content) {
     border-radius: 0;
     background: var(--background);
   }
 
   :global(.mantine-Drawer-header) {
-    background: var(--background-secondary);
+   background: var(--background);
     padding: var(--spacing-md);
+ 
   }
 
   :global(.mantine-Drawer-title) {
@@ -262,6 +267,9 @@
     border-bottom: var(--accent-red);
   }
 
+  &:first-child {
+    border-top: var(--border-width) solid var(--border-color);
+  }
   svg {
     width: 20px;
     height: 20px;

@@ -61,7 +61,10 @@ const FavoriteItemComponent = ({
 
         {/* Рядок 3: Додати в кошик (зліва) | Видалення (справа) */}
         <Group justify="space-between" align="center" className={styles.bottomControls}>
-          <Button onClick={onAddToCart} disabled={!product.isInStock || isAddingToCart} loading={isAddingToCart}>
+          <Button
+            onClick={onAddToCart}
+            disabled={!product.isInStock || isAddingToCart}
+            loading={isAddingToCart}>
             {product.isInStock ? 'Додати в кошик' : 'Немає в наявності'}
           </Button>
 

@@ -74,7 +74,7 @@ export default function ResetPassword() {
         });
 
         setTimeout(() => {
-          router.push('/login');
+          router.push('/');
         }, 3000);
       } else {
         throw new Error(response.data.message);
@@ -168,8 +168,8 @@ export default function ResetPassword() {
                   Змінити пароль
                 </Button>
 
-                <Button variant="secondary" fullWidth onClick={() => router.push('/login')}>
-                  Повернутися до входу
+                <Button variant="secondary" fullWidth onClick={() => router.push('/')}>
+                  На головну
                 </Button>
               </Stack>
             </form>

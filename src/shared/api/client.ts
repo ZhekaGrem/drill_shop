@@ -86,12 +86,10 @@ apiClient.interceptors.response.use(
           return apiClient(originalRequest);
         }
       } catch {
-        // Токен не оновився - юзер має залогінитись
-      }
-
-      // Перенаправляємо на логін
-      if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
-        window.location.href = '/login';
+        // Токен не оновився - очищаємо сесію
+        if (typeof window !== 'undefined') {
+          await supabase.auth.signOut();
+        }
       }
     }
 

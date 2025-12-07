@@ -43,9 +43,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isInitialized) return;
 
-    if (!isAuthenticated) {
-      router.push('/login?from=/admin');
-    } else if (!isManager) {
+    if (!isAuthenticated || !isManager) {
       router.push('/');
     }
   }, [isAuthenticated, isManager, isInitialized, router]);

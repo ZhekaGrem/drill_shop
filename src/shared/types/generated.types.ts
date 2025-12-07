@@ -183,7 +183,7 @@ export interface Product {
   deletedAt?: Date | null;
   cartItems?: CartItem[];
   orderItems?: OrderItem[];
-  categories?: ProductCategory[];
+  categories?: Category[];
   discounts?: ProductDiscount[];
   images?: ProductImage[];
   primaryImage?: { url: string | null; altText?: string | null } | null;
@@ -415,7 +415,7 @@ export interface ProductWithRelations extends Product {
   relatedProducts?: Product[];
   cartItems?: CartItem[];
   orderItems?: OrderItem[];
-  categories?: ProductCategory[];
+  categories?: Category[];
   discounts?: ProductDiscount[];
   images?: ProductImage[];
   tags?: ProductTag[];

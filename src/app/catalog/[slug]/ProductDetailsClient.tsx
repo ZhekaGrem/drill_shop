@@ -20,6 +20,8 @@ import { sanitizeHTML } from '@/shared/utils/sanitize';
 import { SizeGuideModal } from '@/shared/components/SizeGuideModal';
 import { IconCart3 } from '@/shared/components/Svg';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
+import Image from 'next/image';
+
 
 interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
@@ -282,11 +284,10 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
   // Отримуємо всі категорії з size guide
   const categoriesWithGuide =
     product.categories
-      ?.filter((pc) => pc.category)
-      .map((pc) => ({
-        categoryName: pc.category!.name,
-        imageUrl: pc.category!.sizeGuideImage || null,
-        text: pc.category!.sizeGuideText || null,
+      ?.map((cat) => ({
+        categoryName: cat.name,
+        imageUrl: cat.sizeGuideImage || null,
+        text: cat.sizeGuideText || null,
       }))
       .filter((cat) => cat.imageUrl || cat.text) || [];
   const hasSizeGuide = categoriesWithGuide.length > 0;
@@ -304,16 +305,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
             Каталог
           </Link>
           <span className={styles.breadcrumbs__separator}>›</span>
-          {product.categories && product.categories[0]?.category && (
-            <>
-              <Link
-                href={`/catalog/category/${product.categories[0].category.slug}`}
-                className={styles.breadcrumbs__link}>
-                {product.categories[0].category.name}
-              </Link>
-              <span className={styles.breadcrumbs__separator}>›</span>
-            </>
-          )}
+
           <span className={styles.breadcrumbs__current}>{product.name}</span>
         </nav>
 
@@ -328,9 +320,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   {sortedImages.map((image, index) => (
                     <button
                       key={image.id}
-                      className={`${styles.productGallery__thumbnail} ${
-                        index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
-                      }`}
+                      className={`${styles.productGallery__thumbnail} ${index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
+                        }`}
                       onClick={() => setSelectedImageIndex(index)}>
                       <CloudinaryImage
                         src={getImageUrl(image.url || image.publicId)}
@@ -349,9 +340,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   <CloudinaryImage
                     src={getImageUrl(
                       sortedImages[selectedImageIndex]?.url ||
-                        sortedImages[selectedImageIndex]?.publicId ||
-                        primaryImage?.url ||
-                        primaryImage?.publicId
+                      sortedImages[selectedImageIndex]?.publicId ||
+                      primaryImage?.url ||
+                      primaryImage?.publicId
                     )}
                     alt={product.name}
                     className={styles.productGallery__mainImage}
@@ -371,9 +362,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     {sortedImages.map((_, index) => (
                       <button
                         key={index}
-                        className={`${styles.productGallery__dot} ${
-                          index === selectedImageIndex ? styles.productGallery__dotActive : ''
-                        }`}
+                        className={`${styles.productGallery__dot} ${index === selectedImageIndex ? styles.productGallery__dotActive : ''
+                          }`}
                         onClick={() => setSelectedImageIndex(index)}
                         aria-label={`Зображення ${index + 1}`}
                       />
@@ -438,15 +428,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
             </div>
 
             {/* Size Guide Button */}
-            {hasSizeGuide && (
-              <Button
-                variant="ghost"
-                size="fl"
-                onClick={() => setSizeGuideOpened(true)}
-                style={{ width: '100%' }}>
-                ℹ️Інфо
-              </Button>
-            )}
+
             {/* Variants Selector */}
             {hasVariants && sortedVariants.length > 0 && (
               <div className={styles.productDetails__variants}>
@@ -463,9 +445,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                         return (
                           <label
                             key={variant.id}
-                            className={`${styles.variantCheckbox} ${
-                              isOutOfStock ? styles.variantCheckbox_disabled : ''
-                            }`}>
+                            className={`${styles.variantCheckbox} ${isOutOfStock ? styles.variantCheckbox_disabled : ''
+                              }`}>
                             <input
                               type="checkbox"
                               checked={selectedVariant?.id === variant.id}
@@ -508,11 +489,11 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                       // Показуємо головний товар тільки якщо hasVariants = false
                       ...(!product.hasVariants
                         ? [
-                            {
-                              value: 'main',
-                              label: `${product.name}`,
-                            },
-                          ]
+                          {
+                            value: 'main',
+                            label: `${product.name}`,
+                          },
+                        ]
                         : []),
                       ...(sortedVariants.map((variant: any) => ({
                         value: variant.id,
@@ -626,29 +607,35 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
             {/* Add to Cart Section */}
             <div className={styles.productDetails__actions}>
               <div className={styles.actionButtons}>
-                <div className={styles.quantitySelector}>
-                  <button
-                    className={styles.quantitySelector__button}
-                    onClick={() => handleQuantityChange(quantity - 1)}
-                    disabled={quantity <= 1}>
-                    −
-                  </button>
-                  <input
-                    type="number"
-                    className={styles.quantitySelector__input}
-                    value={quantity}
-                    onChange={(e) => handleQuantityChange(Number(e.target.value))}
-                    min="1"
-                    max={availableQuantity}
-                  />
-                  <button
-                    className={styles.quantitySelector__button}
-                    onClick={() => handleQuantityChange(quantity + 1)}
-                    disabled={quantity >= availableQuantity}>
-                    +
-                  </button>
+                <div  className={styles.actionButtonsWrapper}>
+                  <div className={styles.quantitySelector}>
+                    <button
+                      className={styles.quantitySelector__button}
+                      onClick={() => handleQuantityChange(quantity - 1)}
+                      disabled={quantity <= 1}>
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      className={styles.quantitySelector__input}
+                      value={quantity}
+                      onChange={(e) => handleQuantityChange(Number(e.target.value))}
+                      min="1"
+                      max={availableQuantity}
+                    />
+                    <button
+                      className={styles.quantitySelector__button}
+                      onClick={() => handleQuantityChange(quantity + 1)}
+                      disabled={quantity >= availableQuantity}>
+                      +
+                    </button>
+                  </div>
+                  {hasSizeGuide && (
+                    <Button variant="ghost" onClick={() => setSizeGuideOpened(true)} p={0}>
+                      <Image src="/assets/img/btnInfo.jpg" width={50} height={50} alt="btninfo" />
+                    </Button>
+                  )}
                 </div>
-
                 <Button
                   variant="secondary"
                   size="lg"
@@ -668,6 +655,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   disabled={!isInStock}>
                   КУПИТИ ЗАРАЗ
                 </Button>
+
               </div>
             </div>
           </div>
