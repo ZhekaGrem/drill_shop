@@ -145,7 +145,6 @@ const UserData = () => {
         </Stack>
       </form>
 
-
       {/* Зміна пароля */}
       {/* <form onSubmit={handlePasswordSubmit(onPasswordSubmit)}>
         <Stack>

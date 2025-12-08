@@ -271,9 +271,9 @@
     gap: var(--spacing-md);
     border-right: var(--border-width) solid var(--border-color);
 
-     @media (max-width: 768px) {
-        border-right: none;
-      }
+    @media (max-width: 768px) {
+      border-right: none;
+    }
     &__thumbnails {
       display: flex;
       flex-direction: column;

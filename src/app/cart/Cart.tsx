@@ -112,7 +112,6 @@ export default function CartPage() {
                 <Text>Товари {calculations.itemsCount} на суму</Text>{' '}
                 <Text>{formatPrice(calculations.subtotal)}</Text>
               </Group>
-             
             </Stack>
 
             <Divider />

@@ -118,7 +118,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           color: '#000',
         },
         navbar: {
-          paddingTop:'50px',
+          paddingTop: '50px',
           background: '#1a1a1a',
           borderColor: '#333',
         },

@@ -234,10 +234,8 @@
   }
 
   :global(.mantine-Drawer-close) {
-   
-
     &:hover {
-     background: var(--btn-danger) ;
+      background: var(--btn-danger);
     }
   }
 }

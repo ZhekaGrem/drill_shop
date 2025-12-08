@@ -7,7 +7,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { RegisterForm } from '../RegisterForm/RegisterForm';
 import { PasswordResetForm } from '../PasswordResetForm/PasswordResetForm';
-import {  IconX } from '@/shared/components/Svg';
+import { IconX } from '@/shared/components/Svg';
 
 import styles from './AuthDrawer.module.scss';
 
@@ -20,7 +20,7 @@ interface AuthDrawerProps {
 
 export const AuthDrawer = ({ opened, onClose, onSuccess, defaultTab = 'login' }: AuthDrawerProps) => {
   const [activeTab, setActiveTab] = useState<string | null>(defaultTab);
-const isMobile = useMediaQuery(`(max-width: ${em(768)})`);
+  const isMobile = useMediaQuery(`(max-width: ${em(768)})`);
   useEffect(() => {
     setActiveTab(defaultTab);
   }, [defaultTab]);
@@ -39,13 +39,12 @@ const isMobile = useMediaQuery(`(max-width: ${em(768)})`);
       opened={opened}
       onClose={onClose}
       position="right"
-      size={isMobile ? '100%' : 'lg'} 
+      size={isMobile ? '100%' : 'lg'}
       title="Автентифікація"
       className={styles.drawer}
-       closeButtonProps={{
-              icon: <IconX />,
-            }}
-     
+      closeButtonProps={{
+        icon: <IconX />,
+      }}
       styles={{
         body: {
           height: '100%',

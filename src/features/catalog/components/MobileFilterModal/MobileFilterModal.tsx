@@ -35,7 +35,7 @@ export const MobileFilterModal: React.FC<MobileFilterModalProps> = ({
         close: styles.drawerClose,
         body: styles.drawerBody,
       }}
-      title='Фільтри'
+      title="Фільтри"
       styles={{
         content: {
           borderRadius: 0,
