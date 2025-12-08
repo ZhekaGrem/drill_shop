@@ -3,8 +3,8 @@
 'use client';
 import { Drawer, Text, ScrollArea, Stack, Group, Divider, Loader, Center, Box, em } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconShoppingCart } from '@tabler/icons-react';
-import {IconCart3, IconX } from '@/shared/components/Svg';
+
+import { IconCart3, IconX } from '@/shared/components/Svg';
 import { useCartDrawerState, useCartDrawerActions } from '@/shared/stores/cart';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { CartItem } from '../CartItem/CartItem';
@@ -28,17 +28,15 @@ export const CartDrawer = () => {
     <Drawer
       opened={isOpen}
       onClose={close}
-
       title="Кошик"
       position="right"
       size={isMobile ? '100%' : 'lg'} // Full width on mobile
       overlayProps={{ opacity: 0.5, blur: 4 }}
-       closeButtonProps={{
-          icon: <IconX />,
-        }}
+      closeButtonProps={{
+        icon: <IconX />,
+      }}
       styles={{
         header: {
-          padding: isMobile ? '16px 20px' : undefined,
           backgroundColor: 'var(--background)',
         },
         body: {

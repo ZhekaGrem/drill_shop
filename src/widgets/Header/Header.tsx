@@ -138,9 +138,15 @@ const MobileMenu = React.memo(
     ];
 
     return (
-      <Drawer  closeButtonProps={{
-                icon: <IconX />,
-              }} opened={opened} onClose={onClose} position="left" size="480px" className={styles.drawer}>
+      <Drawer
+        closeButtonProps={{
+          icon: <IconX />,
+        }}
+        opened={opened}
+        onClose={onClose}
+        position="left"
+        size="480px"
+        className={styles.drawer}>
         <ScrollArea h="calc(100vh - 80px)">
           {menuItems.map((item) => (
             <Link key={item.href} href={item.href} className={styles.menuLink} onClick={onNavigate}>

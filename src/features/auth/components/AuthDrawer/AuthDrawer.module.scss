@@ -23,27 +23,23 @@
   }
 
   :global(.mantine-Drawer-close) {
-    svg {
-      width: 24px;
-      height: 24px;
-      stroke-width: 2px;
-    }
+    
 
     &:hover {
-      background: var(--btn-primary) !important;
+      background: var(--btn-danger) ;
     }
   }
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-family: var(--font-condensed);
-  font-size: var(--text-xl);
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
-}
+// .header {
+//   display: flex;
+//   align-items: center;
+//   gap: var(--spacing-sm);
+//   font-family: var(--font-condensed);
+//   font-size: var(--text-xl);
+//   font-weight: var(--fw-bold);
+//   color: var(--text-primary);
+// }
 
 .tabs {
   :global(.mantine-Tabs-list) {

@@ -13,6 +13,7 @@
     background: var(--background-secondary) !important;
     border-bottom: var(--border-width) solid var(--border-color) !important;
     padding: var(--spacing-md) !important;
+    color: var(--text-primary);
   }
 
   :global(.mantine-Drawer-body) {
@@ -24,13 +25,13 @@
 
   :global(.mantine-Drawer-close) {
     svg {
-      width: 24px;
-      height: 24px;
+      width: 34px;
+      height: 34px;
       stroke-width: 2px;
     }
 
     &:hover {
-      background: var(--btn-primary) !important;
+     background: var(--btn-danger) ;
     }
   }
 }

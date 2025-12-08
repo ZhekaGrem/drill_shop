@@ -18,12 +18,14 @@
 .filtersButton {
   background-color: var(--background);
   display: none;
-
+  border: none;
   @media (max-width: 768px) {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+  border-bottom:var(--border-width) solid (var(--border-color));
+
 
     span {
       flex: 1;
@@ -52,9 +54,9 @@
 }
 
 .modalTitle {
-  color: var(--background) !important;
-  font-family: var(--font-condensed);
+  font-family: var(--font-heading);
   font-weight: var(--fw-bold);
+  color: var(--text-primary);
 }
 
 .modalHeader {

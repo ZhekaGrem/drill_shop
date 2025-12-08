@@ -94,46 +94,6 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
 
   const showInitialData = !initialized && initialData && !searchParams.toString();
 
-  if (showInitialData) {
-    return (
-      <div className={styles.catalogPage}>
-        {/* Кнопка фільтрів для мобільних */}
-        <Button className={styles.filtersButton} onClick={() => setFiltersModalOpened(true)} fullWidth>
-          <IconFilter size={20} />
-          <span>Фільтри</span>
-          <IconChevronDown size={20} />
-        </Button>
-
-        {/* Фільтри для десктопу */}
-        <div className={styles.desktopFilters}>
-          <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
-        </div>
-
-        {/* Модал з фільтрами для мобільних */}
-        <Modal
-          opened={filtersModalOpened}
-          onClose={() => setFiltersModalOpened(false)}
-          title="Фільтри"
-          size="xl"
-          classNames={{
-            body: styles.modalBody,
-            content: styles.modalContent,
-            title: styles.modalTitle,
-            header: styles.modalHeader,
-          }}>
-          <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
-        </Modal>
-        <div className={styles.container}>
-          <div className={styles.products}>
-            {initialData!.data.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.catalogPage}>
       {/* Кнопка фільтрів для мобільних */}

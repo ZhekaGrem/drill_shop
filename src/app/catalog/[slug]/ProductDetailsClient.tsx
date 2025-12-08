@@ -22,7 +22,6 @@ import { IconCart3 } from '@/shared/components/Svg';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
 import Image from 'next/image';
 
-
 interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
 }
@@ -320,8 +319,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   {sortedImages.map((image, index) => (
                     <button
                       key={image.id}
-                      className={`${styles.productGallery__thumbnail} ${index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
-                        }`}
+                      className={`${styles.productGallery__thumbnail} ${
+                        index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
+                      }`}
                       onClick={() => setSelectedImageIndex(index)}>
                       <CloudinaryImage
                         src={getImageUrl(image.url || image.publicId)}
@@ -340,9 +340,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   <CloudinaryImage
                     src={getImageUrl(
                       sortedImages[selectedImageIndex]?.url ||
-                      sortedImages[selectedImageIndex]?.publicId ||
-                      primaryImage?.url ||
-                      primaryImage?.publicId
+                        sortedImages[selectedImageIndex]?.publicId ||
+                        primaryImage?.url ||
+                        primaryImage?.publicId
                     )}
                     alt={product.name}
                     className={styles.productGallery__mainImage}
@@ -362,8 +362,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     {sortedImages.map((_, index) => (
                       <button
                         key={index}
-                        className={`${styles.productGallery__dot} ${index === selectedImageIndex ? styles.productGallery__dotActive : ''
-                          }`}
+                        className={`${styles.productGallery__dot} ${
+                          index === selectedImageIndex ? styles.productGallery__dotActive : ''
+                        }`}
                         onClick={() => setSelectedImageIndex(index)}
                         aria-label={`Зображення ${index + 1}`}
                       />
@@ -445,8 +446,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                         return (
                           <label
                             key={variant.id}
-                            className={`${styles.variantCheckbox} ${isOutOfStock ? styles.variantCheckbox_disabled : ''
-                              }`}>
+                            className={`${styles.variantCheckbox} ${
+                              isOutOfStock ? styles.variantCheckbox_disabled : ''
+                            }`}>
                             <input
                               type="checkbox"
                               checked={selectedVariant?.id === variant.id}
@@ -489,11 +491,11 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                       // Показуємо головний товар тільки якщо hasVariants = false
                       ...(!product.hasVariants
                         ? [
-                          {
-                            value: 'main',
-                            label: `${product.name}`,
-                          },
-                        ]
+                            {
+                              value: 'main',
+                              label: `${product.name}`,
+                            },
+                          ]
                         : []),
                       ...(sortedVariants.map((variant: any) => ({
                         value: variant.id,
@@ -607,7 +609,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
             {/* Add to Cart Section */}
             <div className={styles.productDetails__actions}>
               <div className={styles.actionButtons}>
-                <div  className={styles.actionButtonsWrapper}>
+                <div className={styles.actionButtonsWrapper}>
                   <div className={styles.quantitySelector}>
                     <button
                       className={styles.quantitySelector__button}
@@ -655,7 +657,6 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   disabled={!isInStock}>
                   КУПИТИ ЗАРАЗ
                 </Button>
-
               </div>
             </div>
           </div>

@@ -40,8 +40,6 @@
 }
 
 .image {
-  max-width: 260px;
-  max-height: 260px;
   object-fit: cover;
   flex-shrink: 0;
   border-right: 2px solid var(--background-secondary);
@@ -168,5 +166,65 @@
   &:hover {
     background: transparent;
     color: var(--accent-red);
+  }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+  .wrapper,
+  .wrapperMini {
+    border-right: 2px solid var(--background-secondary);
+    min-height: 180px;
+
+    // Переконуємось що Group має align-items: stretch
+    :global(.mantine-Group-root) {
+      align-items: stretch !important;
+    }
+  }
+
+  .image {
+    width: 140px !important;
+    height: 100% !important;
+    min-height: 180px;
+    max-height: none !important;
+    align-self: stretch;
+    object-fit: cover;
+  }
+
+  .info {
+    padding: 12px;
+  }
+
+  .productName {
+    font-size: 0.9rem;
+  }
+
+  .variantText {
+    font-size: 0.75rem;
+  }
+
+  .currentPrice {
+    font-size: 1rem;
+  }
+
+  .oldPrice {
+    font-size: 0.8rem;
+  }
+
+  .quantityControl {
+    .qtyBtn {
+      width: 28px;
+      height: 28px;
+    }
+
+    .qtyValue {
+      width: 28px;
+      height: 28px;
+      font-size: 0.9rem;
+    }
+  }
+
+  .deleteText {
+    font-size: 0.8rem;
   }
 }

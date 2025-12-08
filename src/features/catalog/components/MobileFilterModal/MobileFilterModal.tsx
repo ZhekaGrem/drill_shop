@@ -35,22 +35,12 @@ export const MobileFilterModal: React.FC<MobileFilterModalProps> = ({
         close: styles.drawerClose,
         body: styles.drawerBody,
       }}
-      title={
-        <div className={styles.header}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={styles.icon}>
-            <rect x="3" y="4" width="18" height="2" fill="currentColor" />
-            <rect x="3" y="11" width="18" height="2" fill="currentColor" />
-            <rect x="3" y="18" width="18" height="2" fill="currentColor" />
-          </svg>
-          <span>Фільтри</span>
-        </div>
-      }
+      title='Фільтри'
       styles={{
         content: {
           borderRadius: 0,
           border: '0px solid var(--border-color)',
           borderBottom: 'none',
-          background: 'var(--background)',
         },
         header: {
           borderBottom: '0px solid var(--border-color)',

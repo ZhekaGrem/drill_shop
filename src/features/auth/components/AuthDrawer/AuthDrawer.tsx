@@ -2,11 +2,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Drawer, Tabs, Text } from '@mantine/core';
-import { IconUser, IconX } from '@tabler/icons-react';
+import { Drawer, Tabs, em } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { RegisterForm } from '../RegisterForm/RegisterForm';
 import { PasswordResetForm } from '../PasswordResetForm/PasswordResetForm';
+import {  IconX } from '@/shared/components/Svg';
+
 import styles from './AuthDrawer.module.scss';
 
 interface AuthDrawerProps {
@@ -18,7 +20,7 @@ interface AuthDrawerProps {
 
 export const AuthDrawer = ({ opened, onClose, onSuccess, defaultTab = 'login' }: AuthDrawerProps) => {
   const [activeTab, setActiveTab] = useState<string | null>(defaultTab);
-
+const isMobile = useMediaQuery(`(max-width: ${em(768)})`);
   useEffect(() => {
     setActiveTab(defaultTab);
   }, [defaultTab]);
@@ -37,14 +39,13 @@ export const AuthDrawer = ({ opened, onClose, onSuccess, defaultTab = 'login' }:
       opened={opened}
       onClose={onClose}
       position="right"
-      size="600px"
+      size={isMobile ? '100%' : 'lg'} 
+      title="Автентифікація"
       className={styles.drawer}
-      title={
-        <div className={styles.header}>
-          <IconUser size={24} />
-          <span>Автентифікація</span>
-        </div>
-      }
+       closeButtonProps={{
+              icon: <IconX />,
+            }}
+     
       styles={{
         body: {
           height: '100%',

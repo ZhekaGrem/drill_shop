@@ -3,7 +3,6 @@
 
 import { useState } from 'react';
 import { Container, Grid, Paper, NavLink } from '@mantine/core';
-import { IconUser, IconShoppingBag, IconHeart, IconLogout } from '@tabler/icons-react';
 import { useAuthStore } from '@/shared/stores/auth';
 import UserData from '@/features/profile/components/UserData/UserData';
 import UserOrders from '@/features/profile/components/UserOrders/UserOrders';

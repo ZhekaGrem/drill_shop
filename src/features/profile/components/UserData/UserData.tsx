@@ -131,7 +131,7 @@ const UserData = () => {
       {/* Редагування даних */}
       <form onSubmit={handleUserSubmit(onUserSubmit)} noValidate>
         <Stack>
-          <Title order={4}>Редагувати дані</Title>
+          <Title order={4}>Змінити дані</Title>
           <Group grow>
             <TextInput label="Ім'я" {...registerUser('firstName')} error={userErrors.firstName?.message} />
             <TextInput label="Прізвище" {...registerUser('lastName')} error={userErrors.lastName?.message} />
@@ -145,7 +145,6 @@ const UserData = () => {
         </Stack>
       </form>
 
-      <Divider />
 
       {/* Зміна пароля */}
       {/* <form onSubmit={handlePasswordSubmit(onPasswordSubmit)}>

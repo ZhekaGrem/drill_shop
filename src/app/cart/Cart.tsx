@@ -104,14 +104,15 @@ export default function CartPage() {
           <div className={styles.divider} />
 
           {/* Підсумок замовлення */}
-          <Stack gap="md" flex={1} p={20} pos="sticky" top={20}>
+          <Stack gap="md" flex={1} p={20} pos="sticky" top={20} className={styles.summary}>
             <Title order={3}>Всього</Title>
 
             <Stack gap="xs">
               <Group justify="space-between">
                 <Text>Товари {calculations.itemsCount} на суму</Text>{' '}
-                <Text>{formatPrice(calculations.totalAmount)}</Text>
+                <Text>{formatPrice(calculations.subtotal)}</Text>
               </Group>
+             
             </Stack>
 
             <Divider />
@@ -135,7 +136,10 @@ export default function CartPage() {
             <Stack gap="sm" mt="md">
               <Link href="/checkout">
                 <Button variant="primary" size="lg" fullWidth>
-                  перейти до оформлення
+                  <span className={styles.checkoutButtonText}>
+                    <span className={styles.desktopText}>Перейти до оформлення</span>
+                    <span className={styles.mobileText}>Оформити</span>
+                  </span>
                 </Button>
               </Link>
             </Stack>

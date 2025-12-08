@@ -111,13 +111,14 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         breakpoint: 'sm',
         collapsed: { mobile: !opened, desktop: false },
       }}
-      padding="md"
+      padding="lg"
       styles={{
         main: {
           background: '#fff',
           color: '#000',
         },
         navbar: {
+          paddingTop:'50px',
           background: '#1a1a1a',
           borderColor: '#333',
         },
@@ -127,7 +128,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         },
       }}>
       <AppShell.Header>
-        <Group h="100%" px="md" justify="space-between">
+        <Group h="100%" px="lg" justify="space-between">
           <Group>
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" color="#fff" />
             <Text size="lg" fw={700} c="#fff">

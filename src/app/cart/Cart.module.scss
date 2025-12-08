@@ -34,3 +34,58 @@
     color: var(--text-primary);
   }
 }
+
+.checkoutButtonText {
+  .mobileText {
+    display: none;
+  }
+
+  .desktopText {
+    display: inline;
+  }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+  .containerCart {
+    &__link {
+      gap: 12px;
+    }
+
+    &__title {
+      font-size: var(--text-2xl);
+    }
+  }
+
+  .cart {
+    flex-direction: column;
+  }
+
+  .divider {
+    width: 100%;
+    height: 2px;
+    align-self: auto;
+  }
+
+  .summary {
+    position: static !important;
+    padding: var(--spacing-md) !important;
+    margin-top: var(--spacing-md);
+  }
+
+  .totalSection {
+    &__price {
+      font-size: var(--text-2xl);
+    }
+  }
+
+  .checkoutButtonText {
+    .mobileText {
+      display: inline;
+    }
+
+    .desktopText {
+      display: none;
+    }
+  }
+}

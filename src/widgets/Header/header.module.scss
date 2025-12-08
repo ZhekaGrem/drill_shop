@@ -213,16 +213,14 @@
 
 // Mobile menu drawer
 .drawer {
-  
   :global(.mantine-Drawer-content) {
     border-radius: 0;
     background: var(--background);
   }
 
   :global(.mantine-Drawer-header) {
-   background: var(--background);
+    background: var(--background);
     padding: var(--spacing-md);
- 
   }
 
   :global(.mantine-Drawer-title) {
@@ -236,14 +234,10 @@
   }
 
   :global(.mantine-Drawer-close) {
-    svg {
-      width: 24px;
-      height: 24px;
-      stroke-width: 2px;
-    }
+   
 
     &:hover {
-      background: var(--btn-primary);
+     background: var(--btn-danger) ;
     }
   }
 }

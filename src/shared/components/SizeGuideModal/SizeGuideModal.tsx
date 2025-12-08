@@ -30,7 +30,7 @@ export const SizeGuideModal = ({ opened, onClose, categories }: SizeGuideModalPr
     const category = validCategories[0];
     return (
       <Modal
-      className={styles.modal}
+        className={styles.modal}
         opened={opened}
         onClose={onClose}
         title={`Інформація - ${category.categoryName}`}
