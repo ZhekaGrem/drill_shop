@@ -272,7 +272,7 @@ export const ProductCard = React.memo<ProductCardProps>(
       // ✅ Якщо не обрано варіант - показуємо ціну головного товару з промо
       if (priceData.hasDiscount) {
         return (
-          < div className={styles.hasDiscount}>
+          <div className={styles.hasDiscount}>
             <span className={styles.originalPrice}>{priceData.originalPrice}₴</span>
             <span className={styles.finalPrice}>{Math.round(priceData.finalPrice)}₴</span>
           </div>

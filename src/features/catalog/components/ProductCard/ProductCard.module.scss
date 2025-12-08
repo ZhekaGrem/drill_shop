@@ -162,11 +162,10 @@
   flex-direction: column;
   flex: 1;
 }
- .hasDiscount{
+.hasDiscount {
   display: flex;
   flex-direction: column;
-  
- }
+}
 
 .contentPriceVariants {
   min-height: 70px;
@@ -304,7 +303,6 @@
   color: var(--text-primary);
   text-decoration: line-through;
   text-align: center;
-  
 }
 
 .finalPrice {
@@ -314,7 +312,6 @@
 }
 
 .price {
- 
   font-size: var(--text-2xl);
   font-weight: var(--fw-black);
   color: var(--text-primary);
@@ -326,8 +323,6 @@
   font-weight: var(--fw-medium);
   color: var(--text-secondary);
 }
-
-
 
 // Actions (Add to cart button)
 .actions {
@@ -407,18 +402,16 @@
     gap: 0;
     width: 100%;
   }
-  .hasDiscount{
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-}
+  .hasDiscount {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
 
   .unitValue {
     font-size: 10px;
   }
-
-  
 }
 
 // Animation

@@ -172,8 +172,7 @@ export const ReviewList = ({ productId, limit = 10 }: ReviewListProps) => {
                     <Button
                       onClick={() => handleDeleteReview(review.id)}
                       className={styles.deleteButton}
-                      disabled={deletingReviewId === review.id}
-                    >
+                      disabled={deletingReviewId === review.id}>
                       {deletingReviewId === review.id ? '...' : <IconTrash size={16} />}
                     </Button>
                   )}

@@ -104,7 +104,8 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
         fullWidth>
         <div>
           <IconFilter size={16} />
-          Фільтри</div>
+          Фільтри
+        </div>
         <IconChevronDown size={16} />
       </Button>
 
