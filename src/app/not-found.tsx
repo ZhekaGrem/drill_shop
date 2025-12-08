@@ -8,6 +8,7 @@ import { ArrowRight } from '@/shared/components/Svg';
 const NotFoundPage = () => {
   return (
     <div className={styles.root}>
+      <div className={styles.phoneImg} />
       <Container pb={50}>
         <Text size="lg" ta="center" className={styles.description}>
           Здається, ми не знайшли те, що ви шукали. Сторінка, яку ви шукали, не існує, недоступна або

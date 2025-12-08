@@ -1,7 +1,6 @@
 // src/app/notFound.module.scss - UPDATED
 .root {
   width: 100%;
-  min-height: 100vh;
 
   background-image: url('/assets/img/bg/bg-onion.webp');
   background-size: cover;
@@ -12,6 +11,19 @@
   align-items: center;
   justify-content: flex-end;
   flex-direction: column;
+  @media (max-width: 768px) {
+    background-image: none;
+  }
+}
+.phoneImg {
+  @media (max-width: 768px) {
+    width: 100%;
+    min-height: 200px;
+    background-image: url('/assets/img/bg/bg-onion.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 }
 
 .label {
@@ -51,6 +63,10 @@
   padding: 20px;
   line-height: 150%;
   text-align: center;
+   @media (max-width: 768px) {
+      margin-top: 0;
+
+  }
 }
 
 .popularLinks {
