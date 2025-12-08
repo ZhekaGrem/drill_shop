@@ -13,7 +13,7 @@
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #ddd;
+  color: var(--accent);
   cursor: pointer;
   transition: color 0.2s ease;
   padding: 0;
@@ -25,7 +25,7 @@
 }
 
 .star.filled {
-  color: var(--accent-yellow);
+  color: var(--background-secondary);
 }
 
 .star.readonly {

@@ -429,18 +429,6 @@ select {
   transition: var(--transition-fast);
 }
 
-input:hover,
-textarea:hover,
-select:hover {
-  background: var(--accent-red);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-}
-
 input::placeholder,
 textarea::placeholder {
   color: var(--text-tertiary);

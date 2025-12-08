@@ -8,6 +8,7 @@ import { RatingStars } from '../RatingStars/RatingStars';
 import { useCreateReview } from '../../hooks/reviewsHooks';
 import { useAuthStore } from '@/shared/stores/auth';
 import styles from './reviewForm.module.scss';
+import { Button } from '@/shared/components/Button/Button';
 
 // ВИПРАВЛЕНО: title не обов'язковий, буде заповнюватися автоматично
 const reviewSchema = z.object({
@@ -109,13 +110,13 @@ export const ReviewForm = ({ productId, onSuccess, onCancel }: ReviewFormProps) 
 
       <div className={styles.actions}>
         {onCancel && (
-          <button type="button" onClick={onCancel} className={styles.cancelButton} disabled={isSubmitting}>
+          <Button type="button" onClick={onCancel} className={styles.cancelButton} disabled={isSubmitting}>
             Скасувати
-          </button>
+          </Button>
         )}
-        <button type="submit" className={styles.submitButton} disabled={isSubmitting || rating === 0}>
+        <Button type="submit" className={styles.submitButton} disabled={isSubmitting || rating === 0}>
           {isSubmitting ? 'Відправлення...' : 'Залишити відгук'}
-        </button>
+        </Button>
       </div>
     </form>
   );

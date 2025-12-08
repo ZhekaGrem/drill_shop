@@ -382,6 +382,7 @@ src/features/myfeature/
 1. **Mantine props** — якщо компонент Mantine, використовуй його пропси (`p`, `m`, `bg`, `c`, `fz`, `fw`, тощо)
 2. **SCSS modules** — для кастомних стилів (`ComponentName.module.scss`)
 3. **inline style** — **ТІЛЬКИ** якщо стиль динамічний і залежить від JS змінної в рантаймі
+4. **Перевіряти  mantine-theme.ts && globals.css** перед тим як добавляти або доблювати css 
 
 ### 🚫 ЗАБОРОНИ стилізації
 

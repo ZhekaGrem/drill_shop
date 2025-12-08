@@ -102,9 +102,10 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
         className={styles.filtersButton}
         onClick={() => setFiltersModalOpened(true)}
         fullWidth>
-        <IconFilter size={20} />
-        <span>Фільтри</span>
-        <IconChevronDown size={20} />
+        <div>
+          <IconFilter size={16} />
+          Фільтри</div>
+        <IconChevronDown size={16} />
       </Button>
 
       {/* Фільтри для десктопу */}

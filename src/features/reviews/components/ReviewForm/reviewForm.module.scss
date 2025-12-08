@@ -1,5 +1,5 @@
 .reviewForm {
-  background: white;
+  background: var(--background);
   border: 1px solid #e5e5e5;
   border-radius: 8px;
   padding: 1.5rem;
@@ -17,7 +17,7 @@
 .authorInfo {
   margin: 0 0 1.5rem 0;
   padding: 0.75rem;
-  background: #f8fafc;
+  background: var(--background);
   border: 1px solid #e2e8f0;
   border-radius: 4px;
   font-size: var(--text-sm);
@@ -26,6 +26,7 @@
 
 .field {
   margin-bottom: 1.5rem;
+  fill: var(--background-light);
 }
 
 .label {
@@ -37,7 +38,7 @@
 }
 
 .required {
-  color: var(--error);
+  color: var(--background-light);
 }
 
 .input,
@@ -98,14 +99,10 @@
 }
 
 .cancelButton {
-  padding: 0.75rem 1.5rem;
   border: 1px solid #ddd;
-  background: white;
-  color: var(--text-secondary);
   border-radius: 4px;
   cursor: pointer;
   font-weight: var(--fw-medium);
-  transition: all 0.2s ease;
 }
 
 .cancelButton:hover:not(:disabled) {
@@ -113,9 +110,6 @@
 }
 
 .submitButton {
-  padding: 0.75rem 1.5rem;
-  background: var(--btn-primary);
-  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -128,6 +122,6 @@
 }
 
 .submitButton:disabled {
-  background: #ccc;
+  background: var(--accent-red);
   cursor: not-allowed;
 }

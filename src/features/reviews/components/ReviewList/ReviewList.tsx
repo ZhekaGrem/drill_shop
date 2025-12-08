@@ -7,6 +7,7 @@ import styles from './reviewList.module.scss';
 import { useAuthStore } from '@/shared/stores/auth';
 import { IconTrash, IconMessage } from '@tabler/icons-react';
 import { EmptyState } from '@/shared/components/EmptyState';
+import { Button } from '@/shared/components/Button/Button';
 
 interface ReviewListProps {
   productId: string;
@@ -168,19 +169,18 @@ export const ReviewList = ({ productId, limit = 10 }: ReviewListProps) => {
                   <RatingStars rating={review.rating} readonly size="sm" />
 
                   {canDeleteReview(review) && (
-                    <button
+                    <Button
                       onClick={() => handleDeleteReview(review.id)}
                       className={styles.deleteButton}
                       disabled={deletingReviewId === review.id}
-                      title="Видалити відгук">
+                    >
                       {deletingReviewId === review.id ? '...' : <IconTrash size={16} />}
-                    </button>
+                    </Button>
                   )}
                 </div>
               </header>
 
               <div className={styles.reviewContent}>
-                he
                 {review.content && <p className={styles.reviewText}>{review.content}</p>}
               </div>
 

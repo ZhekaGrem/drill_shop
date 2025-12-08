@@ -11,7 +11,7 @@
 .card {
   height: 630px; // Фіксована висота всієї карточки
   width: 370px; // Фіксована ширина карточки
-  background: var(--background-light);
+  background: var(--background);
   border: var(--border-width) solid var(--border-color);
   border-radius: 0;
   transition: var(--transition-fast);
@@ -162,6 +162,11 @@
   flex-direction: column;
   flex: 1;
 }
+ .hasDiscount{
+  display: flex;
+  flex-direction: column;
+  
+ }
 
 .contentPriceVariants {
   min-height: 70px;
@@ -295,23 +300,21 @@
 
 // Prices
 .originalPrice {
-  font-family: var(--font-condensed);
-  font-size: var(--text-sm);
   font-weight: var(--fw-medium);
   color: var(--text-primary);
   text-decoration: line-through;
   text-align: center;
+  
 }
 
 .finalPrice {
-  font-family: var(--font-condensed);
   font-size: var(--text-2xl);
   font-weight: var(--fw-black);
   color: var(--accent-red);
 }
 
 .price {
-  font-family: var(--font-condensed);
+ 
   font-size: var(--text-2xl);
   font-weight: var(--fw-black);
   color: var(--text-primary);
@@ -323,6 +326,8 @@
   font-weight: var(--fw-medium);
   color: var(--text-secondary);
 }
+
+
 
 // Actions (Add to cart button)
 .actions {
@@ -400,15 +405,20 @@
 
   .priceSection {
     gap: 0;
+    width: 100%;
   }
+  .hasDiscount{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
 
   .unitValue {
     font-size: 10px;
   }
 
-  .originalPrice {
-    font-size: 11px;
-  }
+  
 }
 
 // Animation
