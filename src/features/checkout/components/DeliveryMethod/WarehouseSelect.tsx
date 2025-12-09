@@ -273,11 +273,10 @@ export const WarehouseSelect = ({
         disabled={disabled}
         error={error}
         required={required}
-        leftSection={<IconBuilding size={16} />}
         renderOption={renderSelectOption}
         maxDropdownHeight={400}
         clearable={true}
-        limit={100}
+        limit={50}
       />
     </div>
   );

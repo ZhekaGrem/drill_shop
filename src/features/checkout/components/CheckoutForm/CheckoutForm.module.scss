@@ -359,6 +359,17 @@
   }
 }
 
+.btnConfirm{
+  display: block;
+}
+.btnConfirmPhone{
+  display: none;
+}
+
+.agreementNoticePhone{
+  display: none;
+}
+
 // ============ RESPONSIVE ============
 @media (max-width: 968px) {
   .formGrid {
@@ -372,8 +383,22 @@
 }
 
 @media (max-width: 768px) {
+  .agreementNotice{
+    display: none;
+  }
+
+  .agreementNoticePhone{
+  display: block;
+}
+.btnConfirm{
+  display: none;
+}
+  .btnConfirmPhone{
+display: block;
+  }
   .formSection,
   .orderSummary {
+    border-right:none;
     padding: var(--spacing-md);
   }
 
@@ -392,7 +417,7 @@
   }
 
   .totalAmount {
-    font-size: var(--text-xl);
+    font-size: var(--text-2xl);
   }
 }
 
@@ -412,5 +437,6 @@
   .formSection,
   .orderSummary {
     padding: var(--spacing-sm) var(--spacing-md);
+    gap: var(--spacing-lg);
   }
 }

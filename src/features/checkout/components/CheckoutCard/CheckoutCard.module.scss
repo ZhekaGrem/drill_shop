@@ -17,6 +17,8 @@
 
 // ============ IMAGE ============
 .image {
+    width: 120px;
+    height: 120px;
   border-radius: 0;
   object-fit: cover;
   flex-shrink: 0;
@@ -71,7 +73,6 @@
   font-weight: var(--fw-medium);
   color: var(--text-secondary);
   padding: 2px 6px;
-  background: var(--background-secondary);
   border: 1px solid var(--border-color);
   border-radius: 0;
 
@@ -91,13 +92,11 @@
 
 // ============ RESPONSIVE ============
 @media (max-width: 480px) {
-  .wrapper {
-    padding: var(--spacing-xs);
-  }
+ 
 
   .image {
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 120px;
   }
 
   .productName {

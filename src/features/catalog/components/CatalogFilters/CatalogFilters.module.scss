@@ -16,9 +16,8 @@
 }
 
 .label {
-  font-family: var(--font-condensed);
   font-size: 14px;
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-bold);
   color: var(--text-primary);
   white-space: nowrap;
 }
@@ -34,7 +33,6 @@
   gap: var(--spacing-sm);
   padding: 8px var(--spacing-md);
   min-width: 220px;
-  font-family: var(--font-condensed);
   font-size: 14px;
   font-weight: var(--fw-medium);
   color: var(--text-primary);
@@ -74,7 +72,6 @@
 .dropdownItem {
   width: 100%;
   padding: 10px var(--spacing-md);
-  font-family: var(--font-condensed);
   font-size: 14px;
   font-weight: var(--fw-medium);
   color: var(--text-primary);
@@ -113,9 +110,8 @@
 }
 
 .priceLabel {
-  font-family: var(--font-condensed);
   font-size: 14px;
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-bold);
   color: var(--text-primary);
   white-space: nowrap;
 }
@@ -123,7 +119,6 @@
 .priceInput {
   width: 80px;
   padding: 6px 12px;
-  font-family: var(--font-condensed);
   font-size: 14px;
   color: var(--text-primary);
   background: var(--background);
@@ -178,7 +173,6 @@
   display: inline-block;
   padding: 6px 12px;
   min-width: 50px;
-  font-family: var(--font-condensed);
   font-size: 14px;
   font-weight: var(--fw-bold);
   color: var(--text-primary);

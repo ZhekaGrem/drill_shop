@@ -55,8 +55,8 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
         <CloudinaryImage
           src={imageUrl || '/assets/img/placeholder-product.jpg'}
           alt={item.product.name}
-          width={200}
-          height={360}
+          width={170}
+          height={460}
           className={`${styles.image} `}
         />
 
@@ -134,8 +134,8 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
       <CloudinaryImage
         src={imageUrl || '/assets/img/placeholder-product.jpg'}
         alt={item.product.name}
-        width={260}
-        height={360}
+        width={170}
+        height={460}
         className={styles.image}
       />
 

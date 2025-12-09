@@ -65,7 +65,7 @@ const FavoriteItemComponent = ({
             onClick={onAddToCart}
             disabled={!product.isInStock || isAddingToCart}
             loading={isAddingToCart}>
-            {product.isInStock ? 'Додати в кошик' : 'Немає в наявності'}
+            {product.isInStock ? 'В кошик' : 'Немає в наявності'}
           </Button>
 
           <Group gap="xs" onClick={onRemove} style={{ cursor: 'pointer' }}>

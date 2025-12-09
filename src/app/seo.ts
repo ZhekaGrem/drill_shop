@@ -142,7 +142,7 @@ export const structuredData = {
       addressLocality: 'Львів',
       addressCountry: 'UA',
     },
-    // sameAs: ['https://www.tiktok.com/@selo_ta_salo', 'https://www.instagram.com/selo_ta_salo'],
+    sameAs: [ 'https://www.instagram.com/r4zyob'],
   }),
 
   website: () => ({

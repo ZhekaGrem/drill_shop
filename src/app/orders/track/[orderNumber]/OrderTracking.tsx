@@ -342,8 +342,8 @@ const OrderTrackingPage: React.FC = () => {
                     <CloudinaryImage
                       src={item.image || '/assets/img/placeholder-product.jpg'}
                       alt={item.productName}
-                      width={60}
-                      height={60}
+                      width={110}
+                      height={110}
                       className={styles.img}
                     />
                   </Group>
@@ -355,20 +355,20 @@ const OrderTrackingPage: React.FC = () => {
               <Title order={3} className={styles.sectionTitle}>
                 СТАТУС ЗАМОВЛЕННЯ
               </Title>
-              <Timeline active={getTimelineActive(order.status)} bulletSize={24}>
-                <Timeline.Item bullet={<IconClock size={12} />} title="Замовлення створено">
+              <Timeline active={getTimelineActive(order.status)} bulletSize={34} >
+                <Timeline.Item bullet={<IconClock size={22} />} title="Замовлення створено">
                   <Text c="dimmed" size="sm">
                     {new Date(order.createdAt).toLocaleString('uk-UA')}
                   </Text>
                 </Timeline.Item>
 
-                <Timeline.Item bullet={<IconCheck size={12} />} title="Підтверджено">
+                <Timeline.Item bullet={<IconCheck size={22} />} title="Підтверджено">
                   <Text c="dimmed" size="sm">
                     {order.status !== 'PENDING' ? 'Замовлення підтверджено менеджером' : 'Очікується'}
                   </Text>
                 </Timeline.Item>
 
-                <Timeline.Item bullet={<IconPackage size={12} />} title="В обробці">
+                <Timeline.Item bullet={<IconPackage size={22} />} title="В обробці">
                   <Text c="dimmed" size="sm">
                     {['PROCESSING', 'SHIPPED', 'DELIVERED'].includes(order.status)
                       ? 'Замовлення збирається на складі'
@@ -376,7 +376,7 @@ const OrderTrackingPage: React.FC = () => {
                   </Text>
                 </Timeline.Item>
 
-                <Timeline.Item bullet={<IconTruck size={12} />} title="Відправлено">
+                <Timeline.Item bullet={<IconTruck size={22} />} title="Відправлено">
                   <Text c="dimmed" size="sm">
                     {['SHIPPED', 'DELIVERED'].includes(order.status)
                       ? 'Замовлення передано перевізнику'
@@ -384,7 +384,7 @@ const OrderTrackingPage: React.FC = () => {
                   </Text>
                 </Timeline.Item>
 
-                <Timeline.Item bullet={<IconCheck size={12} />} title="Доставлено">
+                <Timeline.Item bullet={<IconCheck size={22} />} title="Доставлено">
                   <Text c="dimmed" size="sm">
                     {order.status === 'DELIVERED' ? 'Замовлення успішно доставлено' : 'Очікується'}
                   </Text>

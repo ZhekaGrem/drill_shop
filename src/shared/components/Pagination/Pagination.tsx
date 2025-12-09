@@ -32,7 +32,8 @@ export const Pagination: React.FC<PaginationProps> = ({
         onChange={onPageChange}
         withEdges // Показувати кнопки "на початок" і "в кінець"
         boundaries={1} // Кількість сторінок по краях
-        color="yellow" // Використовуємо основний колір з теми
+        color="red" // Використовуємо основний колір з теми
+      
       />
     </Group>
   );

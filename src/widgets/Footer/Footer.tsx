@@ -70,8 +70,12 @@ export function Footer() {
       {/* Bottom section */}
       <Container size="lg" className={styles.container}>
         <div className={styles.bottomSection}>
-          <Text className={styles.copyright}>© {currentYear} DrillShop.com</Text>
+          <Text className={styles.copyright}>© {currentYear} shchilnuidrill.com</Text>
 
+          <div className={styles.designerSection}>
+            <span>Developed</span>
+            <p>L&H.STUDIO</p>
+          </div>
           <div className={styles.designerSection}>
             <span>Designed by</span>
             <a href="https://www.behance.net/d-okuniev" target="_blank" rel="noopener noreferrer">

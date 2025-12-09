@@ -22,8 +22,8 @@ const CheckoutCardComponent = ({ item }: CheckoutCardProps) => {
       <CloudinaryImage
         src={imageUrl || '/assets/img/placeholder-product.jpg'}
         alt={item.product.name}
-        width={80}
-        height={80}
+        width={180}
+        height={180}
         className={styles.image}
       />
 

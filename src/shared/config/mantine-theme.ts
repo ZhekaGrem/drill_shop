@@ -93,6 +93,36 @@ export const mantineTheme = createTheme({
     Textarea: {
       styles: inputStyles,
     },
+    Select: {
+      styles: {
+        ...inputStyles,
+        dropdown: {
+          backgroundColor: 'var(--background)',
+          border: 'none',
+          borderBottom: '2px solid var(--text-primary)',
+          borderRadius: 0,
+          boxShadow: 'none',
+        },
+        option: {
+          padding: 'var(--spacing-sm) var(--spacing-md)',
+          color: 'var(--text-primary)',
+          borderBottom: '1px solid var(--border-color)',
+          '&:hover': {
+            backgroundColor: 'var(--background-secondary)',
+          },
+          '&[data-selected]': {
+            backgroundColor: 'var(--background-secondary)',
+          },
+        },
+      },
+    },
+    Paper: {
+      styles: {
+        root: {
+          backgroundColor: 'var(--background)',
+        },
+      },
+    },
     Notification: {
       styles: {
         root: {

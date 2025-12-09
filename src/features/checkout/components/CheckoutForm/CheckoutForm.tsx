@@ -399,6 +399,7 @@ const CheckoutFormComponent = () => {
               label="Не дзвонити для уточнення"
               checked={doNotCall}
               onChange={(e) => setDoNotCall(e.currentTarget.checked)}
+              className={styles.btnConfirm}
               radius={0}
               styles={{
                 root: { padding: 'var(--spacing-sm) var(--spacing-md)' },
@@ -411,6 +412,7 @@ const CheckoutFormComponent = () => {
               size="lg"
               variant="primary"
               fullWidth
+              className={styles.btnConfirm}
               loading={isSubmitting}
               disabled={isCartLoading || items.length === 0}>
               {isSubmitting ? 'Створення замовлення...' : 'Підтвердити замовлення'}
@@ -502,6 +504,43 @@ const CheckoutFormComponent = () => {
                     : calculations.totalAmount
                 )}
               </span>
+            </div>
+
+            <Checkbox
+              label="Не дзвонити для уточнення"
+              checked={doNotCall}
+              onChange={(e) => setDoNotCall(e.currentTarget.checked)}
+              className={styles.btnConfirmPhone}
+              radius={0}
+              styles={{
+                root: { padding: 'var(--spacing-sm) var(--spacing-md)' },
+                label: { fontFamily: 'var(--font-condensed)', fontSize: 'var(--text-sm)' },
+              }}
+            />
+             <Button
+              type="submit"
+              size="lg"
+              variant="primary"
+              fullWidth
+              className={styles.btnConfirmPhone}
+              loading={isSubmitting}
+              disabled={isCartLoading || items.length === 0}>
+              {isSubmitting ? 'Створення замовлення...' : 'Підтвердити замовлення'}
+            </Button>
+
+            <div className={styles.agreementNoticePhone}>
+              <IconAlertCircle size={20} />
+              <p className={styles.agreementText}>
+                Натискаючи "Підтвердити замовлення", ви погоджуєтесь з умовами{' '}
+                <Link href="/public-offer" className={styles.agreementLink}>
+                  публічної оферти
+                </Link>{' '}
+                та{' '}
+                <Link href="/privacy-policy" className={styles.agreementLink}>
+                  політики конфіденційності
+                </Link>
+                .
+              </p>
             </div>
           </div>
         </div>

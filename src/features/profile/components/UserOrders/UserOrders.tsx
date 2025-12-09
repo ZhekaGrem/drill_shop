@@ -195,6 +195,7 @@ const UserOrders = () => {
                 p="md"
                 radius="md"
                 style={{
+                  backgroundColor: 'var(--background-light)',
                   textDecoration: 'none',
                   color: 'inherit',
                   transition: 'all 0.2s ease',
@@ -204,7 +205,7 @@ const UserOrders = () => {
                   root: {
                     '&:active': {
                       transform: 'scale(0.98)',
-                      backgroundColor: 'var(--mantine-color-gray-0)',
+                      backgroundColor: 'var(--background)',
                     },
                   },
                 }}>

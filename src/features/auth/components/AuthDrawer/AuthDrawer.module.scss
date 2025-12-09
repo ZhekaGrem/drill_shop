@@ -59,11 +59,11 @@
 
     &:hover {
       background: var(--background-secondary) !important;
-      color: var(--text-primary) !important;
+      color: var(--text-inverse) !important;
     }
 
     &[data-active='true'] {
-      color: var(--text-secondary) !important;
+      color: var(--text-inverse);
       border-bottom: var(--border-width) solid var(--border-color) !important;
       font-weight: var(--fw-black) !important;
     }

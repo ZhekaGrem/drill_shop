@@ -10,9 +10,7 @@ import {
   Paper,
   Divider,
   Center,
-  Loader,
-  Breadcrumbs,
-  Anchor,
+ 
 } from '@mantine/core';
 import { IconShoppingCart } from '@tabler/icons-react';
 import { ArrowLeft } from '@/shared/components/Svg';
@@ -58,7 +56,7 @@ export default function CartPage() {
 
         {items.length > 0 && (
           <Button variant="red" size="promo" loading={isClearingCart} onClick={clearCart}>
-            Очистити кошикА
+            Очистити
           </Button>
         )}
       </Group>

@@ -12,6 +12,7 @@
   }
 }
 
+
 .cart {
   border-top: var(--border-width) solid var(--primary);
   display: flex;
@@ -68,9 +69,10 @@
   }
 
   .summary {
-    position: static !important;
-    padding: var(--spacing-md) !important;
+    position: static ;
     margin-top: var(--spacing-md);
+    justify-content: center;
+     width: 100%;
   }
 
   .totalSection {

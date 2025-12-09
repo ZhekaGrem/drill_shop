@@ -7,10 +7,10 @@ import styles from './chatWidget.module.scss';
 
 // Contact links - replace with real ones
 const contactLinks = {
-  telegram: 'https://t.me/yourusername',
-  instagram: 'https://instagram.com/yourusername',
-  phone: '+380123456789',
-  email: 'info@yourstore.com',
+  telegram: 'https://t.me/shchilnuidrill?direct',
+  instagram: 'https://www.instagram.com/r4zyob',
+  phone: '+380000000000',
+  email: 'team@shchilnuidrill.com',
 };
 
 export function ChatWidget() {

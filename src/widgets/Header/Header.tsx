@@ -130,11 +130,10 @@ const MobileMenu = React.memo(
       { label: 'КАТАЛОГ', href: '/catalog' },
       { label: 'КОНТАКТИ', href: '/contact' },
       { label: 'ПРО НАС', href: '/about' },
-      { label: 'Розпродаж', href: '/catalog?sale=true' },
-      { label: 'ТОП продажів', href: '/catalog?sort=popularity_desc' },
-      { label: 'Футболки', href: '/catalog?category=t-shirts' },
-      { label: 'Худі', href: '/catalog?category=hoodies' },
-      { label: 'Кепки', href: '/catalog?category=caps' },
+      { label: 'Розпродаж', href: '/catalog?promo=true' },
+      // { label: 'Футболки', href: '/catalog?category=t-shirts' },
+      // { label: 'Худі', href: '/catalog?category=hoodies' },
+      // { label: 'Кепки', href: '/catalog?category=caps' },
     ];
 
     return (
