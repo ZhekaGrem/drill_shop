@@ -355,7 +355,7 @@ const OrderTrackingPage: React.FC = () => {
               <Title order={3} className={styles.sectionTitle}>
                 СТАТУС ЗАМОВЛЕННЯ
               </Title>
-              <Timeline active={getTimelineActive(order.status)} bulletSize={34} >
+              <Timeline active={getTimelineActive(order.status)} bulletSize={34}>
                 <Timeline.Item bullet={<IconClock size={22} />} title="Замовлення створено">
                   <Text c="dimmed" size="sm">
                     {new Date(order.createdAt).toLocaleString('uk-UA')}

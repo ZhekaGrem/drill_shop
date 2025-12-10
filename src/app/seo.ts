@@ -142,7 +142,7 @@ export const structuredData = {
       addressLocality: 'Львів',
       addressCountry: 'UA',
     },
-    sameAs: [ 'https://www.instagram.com/r4zyob'],
+    sameAs: ['https://www.instagram.com/r4zyob'],
   }),
 
   website: () => ({

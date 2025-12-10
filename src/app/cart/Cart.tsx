@@ -1,17 +1,7 @@
 // src/app/(shop)/cart/page.tsx
 
 'use client';
-import {
-  Container,
-  Title,
-  Stack,
-  Group,
-  Text,
-  Paper,
-  Divider,
-  Center,
- 
-} from '@mantine/core';
+import { Container, Title, Stack, Group, Text, Paper, Divider, Center } from '@mantine/core';
 import { IconShoppingCart } from '@tabler/icons-react';
 import { ArrowLeft } from '@/shared/components/Svg';
 import { useCart } from '@/features/cart/hooks/useCart';

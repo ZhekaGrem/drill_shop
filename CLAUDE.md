@@ -367,6 +367,7 @@ src/features/myfeature/
 ## ⚠️ Важливі нотатки
 
 - Проект використовує **Next.js App Router** (не Pages Router)
+- не використовувати any 
 - **Supabase** - провайдер аутентифікації (розумійте SSR helper інтеграцію)
 - Build поки що має `ignoreBuildErrors: false` - виправляйте помилки локально
 - Feature-модулі мають мінімізувати cross-feature залежності

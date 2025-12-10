@@ -17,8 +17,8 @@
 
 // ============ IMAGE ============
 .image {
-    width: 120px;
-    height: 120px;
+  width: 120px;
+  height: 120px;
   border-radius: 0;
   object-fit: cover;
   flex-shrink: 0;
@@ -92,8 +92,6 @@
 
 // ============ RESPONSIVE ============
 @media (max-width: 480px) {
- 
-
   .image {
     width: 120px;
     height: 120px;

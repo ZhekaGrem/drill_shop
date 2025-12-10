@@ -10,7 +10,7 @@ export const siteConfig = {
     phone: '+380 (93) 000000000',
     phone2: '+380 (93) 0000000',
     email: 'info@meatshop.ua',
-    address: "вул. Дрілл, 123, м. Львів, 79000",
+    address: 'вул. Дрілл, 123, м. Львів, 79000',
     city: 'Львів',
     country: 'Україна',
   },

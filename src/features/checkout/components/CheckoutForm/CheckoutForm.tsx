@@ -517,7 +517,7 @@ const CheckoutFormComponent = () => {
                 label: { fontFamily: 'var(--font-condensed)', fontSize: 'var(--text-sm)' },
               }}
             />
-             <Button
+            <Button
               type="submit"
               size="lg"
               variant="primary"
