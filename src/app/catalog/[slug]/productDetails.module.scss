@@ -439,11 +439,6 @@
     font-family: var(--font-condensed);
     font-weight: var(--fw-black);
     text-transform: uppercase;
-
-    &__success {
-      background: var(--text-green) !important;
-      border-color: var(--border-color) !important;
-    }
   }
 
   .buyNowButton {

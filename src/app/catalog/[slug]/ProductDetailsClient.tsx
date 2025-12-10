@@ -642,10 +642,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   variant="secondary"
                   size="lg"
                   className={styles.buyNowButton}
-                  onClick={() => {
-                    handleAddToCart();
-                    setTimeout(() => router.push('/cart'), 500);
-                  }}
+                  onClick={handleAddToCart}
                   disabled={!isInStock}>
                   <IconCart3 /> {getButtonText()}
                 </Button>
@@ -653,7 +650,11 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   variant="primary"
                   size="lg"
                   className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
-                  onClick={handleAddToCart}
+                  
+                  onClick={() => {
+                    handleAddToCart();
+                    setTimeout(() => router.push('/checkout'), 500);
+                  }}
                   disabled={!isInStock}>
                   КУПИТИ ЗАРАЗ
                 </Button>
