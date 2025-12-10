@@ -168,16 +168,17 @@
 // Картки контактів (другий рядок)
 .contactCard {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  padding: 20px 10px;
+  text-align: center;
   text-decoration: none;
-  color: var(--text-primary);
-  background: var(--background);
+  text-transform: uppercase;
+  color: var(--text-secondary);
   border: var(--border-width) solid var(--border-color);
   transition: all 0.3s;
   grid-row: 2;
+  gap: var( --spacing-md);
 
   &:nth-child(3) {
     grid-column: 1;
@@ -199,12 +200,11 @@
     border-right: var(--border-width) solid var(--border-color);
     border-top: var(--border-width) solid var(--border-color);
   }
-
-  svg {
-    color: var(--text-green);
-    margin-bottom: 16px;
-    transition: transform 0.3s;
+  @media (max-width: 675px) {
+    border-right: none;
+    border-bottom: none;
   }
+ 
 
   span {
     font-size: var(--text-lg);

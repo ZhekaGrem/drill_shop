@@ -1,10 +1,8 @@
 // src/widgets/Footer/Footer.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Container, Stack, Text } from '@mantine/core';
-import IconInstagram from './IconInstagram';
-import IconTelegram from './IconTelegram';
+import {IconTelegram,IconInstagram} from '@/shared/components/Svg';
 import Link from 'next/link';
 import styles from './footer.module.scss';
 import { siteConfig } from '@/shared/config/site';

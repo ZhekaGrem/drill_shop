@@ -7,3 +7,6 @@ export { IconCart } from './IconCart2';
 export { IconCart3 } from './IconCart3';
 export { IconUser } from './IconUser';
 export { IconTrash } from './IconTrash';
+export { IconPhone } from './IconPhone';
+export { IconInstagram } from './IconInstagram';
+export { IconTelegram } from './IconTelegram';

@@ -62,6 +62,7 @@ const FavoriteItemComponent = ({
         {/* Рядок 3: Додати в кошик (зліва) | Видалення (справа) */}
         <Group justify="space-between" align="center" className={styles.bottomControls}>
           <Button
+            size='sm'
             onClick={onAddToCart}
             disabled={!product.isInStock || isAddingToCart}
             loading={isAddingToCart}>
@@ -72,7 +73,6 @@ const FavoriteItemComponent = ({
             <ActionIcon className={styles.trashBtn}>
               <IconTrash size={16} />
             </ActionIcon>
-            <Text className={styles.deleteText}>Видалити</Text>
           </Group>
         </Group>
       </Stack>

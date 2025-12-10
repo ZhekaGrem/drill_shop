@@ -7,8 +7,8 @@ export const siteConfig = {
   description: "Найкраща якість м'ясних продуктів від ферми до вашого столу.",
   url: 'https://shchilnuidrill.com',
   contacts: {
-    phone: '+380 (93) 000000000',
-    phone2: '+380 (93) 0000000',
+    phone: '+38 (093) 000000000',
+    phone2: '+380 (093) 0000000',
     email: 'info@meatshop.ua',
     address: 'вул. Дрілл, 123, м. Львів, 79000',
     city: 'Львів',

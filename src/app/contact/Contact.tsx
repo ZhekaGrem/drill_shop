@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { sendContactMessage } from '@/shared/api/contact';
-import { IconPhone, IconBrandInstagram, IconBrandTelegram } from '@tabler/icons-react';
+import { IconTelegram, IconInstagram, IconPhone } from '@/shared/components/Svg';
 import { Button } from '@/shared/components/Button/Button';
 import styles from './contact.module.scss';
 import { siteConfig } from '@/shared/config/site';
@@ -122,7 +122,7 @@ const Contact = () => {
           target="_blank"
           rel="noopener noreferrer"
           className={styles.contactCard}>
-          <IconBrandInstagram size={48} />
+          <IconInstagram size={25} />
           <span>Instagram</span>
         </a>
 
@@ -131,12 +131,12 @@ const Contact = () => {
           target="_blank"
           rel="noopener noreferrer"
           className={styles.contactCard}>
-          <IconBrandTelegram size={48} />
+          <IconTelegram size={25} />
           <span>Telegram</span>
         </a>
 
         <a href={`tel:${siteConfig.contacts.phone.replace(/\s/g, '')}`} className={styles.contactCard}>
-          <IconPhone size={48} />
+          <IconPhone size={25} />
           <span>{siteConfig.contacts.phone}</span>
         </a>
       </section>

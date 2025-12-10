@@ -158,7 +158,7 @@
   font-weight: 600;
   font-size: 0.9rem;
   text-transform: uppercase;
-   padding: 5px;
+  padding: 5px;
 }
 
 .trashBtn {
@@ -176,7 +176,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
- 
 }
 
 // Mobile responsive
@@ -234,7 +233,7 @@
   .deleteText {
     font-size: 0.8rem;
   }
-  .imageCartPage{
+  .imageCartPage {
     max-width: 170px;
   }
 }
