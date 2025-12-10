@@ -31,11 +31,12 @@ export const baseMetadata: Metadata = {
     'drill shop',
     'drill мерч',
     'український мерч',
+    'R4zyob',
   ],
 
   openGraph: {
     title: 'Drill shop',
-    description: 'Офіційний магазин мерчу.  Щільний мерч для вас',
+    description: 'Офіційний магазин мерчу.  Щільний мерч для вас. ніжна оксана nizhna oksana ',
     url: 'https://shchilnuidrill.com',
     siteName: 'Drill shop',
     locale: 'uk_UA',
@@ -45,13 +46,13 @@ export const baseMetadata: Metadata = {
         url: '/logo/logo.jpg',
         width: 1200,
         height: 630,
-        alt: 'Drill shop',
+        alt: 'Drill shop ніжна оксана nizhna oksana',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Drill shop',
+    title: 'Drill shop ніжна оксана nizhna oksana',
     description: 'Офіційний мерч. Доставка по Україні.',
     images: ['https://shchilnuidrill.com/logo/logo.jpg'],
   },
@@ -88,7 +89,7 @@ export const baseMetadata: Metadata = {
 export const pageMetadata = {
   home: (): Metadata => ({
     title: 'Головна',
-    description: 'Замовити мерч онлайн. Щільний мерч від офіційного магазину. Доставка по Україні.',
+    description: 'Замовити мерч онлайн. Щільний мерч від офіційного магазину. Доставка по Україні. ніжна оксана nizhna oksana',
     alternates: {
       canonical: 'https://shchilnuidrill.com',
     },
