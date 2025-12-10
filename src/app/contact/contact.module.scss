@@ -178,7 +178,7 @@
   border: var(--border-width) solid var(--border-color);
   transition: all 0.3s;
   grid-row: 2;
-  gap: var( --spacing-md);
+  gap: var(--spacing-md);
 
   &:nth-child(3) {
     grid-column: 1;
@@ -204,7 +204,6 @@
     border-right: none;
     border-bottom: none;
   }
- 
 
   span {
     font-size: var(--text-lg);

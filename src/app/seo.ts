@@ -18,11 +18,24 @@ export const baseMetadata: Metadata = {
   },
 
   description:
-    'Drill shop - офіційний магазин стильного мерчу. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні. Щільний Drill для справжніх цінителів.',
+    'Drill shop - офіційний магазин стильного мерчу. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
+  keywords: [
+    'мерч',
+    'ніжна оксана',
+    'nizhna oksana',
+    'Щільний мерч',
+    'Слава КЕДР',
+    'ніжна оксана мерч',
+    'кедр мерч',
+    'Badstreet boys',
+    'drill shop',
+    'drill мерч',
+    'український мерч',
+  ],
 
   openGraph: {
     title: 'Drill shop',
-    description: 'Щільний Drill для вас',
+    description: 'Офіційний магазин мерчу.  Щільний мерч для вас',
     url: 'https://shchilnuidrill.com',
     siteName: 'Drill shop',
     locale: 'uk_UA',
@@ -39,7 +52,7 @@ export const baseMetadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Drill shop',
-    description: 'Свіжий дрілл. Доставка по Україні.',
+    description: 'Офіційний мерч. Доставка по Україні.',
     images: ['https://shchilnuidrill.com/logo/logo.jpg'],
   },
   robots: {
@@ -75,7 +88,7 @@ export const baseMetadata: Metadata = {
 export const pageMetadata = {
   home: (): Metadata => ({
     title: 'Головна',
-    description: 'Замовити мерч онлайн. Власне виробництво. Доставка по Україні.',
+    description: 'Замовити мерч онлайн. Щільний мерч від офіційного магазину. Доставка по Україні.',
     alternates: {
       canonical: 'https://shchilnuidrill.com',
     },
@@ -83,9 +96,9 @@ export const pageMetadata = {
 
   catalog: (): Metadata => ({
     title: 'Каталог',
-    description: "Великий вибір свіжого м'яса. Свинина, яловичина, курка. Ціни від виробника.",
+    description: 'Великий вибір мерчу онлайн.  Щільний мерч з доставкою по Україні від офіційного магазину.',
     alternates: {
-      canonical: 'https://shchilnuidrill.com',
+      canonical: 'https://shchilnuidrill.com/catalog',
     },
   }),
 
@@ -100,7 +113,7 @@ export const pageMetadata = {
 
   about: (): Metadata => ({
     title: 'Про нас',
-    description: "Дізнайтеся про нашу ферму. Власне виробництво м'яса. Екологічно чисті продукти.",
+    description: 'Офіційний магазин мерчу Drill shop.  Щільний мерч для справжніх фанатів.',
     alternates: {
       canonical: 'https://shchilnuidrill.com/about',
     },
@@ -135,7 +148,7 @@ export const structuredData = {
     url: 'https://shchilnuidrill.com',
     logo: 'https://shchilnuidrill.com/logo/logo.png',
     image: 'https://shchilnuidrill.com/logo/logo.png',
-    description: 'Фермерський дріл мерч з доставкою по Україні',
+    description: 'Офіційний магазин мерчу. Щільний мерч з доставкою по Україні',
     telephone: '+380930465811',
     address: {
       '@type': 'PostalAddress',

@@ -56,6 +56,10 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     });
   }, [filters.priceMin, filters.priceMax]);
 
+  useEffect(() => {
+    setSelectedCategories(filters.categoryIds || []);
+  }, [filters.categoryIds]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

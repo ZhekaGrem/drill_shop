@@ -2,7 +2,7 @@
 'use client';
 
 import { Container, Stack, Text } from '@mantine/core';
-import {IconTelegram,IconInstagram} from '@/shared/components/Svg';
+import { IconTelegram, IconInstagram } from '@/shared/components/Svg';
 import Link from 'next/link';
 import styles from './footer.module.scss';
 import { siteConfig } from '@/shared/config/site';
