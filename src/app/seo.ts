@@ -89,7 +89,8 @@ export const baseMetadata: Metadata = {
 export const pageMetadata = {
   home: (): Metadata => ({
     title: 'Головна',
-    description: 'Замовити мерч онлайн. Щільний мерч від офіційного магазину. Доставка по Україні. ніжна оксана nizhna oksana',
+    description:
+      'Замовити мерч онлайн. Щільний мерч від офіційного магазину. Доставка по Україні. ніжна оксана nizhna oksana',
     alternates: {
       canonical: 'https://shchilnuidrill.com',
     },

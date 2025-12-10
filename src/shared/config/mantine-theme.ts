@@ -110,7 +110,7 @@ export const mantineTheme = createTheme({
           '&:hover': {
             backgroundColor: 'var(--background-secondary)',
           },
-          '&[data-selected]': {
+          '&[dataSelected]': {
             backgroundColor: 'var(--background-secondary)',
           },
         },

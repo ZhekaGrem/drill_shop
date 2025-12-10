@@ -19,6 +19,7 @@
   background-color: var(--background);
   display: none;
   border: none;
+  color: var(--text-secondary);
   @media (max-width: 768px) {
     display: flex;
 

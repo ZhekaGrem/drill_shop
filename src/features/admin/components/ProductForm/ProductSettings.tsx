@@ -18,17 +18,20 @@ export const ProductSettings = ({ form }: ProductSettingsProps) => {
         <Switch
           label="Активний товар"
           description="Товар буде відображатися у каталозі"
-          {...form.getInputProps('isActive', { type: 'checkbox' })}
+          checked={form.values.isActive}
+          onChange={(event) => form.setFieldValue('isActive', event.currentTarget.checked)}
         />
         <Switch
           label="Рекомендований товар"
           description="Товар буде відображатися у розділі рекомендованих"
-          {...form.getInputProps('isFeatured', { type: 'checkbox' })}
+          checked={form.values.isFeatured}
+          onChange={(event) => form.setFieldValue('isFeatured', event.currentTarget.checked)}
         />
         <Switch
           label="Товар-контейнер для варіантів"
           description="Головний товар не можна буде купити окремо, тільки через вибір варіанту"
-          {...form.getInputProps('hasVariants', { type: 'checkbox' })}
+          checked={form.values.hasVariants}
+          onChange={(event) => form.setFieldValue('hasVariants', event.currentTarget.checked)}
         />
       </Stack>
     </Card>

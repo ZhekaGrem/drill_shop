@@ -269,9 +269,7 @@
   .productGallery {
     display: flex;
 
-    @media (max-width: 768px) {
-      border-right: none;
-    }
+    border-right: var(--border-width) solid var(--border-color);
     &__thumbnails {
       display: flex;
       flex-direction: column;
@@ -292,19 +290,18 @@
       }
 
       img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+      
+        object-fit: contain;
       }
     }
 
     &__main {
       position: relative;
       flex: 1;
-      background: var(--background-light);
+      background: var(--background);
       border-radius: 0;
       overflow: hidden;
-      height: 70vh;
+      
     }
 
     &__mainImageWrapper {
@@ -315,9 +312,8 @@
     }
 
     &__mainImage {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    
+      object-fit: contain;
     }
 
     &__dots {
@@ -472,12 +468,12 @@
   // ============ DESCRIPTION ============
   .productDescription {
     border-top: var(--border-width) solid var(--border-color);
+    border-bottom: var(--border-width) solid var(--border-color);
     padding: var(--spacing-xl);
 
     border-radius: 0;
 
     &__title {
-      font-family: var(--font-heading);
       font-size: var(--text-3xl);
       font-weight: var(--fw-black);
       color: var(--text-primary);
@@ -518,16 +514,15 @@
   // ============ RELATED PRODUCTS ============
   .relatedProducts {
     padding: var(--spacing-3xl) 0;
+    margin-bottom: 2px;
 
     &__title {
       padding-top: 20px;
-      font-family: var(--font-heading);
       font-size: var(--text-3xl);
       font-weight: var(--fw-black);
       color: var(--text-primary);
       margin: 0 0 var(--spacing-xl) 0;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
 
     &__grid {
@@ -636,7 +631,7 @@
 
     .productGallery {
       flex-direction: column;
-
+      border-right: none;
       // Головна картинка зверху
       &__main {
         order: 1;
@@ -738,7 +733,6 @@
     .productDescription {
       margin-top: var(--spacing-lg);
       padding: var(--spacing-md);
-      border-top: var(--border-width) solid var(--border-color);
     }
 
     .productDescription__title {

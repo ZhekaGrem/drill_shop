@@ -51,8 +51,8 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
       quantity: product?.quantity || 0,
       unit: product?.unit || 'PIECE',
       isActive: product?.isActive !== false,
-      isFeatured: product?.isFeatured === true,
-      hasVariants: product?.hasVariants === true,
+      isFeatured: Boolean(product?.isFeatured),
+      hasVariants: Boolean(product?.hasVariants),
       categoryIds: extractCategoryIds(product?.categories || []),
       options: product?.options || {},
       promoType: product?.promoType || null,
@@ -108,6 +108,33 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
     }
     return [];
   });
+
+  // Reset form when product changes
+  useEffect(() => {
+    if (product?.id) {
+      form.setValues({
+        sku: product.sku || '',
+        name: product.name || '',
+        slug: product.slug || '',
+        description: product.description || '',
+        shortDescription: product.shortDescription || '',
+        price: product.price || 0,
+        comparePrice: product.comparePrice || undefined,
+        costPrice: product.costPrice || undefined,
+        unitValue: product.unitValue || undefined,
+        quantity: product.quantity || 0,
+        unit: product.unit || 'PIECE',
+        isActive: product.isActive !== false,
+        isFeatured: Boolean(product.isFeatured),
+        hasVariants: Boolean(product.hasVariants),
+        categoryIds: extractCategoryIds(product.categories || []),
+        options: product.options || {},
+        promoType: product.promoType || null,
+        promoConfig: product.promoConfig || null,
+        promoEndsAt: product.promoEndsAt ? new Date(product.promoEndsAt) : null,
+      });
+    }
+  }, [product?.id, product?.hasVariants, product?.isFeatured, product?.isActive]);
 
   // Auto-generate slug from name
   useEffect(() => {
