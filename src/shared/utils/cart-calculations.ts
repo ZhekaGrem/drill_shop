@@ -91,7 +91,7 @@ export const formatPrice = (price: number): string => {
     style: 'currency',
     currency: 'UAH',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 0,
   }).format(price);
 };
 
