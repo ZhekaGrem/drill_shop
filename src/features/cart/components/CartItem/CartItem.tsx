@@ -134,9 +134,9 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
       <CloudinaryImage
         src={imageUrl || '/assets/img/placeholder-product.jpg'}
         alt={item.product.name}
-        width={170}
+        width={200}
         height={460}
-        className={styles.image}
+        className={`${styles.image} ${styles.imageCartPage}`}
       />
 
       {/* Інформація про товар */}
@@ -200,7 +200,7 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
             </button>
           </div>
 
-          <Group gap="xs" onClick={handleRemove} style={{ cursor: 'pointer' }}>
+          <Group gap="xs" onClick={handleRemove} style={{ cursor: 'pointer' }} className={styles.deleteGroup}>
             <ActionIcon className={styles.trashBtn} loading={isRemovingItem}>
               <IconTrash size={16} />
             </ActionIcon>

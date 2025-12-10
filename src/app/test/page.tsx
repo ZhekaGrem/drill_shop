@@ -17,7 +17,7 @@ const OrderTestButtons = () => {
   // 2. Формування тексту повідомлення
   const generateMessage = () => {
     const itemsList = orderData.items.map((item) => `• ${item}`).join('\n');
-    
+
     return `ЗАМОВЛЕННЯ: ${orderData.id}
 Клієнт: ${orderData.clientName}
 Телефон: ${orderData.phone}
@@ -32,7 +32,7 @@ ${itemsList}
   };
 
   // 3. Обробка кліку
-  const handleOrderClick = (messenger:any) => {
+  const handleOrderClick = (messenger: any) => {
     const text = generateMessage();
     const encodedText = encodeURIComponent(text);
     const managerPhone = '380938187709'; // Без плюса для лінків
@@ -43,14 +43,14 @@ ${itemsList}
       // Спроба універсального лінка для Viber.
       // viber://chat?number=%2B38...&draft=... працює краще для конкретного номера
       // viber://forward?text=... працює краще для вставки тексту, але треба вибирати контакт
-      
+
       // Використовуємо варіант з номером (найбільш прямий), але є ризик, що draft не спрацює на iOS
       url = `viber://chat?number=%2B${managerPhone}&draft=${encodedText}`;
     } else if (messenger === 'whatsapp') {
       // WhatsApp найнадійніший для тексту
       url = `https://wa.me/${managerPhone}?text=${encodedText}`;
     } else if (messenger === 'telegram') {
-        url = `https://t.me/+${managerPhone}?text=${encodedText}`;
+      url = `https://t.me/+${managerPhone}?text=${encodedText}`;
     }
 
     // Відкриваємо в новій вкладці
@@ -58,13 +58,14 @@ ${itemsList}
   };
 
   return (
-    <div style={{ 
-      padding: '20px', 
-      border: '2px dashed red', 
-      margin: '20px 0', 
-      background: '#fff0f0',
-      borderRadius: '8px' 
-    }}>
+    <div
+      style={{
+        padding: '20px',
+        border: '2px dashed red',
+        margin: '20px 0',
+        background: '#fff0f0',
+        borderRadius: '8px',
+      }}>
       <h3 style={{ marginTop: 0, color: '#c00' }}>ТЕСТОВА ПАНЕЛЬ (PROD TEST)</h3>
       <p style={{ fontSize: '14px', marginBottom: '15px' }}>
         Натисніть, щоб перевірити передачу тексту замовлення в месенджер.
@@ -82,9 +83,8 @@ ${itemsList}
             borderRadius: '50px',
             cursor: 'pointer',
             fontWeight: 'bold',
-            fontSize: '16px'
-          }}
-        >
+            fontSize: '16px',
+          }}>
           Замовити через Viber
         </button>
 
@@ -99,15 +99,15 @@ ${itemsList}
             borderRadius: '50px',
             cursor: 'pointer',
             fontWeight: 'bold',
-            fontSize: '16px'
-          }}
-        >
+            fontSize: '16px',
+          }}>
           Замовити через WhatsApp
         </button>
       </div>
-      
+
       <p style={{ fontSize: '12px', color: '#666', marginTop: '10px' }}>
-        *Примітка: Якщо Viber не відкривається на ПК, значить він не встановлений. Якщо на iPhone відкрився пустий чат — це обмеження iOS.
+        *Примітка: Якщо Viber не відкривається на ПК, значить він не встановлений. Якщо на iPhone відкрився
+        пустий чат — це обмеження iOS.
       </p>
     </div>
   );

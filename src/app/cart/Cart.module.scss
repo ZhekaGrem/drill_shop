@@ -49,11 +49,11 @@
 @media (max-width: 768px) {
   .containerCart {
     &__link {
-      gap: 12px;
+      gap: 8px;
     }
 
     &__title {
-      font-size: var(--text-2xl);
+      font-size: var(--text-1xl);
     }
   }
 

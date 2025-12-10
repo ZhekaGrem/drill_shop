@@ -535,7 +535,6 @@
       grid-template-columns: repeat(3, 370px);
       gap: 0;
       justify-content: center;
-      border-top: var(--border-width) solid var(--border-color);
       @media (max-width: 1200px) {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       }

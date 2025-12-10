@@ -158,6 +158,7 @@
   font-weight: 600;
   font-size: 0.9rem;
   text-transform: uppercase;
+   padding: 5px;
 }
 
 .trashBtn {
@@ -169,6 +170,13 @@
     background: transparent;
     color: var(--accent-red);
   }
+}
+
+.deleteGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
 }
 
 // Mobile responsive
@@ -187,6 +195,7 @@
   .image {
     align-self: stretch;
     object-fit: cover;
+    max-width: 150px;
   }
 
   .info {
@@ -194,7 +203,7 @@
   }
 
   .productName {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
   }
 
   .variantText {
@@ -202,7 +211,7 @@
   }
 
   .currentPrice {
-    font-size: 1rem;
+    font-size: 0.75rem;
   }
 
   .oldPrice {
@@ -218,11 +227,14 @@
     .qtyValue {
       width: 28px;
       height: 28px;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
     }
   }
 
   .deleteText {
     font-size: 0.8rem;
+  }
+  .imageCartPage{
+    max-width: 170px;
   }
 }
