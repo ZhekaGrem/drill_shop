@@ -2,15 +2,14 @@
 import { Metadata, Viewport } from 'next';
 
 // Viewport для мобільної оптимізації
-export const viewport: Viewport = {
+export const siteViewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#FFB800',
 };
 
 // Базова SEO конфігурація
 export const baseMetadata: Metadata = {
-  metadataBase: new URL('https://shchilnuidrill.com'),
+  metadataBase: new URL('https://www.shchilnuidrill.com'),
 
   title: {
     default: 'Drill shop | Щільний Drill для вас',
@@ -56,7 +55,7 @@ export const baseMetadata: Metadata = {
   openGraph: {
     title: 'Drill shop',
     description: 'Офіційний магазин мерчу.  Щільний мерч для вас. ніжна оксана nizhna oksana  Слава КЕДР',
-    url: 'https://shchilnuidrill.com',
+    url: 'https://www.shchilnuidrill.com',
     siteName: 'Drill shop',
     locale: 'uk_UA',
     type: 'website',
@@ -73,7 +72,7 @@ export const baseMetadata: Metadata = {
     card: 'summary_large_image',
     title: 'Drill shop ніжна оксана nizhna oksana',
     description: 'Офіційний мерч. Доставка по Україні.',
-    images: ['https://shchilnuidrill.com/logo/logo.jpg'],
+    images: ['https://www.shchilnuidrill.com/logo/logo.jpg'],
   },
   robots: {
     index: true,
@@ -82,7 +81,7 @@ export const baseMetadata: Metadata = {
 
   icons: {
     icon: [
-      { url: '/favicon.ico', },
+      { url: '/favicon.ico' },
       { url: '/favicon.ico', type: 'image/x-icon' },
       { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
@@ -101,7 +100,7 @@ export const baseMetadata: Metadata = {
   manifest: '/manifest.json',
 
   alternates: {
-    canonical: 'https://shchilnuidrill.com',
+    canonical: 'https://www.shchilnuidrill.com',
   },
 };
 
@@ -112,7 +111,7 @@ export const pageMetadata = {
     description:
       'Замовити мерч онлайн. Щільний мерч від офіційного магазину. Доставка по Україні. ніжна оксана nizhna oksana',
     alternates: {
-      canonical: 'https://shchilnuidrill.com',
+      canonical: 'https://www.shchilnuidrill.com',
     },
   }),
 
@@ -120,7 +119,7 @@ export const pageMetadata = {
     title: 'Каталог',
     description: 'Великий вибір мерчу онлайн.  Щільний мерч з доставкою по Україні від офіційного магазину.',
     alternates: {
-      canonical: 'https://shchilnuidrill.com/catalog',
+      canonical: 'https://www.shchilnuidrill.com/catalog',
     },
   }),
 
@@ -129,7 +128,7 @@ export const pageMetadata = {
     description:
       product.description || `Купити ${product.name}. Ціна від ${product.price} грн. Доставка по Україні.`,
     alternates: {
-      canonical: `https://shchilnuidrill.com/catalog/${product.slug}`,
+      canonical: `https://www.shchilnuidrill.com/catalog/${product.slug}`,
     },
   }),
 
@@ -137,7 +136,7 @@ export const pageMetadata = {
     title: 'Про нас',
     description: 'Офіційний магазин мерчу Drill shop.  Щільний мерч для справжніх фанатів.',
     alternates: {
-      canonical: 'https://shchilnuidrill.com/about',
+      canonical: 'https://www.shchilnuidrill.com/about',
     },
   }),
 
@@ -145,7 +144,7 @@ export const pageMetadata = {
     title: 'Контакти',
     description: 'Контакти Drill shop. Телефони, адреса, графік роботи.',
     alternates: {
-      canonical: 'https://shchilnuidrill.com/contact',
+      canonical: 'https://www.shchilnuidrill.com/contact',
     },
   }),
 
@@ -167,9 +166,9 @@ export const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Drill shop',
-    url: 'https://shchilnuidrill.com',
-    logo: 'https://shchilnuidrill.com/logo/logo.png',
-    image: 'https://shchilnuidrill.com/logo/logo.png',
+    url: 'https://www.shchilnuidrill.com',
+    logo: 'https://www.shchilnuidrill.com/logo/logo.png',
+    image: 'https://www.shchilnuidrill.com/logo/logo.png',
     description: 'Офіційний магазин мерчу. Щільний мерч з доставкою по Україні',
     telephone: '+380930465811',
     address: {
@@ -184,12 +183,12 @@ export const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Drill shop',
-    url: 'https://shchilnuidrill.com',
+    url: 'https://www.shchilnuidrill.com',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://shchilnuidrill.com/catalog?search={search_term_string}',
+        urlTemplate: 'https://www.shchilnuidrill.com/catalog?search={search_term_string}',
       },
       'query-input': 'required name=search_term_string',
     },
@@ -217,7 +216,7 @@ export const structuredData = {
     category: product.category?.name,
     offers: {
       '@type': 'Offer',
-      url: `https://shchilnuidrill.com/catalog/${product.slug}`,
+      url: `https://www.shchilnuidrill.com/catalog/${product.slug}`,
       priceCurrency: 'UAH',
       price: product.price,
       availability: 'https://schema.org/InStock',

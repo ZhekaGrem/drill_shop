@@ -5,7 +5,7 @@ import '@mantine/core/styles.css';
 import { Providers } from '@/shared/providers/Providers';
 import { LayoutWrapper } from './LayoutWrapper';
 import { ErrorBoundary } from '@/shared/providers/ErrorBoundary';
-import { baseMetadata, viewport, structuredData } from './seo';
+import { baseMetadata, siteViewport, structuredData } from './seo';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { JsonLd } from './JsonLd';
 
@@ -46,7 +46,7 @@ const rubikGlitch = Rubik_Glitch({
   display: 'swap',
 });
 
-export { viewport };
+export const viewport = siteViewport;
 export const metadata: Metadata = baseMetadata;
 
 export default function RootLayout({
