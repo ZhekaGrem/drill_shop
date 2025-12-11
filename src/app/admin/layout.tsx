@@ -105,7 +105,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   return (
     <AppShell
-     
       navbar={{
         width: 250,
         breakpoint: 'sm',
@@ -155,7 +154,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 </Menu.Target>
 
                 <Menu.Dropdown>
-                  <Menu.Item leftSection={<IconUserCircle size={16} />} onClick={() => router.push('/profile')}>
+                  <Menu.Item
+                    leftSection={<IconUserCircle size={16} />}
+                    onClick={() => router.push('/profile')}>
                     Профіль
                   </Menu.Item>
                   <Menu.Item leftSection={<IconHome size={16} />} onClick={() => router.push('/')}>
@@ -169,40 +170,37 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               </Menu>
             </Group>
           </Group>
-
-        
         </Stack>
-          {/* Mobile navigation */}
-          <Group
-            gap="xs"
-            p="lg"
-       
-            bg='#000000'
-            hiddenFrom="sm"
-            style={{
-              overflowX: 'auto',
-              flexWrap: 'nowrap',
-            }}>
-            {navItems.map((item) => (
-              <UnstyledButton
-                key={item.href}
-                onClick={() => router.push(item.href)}
-                style={{
-                  padding: '4px 8px',
-                  borderRadius: 4,
-                  background: pathname === item.href ? '#33603b' : 'transparent',
-                  color: pathname === item.href ? '#e6db1b' : '#e0ddca',
-                  whiteSpace: 'nowrap',
-                  fontSize: '12px',
-                  fontWeight: pathname === item.href ? 600 : 400,
-                }}>
-                <Group gap={4}>
-                  <item.icon size={14} />
-                  <Text size="xs">{item.label}</Text>
-                </Group>
-              </UnstyledButton>
-            ))}
-          </Group>
+        {/* Mobile navigation */}
+        <Group
+          gap="xs"
+          p="lg"
+          bg="#000000"
+          hiddenFrom="sm"
+          style={{
+            overflowX: 'auto',
+            flexWrap: 'nowrap',
+          }}>
+          {navItems.map((item) => (
+            <UnstyledButton
+              key={item.href}
+              onClick={() => router.push(item.href)}
+              style={{
+                padding: '4px 8px',
+                borderRadius: 4,
+                background: pathname === item.href ? '#33603b' : 'transparent',
+                color: pathname === item.href ? '#e6db1b' : '#e0ddca',
+                whiteSpace: 'nowrap',
+                fontSize: '12px',
+                fontWeight: pathname === item.href ? 600 : 400,
+              }}>
+              <Group gap={4}>
+                <item.icon size={14} />
+                <Text size="xs">{item.label}</Text>
+              </Group>
+            </UnstyledButton>
+          ))}
+        </Group>
       </AppShell.Header>
 
       <AppShell.Navbar p="md">

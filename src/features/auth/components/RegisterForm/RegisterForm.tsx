@@ -10,7 +10,7 @@ import { TextInput, Group, Stack, Alert, PasswordInput, ScrollArea } from '@mant
 import { IconAlertCircle, IconMail } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { useRouter } from 'next/navigation';
-import {  PhoneInput } from '@/shared/components/Input';
+import { PhoneInput } from '@/shared/components/Input';
 const registerSchema = z.object({
   firstName: z.string().min(1, "Ім'я є обов'язковим").max(50, "Ім'я занадто довге"),
   lastName: z.string().min(1, "Прізвище є обов'язковим").max(50, 'Прізвище занадто довге'),

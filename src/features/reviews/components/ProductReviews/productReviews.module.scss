@@ -37,7 +37,7 @@
   color: var(--text-secondary);
   background: #f8f9fa;
   padding: 0.5rem 1rem;
-  
+
   border: var(--border-width) solid var(--border-color);
 }
 
@@ -55,7 +55,6 @@
 @media (max-width: 768px) {
   .productReviews {
     padding-top: var(--spacing-xl);
-    
   }
 
   .header {

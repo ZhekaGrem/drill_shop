@@ -317,7 +317,7 @@
 
     &__mainImage {
       object-fit: contain;
-      width: 100% ;
+      width: 100%;
       height: auto;
     }
 
@@ -559,8 +559,6 @@
       border-radius: 0;
     }
 
-   
-
     &__title {
       height: 48px;
       margin-bottom: var(--spacing-md);
@@ -734,7 +732,6 @@
 
     // Опис після productDetails
     .productDescription {
-      
       padding: var(--spacing-md);
     }
 
