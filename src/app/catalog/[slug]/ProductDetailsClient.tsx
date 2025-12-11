@@ -650,7 +650,6 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   variant="primary"
                   size="lg"
                   className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
-                  
                   onClick={() => {
                     handleAddToCart();
                     setTimeout(() => router.push('/checkout'), 500);

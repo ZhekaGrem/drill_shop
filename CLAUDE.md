@@ -9,6 +9,18 @@
 **Shop** — це Next.js e-commerce застосунок для продажу
 **Feature-Sliced Design (FSD)** архітектури.
 
+## ⚡ Quick Rules for Development
+
+Before writing code, CHECK:
+- [ ] Використовуєш Mantine props замість inline styles?
+- [ ] Перевірив чи є компонент в `src/shared/components/`?
+- [ ] API виклик через TanStack Query, НЕ напряму в компоненті?
+- [ ] TypeScript типи імпортовані з `src/shared/types/`?
+- [ ] Zustand store оновлюється через actions, НЕ напряму?
+- [ ] Компонент < 150 рядків? (Якщо ні — розділи)
+- [ ] Немає дублювання логіки з інших features?
+- [ ] Path aliases використані (`@/shared`, `@/features`)?
+
 ### Стек технологій
 
 - **Frontend:** Next.js 15, TypeScript, Mantine UI 8.2.8, Zustand, TanStack Query
@@ -45,15 +57,54 @@ npm run format:all  # Форматування + ESLint fix
 
 ## 📁 Структура коду
 
-Проект використовує Feature-Sliced Design з чіткою сепарацією відповідальності:
+## 🏗️ Feature-Sliced Design Rules
 
+### Layer hierarchy (dependencies flow DOWN only):
 ```
-src/
-├── app/                  # Next.js App Router (сторінки та layouts)
-├── features/            # Feature-модулі (Auth, Cart, Catalog, Checkout, тощо)
-├── shared/              # Спільні утиліти, стори, типи, API клієнти
-└── widgets/             # Великі переиспользуємі UI компоненти (Header, Footer)
+app → widgets → features → shared
+ ↓       ↓         ↓         ↓
+Pages  Layout   Business  Utils
 ```
+
+**Strict rules:**
+- ✅ `features/` can import from `shared/`
+- ✅ `widgets/` can import from `features/` and `shared/`
+- ✅ `app/` can import from everything
+- ❌ `shared/` NEVER imports from `features/`
+- ❌ Features NEVER import from other features directly
+- ❌ Circular dependencies = immediate refactor
+
+**Cross-feature communication:**
+```typescript
+// ❌ BAD - direct feature import
+import { CartButton } from '@/features/cart';
+
+// ✅ GOOD - через shared layer або props
+import { useCartStore } from '@/shared/stores/cart';
+// або передай через props з parent component
+```
+
+### Feature structure template:
+```
+src/features/{featureName}/
+├── components/           # Feature UI components
+│   ├── ComponentName.tsx
+│   ├── ComponentName.module.scss
+│   └── index.ts
+├── api/                 # API calls for this feature
+│   └── feature-api.ts
+├── hooks/               # Custom hooks
+│   └── useFeature.ts
+├── types.ts            # Feature-specific types (optional)
+└── index.ts            # Public API (only export what's needed)
+```
+
+**Rules:**
+- Each feature is **self-contained** (can be deleted without breaking others)
+- Export **minimal public API** через `index.ts`
+- Internal files (helpers, utils) = prefix with `_` (e.g., `_helpers.ts`)
+
+
 
 ### Ключові директорії
 
@@ -108,42 +159,212 @@ src/
 
 ## 🏗️ Архітектурні патерни
 
-### Управління станом (Zustand)
+## 🗄️ State Management (Zustand)
 
-Стори знаходяться в `src/shared/stores/`:
+### Store location and naming:
+- **Global stores** → `src/shared/stores/`
+- **Feature stores** → `src/features/{feature}/store.ts` (if feature-specific)
 
+### Store structure pattern:
 ```typescript
-// Приклад використання
-import { useAuthStore } from '@/shared/stores/auth';
-import { useCartStore } from '@/shared/stores/cart';
+// src/shared/stores/example.ts
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-function Component() {
-  const { user, isAuthenticated } = useAuthStore();
-  const { items, addItem } = useCartStore();
-  // ...
+interface ExampleState {
+  // State
+  items: Item[];
+  isLoading: boolean;
+  
+  // Actions (mutations)
+  setItems: (items: Item[]) => void;
+  addItem: (item: Item) => void;
+  clearItems: () => void;
+  
+  // Async actions (with error handling)
+  fetchItems: () => Promise;
 }
+
+export const useExampleStore = create()(
+  persist(
+    (set, get) => ({
+      // Initial state
+      items: [],
+      isLoading: false,
+      
+      // Sync actions
+      setItems: (items) => set({ items }),
+      addItem: (item) => set((state) => ({ 
+        items: [...state.items, item] 
+      })),
+      clearItems: () => set({ items: [] }),
+      
+      // Async actions
+      fetchItems: async () => {
+        set({ isLoading: true });
+        try {
+          const data = await apiCall();
+          set({ items: data, isLoading: false });
+        } catch (error) {
+          console.error('Failed to fetch items:', error);
+          set({ isLoading: false });
+        }
+      },
+    }),
+    { name: 'example-storage' } // localStorage key
+  )
+);
 ```
 
-### API інтеграція
+### Rules:
+- ✅ Use `persist` middleware для даних які треба зберігати між сесіями
+- ✅ Async логіка В store actions (не в компонентах)
+- ✅ Error handling в async actions
+- ❌ НЕ мутуй state напряму — тільки через `set()`
+- ❌ НЕ викликай store actions в render (тільки в useEffect/handlers)
+- ❌ НЕ дублюй server state (products, orders) — використовуй TanStack Query
 
-Всі API виклики використовують налаштований Axios клієнт з `src/shared/api/client.ts`:
+### When to use Zustand vs TanStack Query:
 
-- Автоматично включає Supabase auth токени
-- Централізовані endpoints в `src/shared/api/endpoints.ts`
-- Feature-специфічні API файли (наприклад, `src/features/catalog/api/products.ts`)
+**Zustand** (client state):
+- Auth state (user, isAuthenticated)
+- Cart (local items before checkout)
+- UI state (modals, filters, preferences)
+- Favorites (optimistic updates)
 
-**Приклад:**
+**TanStack Query** (server state):
+- Products list
+- Orders history
+- User profile (from API)
+- Categories tree
 
+## 🌐 API Integration
+
+### API client setup:
+
+**Location:** `src/shared/api/client.ts`
+```typescript
+import axios from 'axios';
+
+export const apiClient = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Request interceptor (add auth token)
+apiClient.interceptors.request.use((config) => {
+  const token = getSupabaseToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Response interceptor (handle errors)
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Handle unauthorized
+    }
+    return Promise.reject(error);
+  }
+);
+```
+
+### Endpoints structure:
+
+**Location:** `src/shared/api/endpoints.ts`
+```typescript
+export const API_ENDPOINTS = {
+  PRODUCTS: {
+    LIST: '/products',
+    DETAIL: (id: string) => `/products/${id}`,
+    SEARCH: '/products/search',
+  },
+  ORDERS: {
+    LIST: '/orders',
+    CREATE: '/orders',
+    DETAIL: (id: string) => `/orders/${id}`,
+  },
+  // ...
+} as const;
+```
+
+### Feature API pattern:
+
+**Location:** `src/features/{feature}/api/feature-api.ts`
 ```typescript
 import { apiClient } from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
+import type { Product, ApiResponse } from '@/shared/types';
 
-// GET запит
-const { data } = await apiClient.get(API_ENDPOINTS.PRODUCTS.LIST);
-
-// POST запит
-await apiClient.post(API_ENDPOINTS.ORDERS.CREATE, orderData);
+export const productApi = {
+  getList: async (params?: ProductFilters): Promise<Product[]> => {
+    const { data } = await apiClient.get<ApiResponse<Product[]>>(
+      API_ENDPOINTS.PRODUCTS.LIST,
+      { params }
+    );
+    return data.data;
+  },
+  
+  getDetail: async (id: string): Promise<Product> => {
+    const { data } = await apiClient.get<ApiResponse<Product>>(
+      API_ENDPOINTS.PRODUCTS.DETAIL(id)
+    );
+    return data.data;
+  },
+};
 ```
+
+### TanStack Query integration:
+
+**Location:** `src/features/{feature}/hooks/useFeatureQuery.ts`
+```typescript
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { productApi } from '../api/product-api';
+
+// Query keys (centralized)
+export const productKeys = {
+  all: ['products'] as const,
+  lists: () => [...productKeys.all, 'list'] as const,
+  list: (filters?: ProductFilters) => [...productKeys.lists(), filters] as const,
+  details: () => [...productKeys.all, 'detail'] as const,
+  detail: (id: string) => [...productKeys.details(), id] as const,
+};
+
+// Query hook
+export const useProducts = (filters?: ProductFilters) => {
+  return useQuery({
+    queryKey: productKeys.list(filters),
+    queryFn: () => productApi.getList(filters),
+    staleTime: 5 * 60 * 1000, // 5 min
+  });
+};
+
+// Mutation hook (with cache invalidation)
+export const useCreateOrder = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: orderApi.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
+    },
+  });
+};
+```
+
+### Rules:
+- ✅ API calls ONLY through `apiClient` (not raw fetch/axios)
+- ✅ Endpoints centralized in `API_ENDPOINTS`
+- ✅ TanStack Query для server state (не Zustand)
+- ✅ Query keys централізовані (`productKeys`, `orderKeys`)
+- ✅ Cache invalidation після mutations
+- ❌ НЕ викликай API напряму в компонентах — тільки через hooks
+- ❌ НЕ дублюй query keys (використовуй helper functions)
 
 ### Feature-модулі
 
@@ -376,65 +597,46 @@ src/features/myfeature/
 
 ---
 
-## 🎨 Правила стилізації
+## 🎨 STRICT STYLING RULES (CRITICAL)
 
-### Пріоритет (від вищого до нижчого)
+### 1. The "Single Source" Rule
+Для кожного окремого HTML-елемента обери **ТІЛЬКИ ОДИН** метод стилізації. ЗАБОРОНЕНО змішувати їх.
 
-1. **Mantine props** — якщо компонент Mantine, використовуй його пропси (`p`, `m`, `bg`, `c`, `fz`, `fw`, тощо)
-2. **SCSS modules** — для кастомних стилів (`ComponentName.module.scss`)
-3. **inline style** — **ТІЛЬКИ** якщо стиль динамічний і залежить від JS змінної в рантаймі
-4. **Перевіряти mantine-theme.ts && globals.css** перед тим як добавляти або доблювати css
+- **Варіант A (Mantine Props):** Для відступів, кольорів, шрифтів, flex/grid лейаутів.
+  - *Приклад:* `<Box p="md" bg="gray.1" display="flex">`
+- **Варіант B (SCSS Module):** Тільки для складних анімацій, псевдо-елементів (`::before`), медіа-запитів, яких немає в Mantine, або каскадних селекторів.
+  - *Приклад:* `<div className={styles.complexCard}>`
+- **Варіант C (Inline Styles):** Тільки для динамічних значень (змінні JS).
+  - *Приклад:* `style={{ width: `${progress}%` }}`
 
-### 🚫 ЗАБОРОНИ стилізації
+### 🚫 HARD FORBIDDEN (ANTI-PATTERNS)
+1. **NO HYBRID STYLING:** Ніколи не пиши `className={styles.box} p="md"`. Якщо є клас — всі стилі пиши в SCSS. Якщо є пропси — не додавай клас.
+2. **NO INLINE STATIC STYLES:** `style={{ marginTop: '10px' }}` -> **BAN**. Використовуй `mt={10}` або `mt="xs"`.
+3. **NO GLOBAL CLASSES:** Ніколи не використовуй глобальні класи (типу `.mb-10`), окрім тих, що в `globals.scss`.
+4. **NO DUPLICATE CSS VARIABLES:** Не створюй `color: #FFB800` в SCSS. Імпортуй тему або використовуй Mantine змінні (`var(--mantine-color-yellow-6)`).
 
-- **НЕ використовуй inline `style={{}}`** якщо можна зробити через Mantine/SCSS
-- **НЕ створюй нові CSS змінні** якщо є в `mantine-theme.ts` або глобальних стилях не добавляй `@extend` в scss так не роби '%button-base'
-- **НЕ дублюй** — перевір чи немає схожого класу в існуючих `.module.scss`
-- **НЕ змішуй підходи** в одному компоненті (або Mantine props, або SCSS — не обидва для одного елемента)
+### 🔍 Styling Algorithm (Follow Step-by-Step)
+Перед написанням стилів:
+1. Чи можу я це зробити через Mantine Props (`m`, `p`, `c`, `bg`, `flex`)? -> **Так?** -> Використовуй Props.
+2. Це потребує `hover`, `focus` або складного позиціонування? -> **Так?** -> Створи `.module.scss`.
+3. Це залежить від runtime змінної? -> **Так?** -> Inline style.
 
-### ✅ Приклади
+### SCSS Structure
+```scss
+// BAD
+.wrapper {
+  padding: 16px; // Use Mantine prop p="md" instead
+  color: #000;   // Use Mantine prop c="black" instead
+}
 
-```tsx
-// ❌ ПОГАНО — inline style для статичних значень
-<Box style={{ padding: '16px', marginBottom: '24px', backgroundColor: '#f5f5f5' }}>
-
-// ✅ ДОБРЕ — Mantine props
-<Box p="md" mb="lg" bg="gray.1">
-
-// ❌ ПОГАНО — inline для кольору який є в темі
-<Text style={{ color: '#FFB800' }}>
-
-// ✅ ДОБРЕ — Mantine color
-<Text c="yellow.6">
-
-// ❌ ПОГАНО — дублювання контейнерів
-<div className={styles.wrapper}>
-  <Box p="md">
-    <div className={styles.inner}>
-
-// ✅ ДОБРЕ — один елемент
-<Box p="md" className={styles.wrapper}>
-```
-
-### Коли inline style допустимий
-
-```tsx
-// ✅ Динамічне значення з JS
-<Box style={{ width: `${progress}%` }}>
-
-// ✅ Значення з API/пропсів
-<Box style={{ backgroundColor: product.color }}>
-
-// ✅ Calculated значення
-<Box style={{ height: `calc(100vh - ${headerHeight}px)` }}>
-```
-
-### Перед стилізацією перевір
-
-1. **Mantine theme** (`src/shared/config/mantine-theme.ts`) — кольори, spacing, typography
-2. **Глобальні змінні** (`globals.scss`) — CSS custom properties
-3. **Існуючі модулі** — можливо клас вже є
-
+// GOOD (Only things Mantine props can't do easily)
+.userAvatar {
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: var(--mantine-shadow-md);
+  }
+}
 ## 📝 Правила роботи з кодом
 
 ### ⚡ Головний принцип
@@ -551,5 +753,224 @@ npm run dev
 - [Supabase Auth](https://supabase.com/docs/guides/auth)
 
 ---
+## 🧩 Component Development Rules
 
-**Успішної розробки! 🎉**
+### Component size limit:
+- **Max 150 lines** per component
+- Якщо більше → розділи на sub-components або extract logic to hooks
+
+### Component structure:
+```typescript
+// 1. Imports (grouped)
+import React from 'react';
+import { Box, Button } from '@mantine/core';
+import { useQuery } from '@tanstack/react-query';
+
+import { useAuthStore } from '@/shared/stores/auth';
+import { formatPrice } from '@/shared/utils/format';
+import type { Product } from '@/shared/types';
+
+import styles from './ProductCard.module.scss';
+
+// 2. Types/Interfaces
+interface ProductCardProps {
+  product: Product;
+  onAddToCart?: (product: Product) => void;
+}
+
+// 3. Component
+export const ProductCard: React.FC<ProductCardProps> = ({ 
+  product, 
+  onAddToCart 
+}) => {
+  // 3.1. Hooks (top of component)
+  const { user } = useAuthStore();
+  const { data, isLoading } = useProductDetails(product.id);
+  
+  // 3.2. Event handlers
+  const handleAddToCart = () => {
+    onAddToCart?.(product);
+  };
+  
+  // 3.3. Early returns
+  if (isLoading) return <Skeleton />;
+  if (!data) return null;
+  
+  // 3.4. Render
+  return (
+    <Box className={styles.card}>
+      <Text>{product.name}</Text>
+      <Button onClick={handleAddToCart}>
+        {formatPrice(product.price)}
+      </Button>
+    </Box>
+  );
+};
+```
+
+### Rules:
+- ✅ Named exports (не default exports для components)
+- ✅ Props interface явно типізований
+- ✅ Hooks на початку компонента
+- ✅ Event handlers перед render
+- ✅ Early returns для loading/error states
+- ❌ НЕ inline functions в JSX (винеси в handlers)
+- ❌ НЕ складна логіка в render — extract to hooks/utils
+- ❌ НЕ useState для server data — використовуй TanStack Query
+
+### When to extract to custom hook:
+```typescript
+// ❌ BAD - logic in component
+function ProductList() {
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  useEffect(() => {
+    setIsLoading(true);
+    fetch('/api/products')
+      .then(res => res.json())
+      .then(setProducts)
+      .finally(() => setIsLoading(false));
+  }, []);
+  
+  return <div>{products.map(...)}</div>;
+}
+
+// ✅ GOOD - logic in custom hook
+function useProducts() {
+  return useQuery({
+    queryKey: ['products'],
+    queryFn: productApi.getList,
+  });
+}
+
+function ProductList() {
+  const { data: products, isLoading } = useProducts();
+  return <div>{products?.map(...)}</div>;
+}
+```
+
+## ⚡ Performance Best Practices
+
+### Image optimization:
+```typescript
+// ✅ GOOD - Next.js Image with Cloudinary
+import Image from 'next/image';
+
+<Image
+  src={getCloudinaryUrl(product.image, { width: 400, quality: 80 })}
+  alt={product.name}
+  width={400}
+  height={300}
+  loading="lazy"
+/>
+
+// ❌ BAD - raw <img>
+<img src={product.image} />
+```
+
+### Code splitting:
+```typescript
+// ✅ GOOD - dynamic import для heavy components
+import dynamic from 'next/dynamic';
+
+const HeavyChart = dynamic(() => import('./HeavyChart'), {
+  loading: () => <Skeleton />,
+  ssr: false, // if client-only
+});
+```
+
+### Memoization:
+```typescript
+// Use мемоізацію ONLY якщо є performance проблема
+
+// ✅ Expensive calculations
+const sortedProducts = useMemo(
+  () => products.sort((a, b) => b.price - a.price),
+  [products]
+);
+
+// ✅ Callbacks passed to child components
+const handleClick = useCallback(
+  (id: string) => {
+    addToCart(id);
+  },
+  [addToCart]
+);
+
+// ❌ НЕ мемоізуй все підряд (premature optimization)
+```
+
+### Bundle size:
+
+- ✅ Use barrel exports обережно (`index.ts` може імпортувати багато)
+- ✅ Tree-shaking friendly imports:
+```typescript
+  // ✅ GOOD
+  import { Button } from '@mantine/core';
+  
+  // ❌ BAD (imports everything)
+  import * as Mantine from '@mantine/core';
+```
+- ✅ Lazy load routes/features коли можливо
+
+
+## 📘 TypeScript Best Practices
+
+### Type location:
+- **Shared types** → `src/shared/types/`
+- **Feature types** → `src/features/{feature}/types.ts`
+- **Component props** → в тому ж файлі що компонент
+
+### Rules:
+- ✅ **NO `any`** (use `unknown` якщо тип невідомий)
+- ✅ **NO type assertions** без потреби (`as`)
+- ✅ Interface для object shapes, Type для unions
+- ✅ Generic types для reusable logic
+- ❌ НЕ duplicate types (import з `@/shared/types`)
+- ❌ НЕ пропускай типи (`implicit any`)
+
+### Examples:
+```typescript
+// ✅ GOOD - explicit types
+interface ProductCardProps {
+  product: Product;
+  onAddToCart: (product: Product) => void;
+  variant?: 'default' | 'compact';
+}
+
+// ✅ GOOD - utility types
+type PartialProduct = Partial<Product>;
+type ProductWithoutId = Omit<Product, 'id'>;
+
+// ❌ BAD - any
+function handleData(data: any) { ... }
+
+// ✅ GOOD - unknown + type guard
+function handleData(data: unknown) {
+  if (isProduct(data)) {
+    // data is Product here
+  }
+}
+```
+
+### API response types:
+```typescript
+// src/shared/types/api.ts
+export interface ApiResponse<T> {
+  data: T;
+  meta?: {
+    page: number;
+    total: number;
+    limit: number;
+  };
+}
+
+export interface ApiError {
+  error: {
+    code: string;
+    message: string;
+    details?: Record<string, unknown>;
+  };
+}
+```
