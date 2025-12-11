@@ -301,7 +301,6 @@
   color: var(--text-primary);
   text-decoration: line-through;
   text-align: center;
-  font-size: var(--text-2xl);
 }
 
 .finalPrice {
@@ -388,8 +387,9 @@
   }
 
   .price,
-  .finalPrice {
-    font-size: 16px;
+  .finalPrice,
+  .originalPrice {
+    font-size: var(--text-base);
   }
 
   .contentPriceVariants {
