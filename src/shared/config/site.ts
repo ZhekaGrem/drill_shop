@@ -3,8 +3,8 @@ import { assets } from './assets';
 
 export const siteConfig = {
   name: 'shchilnui Drill',
-  fullName: "Магазин мерчу топових музиків shchilnui Drill",
-  description: "Найкраща якість мерчу вашого столу.",
+  fullName: 'Магазин мерчу топових музиків shchilnui Drill',
+  description: 'Найкраща якість мерчу вашого столу.',
   url: 'https://shchilnuidrill.com',
   contacts: {
     phone: '+38 (093) 000000000',
