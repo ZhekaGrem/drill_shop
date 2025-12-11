@@ -42,7 +42,10 @@
       "Bash(git commit:*)",
       "Bash(git push)",
       "WebFetch(domain:shchilnuidrill.com)",
-      "WebFetch(domain:selotasalo.shop)"
+      "WebFetch(domain:selotasalo.shop)",
+      "WebFetch(domain:www.shchilnuidrill.com)",
+      "WebFetch(domain:www.google.com)",
+      "WebFetch(domain:t3.gstatic.com)"
     ],
     "deny": [],
     "ask": []

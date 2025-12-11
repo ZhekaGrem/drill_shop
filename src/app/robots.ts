@@ -29,4 +29,3 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: 'https://shchilnuidrill.com/sitemap.xml',
   };
 }
-
