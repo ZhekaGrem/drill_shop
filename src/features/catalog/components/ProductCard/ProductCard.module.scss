@@ -9,7 +9,6 @@
 }
 
 .card {
-  height: 630px; // Фіксована висота всієї карточки
   width: 370px; // Фіксована ширина карточки
   background: var(--background);
   border: var(--border-width) solid var(--border-color);
@@ -302,6 +301,7 @@
   color: var(--text-primary);
   text-decoration: line-through;
   text-align: center;
+  font-size: var(--text-2xl);
 }
 
 .finalPrice {
