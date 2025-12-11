@@ -54,7 +54,7 @@
 .header {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e5e5e5;
+   border-bottom: var(--border-width) solid var(--border-color);
 }
 
 .stats {

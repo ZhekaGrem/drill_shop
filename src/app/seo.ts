@@ -28,6 +28,8 @@ export const baseMetadata: Metadata = {
     'nizhna oksana',
     'Щільний мерч',
     'мерч Слава КЕДР',
+    'мерч КЕДР',
+    'КЕДР мерч',
     'Слава КЕДР',
     'Слава КЕДР мерч',
     'Слава КЕДР футболка',
@@ -42,6 +44,13 @@ export const baseMetadata: Metadata = {
     'R4zyob',
     'мерч R4zyob',
     'R4zyob мерч',
+    'Проклятий хуй мерч',
+    'мерч Проклятий хуй',
+    'Проклятий хуй футболка',
+    'Антон Хендрікс',
+    'пін Ніжна Оксана',
+    'BSB Studio',
+    'BSB Production',
   ],
 
   openGraph: {

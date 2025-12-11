@@ -12,6 +12,7 @@
 ## ⚡ Quick Rules for Development
 
 Before writing code, CHECK:
+
 - [ ] Використовуєш Mantine props замість inline styles?
 - [ ] Перевірив чи є компонент в `src/shared/components/`?
 - [ ] API виклик через TanStack Query, НЕ напряму в компоненті?
@@ -60,6 +61,7 @@ npm run format:all  # Форматування + ESLint fix
 ## 🏗️ Feature-Sliced Design Rules
 
 ### Layer hierarchy (dependencies flow DOWN only):
+
 ```
 app → widgets → features → shared
  ↓       ↓         ↓         ↓
@@ -67,6 +69,7 @@ Pages  Layout   Business  Utils
 ```
 
 **Strict rules:**
+
 - ✅ `features/` can import from `shared/`
 - ✅ `widgets/` can import from `features/` and `shared/`
 - ✅ `app/` can import from everything
@@ -75,6 +78,7 @@ Pages  Layout   Business  Utils
 - ❌ Circular dependencies = immediate refactor
 
 **Cross-feature communication:**
+
 ```typescript
 // ❌ BAD - direct feature import
 import { CartButton } from '@/features/cart';
@@ -85,6 +89,7 @@ import { useCartStore } from '@/shared/stores/cart';
 ```
 
 ### Feature structure template:
+
 ```
 src/features/{featureName}/
 ├── components/           # Feature UI components
@@ -100,11 +105,10 @@ src/features/{featureName}/
 ```
 
 **Rules:**
+
 - Each feature is **self-contained** (can be deleted without breaking others)
 - Export **minimal public API** через `index.ts`
 - Internal files (helpers, utils) = prefix with `_` (e.g., `_helpers.ts`)
-
-
 
 ### Ключові директорії
 
@@ -162,10 +166,12 @@ src/features/{featureName}/
 ## 🗄️ State Management (Zustand)
 
 ### Store location and naming:
+
 - **Global stores** → `src/shared/stores/`
 - **Feature stores** → `src/features/{feature}/store.ts` (if feature-specific)
 
 ### Store structure pattern:
+
 ```typescript
 // src/shared/stores/example.ts
 import { create } from 'zustand';
@@ -175,12 +181,12 @@ interface ExampleState {
   // State
   items: Item[];
   isLoading: boolean;
-  
+
   // Actions (mutations)
   setItems: (items: Item[]) => void;
   addItem: (item: Item) => void;
   clearItems: () => void;
-  
+
   // Async actions (with error handling)
   fetchItems: () => Promise;
 }
@@ -191,14 +197,15 @@ export const useExampleStore = create()(
       // Initial state
       items: [],
       isLoading: false,
-      
+
       // Sync actions
       setItems: (items) => set({ items }),
-      addItem: (item) => set((state) => ({ 
-        items: [...state.items, item] 
-      })),
+      addItem: (item) =>
+        set((state) => ({
+          items: [...state.items, item],
+        })),
       clearItems: () => set({ items: [] }),
-      
+
       // Async actions
       fetchItems: async () => {
         set({ isLoading: true });
@@ -217,6 +224,7 @@ export const useExampleStore = create()(
 ```
 
 ### Rules:
+
 - ✅ Use `persist` middleware для даних які треба зберігати між сесіями
 - ✅ Async логіка В store actions (не в компонентах)
 - ✅ Error handling в async actions
@@ -227,12 +235,14 @@ export const useExampleStore = create()(
 ### When to use Zustand vs TanStack Query:
 
 **Zustand** (client state):
+
 - Auth state (user, isAuthenticated)
 - Cart (local items before checkout)
 - UI state (modals, filters, preferences)
 - Favorites (optimistic updates)
 
 **TanStack Query** (server state):
+
 - Products list
 - Orders history
 - User profile (from API)
@@ -243,6 +253,7 @@ export const useExampleStore = create()(
 ### API client setup:
 
 **Location:** `src/shared/api/client.ts`
+
 ```typescript
 import axios from 'axios';
 
@@ -277,6 +288,7 @@ apiClient.interceptors.response.use(
 ### Endpoints structure:
 
 **Location:** `src/shared/api/endpoints.ts`
+
 ```typescript
 export const API_ENDPOINTS = {
   PRODUCTS: {
@@ -296,6 +308,7 @@ export const API_ENDPOINTS = {
 ### Feature API pattern:
 
 **Location:** `src/features/{feature}/api/feature-api.ts`
+
 ```typescript
 import { apiClient } from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
@@ -303,17 +316,12 @@ import type { Product, ApiResponse } from '@/shared/types';
 
 export const productApi = {
   getList: async (params?: ProductFilters): Promise<Product[]> => {
-    const { data } = await apiClient.get<ApiResponse<Product[]>>(
-      API_ENDPOINTS.PRODUCTS.LIST,
-      { params }
-    );
+    const { data } = await apiClient.get<ApiResponse<Product[]>>(API_ENDPOINTS.PRODUCTS.LIST, { params });
     return data.data;
   },
-  
+
   getDetail: async (id: string): Promise<Product> => {
-    const { data } = await apiClient.get<ApiResponse<Product>>(
-      API_ENDPOINTS.PRODUCTS.DETAIL(id)
-    );
+    const { data } = await apiClient.get<ApiResponse<Product>>(API_ENDPOINTS.PRODUCTS.DETAIL(id));
     return data.data;
   },
 };
@@ -322,6 +330,7 @@ export const productApi = {
 ### TanStack Query integration:
 
 **Location:** `src/features/{feature}/hooks/useFeatureQuery.ts`
+
 ```typescript
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { productApi } from '../api/product-api';
@@ -347,7 +356,7 @@ export const useProducts = (filters?: ProductFilters) => {
 // Mutation hook (with cache invalidation)
 export const useCreateOrder = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: orderApi.create,
     onSuccess: () => {
@@ -358,6 +367,7 @@ export const useCreateOrder = () => {
 ```
 
 ### Rules:
+
 - ✅ API calls ONLY through `apiClient` (not raw fetch/axios)
 - ✅ Endpoints centralized in `API_ENDPOINTS`
 - ✅ TanStack Query для server state (не Zustand)
@@ -600,29 +610,34 @@ src/features/myfeature/
 ## 🎨 STRICT STYLING RULES (CRITICAL)
 
 ### 1. The "Single Source" Rule
+
 Для кожного окремого HTML-елемента обери **ТІЛЬКИ ОДИН** метод стилізації. ЗАБОРОНЕНО змішувати їх.
 
 - **Варіант A (Mantine Props):** Для відступів, кольорів, шрифтів, flex/grid лейаутів.
-  - *Приклад:* `<Box p="md" bg="gray.1" display="flex">`
+  - _Приклад:_ `<Box p="md" bg="gray.1" display="flex">`
 - **Варіант B (SCSS Module):** Тільки для складних анімацій, псевдо-елементів (`::before`), медіа-запитів, яких немає в Mantine, або каскадних селекторів.
-  - *Приклад:* `<div className={styles.complexCard}>`
+  - _Приклад:_ `<div className={styles.complexCard}>`
 - **Варіант C (Inline Styles):** Тільки для динамічних значень (змінні JS).
-  - *Приклад:* `style={{ width: `${progress}%` }}`
+  - _Приклад:_ `style={{ width: `${progress}%` }}`
 
 ### 🚫 HARD FORBIDDEN (ANTI-PATTERNS)
+
 1. **NO HYBRID STYLING:** Ніколи не пиши `className={styles.box} p="md"`. Якщо є клас — всі стилі пиши в SCSS. Якщо є пропси — не додавай клас.
 2. **NO INLINE STATIC STYLES:** `style={{ marginTop: '10px' }}` -> **BAN**. Використовуй `mt={10}` або `mt="xs"`.
 3. **NO GLOBAL CLASSES:** Ніколи не використовуй глобальні класи (типу `.mb-10`), окрім тих, що в `globals.scss`.
 4. **NO DUPLICATE CSS VARIABLES:** Не створюй `color: #FFB800` в SCSS. Імпортуй тему або використовуй Mantine змінні (`var(--mantine-color-yellow-6)`).
 
 ### 🔍 Styling Algorithm (Follow Step-by-Step)
+
 Перед написанням стилів:
+
 1. Чи можу я це зробити через Mantine Props (`m`, `p`, `c`, `bg`, `flex`)? -> **Так?** -> Використовуй Props.
 2. Це потребує `hover`, `focus` або складного позиціонування? -> **Так?** -> Створи `.module.scss`.
 3. Це залежить від runtime змінної? -> **Так?** -> Inline style.
 
 ### SCSS Structure
-```scss
+
+````scss
 // BAD
 .wrapper {
   padding: 16px; // Use Mantine prop p="md" instead
@@ -737,7 +752,7 @@ cp .env.example .env.local
 
 # 3. Запуск
 npm run dev
-```
+````
 
 Детальніше дивись **README.md**.
 
@@ -753,13 +768,16 @@ npm run dev
 - [Supabase Auth](https://supabase.com/docs/guides/auth)
 
 ---
+
 ## 🧩 Component Development Rules
 
 ### Component size limit:
+
 - **Max 150 lines** per component
 - Якщо більше → розділи на sub-components або extract logic to hooks
 
 ### Component structure:
+
 ```typescript
 // 1. Imports (grouped)
 import React from 'react';
@@ -779,23 +797,23 @@ interface ProductCardProps {
 }
 
 // 3. Component
-export const ProductCard: React.FC<ProductCardProps> = ({ 
-  product, 
-  onAddToCart 
+export const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onAddToCart
 }) => {
   // 3.1. Hooks (top of component)
   const { user } = useAuthStore();
   const { data, isLoading } = useProductDetails(product.id);
-  
+
   // 3.2. Event handlers
   const handleAddToCart = () => {
     onAddToCart?.(product);
   };
-  
+
   // 3.3. Early returns
   if (isLoading) return <Skeleton />;
   if (!data) return null;
-  
+
   // 3.4. Render
   return (
     <Box className={styles.card}>
@@ -809,6 +827,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 ```
 
 ### Rules:
+
 - ✅ Named exports (не default exports для components)
 - ✅ Props interface явно типізований
 - ✅ Hooks на початку компонента
@@ -819,12 +838,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 - ❌ НЕ useState для server data — використовуй TanStack Query
 
 ### When to extract to custom hook:
+
 ```typescript
 // ❌ BAD - logic in component
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   useEffect(() => {
     setIsLoading(true);
     fetch('/api/products')
@@ -832,7 +852,7 @@ function ProductList() {
       .then(setProducts)
       .finally(() => setIsLoading(false));
   }, []);
-  
+
   return <div>{products.map(...)}</div>;
 }
 
@@ -853,6 +873,7 @@ function ProductList() {
 ## ⚡ Performance Best Practices
 
 ### Image optimization:
+
 ```typescript
 // ✅ GOOD - Next.js Image with Cloudinary
 import Image from 'next/image';
@@ -870,6 +891,7 @@ import Image from 'next/image';
 ```
 
 ### Code splitting:
+
 ```typescript
 // ✅ GOOD - dynamic import для heavy components
 import dynamic from 'next/dynamic';
@@ -881,14 +903,12 @@ const HeavyChart = dynamic(() => import('./HeavyChart'), {
 ```
 
 ### Memoization:
+
 ```typescript
 // Use мемоізацію ONLY якщо є performance проблема
 
 // ✅ Expensive calculations
-const sortedProducts = useMemo(
-  () => products.sort((a, b) => b.price - a.price),
-  [products]
-);
+const sortedProducts = useMemo(() => products.sort((a, b) => b.price - a.price), [products]);
 
 // ✅ Callbacks passed to child components
 const handleClick = useCallback(
@@ -905,24 +925,27 @@ const handleClick = useCallback(
 
 - ✅ Use barrel exports обережно (`index.ts` може імпортувати багато)
 - ✅ Tree-shaking friendly imports:
-```typescript
-  // ✅ GOOD
-  import { Button } from '@mantine/core';
-  
-  // ❌ BAD (imports everything)
-  import * as Mantine from '@mantine/core';
-```
-- ✅ Lazy load routes/features коли можливо
 
+```typescript
+// ✅ GOOD
+import { Button } from '@mantine/core';
+
+// ❌ BAD (imports everything)
+import * as Mantine from '@mantine/core';
+```
+
+- ✅ Lazy load routes/features коли можливо
 
 ## 📘 TypeScript Best Practices
 
 ### Type location:
+
 - **Shared types** → `src/shared/types/`
 - **Feature types** → `src/features/{feature}/types.ts`
 - **Component props** → в тому ж файлі що компонент
 
 ### Rules:
+
 - ✅ **NO `any`** (use `unknown` якщо тип невідомий)
 - ✅ **NO type assertions** без потреби (`as`)
 - ✅ Interface для object shapes, Type для unions
@@ -931,6 +954,7 @@ const handleClick = useCallback(
 - ❌ НЕ пропускай типи (`implicit any`)
 
 ### Examples:
+
 ```typescript
 // ✅ GOOD - explicit types
 interface ProductCardProps {
@@ -955,6 +979,7 @@ function handleData(data: unknown) {
 ```
 
 ### API response types:
+
 ```typescript
 // src/shared/types/api.ts
 export interface ApiResponse<T> {

@@ -14,7 +14,7 @@ import { Button } from '@/shared/components/Button/Button';
 import { PromoCodeInput } from '../PromoCodeInput/PromoCodeInput';
 import styles from './CheckoutForm.module.scss';
 import Image from 'next/image';
-import { Input, TextareaField } from '@/shared/components/Input/Input';
+import { Input, TextareaField, PhoneInput } from '@/shared/components/Input';
 import { Radio, Checkbox, Alert, Stack } from '@mantine/core';
 import { CheckoutCard } from '../CheckoutCard';
 
@@ -224,13 +224,19 @@ const CheckoutFormComponent = () => {
               {...register('guestEmail')}
             />
 
-            <Input
-              type="tel"
-              label="Телефон"
-              placeholder="+380501234567"
-              required
-              error={errors.shippingAddress?.phone?.message}
-              {...register('shippingAddress.phone')}
+            <Controller
+              control={control}
+              name="shippingAddress.phone"
+              render={({ field }) => (
+                <PhoneInput
+                  label="Телефон"
+                  placeholder="+380 (XX) XXX XX XX"
+                  required
+                  error={errors.shippingAddress?.phone?.message}
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )}
             />
 
             {/* Delivery method selection */}
@@ -519,7 +525,7 @@ const CheckoutFormComponent = () => {
             />
             <Button
               type="submit"
-              size="lg"
+              size="sm"
               variant="primary"
               fullWidth
               className={styles.btnConfirmPhone}

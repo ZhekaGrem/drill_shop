@@ -28,6 +28,31 @@ const Contact = () => {
     },
   });
 
+  const handlePhoneFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (!form.values.phone || form.values.phone.trim() === '') {
+      form.setFieldValue('phone', '+380');
+      setTimeout(() => {
+        if (e.target) {
+          e.target.setSelectionRange(4, 4);
+        }
+      }, 0);
+    }
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    if (!value.startsWith('+380')) {
+      value = '+380';
+    }
+    form.setFieldValue('phone', value);
+  };
+
+  const handlePhoneBlur = () => {
+    if (form.values.phone === '+380') {
+      form.setFieldValue('phone', '');
+    }
+  };
+
   const handleSubmit = async (values: typeof form.values) => {
     setIsSubmitting(true);
 
@@ -99,7 +124,14 @@ const Contact = () => {
 
               <div className={styles.field}>
                 <label>Телефон</label>
-                <input type="tel" placeholder="+380 (XX) XXX XX XX" {...form.getInputProps('phone')} />
+                <input
+                  type="tel"
+                  placeholder="+380 (XX) XXX XX XX"
+                  value={form.values.phone}
+                  onChange={handlePhoneChange}
+                  onFocus={handlePhoneFocus}
+                  onBlur={handlePhoneBlur}
+                />
                 {form.errors.phone && <span className={styles.error}>{form.errors.phone}</span>}
               </div>
 

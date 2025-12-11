@@ -1,7 +1,7 @@
 // src/features/auth/components/RegisterForm/RegisterForm.tsx - ВИПРАВЛЕНО
 'use client';
 
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/shared/stores/auth';
@@ -10,7 +10,7 @@ import { TextInput, Group, Stack, Alert, PasswordInput, ScrollArea } from '@mant
 import { IconAlertCircle, IconMail } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { useRouter } from 'next/navigation';
-
+import {  PhoneInput } from '@/shared/components/Input';
 const registerSchema = z.object({
   firstName: z.string().min(1, "Ім'я є обов'язковим").max(50, "Ім'я занадто довге"),
   lastName: z.string().min(1, "Прізвище є обов'язковим").max(50, 'Прізвище занадто довге'),
@@ -40,6 +40,7 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
   const router = useRouter();
   const {
     register,
+    control,
     handleSubmit,
     setError,
     formState: { errors },
@@ -133,12 +134,18 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
             error={errors.email?.message}
           />
 
-          <TextInput
-            label="Телефон (необов'язково)"
-            placeholder="+380501234567"
-            {...register('phone')}
-            error={errors.phone?.message}
-            description="Формат: +380XXXXXXXXX"
+          <Controller
+            control={control}
+            name="phone"
+            render={({ field }) => (
+              <PhoneInput
+                label="Телефон (необов'язково)"
+                placeholder="+380 (XX) XXX XX XX"
+                value={field.value}
+                onChange={field.onChange}
+                error={errors.phone?.message}
+              />
+            )}
           />
 
           <PasswordInput

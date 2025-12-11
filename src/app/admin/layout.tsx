@@ -105,7 +105,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   return (
     <AppShell
-      header={{ height: 60 }}
+     
       navbar={{
         width: 250,
         breakpoint: 'sm',
@@ -118,7 +118,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           color: '#000',
         },
         navbar: {
-          marginTop: '30px',
+          marginTop: '100px',
           background: '#1a1a1a',
           borderColor: '#333',
         },
@@ -128,54 +128,81 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         },
       }}>
       <AppShell.Header>
-        <Group h="100%" px="lg" justify="space-between">
-          <Group>
-            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" color="#fff" />
-            <Text size="lg" fw={700} c="#fff">
-              Адмін панель
-            </Text>
+        <Stack gap={0} h="100%">
+          <Group h={60} px="lg" justify="space-between">
+            <Group>
+              <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" color="#fff" />
+              <Text size="lg" fw={700} c="#fff">
+                Адмін панель
+              </Text>
+            </Group>
+
+            <Group>
+              <UnstyledButton p={4} onClick={() => router.push('/')} style={{ color: '#fff' }}>
+                <IconHome size={20} stroke={1.5} />
+              </UnstyledButton>
+
+              <Menu position="bottom-end" width={200}>
+                <Menu.Target>
+                  <UnstyledButton>
+                    <Group gap="xs">
+                      <Avatar size="sm" color="blue">
+                        {userProfile?.firstName?.[0]}
+                        {userProfile?.lastName?.[0]}
+                      </Avatar>
+                    </Group>
+                  </UnstyledButton>
+                </Menu.Target>
+
+                <Menu.Dropdown>
+                  <Menu.Item leftSection={<IconUserCircle size={16} />} onClick={() => router.push('/profile')}>
+                    Профіль
+                  </Menu.Item>
+                  <Menu.Item leftSection={<IconHome size={16} />} onClick={() => router.push('/')}>
+                    На сайт
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item color="red" leftSection={<IconLogout size={16} />} onClick={handleLogout}>
+                    Вийти
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Group>
           </Group>
 
-          <Group>
-            <UnstyledButton p={4} onClick={() => router.push('/')} style={{ color: '#fff' }}>
-              <IconHome size={20} stroke={1.5} />
-            </UnstyledButton>
-
-            <Menu position="bottom-end" width={200}>
-              <Menu.Target>
-                <UnstyledButton>
-                  <Group gap="xs">
-                    <Avatar size="sm" color="blue">
-                      {userProfile?.firstName?.[0]}
-                      {userProfile?.lastName?.[0]}
-                    </Avatar>
-                    <div>
-                      <Text size="sm" fw={500} c="#fff">
-                        {userProfile?.firstName} {userProfile?.lastName}
-                      </Text>
-                      <Text size="xs" c="#999">
-                        {isAdmin ? 'Адміністратор' : 'Менеджер'}
-                      </Text>
-                    </div>
-                  </Group>
-                </UnstyledButton>
-              </Menu.Target>
-
-              <Menu.Dropdown>
-                <Menu.Item leftSection={<IconUserCircle size={16} />} onClick={() => router.push('/profile')}>
-                  Профіль
-                </Menu.Item>
-                <Menu.Item leftSection={<IconHome size={16} />} onClick={() => router.push('/')}>
-                  На сайт
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item color="red" leftSection={<IconLogout size={16} />} onClick={handleLogout}>
-                  Вийти
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
+        
+        </Stack>
+          {/* Mobile navigation */}
+          <Group
+            gap="xs"
+            p="lg"
+       
+            bg='#000000'
+            hiddenFrom="sm"
+            style={{
+              overflowX: 'auto',
+              flexWrap: 'nowrap',
+            }}>
+            {navItems.map((item) => (
+              <UnstyledButton
+                key={item.href}
+                onClick={() => router.push(item.href)}
+                style={{
+                  padding: '4px 8px',
+                  borderRadius: 4,
+                  background: pathname === item.href ? '#33603b' : 'transparent',
+                  color: pathname === item.href ? '#e6db1b' : '#e0ddca',
+                  whiteSpace: 'nowrap',
+                  fontSize: '12px',
+                  fontWeight: pathname === item.href ? 600 : 400,
+                }}>
+                <Group gap={4}>
+                  <item.icon size={14} />
+                  <Text size="xs">{item.label}</Text>
+                </Group>
+              </UnstyledButton>
+            ))}
           </Group>
-        </Group>
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
