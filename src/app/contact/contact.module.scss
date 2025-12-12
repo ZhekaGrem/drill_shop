@@ -1,10 +1,5 @@
-// Заголовок
-.heroSection {
-  padding: 20px 10px;
-  text-align: left;
-  background: var(--background);
 
-  h1 {
+ .pageTitle{
     font-family: var(--font-heading);
     font-weight: var(--fw-bold);
     color: var(--text-green);
@@ -12,8 +7,6 @@
     line-height: 1;
     letter-spacing: 0.02em;
   }
-}
-
 // Зелена полоска
 .greenDivider {
   width: 100%;

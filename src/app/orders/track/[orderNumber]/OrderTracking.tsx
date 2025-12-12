@@ -243,34 +243,23 @@ const OrderTrackingPage: React.FC = () => {
 
         <Paper className={styles.orderCard}>
           <Stack gap="lg">
-            <Group justify="space-between" align="flex-start">
-              <Stack gap="xs">
-                <Text className={styles.label}>
-                  Створено:{' '}
-                  {new Date(order.createdAt).toLocaleDateString('uk-UA', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </Text>
-                <Text className={styles.label}>
-                  Очікувана доставка: {new Date(order.estimatedDelivery).toLocaleDateString('uk-UA')}
-                </Text>
-              </Stack>
 
-              <Badge color={getStatusColor(order.status)} size="lg" leftSection={getStatusIcon(order.status)}>
-                {orderStatusUa[order.status]}
-              </Badge>
-            </Group>
 
             <Paper className={styles.summaryCard}>
               <Group justify="space-between">
                 <Stack gap="xs">
-                  <Text className={styles.label}>Загальна сума</Text>
-                  <Text fw={700} size="xl" className={styles.price}>
-                    {formatPrice(order.totals.totalAmount)}
+                  <Text className={styles.label}>
+                    Створено:{' '}
+                    {new Date(order.createdAt).toLocaleDateString('uk-UA', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </Text>
+                  <Text className={styles.label}>
+                    Очікувана доставка: {new Date(order.estimatedDelivery).toLocaleDateString('uk-UA')}
                   </Text>
                 </Stack>
 
@@ -282,10 +271,10 @@ const OrderTrackingPage: React.FC = () => {
                 </Stack>
 
                 <Stack gap="xs">
-                  <Text className={styles.label}>Кількість товарів</Text>
-                  <Text fw={500} size="lg">
-                    {totalItems} шт.
-                  </Text>
+                  <Text className={styles.label}>Обробка замовлення</Text>
+                  <Badge color={getStatusColor(order.status)} size="lg" leftSection={getStatusIcon(order.status)}>
+                    {orderStatusUa[order.status]}
+                  </Badge>
                 </Stack>
               </Group>
             </Paper>
@@ -313,8 +302,8 @@ const OrderTrackingPage: React.FC = () => {
                     <Text size="sm">{order.shippingAddress.city}</Text>
                     {order.shippingAddress.city?.trim().toLowerCase() !==
                       order.shippingAddress.address1?.trim().toLowerCase() && (
-                      <Text size="sm">{order.shippingAddress.address1}</Text>
-                    )}
+                        <Text size="sm">{order.shippingAddress.address1}</Text>
+                      )}
                   </Stack>
                 </Group>
               </Stack>
@@ -349,6 +338,31 @@ const OrderTrackingPage: React.FC = () => {
                   </Group>
                 ))}
               </Stack>
+            </Paper>
+
+            <Paper className={styles.summaryCard}>
+              <Group justify="space-between">
+                <Stack gap="xs">
+                  <Text className={styles.label}>Загальна сума</Text>
+                  <Text fw={700} size="xl" className={styles.price}>
+                    {formatPrice(order.totals.totalAmount)}
+                  </Text>
+                </Stack>
+
+                <Stack gap="xs">
+                  <Text className={styles.label}>Статус оплати</Text>
+                  <Badge color={getPaymentStatusColor(order.paymentStatus)} size="lg">
+                    {paymentStatusUa[order.paymentStatus]}
+                  </Badge>
+                </Stack>
+
+                <Stack gap="xs">
+                  <Text className={styles.label}>Кількість товарів</Text>
+                  <Text fw={500} size="lg">
+                    {totalItems} шт.
+                  </Text>
+                </Stack>
+              </Group>
             </Paper>
 
             <Stack gap="md">

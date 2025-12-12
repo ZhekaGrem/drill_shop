@@ -10,6 +10,7 @@ import { Button } from '@/shared/components/Button/Button';
 import styles from './contact.module.scss';
 import { siteConfig } from '@/shared/config/site';
 import Image from 'next/image';
+import { Container} from '@mantine/core';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -85,9 +86,9 @@ const Contact = () => {
   return (
     <>
       {/* Заголовок */}
-      <section className={styles.heroSection}>
-        <h1>ЗВОРОТНІЙ ЗВ'ЯЗОК</h1>
-      </section>
+      <Container size="xl" py="lg">
+        <h1 className={styles.pageTitle}>ЗВОРОТНІЙ ЗВ'ЯЗОК</h1>
+      </Container>
 
       {/* Зелена полоска */}
       <div className={styles.greenDivider} />

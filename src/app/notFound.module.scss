@@ -1,7 +1,7 @@
 // src/app/notFound.module.scss - UPDATED
 .root {
   width: 100%;
-
+  min-height: 100vh;
   background-image: url('/assets/img/bg/bg-onion.webp');
   background-size: cover;
   background-position: center;
@@ -13,6 +13,7 @@
   flex-direction: column;
   @media (max-width: 768px) {
     background-image: none;
+    min-height: 100%;
   }
 }
 .phoneImg {
