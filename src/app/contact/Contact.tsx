@@ -10,7 +10,7 @@ import { Button } from '@/shared/components/Button/Button';
 import styles from './contact.module.scss';
 import { siteConfig } from '@/shared/config/site';
 import Image from 'next/image';
-import { Container} from '@mantine/core';
+import { Container } from '@mantine/core';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);

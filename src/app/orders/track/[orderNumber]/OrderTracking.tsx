@@ -243,10 +243,26 @@ const OrderTrackingPage: React.FC = () => {
 
         <Paper className={styles.orderCard}>
           <Stack gap="lg">
-
-
             <Paper className={styles.summaryCard}>
               <Group justify="space-between">
+
+                <Stack gap="xs">
+                  <Text className={styles.label}>Обробка замовлення</Text>
+                  <Badge
+                    color={getStatusColor(order.status)}
+                    size="lg"
+                    leftSection={getStatusIcon(order.status)}>
+                    {orderStatusUa[order.status]}
+                  </Badge>
+                </Stack>
+                <Stack gap="xs">
+                  <Text className={styles.label}>Статус оплати</Text>
+                  <Badge color={getPaymentStatusColor(order.paymentStatus)} size="lg">
+                    {paymentStatusUa[order.paymentStatus]}
+                  </Badge>
+                </Stack>
+
+
                 <Stack gap="xs">
                   <Text className={styles.label}>
                     Створено:{' '}
@@ -261,20 +277,6 @@ const OrderTrackingPage: React.FC = () => {
                   <Text className={styles.label}>
                     Очікувана доставка: {new Date(order.estimatedDelivery).toLocaleDateString('uk-UA')}
                   </Text>
-                </Stack>
-
-                <Stack gap="xs">
-                  <Text className={styles.label}>Статус оплати</Text>
-                  <Badge color={getPaymentStatusColor(order.paymentStatus)} size="lg">
-                    {paymentStatusUa[order.paymentStatus]}
-                  </Badge>
-                </Stack>
-
-                <Stack gap="xs">
-                  <Text className={styles.label}>Обробка замовлення</Text>
-                  <Badge color={getStatusColor(order.status)} size="lg" leftSection={getStatusIcon(order.status)}>
-                    {orderStatusUa[order.status]}
-                  </Badge>
                 </Stack>
               </Group>
             </Paper>
@@ -342,19 +344,6 @@ const OrderTrackingPage: React.FC = () => {
 
             <Paper className={styles.summaryCard}>
               <Group justify="space-between">
-                <Stack gap="xs">
-                  <Text className={styles.label}>Загальна сума</Text>
-                  <Text fw={700} size="xl" className={styles.price}>
-                    {formatPrice(order.totals.totalAmount)}
-                  </Text>
-                </Stack>
-
-                <Stack gap="xs">
-                  <Text className={styles.label}>Статус оплати</Text>
-                  <Badge color={getPaymentStatusColor(order.paymentStatus)} size="lg">
-                    {paymentStatusUa[order.paymentStatus]}
-                  </Badge>
-                </Stack>
 
                 <Stack gap="xs">
                   <Text className={styles.label}>Кількість товарів</Text>
@@ -362,6 +351,16 @@ const OrderTrackingPage: React.FC = () => {
                     {totalItems} шт.
                   </Text>
                 </Stack>
+                <Stack gap="xs">
+                  <Text className={styles.label}>Загальна сума</Text>
+                  <Text fw={700} size="xl" className={styles.price}>
+                    {formatPrice(order.totals.totalAmount)}
+                  </Text>
+                </Stack>
+
+
+
+
               </Group>
             </Paper>
 
