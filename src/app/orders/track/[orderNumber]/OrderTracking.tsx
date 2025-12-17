@@ -245,7 +245,6 @@ const OrderTrackingPage: React.FC = () => {
           <Stack gap="lg">
             <Paper className={styles.summaryCard}>
               <Group justify="space-between">
-
                 <Stack gap="xs">
                   <Text className={styles.label}>Обробка замовлення</Text>
                   <Badge
@@ -261,7 +260,6 @@ const OrderTrackingPage: React.FC = () => {
                     {paymentStatusUa[order.paymentStatus]}
                   </Badge>
                 </Stack>
-
 
                 <Stack gap="xs">
                   <Text className={styles.label}>
@@ -304,8 +302,8 @@ const OrderTrackingPage: React.FC = () => {
                     <Text size="sm">{order.shippingAddress.city}</Text>
                     {order.shippingAddress.city?.trim().toLowerCase() !==
                       order.shippingAddress.address1?.trim().toLowerCase() && (
-                        <Text size="sm">{order.shippingAddress.address1}</Text>
-                      )}
+                      <Text size="sm">{order.shippingAddress.address1}</Text>
+                    )}
                   </Stack>
                 </Group>
               </Stack>
@@ -344,7 +342,6 @@ const OrderTrackingPage: React.FC = () => {
 
             <Paper className={styles.summaryCard}>
               <Group justify="space-between">
-
                 <Stack gap="xs">
                   <Text className={styles.label}>Кількість товарів</Text>
                   <Text fw={500} size="lg">
@@ -357,10 +354,6 @@ const OrderTrackingPage: React.FC = () => {
                     {formatPrice(order.totals.totalAmount)}
                   </Text>
                 </Stack>
-
-
-
-
               </Group>
             </Paper>
 

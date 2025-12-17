@@ -678,7 +678,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
           <section className={styles.relatedProducts}>
             <h2 className={styles.relatedProducts__title}>ЩЕ ТОВАРИ</h2>
             <div className={styles.relatedProducts__grid}>
-              {relatedProducts.slice(0, 4).map((relatedProduct) => (
+              {relatedProducts.slice(0, 3).map((relatedProduct) => (
                 <ProductCard key={relatedProduct.id} product={relatedProduct} />
               ))}
             </div>

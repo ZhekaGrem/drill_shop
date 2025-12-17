@@ -24,14 +24,15 @@
   // Прибираємо правий бордер у всіх крім останньої в ряду (кожна 3-тя)
   border-right: 0;
 
+  // Прибираємо нижній бордер через negative margin щоб не було подвійних
+  margin-bottom: calc(var(--border-width) * -1);
   &:nth-child(3n),
   &:last-child {
     border-right: var(--border-width) solid var(--border-color); // Повертаємо правий бордер кожній 3-тій та останній
   }
-
-  // Прибираємо нижній бордер через negative margin щоб не було подвійних
-  margin-bottom: calc(var(--border-width) * -1);
-
+  &:last-child {
+    width: 371px;
+  }
   @media (max-width: 1200px) {
     height: 100%;
     width: 100%;
