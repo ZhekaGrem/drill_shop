@@ -21,6 +21,7 @@ import { SizeGuideModal } from '@/shared/components/SizeGuideModal';
 import { IconCart3 } from '@/shared/components/Svg';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
 import Image from 'next/image';
+import { NotifyAvailabilityModal } from '@/features/notify-availability';
 
 interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
@@ -39,6 +40,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
   const [isClicked, setIsClicked] = useState(false);
   const [isMainProduct, setIsMainProduct] = useState(true);
   const [sizeGuideOpened, setSizeGuideOpened] = useState(false);
+  const [notifyModalOpened, setNotifyModalOpened] = useState(false);
 
   const params = useParams();
   const router = useRouter();
@@ -608,56 +610,66 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
 
             {/* Add to Cart Section */}
             <div className={styles.productDetails__actions}>
-              <div className={styles.actionButtons}>
-                <div className={styles.actionButtonsWrapper}>
-                  <div className={styles.quantitySelector}>
-                    <button
-                      className={styles.quantitySelector__button}
-                      onClick={() => handleQuantityChange(quantity - 1)}
-                      disabled={quantity <= 1}>
-                      −
-                    </button>
-                    <input
-                      type="number"
-                      className={styles.quantitySelector__input}
-                      value={quantity}
-                      onChange={(e) => handleQuantityChange(Number(e.target.value))}
-                      min="1"
-                      max={availableQuantity}
-                    />
-                    <button
-                      className={styles.quantitySelector__button}
-                      onClick={() => handleQuantityChange(quantity + 1)}
-                      disabled={quantity >= availableQuantity}>
-                      +
-                    </button>
+              {isInStock ? (
+                <div className={styles.actionButtons}>
+                  <div className={styles.actionButtonsWrapper}>
+                    <div className={styles.quantitySelector}>
+                      <button
+                        className={styles.quantitySelector__button}
+                        onClick={() => handleQuantityChange(quantity - 1)}
+                        disabled={quantity <= 1}>
+                        −
+                      </button>
+                      <input
+                        type="number"
+                        className={styles.quantitySelector__input}
+                        value={quantity}
+                        onChange={(e) => handleQuantityChange(Number(e.target.value))}
+                        min="1"
+                        max={availableQuantity}
+                      />
+                      <button
+                        className={styles.quantitySelector__button}
+                        onClick={() => handleQuantityChange(quantity + 1)}
+                        disabled={quantity >= availableQuantity}>
+                        +
+                      </button>
+                    </div>
+                    {hasSizeGuide && (
+                      <Button variant="ghost" onClick={() => setSizeGuideOpened(true)} p={0}>
+                        <Image src="/assets/img/btnInfo.jpg" width={50} height={50} alt="btninfo" />
+                      </Button>
+                    )}
                   </div>
-                  {hasSizeGuide && (
-                    <Button variant="ghost" onClick={() => setSizeGuideOpened(true)} p={0}>
-                      <Image src="/assets/img/btnInfo.jpg" width={50} height={50} alt="btninfo" />
-                    </Button>
-                  )}
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    className={styles.buyNowButton}
+                    onClick={handleAddToCart}>
+                    <IconCart3 /> {getButtonText()}
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
+                    onClick={() => {
+                      handleAddToCart();
+                      setTimeout(() => router.push('/checkout'), 500);
+                    }}>
+                    КУПИТИ ЗАРАЗ
+                  </Button>
                 </div>
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className={styles.buyNowButton}
-                  onClick={handleAddToCart}
-                  disabled={!isInStock}>
-                  <IconCart3 /> {getButtonText()}
-                </Button>
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
-                  onClick={() => {
-                    handleAddToCart();
-                    setTimeout(() => router.push('/checkout'), 500);
-                  }}
-                  disabled={!isInStock}>
-                  КУПИТИ ЗАРАЗ
-                </Button>
-              </div>
+              ) : (
+                <div className={styles.actionButtons}>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    fullWidth
+                    onClick={() => setNotifyModalOpened(true)}>
+                    Сповістити мене про появу товару
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -696,6 +708,15 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
             categories={categoriesWithGuide}
           />
         )}
+
+        {/* Notify Availability Modal */}
+        <NotifyAvailabilityModal
+          opened={notifyModalOpened}
+          onClose={() => setNotifyModalOpened(false)}
+          productName={product.name}
+          productSlug={product.slug}
+          variantName={selectedVariant?.name}
+        />
       </div>
     </div>
   );

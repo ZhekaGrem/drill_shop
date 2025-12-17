@@ -47,9 +47,9 @@
     &:nth-child(3n) {
       border-right: 0;
     }
-     &:last-child:not(:nth-child(3n)) {
-    width: 101%;
-  }
+    &:last-child:not(:nth-child(3n)) {
+      width: 101%;
+    }
 
     &:nth-child(2n),
     &:last-child {
@@ -330,6 +330,15 @@
 .actions {
   display: flex;
   gap: var(--spacing-xs);
+  margin-top: auto;
+
+  button {
+    @media (max-width: 768px) {
+      height: 35px;
+      min-height: 35px;
+      max-height: 35px;
+    }
+  }
 }
 
 // Mobile styles
@@ -380,7 +389,7 @@
 
   .actions {
     flex: 1;
-
+    align-items: flex-end;
     button {
       width: 100%;
       min-width: auto;
