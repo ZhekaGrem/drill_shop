@@ -47,7 +47,7 @@
     &:nth-child(3n) {
       border-right: 0;
     }
-    &:last-child:not(:nth-child(3n)) {
+    &:last-child {
       width: calc(100% + 2px);
     }
 
