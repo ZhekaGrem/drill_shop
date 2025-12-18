@@ -45,7 +45,8 @@
       "WebFetch(domain:selotasalo.shop)",
       "WebFetch(domain:www.shchilnuidrill.com)",
       "WebFetch(domain:www.google.com)",
-      "WebFetch(domain:t3.gstatic.com)"
+      "WebFetch(domain:t3.gstatic.com)",
+      "WebFetch(domain:css-tricks.com)"
     ],
     "deny": [],
     "ask": []

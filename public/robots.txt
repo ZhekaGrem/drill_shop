@@ -23,16 +23,6 @@ Disallow: /orders/success
 # Блокуємо API
 Disallow: /api/
 
-# Дозволяємо статичні ресурси (важливо для favicon!)
-Allow: /assets/favicon/favicon.ico
-Allow: /assets/favicon/favicon.svg
-Allow: /*.css
-Allow: /*.js
-Allow: /*.png
-Allow: /*.jpg
-Allow: /*.jpeg
-Allow: /*.webp
-Allow: /*.svg
 
 # Sitemap
 Sitemap: https://shchilnuidrill.com/sitemap.xml

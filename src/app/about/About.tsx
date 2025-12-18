@@ -8,7 +8,9 @@ const About = () => {
   return (
     <>
       <Container size="xl" py="lg">
-        <Title order={1} className={styles.pageTitle}>ПРО НАС</Title>
+        <Title order={1} className={styles.pageTitle}>
+          ПРО НАС
+        </Title>
       </Container>
 
       <Box className={styles.heroSection}>
