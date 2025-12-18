@@ -24,18 +24,18 @@ const paymentMethods = [
     label: 'Готівка при отриманні',
     description: 'Оплата готівкою або карткою у відділенні Нової Пошти.',
   },
-  {
-    value: 'liqpay',
-    label: 'LiqPay',
-    description: 'Оплата карткою Visa/MasterCard через систему LiqPay.',
-    logo: '/logo/payment/liqpay.svg',
-  },
-  {
-    value: 'monobank',
-    label: 'Онлайн-оплата картою',
-    description: 'Оплата через сервіс plata by mono.',
-    logo: '/logo/payment/monobank.svg',
-  },
+  // {
+  //   value: 'liqpay',
+  //   label: 'LiqPay',
+  //   description: 'Оплата карткою Visa/MasterCard через систему LiqPay.',
+  //   logo: '/logo/payment/liqpay.svg',
+  // },
+  // {
+  //   value: 'monobank',
+  //   label: 'Онлайн-оплата картою',
+  //   description: 'Оплата через сервіс plata by mono.',
+  //   logo: '/logo/payment/monobank.svg',
+  // },
 ];
 
 const deliveryMethods = [
@@ -380,11 +380,11 @@ const CheckoutFormComponent = () => {
                           <span className={styles.radioLabel}>{method.label}</span>
                           <span className={styles.radioDescription}>{method.description}</span>
                         </div>
-                        {method.logo && (
+                        {/* {method.logo && (
                           <div className={styles.paymentLogo}>
                             <Image src={method.logo} alt={`${method.label} logo`} width={60} height={34} />
                           </div>
-                        )}
+                        )} */}
                       </label>
                     ))}
                   </div>
