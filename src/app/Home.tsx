@@ -2,7 +2,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Suspense, lazy, useState, useEffect } from 'react';
+import { Suspense, lazy, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/shared/components/Button/Button';
 import { ArrowRight } from '@/shared/components/Svg';
@@ -23,6 +23,7 @@ const Home = () => {
     <div className={styles.wrapper}>
       <div className={styles.landingPage}>
         <div className={styles.landingContent}>
+          <h1 className={styles.hiddenTitle}>Щільний Дріл Мерч НІЖНА ОКСАНА ПРОКЛЯТИЙ ХУЙ  </h1>
           {/* Spline 3D модель - позаду кнопки */}
           <div className={styles.tshirtSpline}>
             {/* Placeholder - показується поки 3D не готова */}

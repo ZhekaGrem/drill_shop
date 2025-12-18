@@ -24,8 +24,8 @@ Disallow: /orders/success
 Disallow: /api/
 
 # Дозволяємо статичні ресурси (важливо для favicon!)
-Allow: /favicon.ico
-Allow: /favicon.svg
+Allow: /assets/favicon/favicon.ico
+Allow: /assets/favicon/favicon.svg
 Allow: /*.css
 Allow: /*.js
 Allow: /*.png

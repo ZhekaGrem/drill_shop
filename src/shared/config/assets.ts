@@ -6,8 +6,8 @@ export const assets = {
   logo: {
     main: '/logo/logo2.webp',
     og: '/logo/logo.jpg', // для Open Graph
-    favicon: '/favicon.ico',
-    appleTouchIcon: '/apple-touch-icon.png',
+    favicon: '/assets/favicon/favicon.ico',
+    appleTouchIcon: '/assets/favicon/apple-touch-icon.png',
   },
 
   // ===== ІКОНКИ СОЦІАЛЬНИХ МЕРЕЖ =====

@@ -331,7 +331,7 @@ frontend/
 ├── public/                     # Статичні файли
 │   ├── logo/                  # Логотипи
 │   ├── assets/                # Зображення, іконки
-│   └── favicon.ico
+│   └── assets/favicon/favicon.ico
 │
 ├── .env.local                 # Змінні середовища (НЕ комітити!)
 ├── .env.example               # Приклад змінних
@@ -406,8 +406,8 @@ export const baseMetadata: Metadata = {
 1. Підготуйте зображення:
    - Логотип: `public/logo/logo-5.png` (PNG з прозорим фоном)
    - OG Image: `public/logo/og-image.jpg` (1200x630px для соц. мереж)
-   - Favicon: `public/favicon.ico` (32x32px)
-   - Apple Icon: `public/apple-touch-icon.png` (180x180px)
+   - Favicon: `public/assets/favicon/favicon.ico` (32x32px)
+   - Apple Icon: `public/assets/favicon/apple-touch-icon.png` (180x180px)
 
 2. Оновіть шлях в `src/shared/config/assets.ts`:
    ```typescript
