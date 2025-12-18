@@ -275,18 +275,64 @@
     width: 100%;
     height: 100%;
     border-right: var(--border-width) solid var(--border-color);
+
+    &__thumbnailsWrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    &__scrollArrow {
+      width: 80px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      font-size: 16px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background: var(--btn-primary);
+        color: var(--text-inverse);
+        box-shadow: var(--shadow-md);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      
+    }
+
     &__thumbnails {
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
+      max-height: 504px;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
 
     &__thumbnail {
       width: 80px;
       height: 80px;
+      min-width: 80px;
+      min-height: 80px;
+      flex-shrink: 0;
       padding: 0;
       border: none;
-
       cursor: pointer;
       overflow: hidden;
 
@@ -310,6 +356,7 @@
     }
 
     &__mainImageWrapper {
+      position: relative;
       width: 100%;
       height: auto;
       overflow: hidden;
@@ -319,6 +366,56 @@
       object-fit: contain;
       width: 100%;
       height: auto;
+    }
+
+    &__arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      font-family: var(--font-condensed);
+      font-size: 32px;
+      font-weight: var(--fw-black);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+
+      &:hover {
+        transform: translateY(-50%) scale(1.05);
+      }
+
+      &:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+
+      img {
+        background: var(--background);
+        display: block;
+        width: 24px;
+        height: 24px;
+        opacity: 0.7;
+      }
+
+      &:hover img {
+        opacity: 1;
+      }
+
+      &Left {
+        left: var(--spacing-md);
+      }
+
+      &Right {
+        right: var(--spacing-md);
+      }
     }
 
     &__dots {
@@ -644,22 +741,31 @@
         height: auto !important;
       }
 
+      // Приховуємо стрілочки скролу на мобільних
+      &__scrollArrow {
+        display: none;
+      }
+
+      &__thumbnailsWrapper {
+        order: 2;
+        width: 100%;
+      }
+
       // Thumbnails знизу під головною картинкою
       &__thumbnails {
-        order: 2;
         flex-direction: row;
         overflow-x: auto;
+        overflow-y: visible;
+        max-height: none;
         margin-top: var(--spacing-sm);
         padding-bottom: var(--spacing-xs);
+        padding-right: 0;
         border: none;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
 
-        // Ховаємо scrollbar
         &::-webkit-scrollbar {
-          height: 4px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: var(--border-color);
+          display: none;
         }
       }
 
@@ -672,6 +778,26 @@
           object-fit: cover;
           width: 100%;
           height: 100%;
+        }
+      }
+
+      // Стрілочки на мобільних
+      &__arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 28px;
+
+        img {
+          width: 20px;
+          height: 20px;
+        }
+
+        &Left {
+          left: var(--spacing-sm);
+        }
+
+        &Right {
+          right: var(--spacing-sm);
         }
       }
     }
@@ -787,6 +913,26 @@
         object-fit: cover;
         width: 100%;
         height: 100%;
+      }
+    }
+
+    // Стрілочки для дуже малих екранів
+    .productGallery__arrow {
+      width: 36px;
+      height: 36px;
+      font-size: 24px;
+
+      img {
+        width: 18px;
+        height: 18px;
+      }
+
+      &Left {
+        left: var(--spacing-xs);
+      }
+
+      &Right {
+        right: var(--spacing-xs);
       }
     }
   }

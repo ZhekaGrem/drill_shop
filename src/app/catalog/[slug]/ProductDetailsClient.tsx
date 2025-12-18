@@ -41,6 +41,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
   const [isMainProduct, setIsMainProduct] = useState(true);
   const [sizeGuideOpened, setSizeGuideOpened] = useState(false);
   const [notifyModalOpened, setNotifyModalOpened] = useState(false);
+  const [showScrollArrows, setShowScrollArrows] = useState(false);
 
   const params = useParams();
   const router = useRouter();
@@ -63,6 +64,15 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
       setIsMainProduct(true);
     }
   }, [product?.hasVariants, product?.variants]);
+
+  // Визначаємо чи показувати стрілочки скролу
+  useEffect(() => {
+    if (product?.images && product.images.length > 6) {
+      setShowScrollArrows(true);
+    } else {
+      setShowScrollArrows(false);
+    }
+  }, [product?.images]);
 
   const fetchProduct = async () => {
     setIsLoading(true);
@@ -223,6 +233,28 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
     }
   };
 
+  const handlePreviousImage = () => {
+    setSelectedImageIndex((prev) => (prev === 0 ? sortedImages.length - 1 : prev - 1));
+  };
+
+  const handleNextImage = () => {
+    setSelectedImageIndex((prev) => (prev === sortedImages.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleScrollUp = () => {
+    const container = document.querySelector(`.${styles.productGallery__thumbnails}`);
+    if (container) {
+      container.scrollBy({ top: -88, behavior: 'smooth' });
+    }
+  };
+
+  const handleScrollDown = () => {
+    const container = document.querySelector(`.${styles.productGallery__thumbnails}`);
+    if (container) {
+      container.scrollBy({ top: 88, behavior: 'smooth' });
+    }
+  };
+
   const getCurrentWeight = () => {
     return selectedVariant ? selectedVariant.unitValue : product?.unitValue;
   };
@@ -317,22 +349,44 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
             <div className={styles.productGallery}>
               {/* Thumbnails - тепер зліва */}
               {sortedImages.length > 1 && (
-                <div className={styles.productGallery__thumbnails}>
-                  {sortedImages.map((image, index) => (
+                <div className={styles.productGallery__thumbnailsWrapper}>
+                  {/* Стрілочка вгору */}
+                  {showScrollArrows && (
                     <button
-                      key={image.id}
-                      className={`${styles.productGallery__thumbnail} ${
-                        index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
-                      }`}
-                      onClick={() => setSelectedImageIndex(index)}>
-                      <CloudinaryImage
-                        src={getImageUrl(image.url || image.publicId)}
-                        alt={image.altText || product.name}
-                        width={80}
-                        height={80}
-                      />
+                      className={`${styles.productGallery__scrollArrow} ${styles.productGallery__scrollArrowUp}`}
+                      onClick={handleScrollUp}
+                      aria-label="Прокрутити вгору">
+                      ▲
                     </button>
-                  ))}
+                  )}
+
+                  <div className={styles.productGallery__thumbnails}>
+                    {sortedImages.map((image, index) => (
+                      <button
+                        key={image.id}
+                        className={`${styles.productGallery__thumbnail} ${
+                          index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
+                        }`}
+                        onClick={() => setSelectedImageIndex(index)}>
+                        <CloudinaryImage
+                          src={getImageUrl(image.url || image.publicId)}
+                          alt={image.altText || product.name}
+                          width={80}
+                          height={80}
+                        />
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Стрілочка вниз */}
+                  {showScrollArrows && (
+                    <button
+                      className={`${styles.productGallery__scrollArrow} ${styles.productGallery__scrollArrowDown}`}
+                      onClick={handleScrollDown}
+                      aria-label="Прокрутити вниз">
+                      ▼
+                    </button>
+                  )}
                 </div>
               )}
 
@@ -351,6 +405,34 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     width={600}
                     height={600}
                   />
+
+                  {/* Navigation arrows - показуємо тільки якщо є більше 1 зображення */}
+                  {sortedImages.length > 1 && (
+                    <>
+                      <button
+                        className={`${styles.productGallery__arrow} ${styles.productGallery__arrowLeft}`}
+                        onClick={handlePreviousImage}
+                        aria-label="Попереднє зображення">
+                        <Image
+                          src="/svg/pixelarticons_arrow-left-box.svg"
+                          alt="Попереднє"
+                          width={24}
+                          height={24}
+                        />
+                      </button>
+                      <button
+                        className={`${styles.productGallery__arrow} ${styles.productGallery__arrowRight}`}
+                        onClick={handleNextImage}
+                        aria-label="Наступне зображення">
+                        <Image
+                          src="/svg/pixelarticons_arrow-right-box.svg"
+                          alt="Наступне"
+                          width={24}
+                          height={24}
+                        />
+                      </button>
+                    </>
+                  )}
                 </div>
                 <ProductBadges product={product} selectedVariant={selectedVariant} />
 
