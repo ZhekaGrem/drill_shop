@@ -48,7 +48,7 @@
       border-right: 0;
     }
     &:last-child:not(:nth-child(3n)) {
-      width: 101%;
+      width: calc(100% + 2px);
     }
 
     &:nth-child(2n),

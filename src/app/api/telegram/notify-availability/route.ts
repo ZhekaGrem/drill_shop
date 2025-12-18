@@ -15,7 +15,10 @@ export async function POST(request: NextRequest) {
       await request.json();
 
     if (!productName || !contactMethod || !contactValue) {
-      return NextResponse.json({ success: false, message: "Заповніть всі обов'язкові поля" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "Заповніть всі обов'язкові поля" },
+        { status: 400 }
+      );
     }
 
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -71,7 +74,7 @@ ${variantName ? `🏷 *Варіант:* ${variantName}` : ''}
 
     return NextResponse.json({
       success: true,
-      message: 'Ваш запит успішно відправлено. Ми зв\'яжемось з вами, коли товар з\'явиться.',
+      message: "Ваш запит успішно відправлено. Ми зв'яжемось з вами, коли товар з'явиться.",
     });
   } catch (error) {
     console.error('Notify availability error:', error);

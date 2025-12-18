@@ -661,11 +661,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                 </div>
               ) : (
                 <div className={styles.actionButtons}>
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    fullWidth
-                    onClick={() => setNotifyModalOpened(true)}>
+                  <Button variant="primary" size="lg" fullWidth onClick={() => setNotifyModalOpened(true)}>
                     Сповістити мене про появу товару
                   </Button>
                 </div>
