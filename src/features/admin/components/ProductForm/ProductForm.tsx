@@ -80,13 +80,17 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
   });
 
   // Image management state
-  const [imageState, setImageState] = useState({
-    newFiles: [] as File[],
-    primaryImageIndex: 0,
-    secondaryImageIndex: null as number | null,
-    existingImages: product?.images || [],
-    existingPrimaryId: product?.images?.find((img: any) => img.isPrimary)?.id || null,
-    existingSecondaryId: product?.images?.find((img: any) => img.isSecondary)?.id || null,
+  const [imageState, setImageState] = useState(() => {
+    const existingImages = product?.images || [];
+    const primaryImageIndex = existingImages.findIndex((img: any) => img.isPrimary);
+    const secondaryImageIndex = existingImages.findIndex((img: any) => img.isSecondary);
+
+    return {
+      newFiles: [] as File[],
+      existingImages,
+      primaryIndex: primaryImageIndex >= 0 ? primaryImageIndex : 0,
+      secondaryIndex: secondaryImageIndex >= 0 ? secondaryImageIndex : null,
+    };
   });
 
   // Variants management state
@@ -201,7 +205,24 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
         metaTitle: `${values.name.trim()} | М'ясний магазин`,
         metaDescription: values.shortDescription?.trim() || values.description?.trim().substring(0, 160),
         categoryIds: values.categoryIds,
-        primaryImageIndex: imageState.primaryImageIndex,
+        // For new files: send index within newFiles array
+        primaryImageIndex:
+          imageState.primaryIndex >= imageState.existingImages.length
+            ? imageState.primaryIndex - imageState.existingImages.length
+            : 0, // If primary is existing image, new files start from index 0
+        secondaryImageIndex:
+          imageState.secondaryIndex !== null && imageState.secondaryIndex >= imageState.existingImages.length
+            ? imageState.secondaryIndex - imageState.existingImages.length
+            : null,
+        // For existing images: send IDs (only used when creating new product with existing images - edge case)
+        existingPrimaryImageId:
+          imageState.primaryIndex < imageState.existingImages.length
+            ? imageState.existingImages[imageState.primaryIndex]?.id
+            : undefined,
+        existingSecondaryImageId:
+          imageState.secondaryIndex !== null && imageState.secondaryIndex < imageState.existingImages.length
+            ? imageState.existingImages[imageState.secondaryIndex]?.id
+            : undefined,
         options: values.options || {},
         promoType: values.promoType || undefined,
         promoConfig: values.promoType && values.promoConfig ? values.promoConfig : undefined,
@@ -242,7 +263,7 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
       });
 
       // Reset form state
-      setImageState((prev) => ({ ...prev, newFiles: [], primaryImageIndex: 0, secondaryImageIndex: null }));
+      setImageState((prev) => ({ ...prev, newFiles: [], primaryIndex: 0, secondaryIndex: null }));
       setVariants([]);
     } catch (error) {
       console.error('❌ Form submission error:', error);

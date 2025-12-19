@@ -8,11 +8,9 @@ import { apiClient } from '@/shared/api/client';
 
 interface ImageState {
   newFiles: File[];
-  primaryImageIndex: number;
-  secondaryImageIndex: number | null;
   existingImages: any[];
-  existingPrimaryId: string | null;
-  existingSecondaryId: string | null;
+  primaryIndex: number; // Unified index: 0..existingImages.length-1 = existing, existingImages.length+ = new
+  secondaryIndex: number | null;
 }
 
 interface ProductImageManagerProps {
@@ -40,21 +38,33 @@ export const ProductImageManager = ({
     }
   };
 
-  const handleRemoveNewFile = (index: number) => {
+  const handleRemoveNewFile = (fileIndex: number) => {
     onImageStateChange((prev) => {
-      const newFiles = prev.newFiles.filter((_, i) => i !== index);
-      let newPrimaryIndex = prev.primaryImageIndex;
+      const newFiles = prev.newFiles.filter((_, i) => i !== fileIndex);
+      const removedGlobalIndex = prev.existingImages.length + fileIndex;
 
-      if (prev.primaryImageIndex === index) {
-        newPrimaryIndex = 0;
-      } else if (prev.primaryImageIndex > index) {
-        newPrimaryIndex = prev.primaryImageIndex - 1;
+      let newPrimaryIndex = prev.primaryIndex;
+      let newSecondaryIndex = prev.secondaryIndex;
+
+      // Adjust primary index
+      if (prev.primaryIndex === removedGlobalIndex) {
+        newPrimaryIndex = 0; // Reset to first image
+      } else if (prev.primaryIndex > removedGlobalIndex) {
+        newPrimaryIndex = prev.primaryIndex - 1;
+      }
+
+      // Adjust secondary index
+      if (prev.secondaryIndex === removedGlobalIndex) {
+        newSecondaryIndex = null;
+      } else if (prev.secondaryIndex !== null && prev.secondaryIndex > removedGlobalIndex) {
+        newSecondaryIndex = prev.secondaryIndex - 1;
       }
 
       return {
         ...prev,
         newFiles,
-        primaryImageIndex: newPrimaryIndex,
+        primaryIndex: newPrimaryIndex,
+        secondaryIndex: newSecondaryIndex,
       };
     });
   };
@@ -69,11 +79,38 @@ export const ProductImageManager = ({
           imageId: imageId,
         });
 
-        onImageStateChange((prev) => ({
-          ...prev,
-          existingImages: prev.existingImages.filter((img) => img.id !== imageId),
-          existingPrimaryId: prev.existingPrimaryId === imageId ? null : prev.existingPrimaryId,
-        }));
+        onImageStateChange((prev) => {
+          const deletedIndex = prev.existingImages.findIndex((img) => img.id === imageId);
+          if (deletedIndex === -1) return prev;
+
+          const newExistingImages = prev.existingImages.filter((img) => img.id !== imageId);
+
+          let newPrimaryIndex = prev.primaryIndex;
+          let newSecondaryIndex = prev.secondaryIndex;
+
+          // If deleted image was primary, reset to first
+          if (prev.primaryIndex === deletedIndex) {
+            newPrimaryIndex = 0;
+          }
+          // If primary was after deleted image (including new files), shift down
+          else if (prev.primaryIndex > deletedIndex) {
+            newPrimaryIndex = prev.primaryIndex - 1;
+          }
+
+          // Same for secondary
+          if (prev.secondaryIndex === deletedIndex) {
+            newSecondaryIndex = null;
+          } else if (prev.secondaryIndex !== null && prev.secondaryIndex > deletedIndex) {
+            newSecondaryIndex = prev.secondaryIndex - 1;
+          }
+
+          return {
+            ...prev,
+            existingImages: newExistingImages,
+            primaryIndex: newPrimaryIndex,
+            secondaryIndex: newSecondaryIndex,
+          };
+        });
       } catch (error) {
         console.error('Error deleting image:', error);
         alert('Помилка при видаленні зображення');
@@ -81,66 +118,40 @@ export const ProductImageManager = ({
     }
   };
 
-  const handleSetPrimaryImage = (index: number) => {
+  const handleSetPrimary = async (globalIndex: number) => {
     onImageStateChange((prev) => ({
       ...prev,
-      primaryImageIndex: index,
+      primaryIndex: globalIndex,
     }));
-  };
 
-  const handleSetExistingPrimary = async (imageId: string) => {
-    if (!product?.id) {
-      // Якщо товар ще не створений - зберігаємо локально
-      onImageStateChange((prev) => ({
-        ...prev,
-        existingPrimaryId: imageId,
-      }));
-      return;
-    }
-
-    // Якщо товар вже існує - відправляємо запит на сервер
-    try {
-      await apiClient.patch(`/admin/products/${product.id}/images/${imageId}/primary`);
-
-      onImageStateChange((prev) => ({
-        ...prev,
-        existingPrimaryId: imageId,
-      }));
-    } catch (error) {
-      console.error('Error setting primary image:', error);
-      alert('Помилка при встановленні головного зображення');
+    // If editing existing product and selected existing image, update on server
+    if (product?.id && globalIndex < imageState.existingImages.length) {
+      const imageId = imageState.existingImages[globalIndex].id;
+      try {
+        await apiClient.patch(`/admin/products/${product.id}/images/${imageId}/primary`);
+      } catch (error) {
+        console.error('Error setting primary image:', error);
+        alert('Помилка при встановленні головного зображення');
+      }
     }
   };
 
-  const handleSetExistingSecondary = async (imageId: string) => {
-    if (!product?.id) {
-      // Якщо товар ще не створений - зберігаємо локально
-      onImageStateChange((prev) => ({
-        ...prev,
-        existingSecondaryId: imageId,
-      }));
-      return;
-    }
-
-    // Якщо товар вже існує - відправляємо запит на сервер
-    try {
-      await apiClient.patch(`/admin/products/${product.id}/images/${imageId}/secondary`);
-
-      onImageStateChange((prev) => ({
-        ...prev,
-        existingSecondaryId: imageId,
-      }));
-    } catch (error) {
-      console.error('Error setting secondary image:', error);
-      alert('Помилка при встановленні другого зображення');
-    }
-  };
-
-  const handleSetSecondaryImage = (index: number | null) => {
+  const handleSetSecondary = async (globalIndex: number | null) => {
     onImageStateChange((prev) => ({
       ...prev,
-      secondaryImageIndex: index,
+      secondaryIndex: globalIndex,
     }));
+
+    // If editing existing product and selected existing image, update on server
+    if (product?.id && globalIndex !== null && globalIndex < imageState.existingImages.length) {
+      const imageId = imageState.existingImages[globalIndex].id;
+      try {
+        await apiClient.patch(`/admin/products/${product.id}/images/${imageId}/secondary`);
+      } catch (error) {
+        console.error('Error setting secondary image:', error);
+        alert('Помилка при встановленні другого зображення');
+      }
+    }
   };
 
   return (
@@ -156,86 +167,88 @@ export const ProductImageManager = ({
             Поточні зображення:
           </Text>
           <Grid>
-            {imageState.existingImages.map((image) => (
-              <Grid.Col key={image.id} span={{ base: 6, sm: 4, md: 3 }}>
-                <div style={{ position: 'relative' }}>
-                  <Image
-                    src={image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`}
-                    alt={image.altText || 'Product image'}
-                    height={120}
-                    fit="cover"
-                    radius="md"
-                    fallbackSrc="/assets/img/placeholder-product.jpg"
-                  />
+            {imageState.existingImages.map((image, index) => {
+              const globalIndex = index;
+              const isPrimary = imageState.primaryIndex === globalIndex;
+              const isSecondary = imageState.secondaryIndex === globalIndex;
 
-                  {/* Primary star indicator */}
-                  {imageState.existingPrimaryId === image.id && (
-                    <IconStarFilled
-                      size={24}
+              return (
+                <Grid.Col key={image.id} span={{ base: 6, sm: 4, md: 3 }}>
+                  <div style={{ position: 'relative' }}>
+                    <Image
+                      src={image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`}
+                      alt={image.altText || 'Product image'}
+                      height={120}
+                      fit="cover"
+                      radius="md"
+                      fallbackSrc="/assets/img/placeholder-product.jpg"
+                    />
+
+                    {/* Primary star indicator */}
+                    {isPrimary && (
+                      <IconStarFilled
+                        size={24}
+                        style={{
+                          position: 'absolute',
+                          top: 5,
+                          left: 5,
+                          color: 'gold',
+                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                        }}
+                      />
+                    )}
+
+                    {/* Make primary button */}
+                    <Button
+                      size="xs"
+                      variant={isPrimary ? 'filled' : 'light'}
+                      color="yellow"
+                      style={{
+                        position: 'absolute',
+                        bottom: 30,
+                        left: 5,
+                        padding: '4px 8px',
+                      }}
+                      onClick={() => handleSetPrimary(globalIndex)}
+                      title={isPrimary ? 'Головна' : 'Зробити головною'}>
+                      {isPrimary ? <IconStarFilled size={14} /> : <IconStar size={14} />}
+                    </Button>
+
+                    {/* Make secondary button */}
+                    <Button
+                      size="xs"
+                      variant={isSecondary ? 'filled' : 'light'}
+                      color="blue"
+                      style={{
+                        position: 'absolute',
+                        bottom: 5,
+                        left: 5,
+                        padding: '4px 6px',
+                        fontSize: '10px',
+                      }}
+                      onClick={() => handleSetSecondary(globalIndex)}
+                      title={isSecondary ? 'Друга (hover)' : 'Зробити другою'}>
+                      {isSecondary ? '2-га' : '2'}
+                    </Button>
+
+                    {/* Delete button */}
+                    <ActionIcon
+                      color="red"
+                      size="sm"
+                      variant="filled"
                       style={{
                         position: 'absolute',
                         top: 5,
-                        left: 5,
-                        color: 'gold',
-                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                        right: 5,
                       }}
-                    />
-                  )}
-
-                  {/* Make primary button */}
-                  <Button
-                    size="xs"
-                    variant={imageState.existingPrimaryId === image.id ? 'filled' : 'light'}
-                    color="yellow"
-                    style={{
-                      position: 'absolute',
-                      bottom: 30,
-                      left: 5,
-                      padding: '4px 8px',
-                    }}
-                    onClick={() => handleSetExistingPrimary(image.id)}
-                    title={imageState.existingPrimaryId === image.id ? 'Головна' : 'Зробити головною'}>
-                    {imageState.existingPrimaryId === image.id ? (
-                      <IconStarFilled size={14} />
-                    ) : (
-                      <IconStar size={14} />
-                    )}
-                  </Button>
-
-                  {/* Make secondary button */}
-                  <Button
-                    size="xs"
-                    variant={imageState.existingSecondaryId === image.id ? 'filled' : 'light'}
-                    color="blue"
-                    style={{
-                      position: 'absolute',
-                      bottom: 5,
-                      left: 5,
-                      padding: '4px 6px',
-                      fontSize: '10px',
-                    }}
-                    onClick={() => handleSetExistingSecondary(image.id)}
-                    title={imageState.existingSecondaryId === image.id ? 'Друга (hover)' : 'Зробити другою'}>
-                    {imageState.existingSecondaryId === image.id ? '2-га' : '2'}
-                  </Button>
-
-                  {/* Delete button */}
-                  <ActionIcon
-                    color="red"
-                    size="sm"
-                    variant="filled"
-                    style={{
-                      position: 'absolute',
-                      top: 5,
-                      right: 5,
-                    }}
-                    onClick={() => handleDeleteExistingImage(image.id)}
-                    loading={deleteImageMutation.isPending}>
-                    <IconTrash size={14} />
-                  </ActionIcon>
-                </div>
-              </Grid.Col>
-            ))}
+                      onClick={() => handleDeleteExistingImage(image.id)}
+                      loading={deleteImageMutation.isPending}>
+                      <IconTrash size={14} />
+                    </ActionIcon>
+                  </div>
+                </Grid.Col>
+              );
+            })}
           </Grid>
         </div>
       )}
@@ -258,98 +271,100 @@ export const ProductImageManager = ({
             Нові зображення ({imageState.newFiles.length}):
           </Text>
           <Grid>
-            {imageState.newFiles.map((file, index) => (
-              <Grid.Col key={`${file.name}-${index}`} span={{ base: 6, sm: 4, md: 3 }}>
-                <div style={{ position: 'relative' }}>
-                  <Image
-                    src={URL.createObjectURL(file)}
-                    alt={`New image ${index + 1}`}
-                    height={120}
-                    fit="cover"
-                    radius="md"
-                  />
+            {imageState.newFiles.map((file, index) => {
+              const globalIndex = imageState.existingImages.length + index;
+              const isPrimary = imageState.primaryIndex === globalIndex;
+              const isSecondary = imageState.secondaryIndex === globalIndex;
 
-                  {/* Primary star */}
-                  {imageState.primaryImageIndex === index && (
-                    <IconStarFilled
-                      size={24}
+              return (
+                <Grid.Col key={`${file.name}-${index}`} span={{ base: 6, sm: 4, md: 3 }}>
+                  <div style={{ position: 'relative' }}>
+                    <Image
+                      src={URL.createObjectURL(file)}
+                      alt={`New image ${index + 1}`}
+                      height={120}
+                      fit="cover"
+                      radius="md"
+                    />
+
+                    {/* Primary star */}
+                    {isPrimary && (
+                      <IconStarFilled
+                        size={24}
+                        style={{
+                          position: 'absolute',
+                          top: 5,
+                          left: 5,
+                          color: 'gold',
+                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                        }}
+                      />
+                    )}
+
+                    {/* Make primary button */}
+                    <Button
+                      size="xs"
+                      variant={isPrimary ? 'filled' : 'light'}
+                      color="yellow"
+                      style={{
+                        position: 'absolute',
+                        bottom: 30,
+                        left: 5,
+                        padding: '4px 8px',
+                      }}
+                      onClick={() => handleSetPrimary(globalIndex)}
+                      title={isPrimary ? 'Головна' : 'Зробити головною'}>
+                      {isPrimary ? <IconStarFilled size={14} /> : <IconStar size={14} />}
+                    </Button>
+
+                    {/* Make secondary button */}
+                    <Button
+                      size="xs"
+                      variant={isSecondary ? 'filled' : 'light'}
+                      color="blue"
+                      style={{
+                        position: 'absolute',
+                        bottom: 5,
+                        left: 5,
+                        padding: '4px 6px',
+                        fontSize: '10px',
+                      }}
+                      onClick={() => handleSetSecondary(globalIndex)}
+                      title={isSecondary ? 'Друга (hover)' : 'Зробити другою'}>
+                      {isSecondary ? '2-га' : '2'}
+                    </Button>
+
+                    {/* Delete button */}
+                    <ActionIcon
+                      color="red"
+                      size="sm"
+                      variant="filled"
                       style={{
                         position: 'absolute',
                         top: 5,
-                        left: 5,
-                        color: 'gold',
-                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                        right: 5,
                       }}
-                    />
-                  )}
+                      onClick={() => handleRemoveNewFile(index)}>
+                      <IconTrash size={14} />
+                    </ActionIcon>
 
-                  {/* Make primary button */}
-                  <Button
-                    size="xs"
-                    variant={imageState.primaryImageIndex === index ? 'filled' : 'light'}
-                    color="yellow"
-                    style={{
-                      position: 'absolute',
-                      bottom: 30,
-                      left: 5,
-                      padding: '4px 8px',
-                    }}
-                    onClick={() => handleSetPrimaryImage(index)}
-                    title={imageState.primaryImageIndex === index ? 'Головна' : 'Зробити головною'}>
-                    {imageState.primaryImageIndex === index ? (
-                      <IconStarFilled size={14} />
-                    ) : (
-                      <IconStar size={14} />
-                    )}
-                  </Button>
-
-                  {/* Make secondary button */}
-                  <Button
-                    size="xs"
-                    variant={imageState.secondaryImageIndex === index ? 'filled' : 'light'}
-                    color="blue"
-                    style={{
-                      position: 'absolute',
-                      bottom: 5,
-                      left: 5,
-                      padding: '4px 6px',
-                      fontSize: '10px',
-                    }}
-                    onClick={() => handleSetSecondaryImage(index)}
-                    title={imageState.secondaryImageIndex === index ? 'Друга (hover)' : 'Зробити другою'}>
-                    {imageState.secondaryImageIndex === index ? '2-га' : '2'}
-                  </Button>
-
-                  {/* Delete button */}
-                  <ActionIcon
-                    color="red"
-                    size="sm"
-                    variant="filled"
-                    style={{
-                      position: 'absolute',
-                      top: 5,
-                      right: 5,
-                    }}
-                    onClick={() => handleRemoveNewFile(index)}>
-                    <IconTrash size={14} />
-                  </ActionIcon>
-
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: 30,
-                      left: 5,
-                      background: 'rgba(0,0,0,0.7)',
-                      color: 'white',
-                      padding: '2px 6px',
-                      borderRadius: '4px',
-                      fontSize: '10px',
-                    }}>
-                    {file.name.substring(0, 15)}...
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: 30,
+                        left: 5,
+                        background: 'rgba(0,0,0,0.7)',
+                        color: 'white',
+                        padding: '2px 6px',
+                        borderRadius: '4px',
+                        fontSize: '10px',
+                      }}>
+                      {file.name.substring(0, 15)}...
+                    </div>
                   </div>
-                </div>
-              </Grid.Col>
-            ))}
+                </Grid.Col>
+              );
+            })}
           </Grid>
         </div>
       )}

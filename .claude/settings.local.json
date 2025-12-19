@@ -46,7 +46,9 @@
       "WebFetch(domain:www.shchilnuidrill.com)",
       "WebFetch(domain:www.google.com)",
       "WebFetch(domain:t3.gstatic.com)",
-      "WebFetch(domain:css-tricks.com)"
+      "WebFetch(domain:css-tricks.com)",
+      "Bash(powershell -Command:*)",
+      "Bash(sort:*)"
     ],
     "deny": [],
     "ask": []
