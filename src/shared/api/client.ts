@@ -15,16 +15,21 @@ export const apiClient = axios.create({
 
 // Налаштування retry логіки з exponential backoff для Rate Limit (429)
 axiosRetry(apiClient, {
-  retries: 5,
+  retries: 5, // Максимум 5 повторних спроб
   retryDelay: (retryCount) => {
-    const delay = Math.min(1000 * Math.pow(2, retryCount - 1), 30000);
-    console.log(`Retrying request (attempt ${retryCount}) - waiting ${delay}ms`);
-    return delay;
+    // Exponential backoff: 1s, 2s, 4s, 8s, 16s
+    return Math.min(1000 * Math.pow(2, retryCount - 1), 30000);
   },
   retryCondition: (error) => {
+    // Retry на 429 (Too Many Requests) та 5xx помилки
     return (
       error.response?.status === 429 ||
       (error.response?.status !== undefined && error.response.status >= 500)
+    );
+  },
+  onRetry: (retryCount, error) => {
+    console.log(
+      `Retrying request (attempt ${retryCount}) due to ${error.response?.status} error`
     );
   },
 });
@@ -55,8 +60,8 @@ apiClient.interceptors.request.use(
       }))) as { data: { session: any } };
       if (session?.access_token) {
         config.headers.Authorization = `Bearer ${session.access_token}`;
-      } else if (typeof window !== 'undefined') {
-        // Для гостей (тільки в браузері)
+      } else {
+        // Для гостей
         const sessionId =
           localStorage.getItem('guestSessionId') ||
           `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
