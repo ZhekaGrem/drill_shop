@@ -30,6 +30,7 @@
     "@tanstack/react-query": "^5.81.5",
     "@tanstack/react-query-devtools": "^5.82.0",
     "axios": "^1.11.0",
+    "axios-retry": "^4.5.0",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.19",
     "dompurify": "^3.3.0",

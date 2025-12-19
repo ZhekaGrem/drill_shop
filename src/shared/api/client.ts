@@ -1,5 +1,6 @@
 // src/shared/api/client.ts - SIMPLE
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { supabase } from '@/shared/utils/supabase/client';
 
 export const API_BASE = process.env.NEXT_PUBLIC_API_URL;
@@ -9,6 +10,22 @@ export const apiClient = axios.create({
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
+  },
+});
+
+// Налаштування retry логіки з exponential backoff для Rate Limit (429)
+axiosRetry(apiClient, {
+  retries: 5,
+  retryDelay: (retryCount) => {
+    const delay = Math.min(1000 * Math.pow(2, retryCount - 1), 30000);
+    console.log(`Retrying request (attempt ${retryCount}) - waiting ${delay}ms`);
+    return delay;
+  },
+  retryCondition: (error) => {
+    return (
+      error.response?.status === 429 ||
+      (error.response?.status !== undefined && error.response.status >= 500)
+    );
   },
 });
 export const setTempAccessToken = (token: string | null) => {
@@ -38,8 +55,8 @@ apiClient.interceptors.request.use(
       }))) as { data: { session: any } };
       if (session?.access_token) {
         config.headers.Authorization = `Bearer ${session.access_token}`;
-      } else {
-        // Для гостей
+      } else if (typeof window !== 'undefined') {
+        // Для гостей (тільки в браузері)
         const sessionId =
           localStorage.getItem('guestSessionId') ||
           `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
