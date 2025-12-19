@@ -6,8 +6,11 @@ import ProductDetailsClient from './ProductDetailsClient';
 import { JsonLd } from '../../JsonLd';
 import { structuredData } from '../../seo';
 
-// Revalidate кожні 60 хвилин
+// Revalidate кожні 24 години
 export const revalidate = 86400;
+
+// Дозволяємо динамічну генерацію для slug'ів яких немає в generateStaticParams
+export const dynamicParams = true;
 
 // Генеруємо статичні шляхи для ВСІХ товарів при білді
 export async function generateStaticParams() {
