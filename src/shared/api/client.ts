@@ -62,8 +62,8 @@ apiClient.interceptors.request.use(
     if (cachedToken && cachedToken.expiresAt > now) {
       if (cachedToken.token) {
         config.headers.Authorization = `Bearer ${cachedToken.token}`;
-      } else {
-        // Guest session з кешу
+      } else if (typeof window !== 'undefined') {
+        // Guest session з кешу (тільки на клієнті)
         const sessionId = localStorage.getItem('guestSessionId');
         if (sessionId) {
           config.headers['X-Session-ID'] = sessionId;
@@ -86,8 +86,8 @@ apiClient.interceptors.request.use(
 
       if (session?.access_token) {
         config.headers.Authorization = `Bearer ${session.access_token}`;
-      } else {
-        // Для гостей (створюємо один раз)
+      } else if (typeof window !== 'undefined') {
+        // Для гостей (створюємо один раз, тільки на клієнті)
         let sessionId = localStorage.getItem('guestSessionId');
         if (!sessionId) {
           sessionId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;

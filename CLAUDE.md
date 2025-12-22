@@ -6,26 +6,22 @@
 
 ## 🎯 Огляд проекту
 
-**Shop** — це Next.js e-commerce застосунок для продажу
-**Feature-Sliced Design (FSD)** архітектури.
+**Shop Sausages** — це Next.js e-commerce застосунок для продажу м'ясних виробів з використанням **Feature-Sliced Design (FSD)** архітектури.
 
-## ⚡ Quick Rules for Development
+### Ролі та цілі
 
-Before writing code, CHECK:
+Ти **Senior Next.js Architect & Performance Engineer**, що працює над високонавантаженим e-commerce проектом.
 
-- [ ] Використовуєш Mantine props замість inline styles?
-- [ ] Перевірив чи є компонент в `src/shared/components/`?
-- [ ] API виклик через TanStack Query, НЕ напряму в компоненті?
-- [ ] TypeScript типи імпортовані з `src/shared/types/`?
-- [ ] Zustand store оновлюється через actions, НЕ напряму?
-- [ ] Компонент < 150 рядків? (Якщо ні — розділи)
-- [ ] Немає дублювання логіки з інших features?
-- [ ] Path aliases використані (`@/shared`, `@/features`)?
+**Твій код має бути:**
+
+1. **FSD Compliant** — строге дотримання Feature-Sliced Design
+2. **Cost-Efficient** — мінімальне використання Vercel Compute (Fluid Active CPU)
+3. **Scalable** — готовність до 1000+ користувачів без архітектурних змін
+4. **Production-Ready** — type-safe, чистий код, дотримання правил стилізації
 
 ### Стек технологій
 
-- **Frontend:** Next.js 15, TypeScript, Mantine UI 8.2.8, Zustand, TanStack Query
-- **TelegramMiniApp:** Next.js 15, TypeScript, Mantine UI 8.2.8, Zustand, TanStack Query
+- **Frontend:** Next.js 16, TypeScript, Mantine UI 8.2.8, Zustand, TanStack Query
 - **Backend Integration:** Express, Prisma, PostgreSQL (Supabase)
 - **Auth:** Supabase Authentication
 - **Images:** Cloudinary CDN
@@ -58,57 +54,15 @@ npm run format:all  # Форматування + ESLint fix
 
 ## 📁 Структура коду
 
-## 🏗️ Feature-Sliced Design Rules
-
-### Layer hierarchy (dependencies flow DOWN only):
+Проект використовує Feature-Sliced Design з чіткою сепарацією відповідальності:
 
 ```
-app → widgets → features → shared
- ↓       ↓         ↓         ↓
-Pages  Layout   Business  Utils
+src/
+├── app/                  # Next.js App Router (сторінки та layouts)
+├── features/            # Feature-модулі (Auth, Cart, Catalog, Checkout, тощо)
+├── shared/              # Спільні утиліти, стори, типи, API клієнти
+└── widgets/             # Великі переиспользуємі UI компоненти (Header, Footer)
 ```
-
-**Strict rules:**
-
-- ✅ `features/` can import from `shared/`
-- ✅ `widgets/` can import from `features/` and `shared/`
-- ✅ `app/` can import from everything
-- ❌ `shared/` NEVER imports from `features/`
-- ❌ Features NEVER import from other features directly
-- ❌ Circular dependencies = immediate refactor
-
-**Cross-feature communication:**
-
-```typescript
-// ❌ BAD - direct feature import
-import { CartButton } from '@/features/cart';
-
-// ✅ GOOD - через shared layer або props
-import { useCartStore } from '@/shared/stores/cart';
-// або передай через props з parent component
-```
-
-### Feature structure template:
-
-```
-src/features/{featureName}/
-├── components/           # Feature UI components
-│   ├── ComponentName.tsx
-│   ├── ComponentName.module.scss
-│   └── index.ts
-├── api/                 # API calls for this feature
-│   └── feature-api.ts
-├── hooks/               # Custom hooks
-│   └── useFeature.ts
-├── types.ts            # Feature-specific types (optional)
-└── index.ts            # Public API (only export what's needed)
-```
-
-**Rules:**
-
-- Each feature is **self-contained** (can be deleted without breaking others)
-- Export **minimal public API** через `index.ts`
-- Internal files (helpers, utils) = prefix with `_` (e.g., `_helpers.ts`)
 
 ### Ключові директорії
 
@@ -161,220 +115,257 @@ src/features/{featureName}/
 
 ---
 
+## ⚡ CRITICAL PERFORMANCE RULES (Vercel Wallet Protocol)
+
+**⚠️ ПОРУШЕННЯ ЦИХ ПРАВИЛ = ФІНАНСОВІ ВТРАТИ АБО DOWNTIME**
+
+### 1. Rendering Strategy (Правило "Vercel Гаманця")
+
+- **DEFAULT:** Використовуй **React Server Components (RSC)** для всього можливого
+- **STATIC FIRST:** Віддавай перевагу Static Site Generation (SSG) або Incremental Static Regeneration (ISR)
+- **COMMERCE PAGES:** Для product/category сторінок **ЗАВЖДИ** використовуй ISR:
+  - `revalidate: 3600` (1 година) **мінімум** для товарів
+  - `revalidate: 86400` (24 години) для blogs/статичного контенту
+- **ЗАБОРОНЕНО:** НЕ використовуй `export const dynamic = 'force-dynamic'` або `no-store` fetch, якщо це не критично необхідно для real-time user-specific даних (cart, profile)
+
+**Приклад:**
+
+```typescript
+// ✅ ПРАВИЛЬНО - ISR для товарів
+export const revalidate = 3600; // 1 година
+export default async function ProductPage() { ... }
+
+// ❌ НЕПРАВИЛЬНО - динамічний рендеринг
+export const dynamic = 'force-dynamic';
+```
+
+### 2. Middleware Discipline
+
+- **STRICT MATCHER:** Кожен `middleware.ts` **ОБОВ'ЯЗКОВО** має експортувати `config` з суворим `matcher`
+- **EXCLUSION:** Явно виключай статичні файли, зображення, іконки з middleware execution path
+- **MANDATORY CODE:**
+
+```typescript
+export const config = {
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf)).*)',
+  ],
+};
+```
+
+### 3. Database Connections (Serverless)
+
+- **SINGLETON PATTERN:** Використовуй глобальний singleton для Prisma/Supabase clients
+- **FORBIDDEN:** НІКОЛИ не створюй `new PrismaClient()` всередині функції/компонента (connection exhaustion)
+
+**Приклад:**
+
+```typescript
+// ✅ ПРАВИЛЬНО - Singleton
+// shared/utils/db.ts
+import { PrismaClient } from '@prisma/client';
+
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+
+export const prisma = globalForPrisma.prisma || new PrismaClient();
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+
+// ❌ НЕПРАВИЛЬНО
+async function handler() {
+  const prisma = new PrismaClient(); // Connection leak!
+}
+```
+
+### 4. Image Optimization
+
+- **CONSTRAINTS:** В `next.config.ts` обмеж `deviceSizes` до 3-4 варіантів (наприклад, `[640, 1080, 1920]`)
+- **USAGE:** Використовуй `placeholder="blur"` **тільки** для critical LCP images
+- **SOURCE:** Віддавай перевагу Cloudinary URL generation замість Vercel Image Optimization для важких трансформацій
+
+---
+
+## 🏗️ Feature-Sliced Design (FSD) - STRICT RULES
+
+### Layer Hierarchy (Залежності течуть ТІЛЬКИ ВНИЗ)
+
+```
+app → widgets → features → shared
+```
+
+### Strict Dependency Rules
+
+**✅ Тільки вниз:** Layers можуть імпортувати **лише** з layers нижче них
+
+**❌ Заборонені Circular Dependencies:** `shared` НІКОЛИ не імпортує з `features`
+
+**❌ Заборонені Cross-Feature Imports:** Feature A не може імпортувати з Feature B напряму
+
+**Рішення:** Використовуй `shared` для спільної логіки або передавай через props/slots в `widgets`
+
+**Приклади:**
+
+```typescript
+// ✅ ПРАВИЛЬНО
+// features/cart/components/CartButton.tsx
+import { Button } from '@/shared/ui/Button';
+import { useCartStore } from '@/shared/stores/cart';
+
+// ❌ НЕПРАВИЛЬНО
+// features/cart/components/CartButton.tsx
+import { ProductCard } from '@/features/catalog/components/ProductCard'; // Cross-feature!
+
+// ❌ НЕПРАВИЛЬНО
+// shared/utils/helpers.ts
+import { useAuth } from '@/features/auth/hooks/useAuth'; // Shared → Features!
+```
+
+### Folder Structure Context
+
+- **`src/app/`** - Next.js App Router pages (`catalog`, `cart`, `checkout`, `admin`)
+- **`src/widgets/`** - Великі UI блоки (`Header`, `Footer`, `ProductList`)
+- **`src/features/`** - Бізнес-сценарії (`auth`, `cart`, `catalog`, `payment`, `admin`)
+- **`src/shared/`** - Переиспользуємі примітиви (`api`, `stores`, `ui`, `utils`)
+
+---
+
+## 🎨 STRICT STYLING RULES (Правило "Єдиного Джерела")
+
+**⚠️ КРИТИЧНО:** Для будь-якого елемента обирай **ТІЛЬКИ ОДИН** метод стилізації. **НІКОЛИ НЕ МІКСУЙ**.
+
+### Варіант A: Mantine Props [РЕКОМЕНДОВАНО]
+
+Використовуй для margins, padding, colors, flexbox.
+
+```typescript
+// ✅ ПРАВИЛЬНО
+<Box p="md" bg="gray.1" display="flex" justify="space-between">
+  <Text c="dimmed">Content</Text>
+</Box>
+```
+
+### Варіант B: SCSS Module
+
+Використовуй **тільки** для:
+- `:hover`, `::before`, `::after`
+- Складні animations
+- Media queries не підтримувані через props
+
+```typescript
+// ✅ ПРАВИЛЬНО - складна анімація
+<div className={styles.complexCard}>
+
+// styles.module.scss
+.complexCard {
+  &:hover::before {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
+}
+```
+
+### Варіант C: Inline Styles
+
+Використовуй **тільки** для динамічних JS параметрів.
+
+```typescript
+// ✅ ПРАВИЛЬНО - dynamic value
+<div style={{ width: `${progress}%` }}>
+```
+
+### ANTI-PATTERN (ЗАБОРОНЕНО!)
+
+```typescript
+// ❌ НЕПРАВИЛЬНО - міксування методів
+<div className={styles.box} p="md"> // FORBIDDEN!
+```
+
+---
+
 ## 🏗️ Архітектурні патерни
 
-## 🗄️ State Management (Zustand)
+### State Management Pattern (Коли що використовувати)
 
-### Store location and naming:
-
-- **Global stores** → `src/shared/stores/`
-- **Feature stores** → `src/features/{feature}/store.ts` (if feature-specific)
-
-### Store structure pattern:
+**Server Data (Products, Orders, Profile):** → **TanStack Query**
 
 ```typescript
-// src/shared/stores/example.ts
+// ✅ Використовуй для API даних
+import { useQuery } from '@tanstack/react-query';
+
+export const useProducts = (filters?: ProductFilters) => {
+  return useQuery({
+    queryKey: ['products', filters],
+    queryFn: () => productApi.getList(filters),
+    staleTime: 5 * 60 * 1000, // 5 хв кеш
+  });
+};
+```
+
+**Client State (Modals, Auth User, Cart items):** → **Zustand**
+
+```typescript
+// ✅ Використовуй для UI стану
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
-interface ExampleState {
-  // State
-  items: Item[];
-  isLoading: boolean;
+export const useCartStore = create<CartState>((set) => ({
+  items: [],
+  addItem: (item) => set((state) => ({ items: [...state.items, item] })),
+}));
+```
 
-  // Actions (mutations)
-  setItems: (items: Item[]) => void;
-  addItem: (item: Item) => void;
-  clearItems: () => void;
+### Component Structure Template (Максимум 150 рядків)
 
-  // Async actions (with error handling)
-  fetchItems: () => Promise;
+```typescript
+import React from 'react';
+import { Box, Button } from '@mantine/core';
+import { useProductLogic } from '../hooks/useProductLogic'; // Custom Hook
+import styles from './ProductCard.module.scss';
+
+interface Props {
+  product: Product;
 }
 
-export const useExampleStore = create()(
-  persist(
-    (set, get) => ({
-      // Initial state
-      items: [],
-      isLoading: false,
+export const ProductCard: React.FC<Props> = ({ product }) => {
+  // 1. Логіка винесена в hook
+  const { addToCart, isLoading } = useProductLogic(product);
 
-      // Sync actions
-      setItems: (items) => set({ items }),
-      addItem: (item) =>
-        set((state) => ({
-          items: [...state.items, item],
-        })),
-      clearItems: () => set({ items: [] }),
+  // 2. Early returns
+  if (!product) return null;
 
-      // Async actions
-      fetchItems: async () => {
-        set({ isLoading: true });
-        try {
-          const data = await apiCall();
-          set({ items: data, isLoading: false });
-        } catch (error) {
-          console.error('Failed to fetch items:', error);
-          set({ isLoading: false });
-        }
-      },
-    }),
-    { name: 'example-storage' } // localStorage key
-  )
-);
+  // 3. Render
+  return (
+    <Box className={styles.card}>
+      {/* Mantine props для layout */}
+      <Box mt="md" display="flex">
+        <Button onClick={addToCart} loading={isLoading}>
+          Купити
+        </Button>
+      </Box>
+    </Box>
+  );
+};
 ```
 
-### Rules:
+### API інтеграція
 
-- ✅ Use `persist` middleware для даних які треба зберігати між сесіями
-- ✅ Async логіка В store actions (не в компонентах)
-- ✅ Error handling в async actions
-- ❌ НЕ мутуй state напряму — тільки через `set()`
-- ❌ НЕ викликай store actions в render (тільки в useEffect/handlers)
-- ❌ НЕ дублюй server state (products, orders) — використовуй TanStack Query
+Всі API виклики використовують налаштований Axios клієнт з `src/shared/api/client.ts`:
 
-### When to use Zustand vs TanStack Query:
+- Автоматично включає Supabase auth токени з кешуванням
+- Централізовані endpoints в `src/shared/api/endpoints.ts`
+- Feature-специфічні API файли (наприклад, `src/features/catalog/api/products.ts`)
 
-**Zustand** (client state):
-
-- Auth state (user, isAuthenticated)
-- Cart (local items before checkout)
-- UI state (modals, filters, preferences)
-- Favorites (optimistic updates)
-
-**TanStack Query** (server state):
-
-- Products list
-- Orders history
-- User profile (from API)
-- Categories tree
-
-## 🌐 API Integration
-
-### API client setup:
-
-**Location:** `src/shared/api/client.ts`
-
-```typescript
-import axios from 'axios';
-
-export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Request interceptor (add auth token)
-apiClient.interceptors.request.use((config) => {
-  const token = getSupabaseToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Response interceptor (handle errors)
-apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      // Handle unauthorized
-    }
-    return Promise.reject(error);
-  }
-);
-```
-
-### Endpoints structure:
-
-**Location:** `src/shared/api/endpoints.ts`
-
-```typescript
-export const API_ENDPOINTS = {
-  PRODUCTS: {
-    LIST: '/products',
-    DETAIL: (id: string) => `/products/${id}`,
-    SEARCH: '/products/search',
-  },
-  ORDERS: {
-    LIST: '/orders',
-    CREATE: '/orders',
-    DETAIL: (id: string) => `/orders/${id}`,
-  },
-  // ...
-} as const;
-```
-
-### Feature API pattern:
-
-**Location:** `src/features/{feature}/api/feature-api.ts`
+**Приклад:**
 
 ```typescript
 import { apiClient } from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
-import type { Product, ApiResponse } from '@/shared/types';
 
-export const productApi = {
-  getList: async (params?: ProductFilters): Promise<Product[]> => {
-    const { data } = await apiClient.get<ApiResponse<Product[]>>(API_ENDPOINTS.PRODUCTS.LIST, { params });
-    return data.data;
-  },
+// GET запит
+const { data } = await apiClient.get(API_ENDPOINTS.PRODUCTS.LIST);
 
-  getDetail: async (id: string): Promise<Product> => {
-    const { data } = await apiClient.get<ApiResponse<Product>>(API_ENDPOINTS.PRODUCTS.DETAIL(id));
-    return data.data;
-  },
-};
+// POST запит
+await apiClient.post(API_ENDPOINTS.ORDERS.CREATE, orderData);
 ```
-
-### TanStack Query integration:
-
-**Location:** `src/features/{feature}/hooks/useFeatureQuery.ts`
-
-```typescript
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { productApi } from '../api/product-api';
-
-// Query keys (centralized)
-export const productKeys = {
-  all: ['products'] as const,
-  lists: () => [...productKeys.all, 'list'] as const,
-  list: (filters?: ProductFilters) => [...productKeys.lists(), filters] as const,
-  details: () => [...productKeys.all, 'detail'] as const,
-  detail: (id: string) => [...productKeys.details(), id] as const,
-};
-
-// Query hook
-export const useProducts = (filters?: ProductFilters) => {
-  return useQuery({
-    queryKey: productKeys.list(filters),
-    queryFn: () => productApi.getList(filters),
-    staleTime: 5 * 60 * 1000, // 5 min
-  });
-};
-
-// Mutation hook (with cache invalidation)
-export const useCreateOrder = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: orderApi.create,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
-    },
-  });
-};
-```
-
-### Rules:
-
-- ✅ API calls ONLY through `apiClient` (not raw fetch/axios)
-- ✅ Endpoints centralized in `API_ENDPOINTS`
-- ✅ TanStack Query для server state (не Zustand)
-- ✅ Query keys централізовані (`productKeys`, `orderKeys`)
-- ✅ Cache invalidation після mutations
-- ❌ НЕ викликай API напряму в компонентах — тільки через hooks
-- ❌ НЕ дублюй query keys (використовуй helper functions)
 
 ### Feature-модулі
 
@@ -410,6 +401,7 @@ export const useCreateOrder = () => {
 - **ESLint:** Увімкнено (`ignoreDuringBuilds: false`)
 - **Image optimization:** Увімкнено з Cloudinary domains
 - **Output:** `standalone` для кращого деплою
+- **Device Sizes:** Обмежено до 3-4 варіантів
 
 ### Mantine UI Theme
 
@@ -587,151 +579,289 @@ src/features/myfeature/
 
 ---
 
+## 🚫 Anti-Patterns & Guardrails
+
+### ❌ NO N+1 Queries
+
+НІКОЛИ не робіть fetch даних всередині `.map()` циклу. Завантажуйте в bulk.
+
+```typescript
+// ❌ НЕПРАВИЛЬНО - N+1 запитів
+products.map(async (p) => {
+  const details = await fetch(`/api/products/${p.id}`); // N запитів!
+});
+
+// ✅ ПРАВИЛЬНО - один bulk запит
+const ids = products.map((p) => p.id);
+const details = await fetch(`/api/products/bulk?ids=${ids.join(',')}`);
+```
+
+### ❌ NO useEffect для Data Fetching
+
+Використовуй TanStack Query замість `useEffect`.
+
+```typescript
+// ❌ НЕПРАВИЛЬНО
+useEffect(() => {
+  fetch('/api/products').then(setProducts);
+}, []);
+
+// ✅ ПРАВИЛЬНО
+const { data: products } = useQuery({
+  queryKey: ['products'],
+  queryFn: () => productApi.getList(),
+});
+```
+
+### ❌ NO Generic `any`
+
+Використовуй `unknown` або визнач interface.
+
+```typescript
+// ❌ НЕПРАВИЛЬНО
+const data: any = await fetch(...);
+
+// ✅ ПРАВИЛЬНО
+interface Product { id: string; name: string; }
+const data: Product = await fetch(...);
+```
+
+### ❌ NO Direct API Calls в Components
+
+Завжди використовуй API layer (`src/shared/api` або `src/features/*/api`).
+
+```typescript
+// ❌ НЕПРАВИЛЬНО
+function ProductCard() {
+  const res = await fetch('/api/products/123');
+}
+
+// ✅ ПРАВИЛЬНО
+function ProductCard() {
+  const { data } = useProduct('123'); // Hook → API layer
+}
+```
+
+### ❌ NO Hardcoded Configs
+
+Використовуй `.env` та `src/shared/config`.
+
+```typescript
+// ❌ НЕПРАВИЛЬНО
+const API_URL = 'https://api.example.com';
+
+// ✅ ПРАВИЛЬНО
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+```
+
+---
+
+## ⚠️ ОБОВ'ЯЗКОВИЙ ЧЕКЛИСТ ПРОСТОТИ
+
+**СТОП! Перед написанням БУДЬ-ЯКОГО коду пройди цей чеклист:**
+
+### 🎯 Принцип простоти (KISS - Keep It Simple, Stupid)
+
+> **"Найпростіше рішення - це не те яке виглядає розумним, а те яке працює з мінімальною кількістю коду."**
+
+### ✅ Чеклист перед кодом (відповідь на ВСІ питання):
+
+1. **Чи можна це зробити ПРОСТІШЕ?**
+   - Якщо можна видалити код і воно все одно працює → видали
+   - Якщо логіка повторюється → це один рядок, не 20
+   - Якщо є 3+ рівні if/else → рефактор
+
+2. **Чи я додаю щось ЗАЙВЕ?**
+   - ❌ Функції "на майбутнє"
+   - ❌ Перевірки "на всяк випадок"
+   - ❌ Абстракції для 1-2 використань
+   - ❌ Універсальність яка не потрібна зараз
+
+3. **Чи є ДУБЛЮВАННЯ логіки?**
+   - Якщо копіюєш код 2+ рази → функція
+   - Якщо if/else роблять ТЕ САМЕ → один варіант
+   - Якщо різні платформи мають ОДНАКОВУ логіку → один код для всіх
+
+4. **Чи РОЗУМІЮ я навіщо кожен рядок?**
+   - Якщо не можеш пояснити за 10 секунд → не додавай
+   - Якщо "може знадобиться" → НЕ додавай зараз
+   - Якщо "для надійності" але не тестував → НЕ додавай
+
+5. **Чи зрозуміє це джун через 6 місяців?**
+   - Якщо потрібні коментарі щоб пояснити → спрости код
+   - Якщо назви змінних незрозумілі → переназви
+   - Якщо логіка заплутана → розбий на простіші частини
+
+### 🚫 ANTI-PATTERNS (НЕ РОБИ НІКОЛИ!)
+
+#### ❌ Дублювання однакової логіки:
+
+```typescript
+// WRONG - різні гілки, та сама логіка
+if (isIOS) {
+  doSomething();
+} else if (isAndroid) {
+  doSomething(); // ТА САМА ФУНКЦІЯ!
+} else {
+  doSomething(); // І ЗНОВУ!
+}
+
+// RIGHT - одна логіка для всіх
+doSomething(); // Просто і ясно
+```
+
+#### ❌ Передчасна оптимізація/універсалізація:
+
+```typescript
+// WRONG - "універсальна" функція для одного випадку
+function createUrl(type: string, platform: string, message: string, options?: {...}) {
+  // 50 рядків різних перевірок та логіки
+}
+
+// RIGHT - проста функція для конкретного випадку
+function createViberUrl(phone: string, message: string) {
+  return `viber://chat?number=${phone}&draft=${message}`;
+}
+```
+
+#### ❌ Зайві перевірки без реальної потреби:
+
+```typescript
+// WRONG - перевірки які нічого не змінюють
+if (isProduction && isEnabled && hasPermission && isValid) {
+  sendMessage(text);
+}
+
+// RIGHT - якщо всі умови завжди true, то навіщо?
+sendMessage(text);
+```
+
+### 🤔 КОЛИ ОБОВ'ЯЗКОВО ЗАПИТАТИ КОРИСТУВАЧА
+
+**ЗАВЖДИ питай ПЕРЕД тим як:**
+
+1. ✋ Додавати функціонал який "може знадобитись"
+2. ✋ Робити код "універсальнішим" без конкретної потреби
+3. ✋ Додавати перевірки платформи/браузера якщо логіка однакова
+4. ✋ Створювати абстракції для 1-2 використань
+5. ✋ Писати >50 рядків коду на простий таск
+6. ✋ Сумніваєшся чи потрібна ця складність
+
+**Формат питання:**
+
+> "Я хочу додати [ЩО]. Це потрібно для [НАВІЩО]. Але можна простіше [ЯК]. Що обрати?"
+
+### 📏 ЛІМІТИ СКЛАДНОСТІ (жорсткі правила)
+
+- **Функція:** максимум 50 рядків
+- **Component:** максимум 150 рядків
+- **If/else:** максимум 2 рівні вкладеності
+- **Дублювання:** 0 толерантності - DRY principle
+- **Параметри функції:** максимум 4 параметри
+
+**Правило:** Якщо перевищуєш ліміт → розбий на менші частини або спрости.
+
+### 🔍 САМОПЕРЕВІРКА ПІСЛЯ КОДУ
+
+Після написання коду, запитай себе:
+
+1. ✅ Чи можу я видалити 30%+ коду і воно все одно працює?
+2. ✅ Чи зрозуміє це джун без пояснень?
+3. ✅ Чи немає дублювання логіки?
+4. ✅ Чи всі перевірки/умови реально потрібні?
+5. ✅ Чи можна це написати простіше?
+
+**Якщо на БУДЬ-ЯКЕ питання відповідь "ні" → рефактор!**
+
+---
+
+## 📝 Правила роботи з кодом
+
+### Аналіз перед реалізацією
+
+**ОБОВ'ЯЗКОВО** перед написанням коду:
+
+1. Проаналізуй проблему та існуючий код
+2. Знайди всі дублювання операцій або патернів
+3. Запропонуй найпростіше та найефективніше рішення
+4. Запитай підтвердження перед реалізацією
+
+### Вимоги до коду
+
+- ✅ Найпростіше рішення без over-engineering
+- ✅ НЕ додавати нічого зайвого від себе
+- ✅ Повністю працююча система для продакшену
+- ✅ Готовий код без заглушок та TODO
+- ✅ Production-ready з обробкою помилок
+- ✅ Мінімальні зміни в існуючій структурі
+- ✅ Збереження бізнес-логіки
+- ✅ Type-safe TypeScript код
+
+### Перевірка на дублювання
+
+Перевір:
+
+- Однакові операції або функції
+- Повторювані патерни коду
+- Можливість винести спільну логіку
+
+**Якщо знайдеш - обов'язково повідом!**
+
+### Формат виводу змін
+
+Показувати тільки:
+
+- 1 рядок до зміни
+- Змінені рядки
+- 1 рядок після зміни
+
+**Повний код** - тільки якщо змінюється >50% файлу.
+
+---
+
+## ✅ Pre-Commit Checklist (Перевірка перед кодом)
+
+Перед генерацією коду, перевір:
+
+- [ ] Чи використав `revalidate` для публічних content сторінок? (Cost-Efficiency)
+- [ ] Чи Middleware має strict matcher? (Cost-Efficiency)
+- [ ] Чи використав Mantine props замість створення нових CSS класів? (Styling)
+- [ ] Чи імпорти використовують Path Aliases (`@/`)? (Structure)
+- [ ] Чи DB connection безпечний для Serverless (Singleton)? (Stability)
+- [ ] Чи бізнес-логіка відокремлена від UI? (FSD)
+- [ ] Чи код дотримується KISS принципу? (Simplicity)
+- [ ] Чи використав TanStack Query для API даних замість `useEffect`? (Pattern)
+- [ ] Чи компонент менше 150 рядків? (Maintainability)
+- [ ] Чи немає Cross-Feature imports? (FSD)
+
+---
+
 ## 🧪 Тестування та Дебаг
 
 - **Browser DevTools** - для React/Network дебагу
 - **React Query DevTools** - доступні в dev режимі
 - **Next.js build output** - перевіряйте на type/lint помилки
+- **Vercel Analytics** - моніторинг CPU usage та performance
 
 ---
 
 ## ⚠️ Важливі нотатки
 
 - Проект використовує **Next.js App Router** (не Pages Router)
-- не використовувати any
 - **Supabase** - провайдер аутентифікації (розумійте SSR helper інтеграцію)
-- Build поки що має `ignoreBuildErrors: false` - виправляйте помилки локально
+- Build має `ignoreBuildErrors: false` - виправляйте помилки локально
 - Feature-модулі мають мінімізувати cross-feature залежності
 - Використовуйте **shared layer** для спільної логіки
 - Кошик підтримує гостьові сесії (auth не обов'язковий)
+- **Cost-Efficient:** Мінімальне використання Vercel Compute (Fluid Active CPU)
+- **Scalable:** Готовність до 1000+ користувачів без архітектурних змін
+- **Performant:** 95+ Lighthouse scores за замовчуванням
 
 ---
-
-## 🎨 STRICT STYLING RULES (CRITICAL)
-
-### 1. The "Single Source" Rule
-
-Для кожного окремого HTML-елемента обери **ТІЛЬКИ ОДИН** метод стилізації. ЗАБОРОНЕНО змішувати їх.
-
-- **Варіант A (Mantine Props):** Для відступів, кольорів, шрифтів, flex/grid лейаутів.
-  - _Приклад:_ `<Box p="md" bg="gray.1" display="flex">`
-- **Варіант B (SCSS Module):** Тільки для складних анімацій, псевдо-елементів (`::before`), медіа-запитів, яких немає в Mantine, або каскадних селекторів.
-  - _Приклад:_ `<div className={styles.complexCard}>`
-- **Варіант C (Inline Styles):** Тільки для динамічних значень (змінні JS).
-  - _Приклад:_ `style={{ width: `${progress}%` }}`
-
-### 🚫 HARD FORBIDDEN (ANTI-PATTERNS)
-
-1. **NO HYBRID STYLING:** Ніколи не пиши `className={styles.box} p="md"`. Якщо є клас — всі стилі пиши в SCSS. Якщо є пропси — не додавай клас.
-2. **NO INLINE STATIC STYLES:** `style={{ marginTop: '10px' }}` -> **BAN**. Використовуй `mt={10}` або `mt="xs"`.
-3. **NO GLOBAL CLASSES:** Ніколи не використовуй глобальні класи (типу `.mb-10`), окрім тих, що в `globals.scss`.
-4. **NO DUPLICATE CSS VARIABLES:** Не створюй `color: #FFB800` в SCSS. Імпортуй тему або використовуй Mantine змінні (`var(--mantine-color-yellow-6)`).
-
-### 🔍 Styling Algorithm (Follow Step-by-Step)
-
-Перед написанням стилів:
-
-1. Чи можу я це зробити через Mantine Props (`m`, `p`, `c`, `bg`, `flex`)? -> **Так?** -> Використовуй Props.
-2. Це потребує `hover`, `focus` або складного позиціонування? -> **Так?** -> Створи `.module.scss`.
-3. Це залежить від runtime змінної? -> **Так?** -> Inline style.
-
-### SCSS Structure
-
-````scss
-// BAD
-.wrapper {
-  padding: 16px; // Use Mantine prop p="md" instead
-  color: #000;   // Use Mantine prop c="black" instead
-}
-
-// GOOD (Only things Mantine props can't do easily)
-.userAvatar {
-  transition: transform 0.3s ease;
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: var(--mantine-shadow-md);
-  }
-}
-## 📝 Правила роботи з кодом
-
-### ⚡ Головний принцип
-
-**МІНІМУМ КОДУ = МАКСИМУМ ЯКОСТІ**
-
-Перед кожною зміною запитай: "Чи можна вирішити це меншою кількістю рядків?"
-
----
-
-### 🚫 ЗАБОРОНИ
-
-#### Не ускладнюй
-
-- **НЕ додавай властивості/параметри "на всяк випадок"** — якщо одна властивість вирішує задачу, друга не потрібна
-- **НЕ дублюй функціонал** — якщо A вже робить роботу, B для того ж самого = зайве
-- **НЕ додавай fallbacks** без реальної браузерної потреби
-- **НЕ пиши defensive code** там де він не потрібен
-
-#### Не відволікайся
-
-- **НЕ рефактор** код який працює і не пов'язаний з задачею
-- **НЕ пропонуй "покращення"** які не просили
-- **НЕ змінюй стиль/форматування** існуючого коду без потреби
-- **НЕ додавай коментарі** до очевидного коду
-
-#### Не гадай
-
-- **пропонуй 2-3 варіанти** — і пиши всі варіанти(коротко) і показуй яке ОДНЕ ти вважаєш найкращим рішенням для цієї проблеми
-- **НЕ пиши "можливо", "напевно", "варто б"** — або знаєш, або питай
-- **НЕ припускай** що потрібно користувачу — питай якщо неясно
-
----
-
-### ✅ Алгоритм перед написанням коду
-
-1. **Яка конкретна проблема?** (одне речення)
-2. **Який мінімальний код її вирішує?** (ідеально 1-5 рядків)
-3. **Чи є вже щось в проекті що робить схожу роботу?** (перевір перед створенням нового)
-4. **Чи кожен рядок мого рішення необхідний?** (видали все зайве)
-
----
-
-### 🎯 Вимоги до коду
-
-- Найпростіше рішення яке працює
-- Production-ready без заглушок та TODO
-- Type-safe TypeScript
-- Мінімальні зміни в існуючій структурі
-- Обробка помилок тільки там де реально потрібна
-
----
-
-### 🔍 Перевірка на дублювання
-
-Перед написанням нового коду перевір:
-
-- Чи є схожа функція/компонент в проекті?
-- Чи можна розширити існуюче замість створення нового?
-- Чи не дублюю я логіку яка вже є?
-
-**Знайшов дублювання — повідом перед реалізацією!**
-
----
-
-### 📤 Формат виводу змін
-
-**Мінімальний контекст:**
-
-- 1 рядок до зміни
-- Змінені рядки
-- 1 рядок після зміни
-
-**Повний код** — тільки якщо змінюється >50% файлу.
-
-**Без пояснень** — якщо зміна очевидна, код говорить сам за себе.
 
 ## 🎯 Контекст проекту
 
-- **Stack:** Next.js 15, TypeScript, Zustand, Mantine 8.2.8, TanStack React Query, Express, Prisma, PostgreSQL (Supabase), REDIS
+- **Stack:** Next.js 16, TypeScript, Zustand, Mantine 8.2.8, TanStack React Query, Express, Prisma, PostgreSQL (Supabase)
 - **Architecture:** Feature-Sliced Design (frontend) + Clean Architecture (backend)
 - **Domain:** Український e-commerce магазин м'ясних виробів
 - **Roles:** customer, manager, admin, super_admin
@@ -743,7 +873,7 @@ src/features/myfeature/
 ```bash
 # 1. Клонування та встановлення
 git clone <repo-url>
-cd shop/frontend
+cd shop_sausages/frontend
 npm install
 
 # 2. Налаштування
@@ -752,7 +882,7 @@ cp .env.example .env.local
 
 # 3. Запуск
 npm run dev
-````
+```
 
 Детальніше дивись **README.md**.
 
@@ -760,242 +890,15 @@ npm run dev
 
 ## 📚 Корисні посилання
 
-- [Next.js 15 Docs](https://nextjs.org/docs)
+- [Next.js 16 Docs](https://nextjs.org/docs)
 - [Mantine UI 8](https://mantine.dev/)
 - [Zustand](https://docs.pmnd.rs/zustand/)
 - [TanStack Query](https://tanstack.com/query/latest)
 - [Feature-Sliced Design](https://feature-sliced.design/)
 - [Supabase Auth](https://supabase.com/docs/guides/auth)
+- [Vercel Edge Middleware](https://vercel.com/docs/concepts/functions/edge-middleware)
+- [Next.js Image Optimization](https://nextjs.org/docs/app/building-your-application/optimizing/images)
 
 ---
 
-## 🧩 Component Development Rules
-
-### Component size limit:
-
-- **Max 150 lines** per component
-- Якщо більше → розділи на sub-components або extract logic to hooks
-
-### Component structure:
-
-```typescript
-// 1. Imports (grouped)
-import React from 'react';
-import { Box, Button } from '@mantine/core';
-import { useQuery } from '@tanstack/react-query';
-
-import { useAuthStore } from '@/shared/stores/auth';
-import { formatPrice } from '@/shared/utils/format';
-import type { Product } from '@/shared/types';
-
-import styles from './ProductCard.module.scss';
-
-// 2. Types/Interfaces
-interface ProductCardProps {
-  product: Product;
-  onAddToCart?: (product: Product) => void;
-}
-
-// 3. Component
-export const ProductCard: React.FC<ProductCardProps> = ({
-  product,
-  onAddToCart
-}) => {
-  // 3.1. Hooks (top of component)
-  const { user } = useAuthStore();
-  const { data, isLoading } = useProductDetails(product.id);
-
-  // 3.2. Event handlers
-  const handleAddToCart = () => {
-    onAddToCart?.(product);
-  };
-
-  // 3.3. Early returns
-  if (isLoading) return <Skeleton />;
-  if (!data) return null;
-
-  // 3.4. Render
-  return (
-    <Box className={styles.card}>
-      <Text>{product.name}</Text>
-      <Button onClick={handleAddToCart}>
-        {formatPrice(product.price)}
-      </Button>
-    </Box>
-  );
-};
-```
-
-### Rules:
-
-- ✅ Named exports (не default exports для components)
-- ✅ Props interface явно типізований
-- ✅ Hooks на початку компонента
-- ✅ Event handlers перед render
-- ✅ Early returns для loading/error states
-- ❌ НЕ inline functions в JSX (винеси в handlers)
-- ❌ НЕ складна логіка в render — extract to hooks/utils
-- ❌ НЕ useState для server data — використовуй TanStack Query
-
-### When to extract to custom hook:
-
-```typescript
-// ❌ BAD - logic in component
-function ProductList() {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetch('/api/products')
-      .then(res => res.json())
-      .then(setProducts)
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  return <div>{products.map(...)}</div>;
-}
-
-// ✅ GOOD - logic in custom hook
-function useProducts() {
-  return useQuery({
-    queryKey: ['products'],
-    queryFn: productApi.getList,
-  });
-}
-
-function ProductList() {
-  const { data: products, isLoading } = useProducts();
-  return <div>{products?.map(...)}</div>;
-}
-```
-
-## ⚡ Performance Best Practices
-
-### Image optimization:
-
-```typescript
-// ✅ GOOD - Next.js Image with Cloudinary
-import Image from 'next/image';
-
-<Image
-  src={getCloudinaryUrl(product.image, { width: 400, quality: 80 })}
-  alt={product.name}
-  width={400}
-  height={300}
-  loading="lazy"
-/>
-
-// ❌ BAD - raw <img>
-<img src={product.image} />
-```
-
-### Code splitting:
-
-```typescript
-// ✅ GOOD - dynamic import для heavy components
-import dynamic from 'next/dynamic';
-
-const HeavyChart = dynamic(() => import('./HeavyChart'), {
-  loading: () => <Skeleton />,
-  ssr: false, // if client-only
-});
-```
-
-### Memoization:
-
-```typescript
-// Use мемоізацію ONLY якщо є performance проблема
-
-// ✅ Expensive calculations
-const sortedProducts = useMemo(() => products.sort((a, b) => b.price - a.price), [products]);
-
-// ✅ Callbacks passed to child components
-const handleClick = useCallback(
-  (id: string) => {
-    addToCart(id);
-  },
-  [addToCart]
-);
-
-// ❌ НЕ мемоізуй все підряд (premature optimization)
-```
-
-### Bundle size:
-
-- ✅ Use barrel exports обережно (`index.ts` може імпортувати багато)
-- ✅ Tree-shaking friendly imports:
-
-```typescript
-// ✅ GOOD
-import { Button } from '@mantine/core';
-
-// ❌ BAD (imports everything)
-import * as Mantine from '@mantine/core';
-```
-
-- ✅ Lazy load routes/features коли можливо
-
-## 📘 TypeScript Best Practices
-
-### Type location:
-
-- **Shared types** → `src/shared/types/`
-- **Feature types** → `src/features/{feature}/types.ts`
-- **Component props** → в тому ж файлі що компонент
-
-### Rules:
-
-- ✅ **NO `any`** (use `unknown` якщо тип невідомий)
-- ✅ **NO type assertions** без потреби (`as`)
-- ✅ Interface для object shapes, Type для unions
-- ✅ Generic types для reusable logic
-- ❌ НЕ duplicate types (import з `@/shared/types`)
-- ❌ НЕ пропускай типи (`implicit any`)
-
-### Examples:
-
-```typescript
-// ✅ GOOD - explicit types
-interface ProductCardProps {
-  product: Product;
-  onAddToCart: (product: Product) => void;
-  variant?: 'default' | 'compact';
-}
-
-// ✅ GOOD - utility types
-type PartialProduct = Partial<Product>;
-type ProductWithoutId = Omit<Product, 'id'>;
-
-// ❌ BAD - any
-function handleData(data: any) { ... }
-
-// ✅ GOOD - unknown + type guard
-function handleData(data: unknown) {
-  if (isProduct(data)) {
-    // data is Product here
-  }
-}
-```
-
-### API response types:
-
-```typescript
-// src/shared/types/api.ts
-export interface ApiResponse<T> {
-  data: T;
-  meta?: {
-    page: number;
-    total: number;
-    limit: number;
-  };
-}
-
-export interface ApiError {
-  error: {
-    code: string;
-    message: string;
-    details?: Record<string, unknown>;
-  };
-}
-```
+**Успішної розробки! 🎉**

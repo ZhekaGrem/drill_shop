@@ -81,7 +81,7 @@ export const useCheckout = () => {
   }, [isAuthenticated, userProfile?.email]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && typeof window !== 'undefined') {
       const subscription = form.watch((value) => {
         localStorage.setItem(
           GUEST_CONTACTS_KEY,
@@ -104,10 +104,12 @@ export const useCheckout = () => {
       }
 
       clearCart();
-      if (!isAuthenticated) {
-        localStorage.removeItem(GUEST_CONTACTS_KEY);
+      if (typeof window !== 'undefined') {
+        if (!isAuthenticated) {
+          localStorage.removeItem(GUEST_CONTACTS_KEY);
+        }
+        localStorage.removeItem('guest_cart_items');
       }
-      localStorage.removeItem('guest_cart_items');
 
       notifications.show({
         title: 'Замовлення створено!',
