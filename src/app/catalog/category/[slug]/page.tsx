@@ -1,6 +1,7 @@
 // src/app/catalog/category/[slug]/page.tsx
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import { productsApi, categoriesApi } from '@/features/catalog/api/products';
 import CategoryPageClient from './CategoryPageClient';
 import { JsonLd } from '../../../JsonLd';
@@ -8,6 +9,15 @@ import { structuredData } from '../../../seo';
 
 // Revalidate кожні 6 годин
 export const revalidate = 21600;
+
+// ✅ ФІКС CPU: Повертати 404 для категорій не з generateStaticParams
+export const dynamicParams = false;
+
+// ✅ ФІКС CPU: Кешування API запиту для дедуплікації між generateMetadata та page
+const getCategory = cache(async (slug: string) => {
+  const response = await categoriesApi.getCategoryBySlug(slug);
+  return response.data;
+});
 
 // Генеруємо статичні шляхи для всіх категорій при білді
 export async function generateStaticParams() {
@@ -26,8 +36,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
 
   try {
-    const response = await categoriesApi.getCategoryBySlug(slug);
-    const category = response.data;
+    // ✅ Використовуємо кешований запит (дедуплікація з page component)
+    const category = await getCategory(slug);
 
     return {
       title: category.metaTitle || `${category.name} | Каталог`,
@@ -57,13 +67,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   let productsData = null;
 
   try {
-    // Завантажуємо категорію та товари паралельно
-    const [categoryResponse, productsResponse] = await Promise.all([
-      categoriesApi.getCategoryBySlug(slug),
+    // ✅ Завантажуємо категорію (кешований запит) та товари паралельно
+    const [category, productsResponse] = await Promise.all([
+      getCategory(slug), // Використовуємо кеш
       productsApi.getProductsByCategory(slug, { limit: 18, offset: 0 }),
     ]);
 
-    categoryData = categoryResponse.data;
+    categoryData = category;
     productsData = productsResponse;
   } catch (error) {
     console.error('Failed to fetch category or products:', error);

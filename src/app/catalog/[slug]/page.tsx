@@ -1,6 +1,7 @@
 // src/app/catalog/[slug]/page.tsx - SSG для всіх товарів
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import { productsApi } from '@/features/catalog/api/products';
 import ProductDetailsClient from './ProductDetailsClient';
 import { JsonLd } from '../../JsonLd';
@@ -9,7 +10,14 @@ import { structuredData } from '../../seo';
 // Revalidate кожні 24 години
 export const revalidate = 86400;
 
+// ✅ ФІКС CPU: Повертати 404 для товарів не з generateStaticParams
+export const dynamicParams = false;
 
+// ✅ ФІКС CPU: Кешування API запиту для дедуплікації між generateMetadata та page
+const getProduct = cache(async (slug: string) => {
+  const response = await productsApi.getProductBySlug(slug);
+  return response.data;
+});
 
 // Генеруємо статичні шляхи для ВСІХ товарів при білді
 export async function generateStaticParams() {
@@ -34,8 +42,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
 
   try {
-    const response = await productsApi.getProductBySlug(slug);
-    const product = response.data;
+    // ✅ Використовуємо кешований запит (дедуплікація з page component)
+    const product = await getProduct(slug);
 
     return {
       title: `${product.name}`,
@@ -63,9 +71,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   let productData = null;
 
   try {
-    // Завантажуємо товар на сервері
-    const response = await productsApi.getProductBySlug(slug);
-    productData = response.data;
+    // ✅ Використовуємо кешований запит (той самий що в generateMetadata)
+    productData = await getProduct(slug);
   } catch (error) {
     console.error('Failed to fetch product:', error);
     notFound();

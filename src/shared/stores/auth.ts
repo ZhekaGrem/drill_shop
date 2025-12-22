@@ -332,8 +332,9 @@ export const useAuthStore = create<AuthState>()(
           });
 
           setCachedProfile(null);
-          const { setTempAccessToken } = await import('@/shared/api/client');
+          const { setTempAccessToken, clearAuthCache } = await import('@/shared/api/client');
           setTempAccessToken(null);
+          clearAuthCache(); // ✅ Очищаємо кеш токенів
           // Очищаємо favorites та cart
           const { useFavoritesStore } = await import('./favorites');
           const { useCartStore } = await import('./cart');

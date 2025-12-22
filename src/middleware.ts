@@ -1,6 +1,20 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+// ✅ КРИТИЧНИЙ ФІКС: matcher виключає статичні файли
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths EXCEPT:
+     * - _next/static (static files)
+     * - _next/image (image optimization)
+     * - favicon.ico, robots.txt, sitemap.xml
+     * - public files (images, fonts)
+     */
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf)).*)',
+  ],
+};
+
 export function middleware(request: NextRequest) {
   // Redirects для старих URL
   const redirects: Record<string, string> = {
