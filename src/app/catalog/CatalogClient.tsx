@@ -1,15 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation';
-import { Modal } from '@mantine/core';
+import { Modal, Loader, Center, Text } from '@mantine/core';
 import { IconFilter, IconChevronDown } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
 import { CatalogFilters } from '@/features/catalog/components/CatalogFilters/CatalogFilters';
-import { Pagination } from '@/shared/components/Pagination/Pagination';
 import { useCatalogFilters } from '@/features/catalog/hooks/useCatalogFilters';
-import { useCatalogProducts, usePrefetchNextPage } from '@/features/catalog/hooks/useCatalogProducts';
+import { useCatalogProducts } from '@/features/catalog/hooks/useCatalogProducts';
 import { ProductsResponse } from '@/features/catalog/api/products';
 import styles from './catalog.module.scss';
 
@@ -24,75 +23,63 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { filters, pagination, setFromUrlParams, getUrlParams, setPagination } = useCatalogFilters();
+  const { filters, setFromUrlParams } = useCatalogFilters();
+
+  const observerTarget = useRef<HTMLDivElement>(null);
 
   const {
-    data: queryData,
+    data,
     isLoading,
     error,
-    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
   } = useCatalogProducts({
     filters: filters,
-    pagination: pagination,
     enabled: initialized,
     initialData: initialData,
   });
 
-  const productsData = queryData || initialData;
-  const products = productsData?.data || [];
-
-  // ✅ FIX: Використовуємо реальні дані з API
-  const totalCount = productsData?.meta.total || 0;
-  const currentLimit = productsData?.meta.limit || pagination.limit || 18;
-  const currentOffset = productsData?.meta.offset || pagination.offset || 0;
-
-  // Якщо products.length < limit, значить це остання сторінка
-  const actualTotal =
-    products.length < currentLimit && currentOffset === 0
-      ? products.length // Якщо перша сторінка і товарів менше ліміту - це єдина сторінка
-      : totalCount;
-
-  // ✅ FIX: Розрахунок правильних значень
-  const totalPages = actualTotal > 0 ? Math.ceil(actualTotal / currentLimit) : 0;
-  const currentPage = Math.floor(currentOffset / currentLimit) + 1;
-
-  usePrefetchNextPage(currentPage, totalPages, filters);
+  // Об'єднуємо всі сторінки в один масив
+  const products = data?.pages.flatMap((page) => page.data) || [];
+  const totalCount = data?.pages[0]?.meta.total || 0;
 
   useEffect(() => {
     setFromUrlParams(searchParams);
     setInitialized(true);
   }, [searchParams, setFromUrlParams]);
 
-  // ✅ Скролимо до верху при відкритті каталогу
+  // ✅ Скролимо до верху при зміні фільтрів
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [pathname]); // Спрацює при зміні маршруту
+  }, [pathname, filters]); // Спрацює при зміні маршруту або фільтрів
 
-  const handlePageChange = (page: number) => {
-    const limit = 18;
-    const newOffset = (page - 1) * limit;
-    setPagination({ limit, offset: newOffset });
-    updateURLWithoutReload(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // Intersection Observer для безкінечного скролу
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    );
 
-  const handleFiltersChange = () => {
-    setPagination({ limit: 18, offset: 0 });
-    updateURLWithoutReload(1);
-  };
-
-  const updateURLWithoutReload = (page?: number) => {
-    const params = getUrlParams();
-    if (page && page > 1) {
-      params.set('page', page.toString());
-    } else {
-      params.delete('page');
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
     }
-    const newUrl = `${pathname}${params.toString() ? `?${params.toString()}` : ''}`;
-    window.history.replaceState(null, '', newUrl);
-  };
 
-  const showInitialData = !initialized && initialData && !searchParams.toString();
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const handleFiltersChange = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   return (
     <div className={styles.catalogPage}>
@@ -152,22 +139,38 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
 
         {!isLoading && !error && products.length > 0 && (
           <>
-            <div className={styles.products} style={{ opacity: isFetching ? 0.7 : 1 }}>
+            <div className={styles.products}>
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
 
-            {/* ✅ FIX: Пагінація показується тільки коли товарів більше ніж limit */}
-            {totalCount > currentLimit && totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-                className={styles.pagination}
-              />
+            {/* Intersection observer target */}
+            <div ref={observerTarget} style={{ height: '20px', margin: '20px 0' }} />
+
+            {/* Індикатор завантаження наступної сторінки */}
+            {isFetchingNextPage && (
+              <Center py="xl">
+                <Loader size="md" />
+              </Center>
+            )}
+
+            {/* Повідомлення про кінець списку */}
+            {!hasNextPage && products.length > 0 && (
+              <Center py="xl">
+                <Text c="dimmed" size="sm">
+                  Всі товари завантажено ({totalCount})
+                </Text>
+              </Center>
             )}
           </>
+        )}
+
+        {/* Повідомлення якщо товарів немає */}
+        {!isLoading && !error && products.length === 0 && (
+          <Center py="xl">
+            <Text c="dimmed">Товари не знайдено</Text>
+          </Center>
         )}
       </div>
     </div>

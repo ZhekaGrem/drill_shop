@@ -50,11 +50,22 @@ const CheckoutFormComponent = () => {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     watch,
     setValue,
   } = form;
   const { isAuthenticated, userProfile } = useAuthStore();
+
+  // Auto-scroll to first error when form is submitted with errors
+  useEffect(() => {
+    if (isSubmitted && Object.keys(errors).length > 0) {
+      // Прокрутити до верху форми щоб показати Alert з помилками
+      const formElement = document.querySelector(`.${styles.checkoutForm}`);
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [errors, isSubmitted]);
 
   // Local state for delivery
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
@@ -189,8 +200,32 @@ const CheckoutFormComponent = () => {
         {/* Left column - form */}
         <div className={styles.formColumn}>
           <div className={styles.formSection}>
+            {/* Validation errors */}
+            {isSubmitted && Object.keys(errors).length > 0 && (
+              <Alert color="red" icon={<IconAlertCircle size={20} />} radius={0} mb="md">
+                <strong>Будь ласка, виправте наступні помилки:</strong>
+                <ul style={{ marginTop: '8px', paddingLeft: '20px' }}>
+                  {errors.shippingAddress?.firstName && (
+                    <li>{errors.shippingAddress.firstName.message}</li>
+                  )}
+                  {errors.shippingAddress?.lastName && <li>{errors.shippingAddress.lastName.message}</li>}
+                  {errors.guestEmail && <li>Email: {errors.guestEmail.message}</li>}
+                  {errors.shippingAddress?.phone && <li>Телефон: {errors.shippingAddress.phone.message}</li>}
+                  {errors.deliveryMethod && <li>{errors.deliveryMethod.message}</li>}
+                  {errors.shippingAddress?.city && <li>Місто: {errors.shippingAddress.city.message}</li>}
+                  {errors.deliveryData?.cityRef && <li>Місто: {errors.deliveryData.cityRef.message}</li>}
+                  {errors.deliveryData?.warehouseRef && (
+                    <li>Відділення: {errors.deliveryData.warehouseRef.message}</li>
+                  )}
+                  {errors.shippingAddress?.address1 && <li>{errors.shippingAddress.address1.message}</li>}
+                  {errors.paymentMethod && <li>{errors.paymentMethod.message}</li>}
+                </ul>
+              </Alert>
+            )}
+
+            {/* Submit error from backend */}
             {submitError && (
-              <Alert color="red" icon={<IconAlertCircle size={20} />} radius={0}>
+              <Alert color="red" icon={<IconAlertCircle size={20} />} radius={0} mb="md">
                 Помилка створення замовлення. Перевірте дані та спробуйте ще раз.
               </Alert>
             )}

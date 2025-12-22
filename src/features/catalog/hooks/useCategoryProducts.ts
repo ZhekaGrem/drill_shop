@@ -1,23 +1,37 @@
 // src/features/catalog/hooks/useCategoryProducts.ts
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { productsApi, ProductsResponse } from '@/features/catalog/api/products';
 
 interface UseCategoryProductsOptions {
   categorySlug: string;
-  page: number;
-  limit: number;
   initialData?: ProductsResponse | null;
 }
 
-export function useCategoryProducts({ categorySlug, page, limit, initialData }: UseCategoryProductsOptions) {
-  const offset = (page - 1) * limit;
+const ITEMS_PER_PAGE = 18;
 
-  return useQuery({
-    queryKey: ['category-products', categorySlug, page, limit],
-    queryFn: async () => {
-      return productsApi.getProductsByCategory(categorySlug, { limit, offset });
+export function useCategoryProducts({ categorySlug, initialData }: UseCategoryProductsOptions) {
+  return useInfiniteQuery<ProductsResponse>({
+    queryKey: ['category-products', categorySlug],
+    queryFn: async ({ pageParam = 0 }) => {
+      return productsApi.getProductsByCategory(categorySlug, {
+        limit: ITEMS_PER_PAGE,
+        offset: pageParam as number,
+      });
     },
+    getNextPageParam: (lastPage) => {
+      const currentOffset = lastPage.meta.offset;
+      const currentLimit = lastPage.meta.limit;
+      const total = lastPage.meta.total;
+
+      // Якщо є ще сторінки - повертаємо наступний offset
+      if (currentOffset + currentLimit < total) {
+        return currentOffset + currentLimit;
+      }
+
+      // Немає більше сторінок
+      return undefined;
+    },
+    initialPageParam: 0,
     staleTime: 5 * 60 * 1000, // 5 хвилин
-    placeholderData: initialData || undefined,
   });
 }

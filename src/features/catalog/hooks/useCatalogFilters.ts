@@ -4,14 +4,11 @@ import { ProductFilters, Pagination } from '@/features/catalog/api/products';
 
 interface CatalogFiltersState {
   filters: ProductFilters & { categoryIds?: string[] }; // Додали categoryIds
-  pagination: Pagination;
 
   setFilter: (key: keyof ProductFilters, value: any) => void;
   toggleCategoryId: (categoryId: string) => void; // НОВИЙ метод
   setFilters: (filters: Partial<ProductFilters>) => void;
   clearFilters: () => void;
-  setPagination: (pagination: Partial<Pagination>) => void;
-  resetPagination: () => void;
 
   getUrlParams: () => URLSearchParams;
   setFromUrlParams: (params: URLSearchParams) => void;
@@ -20,11 +17,9 @@ interface CatalogFiltersState {
 }
 
 const defaultFilters: ProductFilters = {};
-const defaultPagination: Pagination = {};
 
 export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
   filters: { ...defaultFilters },
-  pagination: { ...defaultPagination },
 
   setFilter: (key, value) => {
     set((state) => {
@@ -34,10 +29,7 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
       } else {
         newFilters[key] = value;
       }
-      return {
-        filters: newFilters,
-        pagination: { ...state.pagination, offset: 0 },
-      };
+      return { filters: newFilters };
     });
   },
 
@@ -61,7 +53,6 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
           categoryIds: newIds.length > 0 ? newIds : undefined,
           categorySlug: undefined, // Видаляємо старий параметр
         },
-        pagination: { ...state.pagination, offset: 0 },
       };
     });
   },
@@ -69,7 +60,6 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
   setFilters: (newFilters) => {
     set((state) => ({
       filters: { ...state.filters, ...newFilters },
-      pagination: { ...state.pagination, offset: 0 },
     }));
 
     const { filters } = get();
@@ -79,27 +69,14 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
   clearFilters: () => {
     set({
       filters: { ...defaultFilters },
-      pagination: { ...defaultPagination },
     });
 
     sessionStorage.removeItem('catalog-filters');
   },
 
-  setPagination: (newPagination) => {
-    set((state) => ({
-      pagination: { ...state.pagination, ...newPagination },
-    }));
-  },
-
-  resetPagination: () => {
-    set((state) => ({
-      pagination: { ...state.pagination, offset: undefined },
-    }));
-  },
-
   // ОНОВЛЕНО: Відправляємо categoryIds
   getApiParams: () => {
-    const { filters, pagination } = get();
+    const { filters } = get();
     const apiParams: Record<string, any> = {};
 
     if (filters.search?.trim()) apiParams.search = filters.search.trim();
@@ -115,14 +92,11 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
     if (filters.priceMax !== undefined) apiParams.priceMax = filters.priceMax;
     if (filters.hasPromo !== undefined) apiParams.hasPromo = filters.hasPromo;
 
-    if (pagination.limit) apiParams.limit = pagination.limit;
-    if (pagination.offset) apiParams.offset = pagination.offset;
-
     return apiParams;
   },
 
   getUrlParams: () => {
-    const { filters, pagination } = get();
+    const { filters } = get();
     const params = new URLSearchParams();
 
     if (filters.search?.trim()) params.set('search', filters.search.trim());
@@ -138,18 +112,11 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
     if (filters.priceMax !== undefined) params.set('priceMax', filters.priceMax.toString());
     if (filters.hasPromo !== undefined) params.set('promo', filters.hasPromo.toString());
 
-    if (pagination.offset) {
-      const limit = pagination.limit || 20;
-      const page = Math.floor(pagination.offset / limit) + 1;
-      params.set('page', page.toString());
-    }
-
     return params;
   },
 
   setFromUrlParams: (params) => {
     const filters: ProductFilters & { categoryIds?: string[] } = {};
-    const pagination: Pagination = {};
 
     if (params.get('search')) filters.search = params.get('search')!;
 
@@ -165,13 +132,7 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
     if (params.get('priceMax')) filters.priceMax = Number(params.get('priceMax'));
     if (params.get('promo')) filters.hasPromo = params.get('promo') === 'true';
 
-    if (params.get('page')) {
-      const page = Math.max(1, Number(params.get('page'))) - 1;
-      pagination.limit = 18;
-      pagination.offset = page * 18;
-    }
-
-    set({ filters, pagination });
+    set({ filters });
   },
 
   updateUrl: (router) => {
@@ -183,11 +144,10 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
 }));
 
 export function useCatalogAPI() {
-  const { filters, pagination, getApiParams } = useCatalogFilters();
+  const { filters, getApiParams } = useCatalogFilters();
 
   return {
     filters,
-    pagination,
     apiParams: getApiParams(),
     queryKey: ['products', getApiParams()],
   };

@@ -6,7 +6,7 @@
 
 ## 🎯 Огляд проекту
 
-**Shop Sausages** — це Next.js e-commerce застосунок для продажу м'ясних виробів з використанням **Feature-Sliced Design (FSD)** архітектури.
+**Shop ** — це Next.js e-commerce застосунок для продажу м'ясних виробів з використанням **Feature-Sliced Design (FSD)** архітектури.
 
 ### Ролі та цілі
 
@@ -873,7 +873,7 @@ sendMessage(text);
 ```bash
 # 1. Клонування та встановлення
 git clone <repo-url>
-cd shop_sausages/frontend
+cd nameprogect/frontend
 npm install
 
 # 2. Налаштування
