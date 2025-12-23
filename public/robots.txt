@@ -35,4 +35,4 @@ Allow: /
 
 
 # Sitemap
-Sitemap: https://shchilnuidrill.com/sitemap.xml
+Sitemap: https://www.shchilnuidrill.com/sitemap.xml

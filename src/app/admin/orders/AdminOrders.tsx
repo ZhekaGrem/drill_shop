@@ -343,7 +343,9 @@ export default function OrdersManagement() {
                       {selectedOrder.items.map((item: any) => (
                         <Table.Tr key={item.id}>
                           <Table.Td>
-                            <Text size="sm">{item.productSnapshot?.name || item.product?.name || 'Без назви'}</Text>
+                            <Text size="sm">
+                              {item.productSnapshot?.name || item.product?.name || 'Без назви'}
+                            </Text>
                           </Table.Td>
                           <Table.Td>
                             <Text size="sm" c="dimmed">

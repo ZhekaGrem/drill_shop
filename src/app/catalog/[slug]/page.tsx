@@ -11,7 +11,7 @@ import { structuredData } from '../../seo';
 export const revalidate = 86400;
 
 // ✅ ФІКС CPU: Повертати 404 для товарів не з generateStaticParams
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 // ✅ ФІКС CPU: Кешування API запиту для дедуплікації між generateMetadata та page
 const getProduct = cache(async (slug: string) => {
