@@ -203,17 +203,15 @@ const CheckoutFormComponent = () => {
             {/* Validation errors */}
             {isSubmitted && Object.keys(errors).length > 0 && (
               <Alert color="red" icon={<IconAlertCircle size={20} />} radius={0} mb="md">
-                <strong>Будь ласка, виправте наступні помилки:</strong>
+                <strong>Будь ласка, виправте помилки:</strong>
                 <ul style={{ marginTop: '8px', paddingLeft: '20px' }}>
-                  {errors.shippingAddress?.firstName && (
-                    <li>{errors.shippingAddress.firstName.message}</li>
-                  )}
+                  {errors.shippingAddress?.firstName && <li>{errors.shippingAddress.firstName.message}</li>}
                   {errors.shippingAddress?.lastName && <li>{errors.shippingAddress.lastName.message}</li>}
                   {errors.guestEmail && <li>Email: {errors.guestEmail.message}</li>}
                   {errors.shippingAddress?.phone && <li>Телефон: {errors.shippingAddress.phone.message}</li>}
                   {errors.deliveryMethod && <li>{errors.deliveryMethod.message}</li>}
-                  {errors.shippingAddress?.city && <li>Місто: {errors.shippingAddress.city.message}</li>}
-                  {errors.deliveryData?.cityRef && <li>Місто: {errors.deliveryData.cityRef.message}</li>}
+                  {errors.shippingAddress?.city && <li>Увага: {errors.shippingAddress.city.message}</li>}
+                  {errors.deliveryData?.cityRef && <li>Увага: {errors.deliveryData.cityRef.message}</li>}
                   {errors.deliveryData?.warehouseRef && (
                     <li>Відділення: {errors.deliveryData.warehouseRef.message}</li>
                   )}

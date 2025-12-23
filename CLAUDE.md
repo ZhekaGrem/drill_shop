@@ -247,6 +247,7 @@ import { useAuth } from '@/features/auth/hooks/useAuth'; // Shared → Features!
 ### Варіант B: SCSS Module
 
 Використовуй **тільки** для:
+
 - `:hover`, `::before`, `::after`
 - Складні animations
 - Media queries не підтримувані через props

@@ -27,14 +27,7 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
 
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  const {
-    data,
-    isLoading,
-    error,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage,
-  } = useCatalogProducts({
+  const { data, isLoading, error, isFetchingNextPage, fetchNextPage, hasNextPage } = useCatalogProducts({
     filters: filters,
     enabled: initialized,
     initialData: initialData,

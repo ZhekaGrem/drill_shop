@@ -21,6 +21,9 @@ import {
   Button,
   Stack,
   Modal,
+  Table,
+  Divider,
+  Paper,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch, IconAlertCircle } from '@tabler/icons-react';
@@ -245,9 +248,10 @@ export default function OrdersManagement() {
         opened={opened}
         onClose={close}
         title={selectedOrder ? `Замовлення ${selectedOrder.orderNumber}` : 'Деталі замовлення'}
-        size="lg">
+        size="xl">
         {selectedOrder && (
           <Stack gap="md">
+            {/* Customer & Summary Info */}
             <Group justify="space-between">
               <div>
                 <Text fw={600}>Клієнт</Text>
@@ -270,7 +274,102 @@ export default function OrdersManagement() {
               </div>
             </Group>
 
-            <Group justify="flex-end">
+            <Divider />
+
+            {/* Shipping Address */}
+            {selectedOrder.shippingAddress && (
+              <>
+                <div>
+                  <Text fw={600} mb="xs">
+                    Адреса доставки
+                  </Text>
+                  <Paper p="sm" withBorder>
+                    <Stack gap="xs">
+                      {selectedOrder.shippingAddress.fullName && (
+                        <Text size="sm">
+                          <Text component="span" fw={500}>
+                            Отримувач:
+                          </Text>{' '}
+                          {selectedOrder.shippingAddress.fullName}
+                        </Text>
+                      )}
+                      {selectedOrder.shippingAddress.phone && (
+                        <Text size="sm">
+                          <Text component="span" fw={500}>
+                            Телефон:
+                          </Text>{' '}
+                          {selectedOrder.shippingAddress.phone}
+                        </Text>
+                      )}
+                      <Text size="sm">
+                        <Text component="span" fw={500}>
+                          Адреса:
+                        </Text>{' '}
+                        {[
+                          selectedOrder.shippingAddress.street,
+                          selectedOrder.shippingAddress.city,
+                          selectedOrder.shippingAddress.state,
+                          selectedOrder.shippingAddress.postalCode,
+                          selectedOrder.shippingAddress.country,
+                        ]
+                          .filter(Boolean)
+                          .join(', ')}
+                      </Text>
+                    </Stack>
+                  </Paper>
+                </div>
+                <Divider />
+              </>
+            )}
+
+            {/* Order Items */}
+            {selectedOrder.items && selectedOrder.items.length > 0 && (
+              <div>
+                <Text fw={600} mb="xs">
+                  Товари ({selectedOrder.items.length})
+                </Text>
+                <Paper p="sm" withBorder>
+                  <Table striped highlightOnHover>
+                    <Table.Thead>
+                      <Table.Tr>
+                        <Table.Th>Назва</Table.Th>
+                        <Table.Th>SKU</Table.Th>
+                        <Table.Th style={{ textAlign: 'right' }}>Кількість</Table.Th>
+                        <Table.Th style={{ textAlign: 'right' }}>Ціна</Table.Th>
+                        <Table.Th style={{ textAlign: 'right' }}>Сума</Table.Th>
+                      </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                      {selectedOrder.items.map((item: any) => (
+                        <Table.Tr key={item.id}>
+                          <Table.Td>
+                            <Text size="sm">{item.productSnapshot?.name || item.product?.name || 'Без назви'}</Text>
+                          </Table.Td>
+                          <Table.Td>
+                            <Text size="sm" c="dimmed">
+                              {item.productSnapshot?.sku || item.product?.sku || '-'}
+                            </Text>
+                          </Table.Td>
+                          <Table.Td style={{ textAlign: 'right' }}>
+                            <Text size="sm">{item.quantity}</Text>
+                          </Table.Td>
+                          <Table.Td style={{ textAlign: 'right' }}>
+                            <Text size="sm">{formatPrice(item.unitPrice)}</Text>
+                          </Table.Td>
+                          <Table.Td style={{ textAlign: 'right' }}>
+                            <Text size="sm" fw={500}>
+                              {formatPrice(item.totalPrice)}
+                            </Text>
+                          </Table.Td>
+                        </Table.Tr>
+                      ))}
+                    </Table.Tbody>
+                  </Table>
+                </Paper>
+              </div>
+            )}
+
+            <Group justify="flex-end" mt="md">
               <Button variant="light" onClick={close}>
                 Закрити
               </Button>

@@ -11,11 +11,7 @@ interface UseCatalogProductsOptions {
 
 const ITEMS_PER_PAGE = 18;
 
-export const useCatalogProducts = ({
-  filters,
-  enabled = true,
-  initialData,
-}: UseCatalogProductsOptions) => {
+export const useCatalogProducts = ({ filters, enabled = true, initialData }: UseCatalogProductsOptions) => {
   return useInfiniteQuery<ProductsResponse>({
     ...queryDefaults,
     queryKey: ['products', filters],
