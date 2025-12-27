@@ -30,9 +30,7 @@
   &:last-child {
     border-right: var(--border-width) solid var(--border-color); // Повертаємо правий бордер кожній 3-тій та останній
   }
-  &:last-child:not(:nth-child(3n)) {
-    width: 371px;
-  }
+
   @media (max-width: 1200px) {
     height: 100%;
     width: 100%;
