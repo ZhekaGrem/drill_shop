@@ -35,7 +35,11 @@
     height: 100%;
     width: 100%;
   }
-
+@media (min-width: 1200px) {
+     &:last-child:not(:nth-child(3n)) {
+      width: 371px;
+    }
+  }
   // Мобільні пропорції - 2 колонки
   @media (max-width: 768px) {
     height: auto;
