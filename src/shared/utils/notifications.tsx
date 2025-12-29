@@ -6,9 +6,11 @@ import { IconX } from '@/shared/components/Svg';
  * Обгортка для notifications.show з автоматичним додаванням IconX
  * Використовуйте замість прямого виклику notifications.show
  */
-export const showNotification = (data: Omit<NotificationData, 'closeButtonProps'> & {
-  closeButtonProps?: NotificationData['closeButtonProps'];
-}) => {
+export const showNotification = (
+  data: Omit<NotificationData, 'closeButtonProps'> & {
+    closeButtonProps?: NotificationData['closeButtonProps'];
+  }
+) => {
   notifications.show({
     withCloseButton: true,
     autoClose: 3000,

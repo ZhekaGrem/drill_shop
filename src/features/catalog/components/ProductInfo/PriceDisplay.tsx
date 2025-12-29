@@ -36,7 +36,9 @@ export const PriceDisplay = ({ product, selectedVariant, unitDisplay, currentWei
               </>
             );
           }
-          return <span className={styles.productDetails__currentPrice}>{formatPrice(selectedVariant.price)}</span>;
+          return (
+            <span className={styles.productDetails__currentPrice}>{formatPrice(selectedVariant.price)}</span>
+          );
         })()
       ) : basePromoData?.hasDiscount ? (
         // Показуємо знижену ціну (як в ProductCard)
@@ -48,7 +50,8 @@ export const PriceDisplay = ({ product, selectedVariant, unitDisplay, currentWei
             style={{ textDecoration: 'line-through', color: '#999' }}>
             {formatPrice(basePromoData.originalPrice)}
           </Box>
-          <span className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
+          <span
+            className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
             {formatPrice(basePromoData.finalPrice)}
           </span>
         </>

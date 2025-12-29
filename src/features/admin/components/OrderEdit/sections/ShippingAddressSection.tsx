@@ -26,9 +26,7 @@ export const ShippingAddressSection: React.FC<ShippingAddressSectionProps> = ({ 
             label="Повне ім'я"
             required
             {...form.register('shippingAddress.fullName')}
-            error={
-              (form.formState.errors.shippingAddress as any)?.fullName?.message as string | undefined
-            }
+            error={(form.formState.errors.shippingAddress as any)?.fullName?.message as string | undefined}
           />
         </Grid.Col>
         {city && city.trim() !== '' ? (
@@ -46,9 +44,7 @@ export const ShippingAddressSection: React.FC<ShippingAddressSectionProps> = ({ 
                 label="Адреса"
                 required
                 {...form.register('shippingAddress.street')}
-                error={
-                  (form.formState.errors.shippingAddress as any)?.street?.message as string | undefined
-                }
+                error={(form.formState.errors.shippingAddress as any)?.street?.message as string | undefined}
               />
             </Grid.Col>
           </>
@@ -58,9 +54,7 @@ export const ShippingAddressSection: React.FC<ShippingAddressSectionProps> = ({ 
               label="Адреса"
               required
               {...form.register('shippingAddress.street')}
-              error={
-                (form.formState.errors.shippingAddress as any)?.street?.message as string | undefined
-              }
+              error={(form.formState.errors.shippingAddress as any)?.street?.message as string | undefined}
             />
           </Grid.Col>
         )}

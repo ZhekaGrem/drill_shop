@@ -66,8 +66,15 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
     handleScrollDown,
   } = useProductImages(product);
 
-  const { quantity, isClicked, handleQuantityChange, handleAddToCart, handleBuyNow, getButtonText, setQuantity } =
-    useProductCart(product, selectedVariant, isInStock);
+  const {
+    quantity,
+    isClicked,
+    handleQuantityChange,
+    handleAddToCart,
+    handleBuyNow,
+    getButtonText,
+    setQuantity,
+  } = useProductCart(product, selectedVariant, isInStock);
 
   // Size guide data
   const categoriesWithGuide =

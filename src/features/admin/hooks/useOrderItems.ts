@@ -24,8 +24,16 @@ interface NewOrderItem {
 interface UseOrderItemsReturn {
   newItems: NewOrderItem[];
   setNewItems: React.Dispatch<React.SetStateAction<NewOrderItem[]>>;
-  updateItemQuantity: (itemId: string, quantity: number, setItems: React.Dispatch<React.SetStateAction<OrderItemEdit[]>>) => void;
-  updateItemPrice: (itemId: string, price: number, setItems: React.Dispatch<React.SetStateAction<OrderItemEdit[]>>) => void;
+  updateItemQuantity: (
+    itemId: string,
+    quantity: number,
+    setItems: React.Dispatch<React.SetStateAction<OrderItemEdit[]>>
+  ) => void;
+  updateItemPrice: (
+    itemId: string,
+    price: number,
+    setItems: React.Dispatch<React.SetStateAction<OrderItemEdit[]>>
+  ) => void;
   removeItem: (itemId: string, setItems: React.Dispatch<React.SetStateAction<OrderItemEdit[]>>) => void;
   handleAddProduct: (
     selectedProductId: string,
@@ -65,10 +73,7 @@ export const useOrderItems = (): UseOrderItemsReturn => {
   };
 
   // Видалення товару
-  const removeItem = (
-    itemId: string,
-    setItems: React.Dispatch<React.SetStateAction<OrderItemEdit[]>>
-  ) => {
+  const removeItem = (itemId: string, setItems: React.Dispatch<React.SetStateAction<OrderItemEdit[]>>) => {
     setItems((prev) => prev.map((item) => (item.id === itemId ? { ...item, isRemoved: true } : item)));
   };
 

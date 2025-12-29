@@ -115,12 +115,7 @@
     }
 
     &__variants {
-                           
-
-
-
       &__select {
-        
         :global(.mantine-Select-input) {
           border: var(--border-width) solid var(--border-color);
           box-shadow: var(--shadow-sm);
@@ -141,7 +136,7 @@
 
         :global(.mantine-Select-dropdown) {
           background: var(--background-light);
-         
+
           box-shadow: var(--shadow-lg);
         }
 
@@ -424,8 +419,6 @@
       }
     }
   }
-
-
 
   // ============ ACTION BUTTONS ============
   .actionButtons {

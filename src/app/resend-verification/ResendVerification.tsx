@@ -112,7 +112,6 @@ const ResendVerification = () => {
         <Paper radius="md" p="xl" withBorder className={styles.paper}>
           <Stack gap="lg">
             <div>
-             
               <Title order={2} ta="center">
                 Підтвердження email
               </Title>

@@ -28,10 +28,7 @@ interface UseOrderEditReturn {
 /**
  * Hook для завантаження та управління даними замовлення
  */
-export const useOrderEdit = (
-  orderId: string | undefined,
-  form: UseFormReturn<any>
-): UseOrderEditReturn => {
+export const useOrderEdit = (orderId: string | undefined, form: UseFormReturn<any>): UseOrderEditReturn => {
   const [order, setOrder] = useState<Order | null>(null);
   const [items, setItems] = useState<OrderItemEdit[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -77,11 +74,11 @@ export const useOrderEdit = (
         form.reset({
           guestEmail: orderData.guestEmail || customerData.email || '',
           guestPhone: orderData.guestPhone || customerData.phone || '',
-          guestFirstName:
-            orderData.guestFirstName || customerData.firstName || shippingAddr.firstName || '',
+          guestFirstName: orderData.guestFirstName || customerData.firstName || shippingAddr.firstName || '',
           guestLastName: orderData.guestLastName || customerData.lastName || shippingAddr.lastName || '',
           shippingAddress: {
-            fullName: `${shippingAddr.firstName || customerData.firstName || ''} ${shippingAddr.lastName || customerData.lastName || ''}`.trim(),
+            fullName:
+              `${shippingAddr.firstName || customerData.firstName || ''} ${shippingAddr.lastName || customerData.lastName || ''}`.trim(),
             street: shippingAddr.address1 || '',
             city: shippingAddr.city || '',
             postalCode: shippingAddr.zipCode || '',

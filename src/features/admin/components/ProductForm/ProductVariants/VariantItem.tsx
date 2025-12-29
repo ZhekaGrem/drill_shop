@@ -24,7 +24,11 @@ interface VariantItemProps {
   onUpdate: (field: string, value: any) => void;
   onDelete: () => void;
   onToggle: () => void;
-  onPromotionChange: (data: { promoType: string | null; promoConfig: any; promoEndsAt?: Date | null }) => void;
+  onPromotionChange: (data: {
+    promoType: string | null;
+    promoConfig: any;
+    promoEndsAt?: Date | null;
+  }) => void;
 }
 
 export const VariantItem = ({

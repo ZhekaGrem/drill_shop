@@ -364,8 +364,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     {sortedImages.map((image, index) => (
                       <button
                         key={image.id}
-                        className={`${styles.productGallery__thumbnail} ${index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
-                          }`}
+                        className={`${styles.productGallery__thumbnail} ${
+                          index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
+                        }`}
                         onClick={() => setSelectedImageIndex(index)}>
                         <CloudinaryImage
                           src={getImageUrl(image.url || image.publicId)}
@@ -395,9 +396,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   <CloudinaryImage
                     src={getImageUrl(
                       sortedImages[selectedImageIndex]?.url ||
-                      sortedImages[selectedImageIndex]?.publicId ||
-                      primaryImage?.url ||
-                      primaryImage?.publicId
+                        sortedImages[selectedImageIndex]?.publicId ||
+                        primaryImage?.url ||
+                        primaryImage?.publicId
                     )}
                     alt={product.name}
                     className={styles.productGallery__mainImage}
@@ -445,8 +446,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     {sortedImages.map((_, index) => (
                       <button
                         key={index}
-                        className={`${styles.productGallery__dot} ${index === selectedImageIndex ? styles.productGallery__dotActive : ''
-                          }`}
+                        className={`${styles.productGallery__dot} ${
+                          index === selectedImageIndex ? styles.productGallery__dotActive : ''
+                        }`}
                         onClick={() => setSelectedImageIndex(index)}
                         aria-label={`Зображення ${index + 1}`}
                       />
@@ -528,8 +530,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                         return (
                           <label
                             key={variant.id}
-                            className={`${styles.variantCheckbox} ${isOutOfStock ? styles.variantCheckbox_disabled : ''
-                              }`}>
+                            className={`${styles.variantCheckbox} ${
+                              isOutOfStock ? styles.variantCheckbox_disabled : ''
+                            }`}>
                             <input
                               type="checkbox"
                               checked={selectedVariant?.id === variant.id}
@@ -572,11 +575,11 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                       // Показуємо головний товар тільки якщо hasVariants = false
                       ...(!product.hasVariants
                         ? [
-                          {
-                            value: 'main',
-                            label: `${product.name}`,
-                          },
-                        ]
+                            {
+                              value: 'main',
+                              label: `${product.name}`,
+                            },
+                          ]
                         : []),
                       ...(sortedVariants.map((variant: any) => ({
                         value: variant.id,
@@ -584,7 +587,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                       })) || []),
                     ]}
                     placeholder="Оберіть варіант"
-                    style={{ marginTop: '8px'}}
+                    style={{ marginTop: '8px' }}
                   />
                 )}
 
@@ -593,10 +596,11 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   <div
                     style={{
                       marginTop: '16px',
+                      marginBottom:'16px'
                     }}>
                     <div style={{ display: 'grid', gap: '8px' }}>
                       {Object.keys(selectedVariant.options).length > 0 && (
-                        <div style={{ marginTop: '12px' }}>
+                        <div >
                           <strong>Характеристики:</strong>
                           <div
                             style={{
@@ -792,7 +796,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
           productSlug={product.slug}
           variantName={selectedVariant?.name}
         />
-      </Container >
+      </Container>
     </div>
   );
 }

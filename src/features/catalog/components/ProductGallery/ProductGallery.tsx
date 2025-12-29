@@ -47,7 +47,12 @@ export const ProductGallery = ({
 
       {/* Main Image справа від thumbnails */}
       <div className={styles.productGallery__main}>
-        <MainImage image={currentImage} productName={productName} product={product} selectedVariant={selectedVariant} />
+        <MainImage
+          image={currentImage}
+          productName={productName}
+          product={product}
+          selectedVariant={selectedVariant}
+        />
 
         {/* Navigation arrows та dots */}
         <ImageNavigation

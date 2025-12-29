@@ -156,7 +156,12 @@ export const VariantSelector = ({
                     const label = optionLabels[key] || key.charAt(0).toUpperCase() + key.slice(1);
 
                     return (
-                      <Badge key={key} variant="outline" color="red" size="lg" style={{ textTransform: 'none' }}>
+                      <Badge
+                        key={key}
+                        variant="outline"
+                        color="red"
+                        size="lg"
+                        style={{ textTransform: 'none' }}>
                         {label}: {String(value)}
                       </Badge>
                     );
@@ -190,7 +195,12 @@ export const VariantSelector = ({
                   const label = optionLabels[key] || key.charAt(0).toUpperCase() + key.slice(1);
 
                   return (
-                    <Badge key={key} variant="outline" color="red" size="lg" style={{ textTransform: 'none' }}>
+                    <Badge
+                      key={key}
+                      variant="outline"
+                      color="red"
+                      size="lg"
+                      style={{ textTransform: 'none' }}>
                       {label}: {String(value)}
                     </Badge>
                   );

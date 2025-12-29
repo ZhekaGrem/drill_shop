@@ -108,7 +108,6 @@ export default function ConfirmEmail() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '1rem',
-        
       }}>
       <Container size="sm">
         <Paper p="xl" shadow="md" radius="md">

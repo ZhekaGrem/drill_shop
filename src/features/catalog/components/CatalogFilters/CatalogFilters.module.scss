@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: 24px;
-  padding: var(--spacing-y) var(--spacing-x); 
+  padding: var(--spacing-y) var(--spacing-x);
   background: var(--background);
   border-radius: 0;
   flex-wrap: wrap;
@@ -92,7 +92,6 @@
   }
 
   &.active {
-    
     font-weight: var(--fw-bold);
   }
 }

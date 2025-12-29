@@ -23,7 +23,13 @@ export const ContactInfoSection = ({ form }: ContactInfoSectionProps) => {
       <h3 className={styles.sectionTitle}>КОНТАКТНІ ДАНІ</h3>
 
       <div className={styles.formRow}>
-        <Input label="Ім'я" placeholder="Іван" required error={firstNameError} {...register('shippingAddress.firstName')} />
+        <Input
+          label="Ім'я"
+          placeholder="Іван"
+          required
+          error={firstNameError}
+          {...register('shippingAddress.firstName')}
+        />
 
         <Input
           label="Прізвище"
@@ -34,7 +40,14 @@ export const ContactInfoSection = ({ form }: ContactInfoSectionProps) => {
         />
       </div>
 
-      <Input type="email" label="Email" placeholder="your@email.com" required error={emailError} {...register('guestEmail')} />
+      <Input
+        type="email"
+        label="Email"
+        placeholder="your@email.com"
+        required
+        error={emailError}
+        {...register('guestEmail')}
+      />
 
       <Controller
         control={control}

@@ -45,8 +45,8 @@ export const AuthDrawer = ({ opened, onClose, onSuccess, defaultTab = 'login' }:
         icon: <IconX />,
       }}
       styles={{
-        header:{
-          borderBottom:'2px solid #33603b'
+        header: {
+          borderBottom: '2px solid #33603b',
         },
         body: {
           height: '100%',

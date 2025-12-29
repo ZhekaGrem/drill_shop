@@ -154,7 +154,7 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
               type="button"
               size="sm"
               onClick={handleForgotPassword}
-              style={{ opacity: isLoading ? 0.6 : 1,color:'#33603b' }}>
+              style={{ opacity: isLoading ? 0.6 : 1, color: '#33603b' }}>
               Забули пароль?
             </Anchor>
           </Group>

@@ -7,7 +7,7 @@ import { TelegramBottomNav } from '@/widgets/TelegramBottomNav';
 
 export const metadata: Metadata = {
   title: 'Telegram Mini App - Shop Sausages',
-  description: 'Інтернет-магазин м\'ясних виробів в Telegram',
+  description: "Інтернет-магазин м'ясних виробів в Telegram",
 };
 
 export default function TelegramLayout({ children }: { children: React.ReactNode }) {
@@ -18,9 +18,7 @@ export default function TelegramLayout({ children }: { children: React.ReactNode
 
       <TelegramProvider>
         <TelegramAuthProvider>
-          <Box style={{ paddingBottom: '64px', minHeight: '100vh' }}>
-            {children}
-          </Box>
+          <Box style={{ paddingBottom: '64px', minHeight: '100vh' }}>{children}</Box>
           <TelegramBottomNav />
         </TelegramAuthProvider>
       </TelegramProvider>

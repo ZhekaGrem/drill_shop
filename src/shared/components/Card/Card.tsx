@@ -57,7 +57,7 @@ export const Card: React.FC<ProductCardProps> = ({ product, className = '', styl
             height={400}
             className={styles.productImage}
           />
-{/* 
+          {/* 
           <div
             className={styles.favoriteButtonWrapper}
             onClick={(e) => {

@@ -36,13 +36,23 @@ export const VariantFields = ({ variant, onUpdate, skuError }: VariantFieldsProp
         <Text size="xs" c="dimmed">
           Ціна
         </Text>
-        <NumberInput value={variant.price} onChange={(val) => onUpdate('price', val || 0)} min={0.01} size="xs" />
+        <NumberInput
+          value={variant.price}
+          onChange={(val) => onUpdate('price', val || 0)}
+          min={0.01}
+          size="xs"
+        />
       </Grid.Col>
       <Grid.Col span={2}>
         <Text size="xs" c="dimmed">
           Кількість на складі
         </Text>
-        <NumberInput value={variant.quantity} onChange={(val) => onUpdate('quantity', val || 0)} min={0} size="xs" />
+        <NumberInput
+          value={variant.quantity}
+          onChange={(val) => onUpdate('quantity', val || 0)}
+          min={0}
+          size="xs"
+        />
       </Grid.Col>
       <Grid.Col span={2}>
         <Text size="xs" c="dimmed">

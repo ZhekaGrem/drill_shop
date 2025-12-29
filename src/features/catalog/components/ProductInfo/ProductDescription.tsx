@@ -11,7 +11,10 @@ export const ProductDescription = ({ description }: ProductDescriptionProps) => 
   return (
     <div className={styles.productDescription}>
       <h2 className={styles.productDescription__title}>Опис </h2>
-      <div className={styles.productDescription__content} dangerouslySetInnerHTML={{ __html: sanitizeHTML(description) }} />
+      <div
+        className={styles.productDescription__content}
+        dangerouslySetInnerHTML={{ __html: sanitizeHTML(description) }}
+      />
     </div>
   );
 };

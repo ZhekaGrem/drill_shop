@@ -8,7 +8,11 @@ interface VariantDetailsProps {
   promoConfig?: any;
   promoEndsAt?: Date | null;
   onOptionsChange: (options: Record<string, any>) => void;
-  onPromotionChange: (data: { promoType: string | null; promoConfig: any; promoEndsAt?: Date | null }) => void;
+  onPromotionChange: (data: {
+    promoType: string | null;
+    promoConfig: any;
+    promoEndsAt?: Date | null;
+  }) => void;
 }
 
 export const VariantDetails = ({
@@ -42,8 +46,12 @@ export const VariantDetails = ({
           onPromoTypeChange={(value) =>
             onPromotionChange({ promoType: value || null, promoConfig, promoEndsAt })
           }
-          onPromoConfigChange={(config) => onPromotionChange({ promoType: promoType || null, promoConfig: config, promoEndsAt })}
-          onPromoEndsAtChange={(date) => onPromotionChange({ promoType: promoType || null, promoConfig, promoEndsAt: date })}
+          onPromoConfigChange={(config) =>
+            onPromotionChange({ promoType: promoType || null, promoConfig: config, promoEndsAt })
+          }
+          onPromoEndsAtChange={(date) =>
+            onPromotionChange({ promoType: promoType || null, promoConfig, promoEndsAt: date })
+          }
           onPromotionChange={onPromotionChange}
         />
       </div>

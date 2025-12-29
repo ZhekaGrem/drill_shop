@@ -19,10 +19,8 @@ const About = () => {
 
       <Box className={styles.contentGrid}>
         <Box className={styles.textContent}>
-          <div  >
-            <Title className={styles.sectionTitle} >
-              shchilnui drill shop
-            </Title>
+          <div>
+            <Title className={styles.sectionTitle}>shchilnui drill shop</Title>
             <Text className={styles.description} mb="lg">
               Робимо не тільки Дрілл випускаємо щільні футбокли, носки, піни. Нормальні такі на вигляд.
               дрільна суміш РЕПА прицепа котлети та якості. Бери в нас поки не дали в рот!

@@ -75,7 +75,11 @@ export default function TelegramCatalogClient({ initialData, initialCategories }
       </Box>
 
       {/* Кнопка фільтрів */}
-      <Button variant="outline" className={styles.filtersButton} onClick={() => setFiltersModalOpened(true)} fullWidth>
+      <Button
+        variant="outline"
+        className={styles.filtersButton}
+        onClick={() => setFiltersModalOpened(true)}
+        fullWidth>
         <div>
           <IconFilter size={16} />
           Фільтри
@@ -90,7 +94,10 @@ export default function TelegramCatalogClient({ initialData, initialCategories }
         title="Фільтри"
         size="lg"
         fullScreen>
-        <CatalogFilters onFiltersChange={() => setFiltersModalOpened(false)} initialCategories={initialCategories} />
+        <CatalogFilters
+          onFiltersChange={() => setFiltersModalOpened(false)}
+          initialCategories={initialCategories}
+        />
       </Modal>
 
       {/* Список товарів */}
