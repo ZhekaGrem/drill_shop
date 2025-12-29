@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api/client';
 import { useAuthStore } from '@/shared/stores/auth';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 export function useAdminGuard() {
   const { userProfile, isAuthenticated } = useAuthStore();
 
@@ -220,7 +220,7 @@ export const useUpdateOrderStatus = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-orders'] });
-      notifications.show({
+      showNotification({
         title: 'Успіх',
         message: 'Статус замовлення оновлено',
         color: 'green',
@@ -254,14 +254,14 @@ export const useUpdatePaymentStatus = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-orders'] });
-      notifications.show({
+      showNotification({
         title: 'Успіх',
         message: 'Статус оплати оновлено',
         color: 'green',
       });
     },
     onError: (error: any) => {
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: error?.response?.data?.message || 'Не вдалось оновити статус оплати',
         color: 'red',
@@ -346,7 +346,7 @@ export function useUpdateUserRole() {
     },
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
-      notifications.show({
+      showNotification({
         title: 'Успіх',
         message: 'Роль змінено',
         color: 'green',
@@ -369,7 +369,7 @@ export const useUpdateUserStatus = () => {
     },
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
-      notifications.show({
+      showNotification({
         title: 'Успіх',
         message: variables.isActive ? 'Користувача активовано' : 'Користувача заблоковано',
         color: 'green',

@@ -1,12 +1,13 @@
 // src/app/privacy-policy/PrivacyPolicy.tsx
 
+import { Container, Box } from '@mantine/core';
 import styles from './privacyPolicy.module.scss';
 import { siteConfig } from '@/shared/config/site';
 
 const PrivacyPolicy = () => {
   return (
     <div className={styles.page}>
-      <div className={styles.container}>
+      <Container size={900}>
         <div className={styles.header}>
           <h1 className={styles.title}>Політика конфіденційності</h1>
           <p className={styles.subtitle}>
@@ -270,7 +271,7 @@ const PrivacyPolicy = () => {
               <p>
                 <strong className={styles.boldText}>Як скористатися своїми правами:</strong>
               </p>
-              <p style={{ marginTop: '8px' }}>
+              <Box component="p" mt={8}>
                 1. Надішліть письмовий запит на email: {siteConfig.contacts.email}
                 <br />
                 2. Вкажіть в темі листа: "Запит щодо персональних даних"
@@ -279,7 +280,7 @@ const PrivacyPolicy = () => {
                 <br />
                 4. Ми розглянемо ваш запит протягом <strong>30 календарних днів</strong> (згідно ст. 16
                 Закону)
-              </p>
+              </Box>
             </div>
           </section>
 
@@ -438,7 +439,7 @@ const PrivacyPolicy = () => {
             конфіденційності та погоджуєтеся з нею.
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 };

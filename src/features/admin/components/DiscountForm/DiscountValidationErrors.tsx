@@ -2,7 +2,7 @@
 'use client';
 import { ReactNode } from 'react';
 
-import { Alert, Text } from '@mantine/core';
+import { Alert, Text, Box } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 
 interface DiscountValidationErrorsProps {
@@ -17,11 +17,11 @@ export const DiscountValidationErrors = ({ errors }: DiscountValidationErrorsPro
       <Text fw={500} mb="xs">
         Помилки валідації:
       </Text>
-      <ul style={{ margin: 0, paddingLeft: '1.2rem' }}>
+      <Box component="ul" m={0} pl="lg">
         {Object.entries(errors).map(([field, error]) => (
           <li key={field}>{error}</li>
         ))}
-      </ul>
+      </Box>
     </Alert>
   );
 };

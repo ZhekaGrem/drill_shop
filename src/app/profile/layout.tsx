@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { Container } from '@mantine/core';
 import { useAuthStore } from '@/shared/stores/auth';
 import Link from 'next/link';
 import styles from './profile.module.scss';
@@ -18,11 +19,11 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
       href: '/profile',
       active: pathname === '/profile',
     },
-    {
-      label: 'Обрані товари',
-      href: '/profile/favorites',
-      active: pathname === '/profile/favorites',
-    },
+    // {
+    //   label: 'Обрані товари',
+    //   href: '/profile/favorites',
+    //   active: pathname === '/profile/favorites',
+    // },
     {
       label: 'Мої замовлення',
       href: '/profile/orders',
@@ -45,7 +46,7 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className={styles.container}>
+    <Container size={1200}>
       <div className={styles.grid}>
         {/* Sidebar Navigation */}
         <aside className={styles.sidebar}>
@@ -69,6 +70,6 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
         {/* Content Area */}
         <main className={styles.content}>{children}</main>
       </div>
-    </div>
+    </Container>
   );
 }

@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { TextInput, Stack, Title, PasswordInput, Group, Divider } from '@mantine/core';
 import { useAuthStore } from '@/shared/stores/auth';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { apiClient } from '@/shared/api';
 import { Button } from '@/shared/components/Button/Button';
 
@@ -91,13 +91,13 @@ const UserData = () => {
       if (response.data.success && response.data.data) {
         await reloadProfile();
       }
-      notifications.show({
+      showNotification({
         title: 'Успіх',
         message: 'Ваші дані було оновлено.',
         color: 'green',
       });
     } catch (error: any) {
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: error.response?.data?.message || 'Не вдалося оновити дані.',
         color: 'red',
@@ -111,14 +111,14 @@ const UserData = () => {
         currentPassword: data.currentPassword,
         newPassword: data.newPassword,
       });
-      notifications.show({
+      showNotification({
         title: 'Успіх',
         message: 'Пароль було успішно змінено.',
         color: 'green',
       });
       resetPasswordForm();
     } catch (error: any) {
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: error.response?.data?.message || 'Не вдалося змінити пароль.',
         color: 'red',

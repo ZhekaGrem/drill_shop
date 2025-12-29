@@ -6,19 +6,12 @@
   min-height: 100vh;
   background: var(--background);
 
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--spacing-lg);
-  }
-
   // ============ BREADCRUMBS ============
   .breadcrumbs {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-xl);
-    font-family: var(--font-condensed);
     font-size: var(--text-sm);
     font-weight: var(--fw-medium);
 
@@ -51,7 +44,7 @@
     margin-bottom: var(--spacing-3xl);
 
     &__title {
-      font-family: var(--font-heading);
+      font-family: var(--font-price);
       font-size: var(--text-4xl);
       font-weight: var(--fw-black);
       color: var(--text-primary);
@@ -65,7 +58,6 @@
       display: flex;
       gap: var(--spacing-md);
       margin-bottom: var(--spacing-md);
-      font-family: var(--font-condensed);
       font-size: var(--text-sm);
       color: var(--text-secondary);
     }
@@ -73,9 +65,8 @@
     &__sku {
       font-family: var(--font-mono);
       background: var(--background-secondary);
-      padding: 4px 8px;
+      padding: var(--spacing-xs) var(--spacing-sm);
       border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
     }
 
     &__price {
@@ -108,14 +99,12 @@
     }
 
     &__pricePerKg {
-      font-family: var(--font-condensed);
       font-size: var(--text-lg);
       color: var(--text-secondary);
       font-weight: var(--fw-medium);
     }
 
     &__shortDescription {
-      font-family: var(--font-body);
       font-size: var(--text-base);
       color: var(--text-primary);
       line-height: 1.6;
@@ -123,18 +112,17 @@
       padding: var(--spacing-md);
       background: var(--background-secondary);
       border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
     }
 
     &__variants {
-      margin-bottom: var(--spacing-lg);
+                           
+
+
 
       &__select {
+        
         :global(.mantine-Select-input) {
-          font-family: var(--font-condensed);
-          background: var(--background-light);
           border: var(--border-width) solid var(--border-color);
-          border-radius: 0;
           box-shadow: var(--shadow-sm);
           font-weight: var(--fw-medium);
           transition: all var(--transition-fast);
@@ -153,15 +141,11 @@
 
         :global(.mantine-Select-dropdown) {
           background: var(--background-light);
-          border: var(--border-width) solid var(--border-color);
-          border-radius: 0;
+         
           box-shadow: var(--shadow-lg);
         }
 
         :global(.mantine-Select-option) {
-          font-family: var(--font-condensed);
-          border-radius: 0;
-
           &[data-selected] {
             background: var(--btn-primary);
             font-weight: var(--fw-black);
@@ -177,7 +161,6 @@
 
   // ✅ Стилі для checkbox варіантів (size/color)
   .variantLabel {
-    font-family: var(--font-condensed);
     font-size: var(--text-md);
     font-weight: var(--fw-bold);
     color: var(--text-primary);
@@ -224,9 +207,8 @@
 
   .variantCheckboxText {
     display: inline-block;
-    padding: 8px 16px;
+    padding: var(--spacing-sm) var(--spacing-md);
     min-width: 60px;
-    font-family: var(--font-condensed);
     font-size: var(--text-md);
     font-weight: var(--fw-bold);
     color: var(--text-primary);
@@ -246,14 +228,12 @@
   .productDetails {
     &__availability {
       display: inline-block;
-      font-family: var(--font-condensed);
       font-size: var(--text-sm);
       font-weight: var(--fw-black);
       color: var(--text-inverse);
       background: var(--text-green);
       padding: 6px var(--spacing-md);
       border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
       margin-bottom: var(--spacing-lg);
       text-transform: uppercase;
     }
@@ -288,7 +268,6 @@
       padding: 0;
       background: transparent;
       border: none;
-      border-radius: 0;
       font-size: 16px;
       color: var(--text-secondary);
       cursor: pointer;
@@ -349,7 +328,6 @@
       position: relative;
       flex: 1;
       background: var(--background);
-      border-radius: 0;
       overflow: hidden;
     }
 
@@ -375,7 +353,6 @@
       padding: 0;
       background: transparent;
       border: none;
-      font-family: var(--font-condensed);
       font-size: 32px;
       font-weight: var(--fw-black);
       color: var(--text-primary);
@@ -426,7 +403,6 @@
       padding: var(--spacing-sm);
       background: rgba(0, 0, 0, 0.5);
       border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
     }
 
     &__dot {
@@ -435,7 +411,6 @@
       padding: 0;
       background: var(--background-light);
       border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
       cursor: pointer;
       transition: all var(--transition-fast);
 
@@ -449,6 +424,8 @@
       }
     }
   }
+
+
 
   // ============ ACTION BUTTONS ============
   .actionButtons {
@@ -474,9 +451,7 @@
       padding: 0;
       background: var(--background-light);
       border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
       box-shadow: var(--shadow-sm);
-      font-family: var(--font-condensed);
       font-size: var(--text-2xl);
       font-weight: var(--fw-black);
       color: var(--text-primary);
@@ -515,8 +490,6 @@
       padding: 0;
       background: var(--background-light);
       border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
-      font-family: var(--font-condensed);
       font-size: var(--text-xl);
       font-weight: var(--fw-black);
       color: var(--text-primary);
@@ -539,14 +512,12 @@
 
   .addToCartButton {
     width: 100%;
-    font-family: var(--font-condensed);
     font-weight: var(--fw-black);
     text-transform: uppercase;
   }
 
   .buyNowButton {
     width: 100%;
-    font-family: var(--font-condensed);
     font-weight: var(--fw-black);
     text-transform: uppercase;
     border: var(--border-width) solid var(--border-color);
@@ -565,8 +536,6 @@
     border-top: var(--border-width) solid var(--border-color);
     border-bottom: var(--border-width) solid var(--border-color);
 
-    border-radius: 0;
-
     &__title {
       font-size: var(--text-3xl);
       font-weight: var(--fw-black);
@@ -577,7 +546,6 @@
     }
 
     &__content {
-      font-family: var(--font-body);
       font-size: var(--text-base);
       line-height: 1.7;
       color: var(--text-primary);
@@ -651,7 +619,6 @@
     &__actions {
       background: var(--background-secondary);
       border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
     }
 
     &__title {
@@ -698,10 +665,6 @@
   }
 
   @media (max-width: 768px) {
-    .container {
-      padding: 0 var(--spacing-md);
-    }
-
     // Змінюємо порядок елементів на мобільних
     .productDetails {
       display: flex;
@@ -824,7 +787,7 @@
     }
 
     .variantCheckboxText {
-      padding: 6px 10px;
+      padding: var(--spacing-xs) var(--spacing-sm);
       font-size: var(--text-sm);
     }
 

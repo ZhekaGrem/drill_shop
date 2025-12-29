@@ -20,7 +20,7 @@ import {
 } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { IconPlus, IconEdit, IconTrash, IconAlertCircle } from '@tabler/icons-react';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import { CategoryForm } from '@/features/admin/components/CategoryForm/CategoryForm';
@@ -94,13 +94,13 @@ export default function AdminCategories() {
     if (confirm(`Ви впевнені, що хочете видалити категорію "${name}"?`)) {
       try {
         await deleteCategory(id);
-        notifications.show({
+        showNotification({
           title: 'Успіх',
           message: `Категорію "${name}" видалено`,
           color: 'green',
         });
       } catch (error) {
-        notifications.show({
+        showNotification({
           title: 'Помилка',
           message: error instanceof Error ? error.message : 'Не вдалося видалити категорію',
           color: 'red',
@@ -116,14 +116,14 @@ export default function AdminCategories() {
       let result;
       if (editingCategory) {
         result = await updateCategory(editingCategory.id, data);
-        notifications.show({
+        showNotification({
           title: 'Успіх',
           message: 'Категорію оновлено',
           color: 'green',
         });
       } else {
         result = await createCategory(data);
-        notifications.show({
+        showNotification({
           title: 'Успіх',
           message: 'Категорію створено',
           color: 'green',
@@ -134,7 +134,7 @@ export default function AdminCategories() {
       setEditingCategory(null);
       return result; // Повертаємо результат для CategoryForm
     } catch (error) {
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: error instanceof Error ? error.message : 'Не вдалося зберегти категорію',
         color: 'red',

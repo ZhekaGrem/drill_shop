@@ -3,13 +3,13 @@
 
 .footer {
   background: var(--background-secondary);
-  padding: 40px 0;
+
   margin-top: auto;
 }
 
 .container {
   margin: 0 auto;
-  padding: 0 var(--spacing-lg);
+  padding: var(--spacing-y) var(--spacing-x);
 }
 
 // Main footer grid (3 columns)
@@ -17,8 +17,6 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
-  padding-bottom: var(--spacing-xl);
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -32,7 +30,6 @@
 
 // Column title
 .columnTitle {
-  font-family: var(--font-condensed);
   color: var(--text-inverse); // #E0DDCA on dark bg
   margin-bottom: var(--spacing-md);
   text-transform: none;
@@ -55,13 +52,12 @@
 
 .linksColumn a,
 .blogLinks a {
-  font-family: var(--font-condensed);
   font-size: var(--text-xl);
   font-weight: var(--fw-medium);
   color: var(--text-inverse); // #E0DDCA on dark bg
   text-decoration: none;
   transition: var(--transition-fast);
-  padding: 4px 0;
+  padding: var(--spacing-xs) 0;
   display: inline-block;
 
   &:hover {
@@ -82,7 +78,6 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
   color: var(--text-inverse); // #E0DDCA on dark bg
@@ -99,7 +94,6 @@
 }
 
 .phoneNumber {
-  font-family: var(--font-condensed);
   font-size: var(--text-lg);
   font-weight: var(--fw-bold);
   color: var(--text-inverse); // #E0DDCA on dark bg
@@ -113,7 +107,6 @@
 }
 
 .socialDescription {
-  font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
   color: var(--text-inverse); // #E0DDCA on dark bg
@@ -130,15 +123,13 @@
 .socialLink {
   display: flex;
   align-items: center;
-  gap: var(--spacing-lx);
+  gap: 12px;
   padding: 8px var(--spacing-md);
-  font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-bold);
   color: var(--text-inverse); // #E0DDCA on dark bg
   text-decoration: none;
   background: transparent;
-  border-radius: 0;
   transition: var(--transition-fast);
 
   &:hover {
@@ -166,7 +157,6 @@
   height: 40px;
   background: var(--background-light);
   border: var(--border-width) solid var(--border-color);
-  border-radius: 0;
   cursor: pointer;
   transition: var(--transition-fast);
   box-shadow: var(--shadow-sm);
@@ -206,7 +196,6 @@
 }
 
 .copyright {
-  font-family: var(--font-condensed);
   font-size: var(--text-sm);
   font-weight: var(--fw-medium);
   color: var(--text-inverse); // #E0DDCA on dark bg
@@ -222,7 +211,6 @@
   }
 
   a {
-    font-family: var(--font-condensed);
     font-size: var(--text-sm);
     font-weight: var(--fw-medium);
     color: var(--text-inverse); // #E0DDCA on dark bg
@@ -238,20 +226,26 @@
 .designerSection {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  font-family: var(--font-condensed);
-  font-size: var(--text-sm);
+  justify-content: center;
+  gap: 24px;
+  font-size: 20px;
   font-weight: var(--fw-medium);
-  color: var(--text-inverse); // #E0DDCA on dark bg
+  color: var(--text-inverse);
+  // #E0DDCA on dark bg
 
   a {
     color: var(--text-inverse);
-    text-decoration: none;
+    text-decoration: underline;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
     font-weight: var(--fw-bold);
     transition: var(--transition-fast);
 
     &:hover {
       color: var(--accent-red); // #A63C48 red hover
+      
     }
   }
 }
@@ -274,7 +268,6 @@
 }
 
 .companyDescription {
-  font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
   color: var(--text-inverse); // #E0DDCA on dark bg

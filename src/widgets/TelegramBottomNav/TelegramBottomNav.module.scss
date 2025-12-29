@@ -1,0 +1,141 @@
+// src/widgets/TelegramBottomNav/telegram-bottom-nav.module.scss
+
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: var(--background-secondary);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: env(safe-area-inset-bottom, 0); // iOS safe area
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.05);
+
+  // Для темної теми (якщо потрібно)
+}
+.topLine {
+  height: 26px;
+  width: 100%;
+  background-image: url('./toplineSvg.svg');
+  background-size: 975px 46px;
+
+  background-repeat: repeat-x;
+  background-position: center;
+  position: absolute;
+  top: -25px;
+  z-index: 10;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+  }
+}
+.navContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 8px 4px 4px;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 12px;
+  min-width: 64px;
+  color: var(--text-inverse);
+  position: relative;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.active {
+    color: var(--accent-red);
+
+    .iconWrapper {
+      svg {
+        stroke-width: 2;
+      }
+    }
+
+    .label {
+      font-weight: 600;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    color: rgba(255, 255, 255, 0.6);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &.active {
+      color: var(--accent-red);
+    }
+  }
+}
+
+.iconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+
+  svg {
+    transition: all 0.2s ease;
+  }
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  background: var(--mantine-color-red-6);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  padding: 0 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  border: 2px solid white;
+
+  @media (prefers-color-scheme: dark) {
+    border-color: rgb(30, 30, 30);
+  }
+}

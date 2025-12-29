@@ -112,11 +112,7 @@ const ResendVerification = () => {
         <Paper radius="md" p="xl" withBorder className={styles.paper}>
           <Stack gap="lg">
             <div>
-              <Group justify="center" mb="md">
-                <ThemeIcon size={50} radius="xl" variant="light" color="blue">
-                  <IconSend size={30} />
-                </ThemeIcon>
-              </Group>
+             
               <Title order={2} ta="center">
                 Підтвердження email
               </Title>

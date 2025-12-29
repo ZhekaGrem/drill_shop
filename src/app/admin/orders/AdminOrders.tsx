@@ -24,6 +24,7 @@ import {
   Table,
   Divider,
   Paper,
+  Box,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSearch, IconAlertCircle } from '@tabler/icons-react';
@@ -50,11 +51,11 @@ export default function OrdersManagement() {
 
   if (!isAdmin && !isManager) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <Box p={32} style={{ textAlign: 'center' }}>
         <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
           У вас немає прав для управління замовленнями
         </Alert>
-      </div>
+      </Box>
     );
   }
 
@@ -114,7 +115,7 @@ export default function OrdersManagement() {
   };
 
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <Box p="xl">
       {/* Header */}
       <Group justify="space-between" mb="xl">
         <div>
@@ -379,6 +380,6 @@ export default function OrdersManagement() {
           </Stack>
         )}
       </Modal>
-    </div>
+    </Box>
   );
 }

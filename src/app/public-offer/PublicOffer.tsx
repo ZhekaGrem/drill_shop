@@ -1,12 +1,13 @@
 // src/app/public-offer/PublicOffer.tsx
 
+import { Container, Box } from '@mantine/core';
 import styles from './publicOffer.module.scss';
 import { siteConfig } from '@/shared/config/site';
 
 const PublicOffer = () => {
   return (
     <div className={styles.page}>
-      <div className={styles.container}>
+      <Container size={900}>
         <div className={styles.header}>
           <h1 className={styles.title}>Договір публічної оферти</h1>
           <p className={styles.subtitle}>
@@ -503,7 +504,7 @@ const PublicOffer = () => {
             <h2 className={styles.sectionTitle}>14. Реквізити продавця</h2>
 
             <div className={styles.infoBox}>
-              <ul className={styles.list} style={{ marginBottom: 0 }}>
+              <Box component="ul" className={styles.list} mb={0}>
                 <li>
                   <strong>Повна назва:</strong> {siteConfig.fullName}
                 </li>
@@ -527,26 +528,26 @@ const PublicOffer = () => {
                 <li>
                   <strong>Графік роботи:</strong> {siteConfig.workingHours}
                 </li>
-              </ul>
+              </Box>
             </div>
           </section>
 
           <div className={styles.blueAlert}>
-            <p style={{ marginBottom: '8px' }}>
+            <Box component="p" mb={8}>
               <strong>Дата набрання чинності:</strong>{' '}
               {new Date().toLocaleDateString('uk-UA', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
-            </p>
-            <p style={{ marginBottom: 0 }}>
+            </Box>
+            <Box component="p" mb={0}>
               Оформлюючи замовлення на сайті <strong>{siteConfig.url}</strong>, ви підтверджуєте, що
               ознайомлені з умовами цього Договору публічної оферти та повністю з ними згодні.
-            </p>
+            </Box>
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 };

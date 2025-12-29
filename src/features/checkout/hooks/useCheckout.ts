@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import type { Resolver } from 'react-hook-form';
 import { useCart } from '@/features/cart/hooks/useCart';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { CheckoutFormData, checkoutSchema } from '../types';
 import { createOrder } from '../api/checkout-api';
 import { paymentApi } from '@/features/payment/api/payment-api';
@@ -111,7 +111,7 @@ export const useCheckout = () => {
         localStorage.removeItem('guest_cart_items');
       }
 
-      notifications.show({
+      showNotification({
         title: 'Замовлення створено!',
         message: `Ваш номер замовлення: ${orderData.orderNumber}`,
         color: 'green',
@@ -169,7 +169,7 @@ export const useCheckout = () => {
       }
     },
     onError: (err) => {
-      notifications.show({
+      showNotification({
         title: 'Помилка створення замовлення',
         message: err.message || 'Спробуйте ще раз пізніше.',
         color: 'red',

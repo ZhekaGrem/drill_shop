@@ -6,7 +6,7 @@
 
 ## 🎯 Огляд проекту
 
-**Shop ** — це Next.js e-commerce застосунок для продажу м'ясних виробів з використанням **Feature-Sliced Design (FSD)** архітектури.
+**Shop ** — це Next.js e-commerce застосунок для продажу з використанням **Feature-Sliced Design (FSD)** архітектури.
 
 ### Ролі та цілі
 

@@ -50,7 +50,7 @@
   display: flex;
   flex-direction: column;
   align-self: stretch;
-  padding: 16px 16px 16px 24px;
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) var(--spacing-lg);
 }
 
 .bottomControls {
@@ -68,7 +68,6 @@
 }
 
 .productName {
-  font-family: sans-serif;
   font-weight: 800;
   text-transform: uppercase;
   color: var(--text-primary);
@@ -83,7 +82,6 @@
 }
 
 .variantText {
-  font-family: sans-serif;
   font-weight: 600;
   text-transform: uppercase;
   color: var(--text-primary);

@@ -1,0 +1,26 @@
+// src/app/telegram/catalog/telegramCatalog.module.scss
+
+.filtersButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}

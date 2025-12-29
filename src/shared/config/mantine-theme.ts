@@ -95,18 +95,35 @@ export const mantineTheme = createTheme({
     },
     Select: {
       styles: {
-        ...inputStyles,
+        input: {
+          // Фон (бежевий #e0ddca або змінна)
+          backgroundColor: '#e0ddca',
+
+          // Прибираємо всі бордери
+          border: '2px solid var(--border-color)',
+
+          // Додаємо тільки нижній бордер (темно-зелений #33603b)
+          // Використовуємо твою змінну ширини або 2px як фолбек
+          boxShadow: 'none',
+          // Квадратні кути
+          borderRadius: 0,
+
+          // Колір тексту
+          color: 'var(--text-primary)',
+
+          // Трохи відступів, щоб текст не лип
+          padding: 'var(--spacing-xs) var(--spacing-sm)',
+        },
         dropdown: {
           backgroundColor: 'var(--background)',
           border: 'none',
-          borderBottom: '2px solid var(--text-primary)',
           borderRadius: 0,
           boxShadow: 'none',
         },
         option: {
           padding: 'var(--spacing-sm) var(--spacing-md)',
           color: 'var(--text-primary)',
-          borderBottom: '1px solid var(--border-color)',
+          border: '2px solid var(--border-color)',
           '&:hover': {
             backgroundColor: 'var(--background-secondary)',
           },
@@ -123,8 +140,17 @@ export const mantineTheme = createTheme({
         },
       },
     },
+    Alert: {
+      styles: () => ({
+        message: {
+          // Червоний текст для помилок (color: 'red')
+          color: '#A63C48',
+          fontWeight: '600',
+        },
+      }),
+    },
     Notification: {
-      styles: {
+      styles: () => ({
         root: {
           border: '2px solid var(--text-primary)',
           borderRadius: 'var(--border-radius-sm)',
@@ -133,24 +159,24 @@ export const mantineTheme = createTheme({
           boxShadow: 'var(--shadow-md)',
         },
         title: {
-          fontFamily: 'var(--font-heading)',
-          fontSize: 'var(--text-2xl)',
-          fontWeight: 'var(--fw-black)',
-          color: 'var(--text-primary)',
+          fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif',
+          fontSize: 'var(--text-lg)',
+          fontWeight: '800',
         },
         description: {
-          fontFamily: 'var(--font-heading)',
-          fontSize: 'var(--text-xl)',
+          fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif',
+          fontSize: 'var(--text-base)',
           color: 'var(--text-primary)',
-          fontWeight: 'var(--fw-bold)',
+          // Червоний текст для помилок (color: 'red')
+          fontWeight: '600',
         },
         closeButton: {
-          color: 'var(--text-primary)',
+          color: 'var(--text-secondary)',
           '&:hover': {
             background: 'rgba(0, 0, 0, 0.05)',
           },
         },
-      },
+      }),
     },
     Checkbox: {
       styles: {

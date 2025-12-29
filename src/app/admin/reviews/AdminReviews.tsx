@@ -23,9 +23,10 @@ import {
   Stack,
   Modal,
   Checkbox,
+  Box,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { IconSearch, IconAlertCircle, IconStar, IconTrash, IconMessage } from '@tabler/icons-react';
 import { ReviewCard } from '@/features/admin/components/ReviewCard/ReviewCard';
 import { EmptyState } from '@/shared/components/EmptyState';
@@ -73,13 +74,13 @@ export default function AdminReviews() {
     if (confirm('Ви впевнені, що хочете видалити цей відгук?')) {
       try {
         await deleteMutation.mutateAsync(id);
-        notifications.show({
+        showNotification({
           title: 'Успіх',
           message: 'Відгук видалено',
           color: 'green',
         });
       } catch (error: any) {
-        notifications.show({
+        showNotification({
           title: 'Помилка',
           message: error.message || 'Не вдалося видалити відгук',
           color: 'red',
@@ -100,13 +101,13 @@ export default function AdminReviews() {
       try {
         await bulkDeleteMutation.mutateAsync(selectedReviews);
         setSelectedReviews([]);
-        notifications.show({
+        showNotification({
           title: 'Успіх',
           message: `Видалено ${selectedReviews.length} відгуків`,
           color: 'green',
         });
       } catch (error: any) {
-        notifications.show({
+        showNotification({
           title: 'Помилка',
           message: error.message || 'Не вдалося видалити відгуки',
           color: 'red',
@@ -130,7 +131,7 @@ export default function AdminReviews() {
   };
 
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <Box p="xl">
       {/* Header */}
       <Group justify="space-between" mb="xl">
         <div>
@@ -259,14 +260,14 @@ export default function AdminReviews() {
                 zIndex: 1,
               }}
             />
-            <div style={{ paddingLeft: '2rem' }}>
+            <Box pl={32}>
               <ReviewCard
                 review={review}
                 onDelete={handleDeleteReview}
                 onView={handleViewReview}
                 isLoading={deleteMutation.isPending}
               />
-            </div>
+            </Box>
           </div>
         ))}
 
@@ -390,6 +391,6 @@ export default function AdminReviews() {
           </Stack>
         )}
       </Modal>
-    </div>
+    </Box>
   );
 }

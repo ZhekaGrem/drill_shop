@@ -20,6 +20,7 @@ import {
   Avatar,
   Menu,
   Stack,
+  Box,
 } from '@mantine/core';
 import { IconSearch, IconAlertCircle, IconDotsVertical, IconUserCheck, IconUserX } from '@tabler/icons-react';
 import { UserRole } from '@/shared/types/generated.types';
@@ -88,7 +89,7 @@ export default function AdminUsers() {
   };
 
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <Box p="xl">
       {/* Header */}
       <Group justify="space-between" mb="xl">
         <div>
@@ -242,12 +243,12 @@ export default function AdminUsers() {
         </Table>
 
         {users.length === 0 && !isLoading && (
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <Box p={32} style={{ textAlign: 'center' }}>
             <Text c="dimmed">Користувачі не знайдені</Text>
             <Text c="dimmed" size="sm" mt="xs">
               Спробуйте змінити фільтри пошуку
             </Text>
-          </div>
+          </Box>
         )}
 
         {/* Simple Pagination */}
@@ -281,6 +282,6 @@ export default function AdminUsers() {
           </Group>
         )}
       </Card>
-    </div>
+    </Box>
   );
 }

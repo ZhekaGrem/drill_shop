@@ -1,0 +1,145 @@
+ Проблеми та рішення:
+
+  1. ❌ "Invalid API key" при перевірці JWT токенів
+
+  Проблема:
+  - Backend використовував один Supabase клієнт з SERVICE_ROLE_KEY для всіх операцій
+  - Frontend видає JWT токени через ANON_KEY
+  - При спробі перевірити ANON токен через SERVICE_ROLE клієнт → помилка "Invalid API key"
+
+  Рішення:
+  // backend/src/modules/auth/infrastructure/external/supabase.service.ts
+
+  // ДВА окремих клієнти:
+  private authClient: SupabaseClient;    // ANON_KEY - для verifyToken()
+  private adminClient: SupabaseClient;   // SERVICE_ROLE_KEY - для admin операцій
+
+  // verifyToken() використовує authClient (ANON)
+  await this.authClient.auth.getUser(jwt);
+
+  // Admin операції використовують adminClient (SERVICE_ROLE)
+  await this.adminClient.auth.admin.updateUserById(...);
+
+  ---
+  2. ❌ Обрізані JWT токени в .env файлах
+
+  Проблема:
+  # НЕПРАВИЛЬНО - токен обрізаний
+  SUPABASE_ANON_KEY="eyJ...cCI6MjA2>"
+
+  Рішення:
+  - Перевірити що токени ПОВНІ (~200+ символів)
+  - Скопіювати з Supabase Dashboard → Settings → API
+  - JWT має 3 частини: header.payload.signature
+  - Закінчується на .randomString, а не на >
+
+  ---
+  3. ❌ Користувачі БЕЗ ролі в Supabase app_metadata
+
+  Проблема:
+  - Користувачі зареєстровані ДО фікса мають роль в БД, але НЕ в Supabase JWT
+  - Неможливо використовувати RLS політики
+  - Роль треба читати через API запит
+
+  Рішення:
+  Створити міграційний скрипт:
+
+  // backend/scripts/sync-user-roles.ts
+
+  const users = await prisma.user.findMany();
+
+  for (const user of users) {
+    await supabaseService.syncUserRoleToSupabase(user.id, user.role);
+  }
+
+  Запустити:
+  npm run sync:roles
+
+  ---
+  4. ❌ Синхронізація ролі при реєстрації відсутня
+
+  Проблема:
+  - При створенні користувача роль зберігалась тільки в БД
+  - В Supabase app_metadata роль не додавалась
+
+  Рішення:
+  // backend/src/modules/auth/presentation/controllers/auth.controller.ts
+
+  // Після створення профілю:
+  const profile = await this.prisma.user.create({ ... });
+
+  // Синхронізуємо роль в Supabase
+  await this.supabaseService.syncUserRoleToSupabase(profile.id, profile.role);
+
+  ---
+  5. ❌ Оновлення ролі адміном не синхронізувалось
+
+  Проблема:
+  - Адмін змінює роль користувача в БД
+  - Роль в Supabase JWT залишається старою
+
+  Рішення:
+  // backend/src/modules/admin/infrastructure/repositories/admin.repository.impl.ts
+
+  async updateUserRole(userId: string, newRole: UserRole, adminId: string) {
+    // 1. Оновлюємо в БД
+    await this.prisma.user.update({ ... });
+
+    // 2. Синхронізуємо в Supabase
+    await this.supabaseService.syncUserRoleToSupabase(userId, newRole);
+  }
+
+  ---
+  🔍 Як перевірити в іншому проекті:
+
+  Checklist:
+
+  # 1. Перевір .env токени
+  grep "SUPABASE_ANON_KEY" backend/.env
+  grep "SUPABASE_SERVICE_ROLE_KEY" backend/.env
+  # Токени мають бути ПОВНІ (~200+ символів)
+
+  # 2. Перевір SupabaseService
+  # Має бути ДВА клієнти (authClient + adminClient)
+
+  # 3. Перевір чи синхронізується роль при реєстрації
+  # auth.controller.ts має викликати syncUserRoleToSupabase()
+
+  # 4. Перевір чи синхронізується роль при зміні адміном
+  # admin.repository.ts має викликати syncUserRoleToSupabase()
+
+  # 5. Запусти міграцію для існуючих користувачів
+  npm run sync:roles
+
+  ---
+  📁 Файли які треба перевірити:
+
+  backend/
+  ├── .env                                    # Повні токени
+  ├── src/modules/auth/infrastructure/external/
+  │   └── supabase.service.ts                 # Два клієнти
+  ├── src/modules/auth/presentation/controllers/
+  │   └── auth.controller.ts                  # Sync при реєстрації
+  ├── src/modules/admin/infrastructure/repositories/
+  │   └── admin.repository.impl.ts            # Sync при зміні ролі
+  └── scripts/
+      └── sync-user-roles.ts                  # Міграція
+
+  ---
+  ⚡ Швидкий фікс для нового проекту:
+
+  // 1. SupabaseService - два клієнти
+  private authClient = createClient(url, ANON_KEY);
+  private adminClient = createClient(url, SERVICE_ROLE_KEY);
+
+  // 2. Функція синхронізації
+  async syncUserRoleToSupabase(userId: string, role: string) {
+    await this.adminClient.auth.admin.updateUserById(userId, {
+      app_metadata: { role }
+    });
+  }
+
+  // 3. Використовувати після:
+  // - Реєстрації
+  // - Зміни ролі адміном
+  // - Міграції існуючих користувачів

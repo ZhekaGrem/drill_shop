@@ -49,6 +49,29 @@ export const clearAuthCache = () => {
 // Додаємо токен до кожного запиту (ОПТИМІЗОВАНО)
 apiClient.interceptors.request.use(
   async (config) => {
+    // ✅ PRIORITY 1: Перевіряємо чи є вже X-Telegram-Init-Data (для Telegram запитів)
+    if (config.headers['X-Telegram-Init-Data']) {
+      return config;
+    }
+
+    // ✅ PRIORITY 2: Перевіряємо чи запущено в Telegram (для /telegram роутів)
+    if (typeof window !== 'undefined') {
+      try {
+        const { getTelegramInitData, isTelegramWebApp } = await import('@/shared/utils/telegram');
+
+        if (isTelegramWebApp()) {
+          const initData = getTelegramInitData();
+          if (initData) {
+            config.headers['X-Telegram-Init-Data'] = initData;
+            return config;
+          }
+        }
+      } catch (error) {
+        // Telegram утиліти не завантажились - продовжуємо з Supabase auth
+      }
+    }
+
+    // ✅ PRIORITY 3: Supabase auth для web користувачів
     if (config.headers.Authorization) {
       return config;
     }

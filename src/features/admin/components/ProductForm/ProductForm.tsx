@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Stack, Group, Button, Alert } from '@mantine/core';
+import { Stack, Group, Button, Alert, Box } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { ProductFormData, ProductFormProps } from '@/shared/types/admin.types';
@@ -307,11 +307,11 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
         {Object.keys(form.errors).length > 0 && (
           <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
             <div>Помилки валідації:</div>
-            <ul style={{ margin: 0, paddingLeft: '1.2rem' }}>
+            <Box component="ul" m={0} pl="lg">
               {Object.entries(form.errors).map(([field, error]) => (
                 <li key={field}>{error}</li>
               ))}
-            </ul>
+            </Box>
           </Alert>
         )}
 

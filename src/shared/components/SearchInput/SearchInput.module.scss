@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   max-width: 400px;
-  font-family: var(--font-heading);
+  font-family: var(--font-price);
 }
 
 .searchInput__container {
@@ -16,8 +16,7 @@
 }
 
 .searchInput_focused .searchInput__container {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(204, 33, 40, 0.1);
+ 
 }
 
 .searchInput__icon {

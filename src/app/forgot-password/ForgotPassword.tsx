@@ -10,7 +10,7 @@ import { z } from 'zod';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { apiClient } from '@/shared/api/client';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 
 const resetPasswordSchema = z
   .object({
@@ -67,7 +67,7 @@ export default function ResetPassword() {
 
       if (response.data.success) {
         setStatus('success');
-        notifications.show({
+        showNotification({
           title: 'Успішно!',
           message: 'Пароль змінено. Тепер ви можете увійти з новим паролем.',
           color: 'green',
@@ -82,7 +82,7 @@ export default function ResetPassword() {
     } catch (error: any) {
       setErrorMessage(error.response?.data?.message || 'Помилка зміни пароля. Спробуйте ще раз.');
 
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: error.response?.data?.message || 'Не вдалося змінити пароль',
         color: 'red',

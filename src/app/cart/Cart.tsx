@@ -41,14 +41,14 @@ export default function CartPage() {
               Кошик
             </Title>
           </Link>{' '}
-          <Text> {calculations.itemsCount} товари</Text>
+          {/* <Text> {calculations.itemsCount} товари</Text> */}
         </Group>
 
-        {items.length > 0 && (
+        {/* {items.length > 0 && (
           <Button variant="red" size="promo" loading={isClearingCart} onClick={clearCart}>
             Очистити
           </Button>
-        )}
+        )} */}
       </Group>
 
       {items.length === 0 ? (

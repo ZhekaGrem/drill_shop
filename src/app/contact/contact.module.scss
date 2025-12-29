@@ -1,10 +1,14 @@
 .pageTitle {
-  font-family: var(--font-heading);
+  font-family: var(--font-price);
   font-weight: var(--fw-bold);
   color: var(--text-green);
   text-transform: uppercase;
   line-height: 1;
   letter-spacing: 0.02em;
+}
+
+.container {
+  padding: var(--spacing-y) var(--spacing-x);
 }
 // Зелена полоска
 .greenDivider {
@@ -98,7 +102,6 @@
     border-bottom: 2px solid var(--border-color);
     border-radius: 0;
     font-size: var(--text-base);
-    font-family: inherit;
     background: transparent;
     transition: all 0.2s;
 

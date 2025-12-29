@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/shared/stores/auth';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { TextInput, Checkbox, Group, Stack, Alert, Anchor, PasswordInput, ScrollArea } from '@mantine/core';
 import { IconAlertCircle, IconLoader } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
@@ -46,11 +46,10 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
     if (email && verified === 'true') {
       setValue('email', decodeURIComponent(email));
 
-      notifications.show({
+      showNotification({
         title: '✅ Email підтверджено!',
         message: 'Тепер введіть ваш пароль для входу',
         color: 'green',
-        autoClose: 5000,
       });
     }
   }, [searchParams, setValue]);
@@ -61,11 +60,10 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
     try {
       await login(data.email, data.password);
 
-      notifications.show({
+      showNotification({
         title: 'Успішний вхід!',
         message: 'Вітаємо з поверненням!',
         color: 'green',
-        autoClose: 3000,
       });
       onSuccess?.();
       setTimeout(() => {
@@ -82,11 +80,10 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
 
       setError(errorMessage);
 
-      notifications.show({
+      showNotification({
         title: 'Помилка входу',
         message: errorMessage,
         color: 'red',
-        autoClose: isEmailNotVerified ? 8000 : 5000,
       });
     }
   };
@@ -157,7 +154,7 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
               type="button"
               size="sm"
               onClick={handleForgotPassword}
-              style={{ opacity: isLoading ? 0.6 : 1 }}>
+              style={{ opacity: isLoading ? 0.6 : 1,color:'#33603b' }}>
               Забули пароль?
             </Anchor>
           </Group>

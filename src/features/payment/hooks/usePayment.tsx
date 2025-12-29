@@ -3,7 +3,7 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { paymentApi, CreatePaymentRequest } from '../api/payment-api';
 
 export const useCreatePayment = () => {
@@ -23,7 +23,7 @@ export const useCreatePayment = () => {
             document.body.appendChild(tempDiv);
             // Форма автоматично сабмітиться через JavaScript в HTML
           } else {
-            notifications.show({
+            showNotification({
               title: 'Помилка',
               message: 'Не вдалося отримати форму LiqPay',
               color: 'red',
@@ -34,7 +34,7 @@ export const useCreatePayment = () => {
           if (data.paymentUrl) {
             window.location.href = data.paymentUrl;
           } else {
-            notifications.show({
+            showNotification({
               title: 'Помилка',
               message: 'Не вдалося отримати посилання на оплату',
               color: 'red',
@@ -45,7 +45,7 @@ export const useCreatePayment = () => {
           router.push(`/checkout/success?orderId=${data.paymentId}`);
         }
       } else {
-        notifications.show({
+        showNotification({
           title: 'Помилка оплати',
           message: data.message || 'Не вдалося створити платіж',
           color: 'red',
@@ -53,7 +53,7 @@ export const useCreatePayment = () => {
       }
     },
     onError: (error: any) => {
-      notifications.show({
+      showNotification({
         title: 'Помилка оплати',
         message: error.message || 'Не вдалося створити платіж',
         color: 'red',
@@ -82,14 +82,14 @@ export const useRefundPayment = () => {
     mutationFn: ({ paymentId, amount, reason }: { paymentId: string; amount?: number; reason?: string }) =>
       paymentApi.refundPayment(paymentId, amount, reason),
     onSuccess: (data) => {
-      notifications.show({
+      showNotification({
         title: data.success ? 'Успіх' : 'Помилка',
         message: data.message,
         color: data.success ? 'green' : 'red',
       });
     },
     onError: (error: any) => {
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: error.message || 'Не вдалося повернути кошти',
         color: 'red',

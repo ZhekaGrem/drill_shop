@@ -33,7 +33,6 @@
 
 // ============ PRODUCT NAME ============
 .productName {
-  font-family: var(--font-condensed);
   font-size: var(--text-sm);
   font-weight: var(--fw-bold);
   color: var(--text-primary);
@@ -84,7 +83,6 @@
 
 // ============ QUANTITY ============
 .quantity {
-  font-family: var(--font-condensed);
   font-size: var(--text-xs);
   font-weight: var(--fw-medium);
   color: var(--text-secondary);

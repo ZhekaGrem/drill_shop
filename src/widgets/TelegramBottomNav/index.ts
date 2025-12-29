@@ -1,0 +1,1 @@
+export { TelegramBottomNav } from './TelegramBottomNav';

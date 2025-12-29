@@ -7,7 +7,7 @@ import { productsApi, ProductResponse } from '@/features/catalog/api/products';
 import { Product, ProductWithRelations } from '@/shared/types';
 import { useAuthStore } from '@/shared/stores/auth';
 import Link from 'next/link';
-import { Select, Badge } from '@mantine/core';
+import { Select, Badge, Container } from '@mantine/core';
 import { Button } from '@/shared/components/Button/Button';
 import { useCart } from '@/features/cart/hooks/useCart';
 import styles from './productDetails.module.scss';
@@ -327,7 +327,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
 
   return (
     <div className={styles.productPage}>
-      <div className={styles.container}>
+      <Container size={1200}>
         {/* Breadcrumbs */}
         <nav className={styles.breadcrumbs}>
           <Link href="/" className={styles.breadcrumbs__link}>
@@ -364,9 +364,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     {sortedImages.map((image, index) => (
                       <button
                         key={image.id}
-                        className={`${styles.productGallery__thumbnail} ${
-                          index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
-                        }`}
+                        className={`${styles.productGallery__thumbnail} ${index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
+                          }`}
                         onClick={() => setSelectedImageIndex(index)}>
                         <CloudinaryImage
                           src={getImageUrl(image.url || image.publicId)}
@@ -396,9 +395,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   <CloudinaryImage
                     src={getImageUrl(
                       sortedImages[selectedImageIndex]?.url ||
-                        sortedImages[selectedImageIndex]?.publicId ||
-                        primaryImage?.url ||
-                        primaryImage?.publicId
+                      sortedImages[selectedImageIndex]?.publicId ||
+                      primaryImage?.url ||
+                      primaryImage?.publicId
                     )}
                     alt={product.name}
                     className={styles.productGallery__mainImage}
@@ -446,9 +445,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     {sortedImages.map((_, index) => (
                       <button
                         key={index}
-                        className={`${styles.productGallery__dot} ${
-                          index === selectedImageIndex ? styles.productGallery__dotActive : ''
-                        }`}
+                        className={`${styles.productGallery__dot} ${index === selectedImageIndex ? styles.productGallery__dotActive : ''
+                          }`}
                         onClick={() => setSelectedImageIndex(index)}
                         aria-label={`Зображення ${index + 1}`}
                       />
@@ -530,9 +528,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                         return (
                           <label
                             key={variant.id}
-                            className={`${styles.variantCheckbox} ${
-                              isOutOfStock ? styles.variantCheckbox_disabled : ''
-                            }`}>
+                            className={`${styles.variantCheckbox} ${isOutOfStock ? styles.variantCheckbox_disabled : ''
+                              }`}>
                             <input
                               type="checkbox"
                               checked={selectedVariant?.id === variant.id}
@@ -575,11 +572,11 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                       // Показуємо головний товар тільки якщо hasVariants = false
                       ...(!product.hasVariants
                         ? [
-                            {
-                              value: 'main',
-                              label: `${product.name}`,
-                            },
-                          ]
+                          {
+                            value: 'main',
+                            label: `${product.name}`,
+                          },
+                        ]
                         : []),
                       ...(sortedVariants.map((variant: any) => ({
                         value: variant.id,
@@ -587,7 +584,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                       })) || []),
                     ]}
                     placeholder="Оберіть варіант"
-                    style={{ marginTop: '8px' }}
+                    style={{ marginTop: '8px'}}
                   />
                 )}
 
@@ -776,7 +773,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
         )}
 
         {/* Reviews Section */}
-        <ProductReviews productId={product.id} canReview={isAuthenticated} />
+        {/* <ProductReviews productId={product.id} canReview={isAuthenticated} /> */}
 
         {/* Size Guide Modal */}
         {hasSizeGuide && (
@@ -795,7 +792,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
           productSlug={product.slug}
           variantName={selectedVariant?.name}
         />
-      </div>
+      </Container >
     </div>
   );
 }

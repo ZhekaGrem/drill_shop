@@ -1,7 +1,7 @@
 // src/features/cart/hooks/useCart.tsx - ВИПРАВЛЕНО НА 100%
 
 import { useMutation } from '@tanstack/react-query';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { IconX } from '@tabler/icons-react';
 import { useCartStore } from '@/shared/stores/cart';
 import {
@@ -48,10 +48,9 @@ export const useCart = () => {
       }
     },
     onError: (error: any) => {
-      notifications.show({
+      showNotification({
         message: error.message || 'Не вдалося додати товар',
         color: 'red',
-        icon: <IconX size={16} />,
       });
     },
   });
@@ -65,10 +64,9 @@ export const useCart = () => {
       await syncCart();
     },
     onError: (error: any) => {
-      notifications.show({
+      showNotification({
         message: error.message || 'Не вдалося оновити кількість',
         color: 'red',
-        icon: <IconX size={16} />,
       });
     },
   });
@@ -80,17 +78,15 @@ export const useCart = () => {
     },
     onSuccess: async () => {
       await syncCart();
-      notifications.show({
+      showNotification({
         message: 'Товар видалено',
         color: 'green',
-        autoClose: 2000,
       });
     },
     onError: (error: any) => {
-      notifications.show({
+      showNotification({
         message: error.message || 'Не вдалося видалити товар',
         color: 'red',
-        icon: <IconX size={16} />,
       });
     },
   });
@@ -104,10 +100,9 @@ export const useCart = () => {
       await syncCart();
     },
     onError: (error: any) => {
-      notifications.show({
+      showNotification({
         message: error.message || 'Не вдалося очистити кошик',
         color: 'red',
-        icon: <IconX size={16} />,
       });
     },
   });

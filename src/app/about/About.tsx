@@ -7,11 +7,11 @@ import styles from './about.module.scss';
 const About = () => {
   return (
     <>
-      <Container size="xl" py="lg">
+      <div className={styles.container}>
         <Title order={1} className={styles.pageTitle}>
           ПРО НАС
         </Title>
-      </Container>
+      </div>
 
       <Box className={styles.heroSection}>
         <Image src="/assets/img/about/hero.png" alt="Hero" fill className={styles.heroImage} />
@@ -19,8 +19,8 @@ const About = () => {
 
       <Box className={styles.contentGrid}>
         <Box className={styles.textContent}>
-          <Container size="lg" py={80}>
-            <Title className={styles.sectionTitle} mb="xl">
+          <div  >
+            <Title className={styles.sectionTitle} >
               shchilnui drill shop
             </Title>
             <Text className={styles.description} mb="lg">
@@ -49,7 +49,7 @@ const About = () => {
               Тож якщо ти не якась маргариноська а реальний чувак шо розуміє шо до чого - то вітаємо в сім'ї.
               Бери мерч, носи з гордістю і посилай нахуй всіх хто щось там каже. Ми за своїх!
             </Text>
-          </Container>
+          </div>
         </Box>
         <Box className={styles.imageContent}>
           <Box className={styles.imageWrapper}>

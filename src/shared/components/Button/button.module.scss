@@ -1,7 +1,6 @@
 // src/shared/components/ui/Button/Button.module.scss
 // Pixel art стиль з Figma "Щільний дріл"
 .button {
-  font-family: var(--font-condensed);
   font-weight: var(--fw-bold);
   font-size: var(--text-xl);
   line-height: 1.2;
@@ -31,7 +30,6 @@
   }
 
   &--secondary {
-    font-family: var(--font-mono);
     background: var(--secondary); // #E0DDCA
     color: var(--primary); // #33603B
     border: 0;

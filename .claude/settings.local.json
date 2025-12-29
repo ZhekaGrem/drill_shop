@@ -18,7 +18,6 @@
       "Bash(timeout 20 node:*)",
       "Bash(timeout 20 tsc:*)",
       "Bash(timeout 20 npm run build:*)",
-
       "Bash(npm run db:generate:*)",
       "Bash(tasklist:*)",
       "Bash(nul)",
@@ -26,15 +25,14 @@
       "Bash(test:*)",
       "Bash(mv:*)",
       "Bash(where:*)",
-
       "Bash(curl:*)",
-
-
       "Bash(npm run dev:*)",
-
-
       "Bash(powershell -Command:*)",
-      "Bash(sort:*)"
+      "Bash(sort:*)",
+      "Bash(grep:*)",
+      "Bash(cd:*)",
+      "Bash(timeout 120 npm run build:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

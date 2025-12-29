@@ -24,13 +24,14 @@ import {
   Button,
   TextInput,
   Modal,
+  Box,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPlus, IconSearch, IconEdit, IconTrash, IconEye, IconAlertCircle } from '@tabler/icons-react';
 import { formatPrice } from '@/shared/utils/format';
 import { ProductForm } from '@/features/admin/components/ProductForm/ProductForm';
 import { AdminPagination } from '@/shared/components/AdminPagination/AdminPagination';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 // FIXED: Wrapper component to fetch full product data for editing
 const ProductFormWrapper = ({ editingProduct, onSubmit, onCancel, isLoading }: any) => {
   const shouldFetchFullData = editingProduct && editingProduct.needsFullData;
@@ -42,9 +43,9 @@ const ProductFormWrapper = ({ editingProduct, onSubmit, onCancel, isLoading }: a
 
   if (shouldFetchFullData && isLoadingFullData) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <Box p={32} style={{ textAlign: 'center' }}>
         <Text>Завантаження даних товару...</Text>
-      </div>
+      </Box>
     );
   }
 
@@ -72,11 +73,11 @@ export default function AdminProducts() {
 
   if (!isAdmin && !isManager) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <Box p={32} style={{ textAlign: 'center' }}>
         <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
           У вас немає прав для управління товарами
         </Alert>
-      </div>
+      </Box>
     );
   }
 
@@ -165,7 +166,7 @@ export default function AdminProducts() {
           data: submissionData,
           files,
         });
-        notifications.show({
+        showNotification({
           title: 'Успіх',
           message: 'Товар успішно створено',
           color: 'green',
@@ -199,11 +200,10 @@ export default function AdminProducts() {
         errorMessage = error.message;
       }
 
-      notifications.show({
+      showNotification({
         title: errorTitle,
         message: errorMessage,
         color: 'red',
-        autoClose: 5000,
       });
     }
   };
@@ -337,12 +337,12 @@ export default function AdminProducts() {
         </Table>
 
         {products.length === 0 && !isLoading && (
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <Box p={32} style={{ textAlign: 'center' }}>
             <Text c="dimmed">Товари не знайдені</Text>
             <Text c="dimmed" size="sm" mt="xs">
               Спробуйте змінити фільтри або додайте новий товар
             </Text>
-          </div>
+          </Box>
         )}
 
         {/* Simple Pagination */}
@@ -391,7 +391,7 @@ export default function AdminProducts() {
         size="xl"
         zIndex={1000}>
         {viewingProduct && (
-          <div style={{ padding: '1rem' }}>
+          <Box p="md">
             <Grid>
               <Grid.Col span={12}>
                 <Text size="xl" fw={700} mb="md">
@@ -421,7 +421,7 @@ export default function AdminProducts() {
                   <Text size="sm" c="dimmed" mb="xs">
                     Варіанти ({viewingProduct.variants.length}):
                   </Text>
-                  <div style={{ marginTop: '8px' }}>
+                  <Box mt={8}>
                     {viewingProduct.variants.map((variant: any, index: number) => (
                       <div
                         key={variant.id || index}
@@ -467,7 +467,7 @@ export default function AdminProducts() {
                         </Group>
                       </div>
                     ))}
-                  </div>
+                  </Box>
                 </Grid.Col>
               )} */}
 
@@ -522,7 +522,7 @@ export default function AdminProducts() {
                 Редагувати
               </Button>
             </Group>
-          </div>
+          </Box>
         )}
       </Modal>
     </div>

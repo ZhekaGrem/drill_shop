@@ -1,12 +1,13 @@
 // src/app/returns-exchanges/ReturnsExchanges.tsx
 
+import { Container, Box } from '@mantine/core';
 import styles from './returnsExchanges.module.scss';
 import { siteConfig } from '@/shared/config/site';
 
 const ReturnsExchanges = () => {
   return (
     <div className={styles.page}>
-      <div className={styles.container}>
+      <Container size={900}>
         <div className={styles.header}>
           <h1 className={styles.title}>Повернення та обмін товару</h1>
           <p className={styles.subtitle}>
@@ -300,7 +301,7 @@ const ReturnsExchanges = () => {
             <p className={styles.textBlock}>Для повернення та обміну товару зв&apos;яжіться з нами:</p>
 
             <div className={styles.infoBox}>
-              <ul className={styles.list} style={{ marginBottom: 0 }}>
+              <Box component="ul" className={styles.list} mb={0}>
                 <li>
                   <strong>Телефон:</strong> {siteConfig.contacts.phone}
                 </li>
@@ -318,12 +319,12 @@ const ReturnsExchanges = () => {
                 <li>
                   <strong>Графік роботи:</strong> {siteConfig.workingHours}
                 </li>
-              </ul>
+              </Box>
             </div>
 
-            <p className={styles.textBlock} style={{ marginTop: 'var(--spacing-md)' }}>
+            <Box component="p" className={styles.textBlock} mt="md">
               Ми завжди готові допомогти вирішити будь-які питання!
-            </p>
+            </Box>
           </section>
 
           <div className={styles.blueAlert}>
@@ -332,7 +333,7 @@ const ReturnsExchanges = () => {
             недоліків товару.
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 };

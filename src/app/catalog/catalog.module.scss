@@ -9,12 +9,6 @@
   background-attachment: fixed;
 }
 
-.container {
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 20px 50px 20px;
-}
-
 .filtersButton {
   background-color: var(--background);
   display: none;
@@ -57,7 +51,7 @@
 }
 
 .modalTitle {
-  font-family: var(--font-heading);
+  font-family: var(--font-price);
   font-weight: var(--fw-bold);
   color: var(--text-primary);
 }
@@ -211,10 +205,6 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .container {
-    padding: 0 16px 22px 16px;
-  }
-
   .header {
     margin-bottom: 20px;
   }

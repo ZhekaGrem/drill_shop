@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation';
-import { Modal, Loader, Center, Text } from '@mantine/core';
+import { Modal, Loader, Center, Text, Container } from '@mantine/core';
 import { IconFilter, IconChevronDown } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
@@ -108,7 +108,7 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
         }}>
         <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
       </Modal>
-      <div className={styles.container}>
+      <Container size={1300} px={20} pb={50}>
         {error && (
           <div className={styles.error}>
             <h3>Помилка завантаження</h3>
@@ -165,7 +165,7 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
             <Text c="dimmed">Товари не знайдено</Text>
           </Center>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { reviewsApi } from '../api/reviews-api';
 import { useAuthStore } from '@/shared/stores/auth';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 
 export interface CreateReviewData {
   productId: string;
@@ -61,10 +61,9 @@ export const useCreateReview = () => {
       queryClient.invalidateQueries({
         queryKey: ['reviews', 'canReview', variables.productId],
       });
-      notifications.show({
+      showNotification({
         title: 'Успіх',
         message: 'Відгук успішно створено',
-        color: 'green',
       });
     },
     retry: false, // Don't retry on permission errors
@@ -82,14 +81,14 @@ export const useDeleteReview = () => {
         queryKey: ['reviews'],
       });
 
-      notifications.show({
+      showNotification({
         title: 'Успіх',
         message: 'Відгук видалено',
         color: 'green',
       });
     },
     onError: (error: Error) => {
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: error.message,
         color: 'red',

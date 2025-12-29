@@ -108,7 +108,7 @@ export default function ConfirmEmail() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '1rem',
-        backgroundColor: '#f5f5f5',
+        
       }}>
       <Container size="sm">
         <Paper p="xl" shadow="md" radius="md">

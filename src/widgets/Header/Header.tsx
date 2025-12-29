@@ -164,6 +164,7 @@ export function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [authDrawerOpened, { open: openAuthDrawer, close: closeAuthDrawer }] = useDisclosure(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const calculations = useCartCalculations();
   const { toggle: toggleCartDrawer } = useCartDrawerActions();
   const syncCart = useCartStore((state) => state.syncCart);
@@ -176,7 +177,17 @@ export function Header() {
     e.preventDefault();
     if (searchQuery.trim()) {
       window.location.href = `/catalog?search=${encodeURIComponent(searchQuery)}`;
+      setIsSearchExpanded(false);
     }
+  };
+
+  const handleSearchFocus = () => {
+    setIsSearchExpanded(true);
+  };
+
+  const handleSearchClear = () => {
+    setSearchQuery('');
+    setIsSearchExpanded(false);
   };
 
   const handleAuthSuccess = () => {
@@ -192,21 +203,26 @@ export function Header() {
           <button className={styles.iconButton} onClick={toggleDrawer}>
             {drawerOpened ? <IconX /> : <MenuIcon />}
           </button>
-          <form onSubmit={handleSearch} className={styles.searchBox}>
-            <IconSearch className={styles.searchIcon} />
-            <input
-              type="text"
-              className={styles.searchInput}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </form>
+          <button
+            type="button"
+            className={styles.searchTrigger}
+            onClick={handleSearchFocus}
+            aria-label="Відкрити пошук">
+            <IconSearch className={styles.searchPlaceholder} />
+          </button>
         </div>
 
         {/* Mobile left: Menu only */}
         <div className={`${styles.leftSection} ${styles.mobileOnly}`}>
           <button className={styles.iconButton} onClick={toggleDrawer}>
             {drawerOpened ? <IconX /> : <MenuIcon />}
+          </button>
+          <button
+            type="button"
+            className={styles.searchTrigger}
+            onClick={handleSearchFocus}
+            aria-label="Відкрити пошук">
+            <IconSearch className={styles.searchPlaceholder} />
           </button>
         </div>
 
@@ -233,6 +249,36 @@ export function Header() {
           />
         </div>
       </header>
+
+      {/* Expanded Search Bar */}
+      {isSearchExpanded && (
+        <div className={styles.expandedSearchContainer}>
+          <form onSubmit={handleSearch} className={styles.expandedSearchForm}>
+            <input
+              type="text"
+              className={styles.expandedSearchInput}
+              placeholder="Пошук товарів..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onBlur={() => {
+                if (!searchQuery.trim()) {
+                  setIsSearchExpanded(false);
+                }
+              }}
+              autoFocus
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                className={styles.expandedSearchClear}
+                onClick={handleSearchClear}
+                aria-label="Очистити">
+                <IconX />
+              </button>
+            )}
+          </form>
+        </div>
+      )}
 
       {/* Mobile Drawer Menu */}
       <MobileMenu opened={drawerOpened} onClose={closeDrawer} onNavigate={closeDrawer} />

@@ -7,7 +7,7 @@ import { useFavoritesStore } from '@/shared/stores/favorites';
 import { Button } from '@/shared/components/Button/Button';
 import Link from 'next/link';
 import { useCart } from '@/features/cart/hooks/useCart';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { Product } from '@/shared/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api';
@@ -49,13 +49,13 @@ export const FavoritesList = () => {
     setAddingItemId(product.id);
     try {
       await addItem(product.id, 1);
-      notifications.show({
+      showNotification({
         title: 'Товар додано',
         message: `${product.name} додано до кошика`,
         color: 'green',
       });
     } catch (error) {
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: 'Не вдалося додати товар до кошика',
         color: 'red',

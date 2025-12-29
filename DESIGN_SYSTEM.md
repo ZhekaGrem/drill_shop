@@ -32,7 +32,7 @@
 ```tsx
 --font-body: 'IBM Plex Sans'           // Основний текст
 --font-condensed: 'IBM Plex Sans Condensed'  // UI елементи
---font-heading: 'Rubik Glitch'         // Заголовки (pixel art)
+--font-price: 'Rubik Glitch'         // Заголовки (pixel art)
 --font-price: 'Rubik'                  // Ціни (weight 900)
 --font-mono: 'IBM Plex Mono'           // Код
 ```

@@ -5,7 +5,7 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/shared/stores/auth';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { TextInput, Group, Stack, Alert, PasswordInput, ScrollArea } from '@mantine/core';
 import { IconAlertCircle, IconMail } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
@@ -65,12 +65,9 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
       await registerUser(cleanData);
 
       // ВАЖЛИВЕ ПОВІДОМЛЕННЯ про підтвердження email
-      notifications.show({
+      showNotification({
         title: 'Підтвердіть email!',
         message: 'Перевірте пошту та натисніть на посилання для завершення реєстрації.',
-        color: 'blue',
-        icon: <IconMail size={20} />,
-        autoClose: 6000,
       });
       setTimeout(() => router.push('/catalog'), 1500);
       // Перемикаємо на login tab
@@ -82,11 +79,10 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
         message: error.message || 'Сталася помилка. Спробуйте ще раз.',
       });
 
-      notifications.show({
+      showNotification({
         title: 'Помилка реєстрації',
         message: error.message || 'Спробуйте ще раз',
         color: 'red',
-        autoClose: 5000,
       });
     }
   };

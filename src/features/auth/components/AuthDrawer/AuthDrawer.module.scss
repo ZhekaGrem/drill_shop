@@ -48,7 +48,6 @@
   }
 
   :global(.mantine-Tabs-tab) {
-    font-family: var(--font-condensed) !important;
     font-size: var(--text-base) !important;
     font-weight: var(--fw-bold) !important;
     color: var(--text-secondary) !important;
@@ -79,7 +78,6 @@
 }
 
 .tab {
-  font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-bold);
   color: var(--text-secondary);

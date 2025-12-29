@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { useForm } from '@mantine/form';
 import { sendContactMessage } from '@/shared/api/contact';
 import { IconTelegram, IconInstagram, IconPhone } from '@/shared/components/Svg';
@@ -64,19 +64,17 @@ const Contact = () => {
         setIsSubmitted(true);
         form.reset();
 
-        notifications.show({
+        showNotification({
           title: 'Повідомлення надіслано!',
           message: 'Ми отримали ваше звернення і відповімо найближчим часом.',
           color: 'green',
-          autoClose: 5000,
         });
       }
     } catch (error) {
-      notifications.show({
+      showNotification({
         title: 'Помилка відправлення',
         message: error instanceof Error ? error.message : 'Спробуйте пізніше',
         color: 'red',
-        autoClose: 5000,
       });
     } finally {
       setIsSubmitting(false);
@@ -86,9 +84,9 @@ const Contact = () => {
   return (
     <>
       {/* Заголовок */}
-      <Container size="xl" py="lg">
+      <div className={styles.container}>
         <h1 className={styles.pageTitle}>ЗВОРОТНІЙ ЗВ'ЯЗОК</h1>
-      </Container>
+      </div>
 
       {/* Зелена полоска */}
       <div className={styles.greenDivider} />

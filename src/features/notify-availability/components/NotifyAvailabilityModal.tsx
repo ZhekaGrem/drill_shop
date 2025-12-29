@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Modal, SegmentedControl, TextInput, Stack, Text } from '@mantine/core';
 import { Button } from '@/shared/components/Button/Button';
 import { notifyAvailabilityApi } from '../api/notify-api';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 
 interface NotifyAvailabilityModalProps {
   opened: boolean;
@@ -54,7 +54,7 @@ export function NotifyAvailabilityModal({
     e.preventDefault();
 
     if (!contactValue.trim()) {
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: 'Заповніть поле контакту',
         color: 'red',
@@ -73,7 +73,7 @@ export function NotifyAvailabilityModal({
         variantName,
       });
 
-      notifications.show({
+      showNotification({
         title: 'Успішно!',
         message: response.message,
         color: 'green',
@@ -82,7 +82,7 @@ export function NotifyAvailabilityModal({
       setContactValue('');
       onClose();
     } catch (error) {
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: error instanceof Error ? error.message : 'Щось пішло не так',
         color: 'red',

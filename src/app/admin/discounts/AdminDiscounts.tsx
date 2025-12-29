@@ -27,10 +27,11 @@ import {
   Stack,
   Progress,
   Tooltip,
+  Box,
 } from '@mantine/core';
 
 import { useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import {
   IconPlus,
   IconSearch,
@@ -110,13 +111,13 @@ export default function AdminDiscounts() {
     if (confirm(`Ви впевнені, що хочете видалити знижку "${name}"?`)) {
       try {
         await deleteMutation.mutateAsync(id);
-        notifications.show({
+        showNotification({
           title: 'Успіх',
           message: `Знижку "${name}" видалено`,
           color: 'green',
         });
       } catch (error: any) {
-        notifications.show({
+        showNotification({
           title: 'Помилка',
           message: error.message || 'Не вдалося видалити знижку',
           color: 'red',
@@ -129,14 +130,14 @@ export default function AdminDiscounts() {
     try {
       if (editingDiscount) {
         await updateMutation.mutateAsync({ id: editingDiscount.id, data });
-        notifications.show({
+        showNotification({
           title: 'Успіх',
           message: 'Знижку оновлено',
           color: 'green',
         });
       } else {
         await createMutation.mutateAsync(data);
-        notifications.show({
+        showNotification({
           title: 'Успіх',
           message: 'Знижку створено',
           color: 'green',
@@ -146,7 +147,7 @@ export default function AdminDiscounts() {
       close();
       setEditingDiscount(null);
     } catch (error: any) {
-      notifications.show({
+      showNotification({
         title: 'Помилка',
         message: error.message || 'Не вдалося зберегти знижку',
         color: 'red',
@@ -201,7 +202,7 @@ export default function AdminDiscounts() {
   };
 
   return (
-    <div style={{ padding: '1.5rem' }}>
+    <Box p="xl">
       {/* Header */}
       <Group justify="space-between" mb="xl">
         <div>
@@ -422,12 +423,12 @@ export default function AdminDiscounts() {
         </Table>
 
         {discounts.length === 0 && !isLoading && (
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <Box p={32} style={{ textAlign: 'center' }}>
             <Text c="dimmed">Знижки не знайдені</Text>
             <Text c="dimmed" size="sm" mt="xs">
               Створіть першу знижку для початку роботи
             </Text>
-          </div>
+          </Box>
         )}
 
         {/* Simple Pagination */}
@@ -529,6 +530,6 @@ export default function AdminDiscounts() {
           <Text>Завантаження статистики...</Text>
         )}
       </Modal>
-    </div>
+    </Box>
   );
 }

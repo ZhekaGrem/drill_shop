@@ -248,6 +248,7 @@ p {
 
   /* Статусні кольори */
   --success: #56da64;
+  --success-green: #16a34a; /* Green для discount badges */
   --warning: #e6db1b;
   --info: #0088ff;
 
@@ -309,6 +310,9 @@ p {
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
 
+  --spacing-x: 40px;
+  --spacing-y: 24px;
+
   /* Transitions */
   --transition-fast: 0.15s ease;
   --transition-normal: 0.2s ease;
@@ -359,7 +363,7 @@ h1 {
 }
 
 h2 {
-  font-family: var(--font-heading);
+  font-family: var(--font-price);
   font-size: var(--text-5xl);
   font-weight: var(--fw-normal);
   line-height: 1.2;
@@ -368,7 +372,7 @@ h2 {
 }
 
 h3 {
-  font-family: var(--font-heading);
+  font-family: var(--font-price);
   font-size: var(--text-4xl);
   font-weight: var(--fw-normal);
   line-height: 1.2;
@@ -377,7 +381,7 @@ h3 {
 }
 
 h4 {
-  font-family: var(--font-heading);
+  font-family: var(--font-price);
   font-size: var(--text-3xl);
   font-weight: var(--fw-normal);
   line-height: 1.2;

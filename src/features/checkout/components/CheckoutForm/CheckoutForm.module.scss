@@ -9,12 +9,11 @@
 .emptyCart {
   padding: var(--spacing-3xl);
   border: var(--border-width) solid var(--border-color);
-  border-radius: 0;
   box-shadow: var(--shadow-md);
   text-align: center;
 
   &__title {
-    font-family: var(--font-heading);
+    font-family: var(--font-price);
     font-size: var(--text-3xl);
     font-weight: var(--fw-black);
     color: var(--text-primary);
@@ -23,7 +22,6 @@
   }
 
   &__text {
-    font-family: var(--font-body);
     font-size: var(--text-base);
     color: var(--text-secondary);
     margin: 0 0 var(--spacing-xl) 0;
@@ -52,7 +50,6 @@
 .formSection {
   padding: var(--spacing-xl);
   border-right: var(--border-width) solid var(--border-color);
-  border-radius: 0;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
@@ -87,7 +84,6 @@
 }
 
 .radioGroupLabel {
-  font-family: var(--font-condensed);
   font-size: var(--text-sm);
   font-weight: var(--fw-medium);
   color: var(--text-primary);
@@ -156,19 +152,17 @@
 .radioContent {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--spacing-xs);
   flex: 1;
 }
 
 .radioLabel {
-  font-family: var(--font-condensed);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
   color: var(--text-primary);
 }
 
 .radioDescription {
-  font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--text-secondary);
 }
@@ -213,7 +207,6 @@
 // ============ ORDER SUMMARY ============
 .orderSummary {
   padding: var(--spacing-xl);
-  border-radius: 0;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
@@ -236,7 +229,6 @@
 }
 
 .promoTitle {
-  font-family: var(--font-condensed);
   font-size: var(--text-lg);
   font-weight: var(--fw-bold);
   color: var(--text-primary);
@@ -260,14 +252,12 @@
 }
 
 .summaryLabel {
-  font-family: var(--font-condensed);
   font-size: var(--text-sm);
   font-weight: var(--fw-medium);
   color: var(--text-primary);
 }
 
 .summaryValue {
-  font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--text-secondary);
 }
@@ -286,14 +276,12 @@
 }
 
 .discountCode {
-  font-family: var(--font-condensed);
   font-size: var(--text-sm);
   font-weight: var(--fw-medium);
-  color: #16a34a;
+  color: var(--success-green);
 }
 
 .discountName {
-  font-family: var(--font-body);
   font-size: var(--text-xs);
   color: var(--text-secondary);
 }
@@ -302,7 +290,7 @@
   font-family: var(--font-price);
   font-size: var(--text-sm);
   font-weight: var(--fw-medium);
-  color: #16a34a;
+  color: var(--success-green);
   flex-shrink: 0;
 }
 
@@ -316,7 +304,7 @@
 }
 
 .totalLabel {
-  font-family: var(--font-heading);
+  font-family: var(--font-price);
   font-size: var(--text-2xl);
   font-weight: var(--fw-black);
   color: var(--text-primary);
@@ -335,7 +323,6 @@
   display: flex;
   gap: var(--spacing-sm);
   padding: var(--spacing-md);
-  border-radius: 0;
 
   svg {
     flex-shrink: 0;
@@ -343,7 +330,6 @@
 }
 
 .agreementText {
-  font-family: var(--font-body);
   font-size: var(--text-xs);
   line-height: 1.5;
   color: var(--text-primary);

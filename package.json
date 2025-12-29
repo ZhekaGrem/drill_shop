@@ -29,6 +29,8 @@
     "@tabler/icons-react": "^3.34.0",
     "@tanstack/react-query": "^5.81.5",
     "@tanstack/react-query-devtools": "^5.82.0",
+    "@twa-dev/sdk": "^8.0.2",
+    "@twa-dev/types": "^8.0.2",
     "axios": "^1.11.0",
     "axios-retry": "^4.5.0",
     "date-fns": "^4.1.0",

@@ -24,6 +24,13 @@ export const authEndpoints = {
   deleteSession: (sessionId: string) => `/auth/sessions/${sessionId}`,
 } as const;
 
+// ============== TELEGRAM AUTH ENDPOINTS ==============
+export const telegramEndpoints = {
+  login: '/telegram/auth/login',
+  profile: '/telegram/auth/profile',
+  updateProfile: '/telegram/auth/profile',
+} as const;
+
 // ============== USER PROFILE ENDPOINTS - ВИПРАВЛЕНО ==============
 export const userEndpoints = {
   // Profile management

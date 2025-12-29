@@ -40,12 +40,14 @@ export const AuthDrawer = ({ opened, onClose, onSuccess, defaultTab = 'login' }:
       onClose={onClose}
       position="right"
       size={isMobile ? '100%' : 'lg'}
-      title="Автентифікація"
       className={styles.drawer}
       closeButtonProps={{
         icon: <IconX />,
       }}
       styles={{
+        header:{
+          borderBottom:'2px solid #33603b'
+        },
         body: {
           height: '100%',
           display: 'flex',

@@ -188,9 +188,9 @@ export const ProductQuickViewModal = ({ product, opened, onClose }: ProductQuick
             </div>
             <ProductBadges product={product} selectedVariant={selectedVariant} />
 
-            <div className={styles.favoriteButtonWrapper}>
+            {/* <div className={styles.favoriteButtonWrapper}>
               <FavoriteButton product={product} />
-            </div>
+            </div> */}
           </div>
 
           {sortedImages.length > 1 && (

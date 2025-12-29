@@ -4,7 +4,7 @@ import { devtools } from 'zustand/middleware';
 import { apiClient } from '@/shared/api';
 import { userEndpoints } from '@/shared/api/endpoints';
 import { Product } from '@/shared/types';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { useAuthStore } from './auth';
 
 // localStorage ключ для гостей
@@ -102,7 +102,7 @@ export const useFavoritesStore = create<FavoritesState>()(
         } catch (error) {
           // Відкат у разі помилки
           set({ items: originalItems });
-          notifications.show({
+          showNotification({
             title: 'Помилка',
             message: 'Не вдалося оновити обране.',
             color: 'red',

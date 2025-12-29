@@ -57,7 +57,7 @@ export const CartDrawer = () => {
             </Text>
           </Box>
         )}
-        {hasItems && (
+        {/* {hasItems && (
           <Box p={isMobile ? '16px 20px' : 'md'}>
             <Group justify="space-between">
               <Text size="sm" c="dimmed">
@@ -68,7 +68,7 @@ export const CartDrawer = () => {
               </Button>
             </Group>
           </Box>
-        )}
+        )} */}
 
         {/* Content */}
         <ScrollArea

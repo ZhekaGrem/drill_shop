@@ -1,7 +1,7 @@
 // src/shared/hooks/useOptimisticMutation.ts
 import React from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { notifications } from '@mantine/notifications';
+import { showNotification } from '@/shared/utils/notifications';
 import { IconX, IconCheck } from '@tabler/icons-react';
 
 interface OptimisticMutationOptions<TData, TVariables> {
@@ -37,18 +37,15 @@ export const useOptimisticMutation = <TData = unknown, TVariables = unknown>({
       await onSuccess?.(data);
 
       if (showSuccessNotification && successMessage) {
-        notifications.show({
+        showNotification({
           message: successMessage,
-          color: 'green',
-          icon: <IconCheck size={16} />,
         });
       }
     },
     onError: (error: any) => {
-      notifications.show({
+      showNotification({
         message: error.message || errorMessage,
         color: 'red',
-        icon: <IconX size={16} />,
       });
 
       onError?.(error);
