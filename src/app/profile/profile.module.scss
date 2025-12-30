@@ -1,20 +1,18 @@
 // src/app/profile/profile.module.scss
 // Pixel art стиль для профілю "Щільний дріл"
 
-
-.conteiner{
-   padding: 0 var(--spacing-x);
-    @media (max-width: 968px) {
+.conteiner {
+  padding: 0 var(--spacing-x);
+  @media (max-width: 968px) {
     padding: 0;
-    
   }
 }
 
-.conteinerTitle{
+.conteinerTitle {
   padding: var(--spacing-y) var(--spacing-x);
   border-bottom: var(--border-width) solid var(--border-color);
   @media (max-width: 786px) {
-   padding: var(--spacing-y-m) var(--spacing-x);
+    padding: var(--spacing-y-m) var(--spacing-x);
   }
 }
 .grid {
@@ -36,11 +34,9 @@
     border-right: none;
     width: 100%;
     nav {
-    width: 100%;
+      width: 100%;
+    }
   }
-  }
-
-  
 }
 
 .navList {
@@ -84,8 +80,6 @@
   &:hover {
     background: var(--background-dark);
   }
-
-  
 
   &:active {
     transform: translate(1px, 1px);

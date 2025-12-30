@@ -45,37 +45,37 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
     return null;
   }
 
-  return (<>
-
-    <div className={`${styles.conteinerTitle}`}>
-      <h1 className={styles.pageTitle}> ОСОБИСТИЙ КАБІНЕТ</h1>
-    </div>
-
-    <div className={styles.conteiner}>
-
-      <div className={styles.grid}>
-        {/* Sidebar Navigation */}
-        <aside className={styles.sidebar}>
-          <nav>
-            <ul className={styles.navList}>
-              {navigation.map((item) => {
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={`${styles.navItem} ${item.active ? styles.navItem__active : ''}`}>
-                      <span>{item.label}</span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-        </aside>
-
-        {/* Content Area */}
-        <main className={styles.content}>{children}</main>
+  return (
+    <>
+      <div className={`${styles.conteinerTitle}`}>
+        <h1 className={styles.pageTitle}> ОСОБИСТИЙ КАБІНЕТ</h1>
       </div>
-    </div></>
+
+      <div className={styles.conteiner}>
+        <div className={styles.grid}>
+          {/* Sidebar Navigation */}
+          <aside className={styles.sidebar}>
+            <nav>
+              <ul className={styles.navList}>
+                {navigation.map((item) => {
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className={`${styles.navItem} ${item.active ? styles.navItem__active : ''}`}>
+                        <span>{item.label}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          </aside>
+
+          {/* Content Area */}
+          <main className={styles.content}>{children}</main>
+        </div>
+      </div>
+    </>
   );
 }
