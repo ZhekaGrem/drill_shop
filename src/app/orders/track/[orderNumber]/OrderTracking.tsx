@@ -247,10 +247,7 @@ const OrderTrackingPage: React.FC = () => {
               <Group justify="space-between" align="flex-start" wrap="wrap">
                 <Stack gap="xs" align="flex-start">
                   <Text className={styles.label}>Статус замовлення:</Text>
-                  <Badge
-                    color={getStatusColor(order.status)}
-                    size="lg"
-                  >
+                  <Badge color={getStatusColor(order.status)} size="lg">
                     {orderStatusUa[order.status]}
                   </Badge>
                 </Stack>
@@ -262,17 +259,16 @@ const OrderTrackingPage: React.FC = () => {
                 </Stack>
 
                 <Stack gap="xs" align="flex-start">
-                  <Text className={styles.label}>
-                    Створено:{' '}
+                  <Text className={styles.label}>Створено: </Text>
+                  <Text>
+                    {new Date(order.createdAt).toLocaleDateString('uk-UA', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
                   </Text>
-                  <Text >{new Date(order.createdAt).toLocaleDateString('uk-UA', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}</Text>
-
                 </Stack>
               </Group>
             </Paper>
@@ -300,8 +296,8 @@ const OrderTrackingPage: React.FC = () => {
                     <Text size="sm">{order.shippingAddress.city}</Text>
                     {order.shippingAddress.city?.trim().toLowerCase() !==
                       order.shippingAddress.address1?.trim().toLowerCase() && (
-                        <Text size="sm">{order.shippingAddress.address1}</Text>
-                      )}
+                      <Text size="sm">{order.shippingAddress.address1}</Text>
+                    )}
                   </Stack>
                 </Group>
                 {order.notes && (
@@ -331,7 +327,7 @@ const OrderTrackingPage: React.FC = () => {
                         <Text size="sm" c="dimmed">
                           Ціна: {formatPrice(item.unitPrice)}
                         </Text>
-                        <Text  fw={500}>Сума: {formatPrice(item.totalPrice)}</Text>
+                        <Text fw={500}>Сума: {formatPrice(item.totalPrice)}</Text>
                       </Group>
                     </Stack>
                     <CloudinaryImage
@@ -403,8 +399,6 @@ const OrderTrackingPage: React.FC = () => {
                 </Timeline.Item>
               </Timeline>
             </Stack>
-
-
 
             {/* <Paper className={styles.totalsCard}>
               <Stack gap="md">

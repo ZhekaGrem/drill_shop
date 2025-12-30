@@ -11,7 +11,7 @@ export const content = {
     account: 'АКАУНТ',
     cart: 'КОШИК',
     profile: 'ПРОФІЛЬ',
-    favorites: 'ОБРАНІ',
+    // favorites: 'ОБРАНІ',
     orders: 'ЗАМОВЛЕННЯ',
     adminPanel: 'АДМІН ПАНЕЛЬ',
     logout: 'ВИЙТИ',
