@@ -109,7 +109,7 @@ const ResendVerification = () => {
   return (
     <div className={styles.container}>
       <Container size="xs" py="xl">
-        <Paper radius="md" p="xl" withBorder className={styles.paper}>
+        <Paper radius="md" p="xl"  className={styles.paper}>
           <Stack gap="lg">
             <div>
               <Title order={2} ta="center">

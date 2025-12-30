@@ -235,7 +235,7 @@ const OrderTrackingPage: React.FC = () => {
   const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <Container size="lg" py={80}>
+    <div className={styles.conteiner}>
       <Stack gap="xl">
         <Title order={1} className={styles.pageTitle}>
           ЗАМОВЛЕННЯ {order.orderNumber}
@@ -244,37 +244,35 @@ const OrderTrackingPage: React.FC = () => {
         <Paper className={styles.orderCard}>
           <Stack gap="lg">
             <Paper className={styles.summaryCard}>
-              <Group justify="space-between">
-                <Stack gap="xs">
-                  <Text className={styles.label}>Обробка замовлення</Text>
+              <Group justify="space-between" align="flex-start" wrap="wrap">
+                <Stack gap="xs" align="flex-start">
+                  <Text className={styles.label}>Статус замовлення:</Text>
                   <Badge
                     color={getStatusColor(order.status)}
                     size="lg"
-                    leftSection={getStatusIcon(order.status)}>
+                  >
                     {orderStatusUa[order.status]}
                   </Badge>
                 </Stack>
-                <Stack gap="xs">
-                  <Text className={styles.label}>Статус оплати</Text>
+                <Stack gap="xs" align="flex-start">
+                  <Text className={styles.label}>Статус оплати:</Text>
                   <Badge color={getPaymentStatusColor(order.paymentStatus)} size="lg">
                     {paymentStatusUa[order.paymentStatus]}
                   </Badge>
                 </Stack>
 
-                <Stack gap="xs">
+                <Stack gap="xs" align="flex-start">
                   <Text className={styles.label}>
                     Створено:{' '}
-                    {new Date(order.createdAt).toLocaleDateString('uk-UA', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
                   </Text>
-                  <Text className={styles.label}>
-                    Очікувана доставка: {new Date(order.estimatedDelivery).toLocaleDateString('uk-UA')}
-                  </Text>
+                  <Text >{new Date(order.createdAt).toLocaleDateString('uk-UA', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}</Text>
+
                 </Stack>
               </Group>
             </Paper>
@@ -284,8 +282,8 @@ const OrderTrackingPage: React.FC = () => {
                 <Title order={3} className={styles.sectionTitle}>
                   ІНФОРМАЦІЯ ПРО ЗАМОВЛЕННЯ
                 </Title>
-                <Group>
-                  <Stack gap="xs" flex={1}>
+                <Group align="flex-start" wrap="wrap">
+                  <Stack gap="xs" flex={1} align="flex-start">
                     <Text size="sm" c="dimmed">
                       Одержувач
                     </Text>
@@ -294,7 +292,7 @@ const OrderTrackingPage: React.FC = () => {
                     {order.customer.email && <Text size="sm">{order.customer.email}</Text>}
                   </Stack>
 
-                  <Stack gap="xs" flex={1}>
+                  <Stack gap="xs" flex={1} align="flex-start">
                     <Text size="sm" c="dimmed">
                       Адреса доставки
                     </Text>
@@ -302,10 +300,18 @@ const OrderTrackingPage: React.FC = () => {
                     <Text size="sm">{order.shippingAddress.city}</Text>
                     {order.shippingAddress.city?.trim().toLowerCase() !==
                       order.shippingAddress.address1?.trim().toLowerCase() && (
-                      <Text size="sm">{order.shippingAddress.address1}</Text>
-                    )}
+                        <Text size="sm">{order.shippingAddress.address1}</Text>
+                      )}
                   </Stack>
                 </Group>
+                {order.notes && (
+                  <Stack gap="xs">
+                    <Text size="sm" c="dimmed">
+                      КОМЕНТАР ДО ЗАМОВЛЕННЯ
+                    </Text>
+                    <Text>{order.notes}</Text>
+                  </Stack>
+                )}
               </Stack>
             </Paper>
 
@@ -316,16 +322,16 @@ const OrderTrackingPage: React.FC = () => {
                 </Title>
                 {order.items.map((item) => (
                   <Group key={item.id} className={styles.card}>
-                    <Stack gap="xs" flex={1}>
+                    <Stack gap="xs" flex={1} className={styles.card__info}>
                       <Text fw={500}>{item.productName}</Text>
-                      <Group gap="md">
+                      <Group gap="md" justify="space-between">
                         <Text size="sm" c="dimmed">
                           Кількість: {item.quantity}
                         </Text>
                         <Text size="sm" c="dimmed">
                           Ціна: {formatPrice(item.unitPrice)}
                         </Text>
-                        <Text fw={500}>Сума: {formatPrice(item.totalPrice)}</Text>
+                        <Text  fw={500}>Сума: {formatPrice(item.totalPrice)}</Text>
                       </Group>
                     </Stack>
                     <CloudinaryImage
@@ -341,16 +347,16 @@ const OrderTrackingPage: React.FC = () => {
             </Paper>
 
             <Paper className={styles.summaryCard}>
-              <Group justify="space-between">
+              <Group justify="end">
                 <Stack gap="xs">
-                  <Text className={styles.label}>Кількість товарів</Text>
+                  <Text className={styles.label}>Всьгого товарів</Text>
                   <Text fw={500} size="lg">
                     {totalItems} шт.
                   </Text>
                 </Stack>
                 <Stack gap="xs">
                   <Text className={styles.label}>Загальна сума</Text>
-                  <Text fw={700} size="xl" className={styles.price}>
+                  <Text fw={500} size="lg" className={styles.price}>
                     {formatPrice(order.totals.totalAmount)}
                   </Text>
                 </Stack>
@@ -398,16 +404,9 @@ const OrderTrackingPage: React.FC = () => {
               </Timeline>
             </Stack>
 
-            {order.notes && (
-              <Stack gap="xs">
-                <Title order={3} className={styles.sectionTitle}>
-                  КОМЕНТАР ДО ЗАМОВЛЕННЯ
-                </Title>
-                <Text>{order.notes}</Text>
-              </Stack>
-            )}
 
-            <Paper className={styles.totalsCard}>
+
+            {/* <Paper className={styles.totalsCard}>
               <Stack gap="md">
                 <Title order={3} className={styles.sectionTitle}>
                   ДЕТАЛІ ОПЛАТИ
@@ -434,11 +433,11 @@ const OrderTrackingPage: React.FC = () => {
                   </Text>
                 </Group>
               </Stack>
-            </Paper>
+            </Paper> */}
           </Stack>
         </Paper>
       </Stack>
-    </Container>
+    </div>
   );
 };
 

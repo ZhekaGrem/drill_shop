@@ -1,3 +1,11 @@
+.conteiner {
+  padding: var(--spacing-y) var(--spacing-x);
+
+  @media (max-width: 768px) {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+}
+
 .pageTitle {
   font-weight: var(--fw-bold);
   color: var(--text-green);
@@ -34,12 +42,12 @@
 
 .sectionTitle {
   font-weight: var(--fw-bold);
-  color: var(--text-tertiary);
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.02em;
   line-height: 1.2;
   font-size: 24px;
-  border-top: 2px solid var(--border-color);
+  border-top: 2px dotted var(--border-color);
   padding-top: var(--spacing-lg);
   @media (max-width: 768px) {
     font-size: 20px;
@@ -68,4 +76,11 @@
 .card {
   gap: 0;
   border: 2px solid var(--border-color);
+  &__info{
+    padding: 20px;
+    @media (max-width: 768px) {
+     padding: 10px;
+    }
+  }
+  
 }

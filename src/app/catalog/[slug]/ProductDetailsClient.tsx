@@ -596,11 +596,11 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   <div
                     style={{
                       marginTop: '16px',
-                      marginBottom:'16px'
+                      marginBottom: '16px',
                     }}>
                     <div style={{ display: 'grid', gap: '8px' }}>
                       {Object.keys(selectedVariant.options).length > 0 && (
-                        <div >
+                        <div>
                           <strong>Характеристики:</strong>
                           <div
                             style={{
