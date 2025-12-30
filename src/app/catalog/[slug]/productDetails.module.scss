@@ -2,7 +2,6 @@
 // Pixel art product page matching Figma mockup
 
 .productPage {
-  padding: var(--spacing-lg) 0;
   min-height: 100vh;
   background: var(--background);
 
@@ -11,9 +10,10 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-y) var(--spacing-x);
     font-size: var(--text-sm);
     font-weight: var(--fw-medium);
+    border-bottom: var(--border-width) solid var(--border-color);
 
     &__link {
       color: var(--text-primary);
@@ -40,9 +40,11 @@
   .productDetails {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-2xl);
     margin-bottom: var(--spacing-3xl);
 
+    &__container{
+      padding: var(--spacing-y) var(--spacing-x);
+    }
     &__title {
       font-family: var(--font-price);
       font-size: var(--text-4xl);
@@ -221,6 +223,7 @@
   }
 
   .productDetails {
+    padding-left:  var(--spacing-x);
     &__availability {
       display: inline-block;
       font-size: var(--text-sm);
@@ -298,10 +301,10 @@
     }
 
     &__thumbnail {
-      width: 80px;
-      height: 80px;
-      min-width: 80px;
-      min-height: 80px;
+      width: 140px;
+      height: 140px;
+      min-width: 140px;
+      min-height: 140px;
       flex-shrink: 0;
       padding: 0;
       border: none;
@@ -328,15 +331,12 @@
 
     &__mainImageWrapper {
       position: relative;
-      width: 100%;
-      height: auto;
       overflow: hidden;
     }
 
     &__mainImage {
       object-fit: contain;
       width: 100%;
-      height: auto;
     }
 
     &__arrow {
@@ -527,8 +527,7 @@
   // ============ DESCRIPTION ============
   .productDescription {
     border-top: var(--border-width) solid var(--border-color);
-    border-bottom: var(--border-width) solid var(--border-color);
-
+padding: var(--spacing-y) var(--spacing-x);
     &__title {
       font-size: var(--text-3xl);
       font-weight: var(--fw-black);
@@ -569,23 +568,25 @@
 
   // ============ RELATED PRODUCTS ============
   .relatedProducts {
-    padding: var(--spacing-3xl) 0;
-    margin-bottom: 2px;
-
+    border-top: var(--border-width) solid var(--border-color);
+padding-bottom: var(--spacing-x);
     &__title {
+      padding: var(--spacing-y) var(--spacing-x);
       padding-top: 20px;
       font-size: var(--text-3xl);
       font-weight: var(--fw-black);
       color: var(--text-primary);
-      margin: 0 0 var(--spacing-xl) 0;
       text-transform: uppercase;
+      border-bottom: var(--border-width) solid var(--border-color);
     }
 
     &__grid {
       display: grid;
+      
       grid-template-columns: repeat(3, 370px);
       gap: 0;
       justify-content: center;
+      border-bottom: var(--border-width) solid var(--border-color);
       @media (max-width: 1200px) {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       }
@@ -691,7 +692,6 @@
 
       &__mainImage {
         object-fit: contain !important;
-        width: 100% !important;
         height: auto !important;
       }
 
@@ -787,6 +787,7 @@
     // Кнопка size guide
     .actionButtonsWrapper {
       gap: var(--spacing-sm);
+      padding-bottom:var(--spacing-x); 
       flex-wrap: wrap;
     }
 
@@ -811,11 +812,11 @@
     }
 
     // Опис після productDetails
-    .productDescription {
-      padding: var(--spacing-md);
-    }
 
     .productDescription__title {
+      border-top: var(--border-width) solid var(--border-color);
+;
+
       font-size: var(--text-xl);
       margin-bottom: var(--spacing-md);
     }

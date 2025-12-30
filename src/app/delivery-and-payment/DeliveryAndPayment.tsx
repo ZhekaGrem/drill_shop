@@ -13,7 +13,7 @@ const DeliveryAndPayment = () => {
 
       <Box className={styles.contentGrid}>
         <Box className={styles.textContent}>
-           <div className={styles.container}>
+          <div className={styles.container}>
             <Title className={styles.sectionTitle} mb="xl">
               ДОСТАВКА
             </Title>

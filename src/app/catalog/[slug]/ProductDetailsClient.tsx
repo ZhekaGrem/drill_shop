@@ -327,7 +327,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
 
   return (
     <div className={styles.productPage}>
-      <Container size={1200}>
+      <div >
         {/* Breadcrumbs */}
         <nav className={styles.breadcrumbs}>
           <Link href="/" className={styles.breadcrumbs__link}>
@@ -371,8 +371,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                         <CloudinaryImage
                           src={getImageUrl(image.url || image.publicId)}
                           alt={image.altText || product.name}
-                          width={80}
-                          height={80}
+                          width={140}
+                          height={140}
                         />
                       </button>
                     ))}
@@ -402,8 +402,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     )}
                     alt={product.name}
                     className={styles.productGallery__mainImage}
-                    width={600}
-                    height={600}
+                    width={400}
+                    height={400}
                   />
 
                   {/* Navigation arrows - показуємо тільки якщо є більше 1 зображення */}
@@ -433,14 +433,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                       </button>
                     </>
                   )}
-                </div>
-                <ProductBadges product={product} selectedVariant={selectedVariant} />
 
-                <div className={styles.favoriteButtonWrapper}>
-                  <FavoriteButton product={product} />
-                </div>
-
-                {/* Dots для навігації по зображеннях */}
+                  {/* Dots для навігації по зображеннях */}
                 {sortedImages.length > 1 && (
                   <div className={styles.productGallery__dots}>
                     {sortedImages.map((_, index) => (
@@ -455,12 +449,21 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     ))}
                   </div>
                 )}
+                </div>
+                <ProductBadges product={product} selectedVariant={selectedVariant} />
+
+                {/* <div className={styles.favoriteButtonWrapper}>
+                  <FavoriteButton product={product} />
+                </div> */}
+
+                
               </div>
             </div>
           </div>
 
           {/* Product Info */}
           <div className={styles.productDetails__info}>
+            <div className={styles.productDetails__container}>
             <h1 className={styles.productDetails__title}>{product.name}</h1>
 
             <div className={styles.productDetails__price}>
@@ -750,11 +753,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                 </div>
               )}
             </div>
-          </div>
-        </div>
-
-        {/* Description */}
-        {product.description && (
+            </div>
+             {product.description && (
           <div className={styles.productDescription}>
             <h2 className={styles.productDescription__title}>Опис </h2>
             <div
@@ -763,6 +763,12 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
             />
           </div>
         )}
+          </div>
+          
+        </div>
+
+        {/* Description */}
+       
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
@@ -796,7 +802,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
           productSlug={product.slug}
           variantName={selectedVariant?.name}
         />
-      </Container>
+      </div>
     </div>
   );
 }

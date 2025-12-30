@@ -151,7 +151,7 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
             {/* Повідомлення про кінець списку */}
             {!hasNextPage && products.length > 0 && (
               <Center py="xl">
-                <Text c="dimmed" size="sm">
+                <Text c="red" size="md">
                   Всі товари завантажено ({totalCount})
                 </Text>
               </Center>
@@ -162,7 +162,7 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
         {/* Повідомлення якщо товарів немає */}
         {!isLoading && !error && products.length === 0 && (
           <Center py="xl">
-            <Text c="dimmed">Товари не знайдено</Text>
+            <Text c="red" size="md">Товари не знайдено</Text>
           </Center>
         )}
       </Container>

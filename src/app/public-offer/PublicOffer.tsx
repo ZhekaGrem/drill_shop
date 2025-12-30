@@ -1,6 +1,6 @@
 // src/app/public-offer/PublicOffer.tsx
 
-import {  Box } from '@mantine/core';
+import { Box } from '@mantine/core';
 import styles from './publicOffer.module.scss';
 import { siteConfig } from '@/shared/config/site';
 
@@ -10,7 +10,6 @@ const PublicOffer = () => {
       <div>
         <div className={styles.header}>
           <h1 className={styles.title}>Договір публічної оферти</h1>
-          
         </div>
 
         <div className={styles.content}>

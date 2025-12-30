@@ -27,12 +27,9 @@ export const EmailVerificationBanner = () => {
           root: styles.alert,
         }}
         withCloseButton
-        onClose={() => setIsClosed(true)}
-        
-      >
+        onClose={() => setIsClosed(true)}>
         <p className={styles.alert__description}>
-Закінчить авторизацію.
-Перевірте пошту та натисніть на посилання для завершення реєстрації.
+          Закінчить авторизацію. Перевірте пошту та натисніть на посилання для завершення реєстрації.
         </p>
       </Alert>
     </div>
