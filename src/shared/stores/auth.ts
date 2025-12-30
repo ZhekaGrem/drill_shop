@@ -254,17 +254,6 @@ export const useAuthStore = create<AuthState>()(
                 console.warn('⚠️ Profile load failed, will retry in background');
               }
             }
-            if (profile && !profile.isVerified) {
-              console.warn('⚠️ [LOGIN] User not verified, logging out...');
-              await supabase.auth.signOut();
-              set({
-                supabaseUser: null,
-                session: null,
-                userProfile: null,
-                isAuthenticated: false,
-              });
-              throw new Error('Підтвердіть email перед входом. Перевірте пошту.');
-            }
 
             try {
               const [favoritesRes] = await Promise.allSettled([apiClient.get('/profile/favorites')]);
@@ -304,6 +293,9 @@ export const useAuthStore = create<AuthState>()(
           if (!response.data.success) {
             throw new Error(response.data.message || 'Помилка реєстрації');
           }
+
+          // ✅ Автологін після успішної реєстрації
+          await get().login(data.email, data.password);
         } catch (error: any) {
           console.error('❌ Registration error:', error);
 

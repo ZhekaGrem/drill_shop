@@ -7,13 +7,13 @@ import styles from './deliveryPayment.module.scss';
 const DeliveryAndPayment = () => {
   return (
     <>
-      <Container size="xl" py="lg">
+      <div className={styles.container}>
         <Title className={styles.pageTitle}>ДОСТАВКА ТА ОПЛАТА</Title>
-      </Container>
+      </div>
 
       <Box className={styles.contentGrid}>
         <Box className={styles.textContent}>
-          <Container size="lg" py={80}>
+           <div className={styles.container}>
             <Title className={styles.sectionTitle} mb="xl">
               ДОСТАВКА
             </Title>
@@ -43,7 +43,7 @@ const DeliveryAndPayment = () => {
               <strong>Накладений платіж</strong> - готівковий або безготівковий розрахунок при отриманні
               накладеного платежу на Новій Пошті (комісія за накладений платіж не стягується).
             </Text>
-          </Container>
+          </div>
         </Box>
         <Box className={styles.imageContent}>
           <Image src="/assets/img/about/about.webp" alt="Delivery" fill className={styles.sideImage} />

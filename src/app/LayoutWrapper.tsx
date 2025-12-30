@@ -4,6 +4,7 @@
 import { usePathname } from 'next/navigation';
 import { Header } from '@/widgets/Header/Header';
 import { Footer } from '@/widgets/Footer/Footer';
+import { EmailVerificationBanner } from '@/shared/components/EmailVerificationBanner';
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -19,6 +20,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
+      <EmailVerificationBanner />
       <main>{children}</main>
       <Footer />
     </>

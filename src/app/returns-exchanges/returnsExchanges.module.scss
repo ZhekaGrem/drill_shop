@@ -2,11 +2,14 @@
 .page {
   min-height: 100vh;
   background: var(--background);
-  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.container{
+  padding: var(--spacing-x) var(--spacing-y);
 }
 
 .header {
-  text-align: center;
+  text-align: start;
   margin-bottom: var(--spacing-3xl);
 }
 
@@ -24,19 +27,16 @@
 }
 
 .subtitle {
+ 
   color: var(--text-secondary);
   font-size: var(--text-base);
-  max-width: 600px;
   margin: 0 auto;
 }
 
 .content {
   background: var(--background);
-  padding: var(--spacing-2xl);
 
-  @media (max-width: 768px) {
-    padding: var(--spacing-lg);
-  }
+ 
 }
 
 .section {

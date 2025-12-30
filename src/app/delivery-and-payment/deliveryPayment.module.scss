@@ -1,3 +1,7 @@
+.container{
+  padding: var(--spacing-y) var(--spacing-x);
+}
+
 .pageTitle {
   font-family: var(--font-price);
   font-weight: var(--fw-bold);

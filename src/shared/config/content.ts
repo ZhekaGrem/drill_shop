@@ -27,7 +27,7 @@ export const content = {
     accountMenu: {
       label: 'Акаунт',
       profile: 'Профіль',
-      favorites: 'Обрані',
+      // favorites: 'Обрані',
       orders: 'Замовлення',
       management: 'Управління',
       adminPanel: 'Адмін панель',

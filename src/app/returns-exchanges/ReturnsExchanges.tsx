@@ -7,7 +7,7 @@ import { siteConfig } from '@/shared/config/site';
 const ReturnsExchanges = () => {
   return (
     <div className={styles.page}>
-      <Container size={900}>
+      <div className={styles.container}>
         <div className={styles.header}>
           <h1 className={styles.title}>Повернення та обмін товару</h1>
           <p className={styles.subtitle}>
@@ -333,7 +333,7 @@ const ReturnsExchanges = () => {
             недоліків товару.
           </div>
         </div>
-      </Container>
+      </div>
     </div>
   );
 };

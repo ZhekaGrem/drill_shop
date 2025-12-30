@@ -1,0 +1,23 @@
+.container {
+  position: fixed;
+  top: 80px;
+  left: var(--spacing-md);
+  z-index: 1000;
+  max-width: 500px;
+  background: var(--background);
+
+  @media (max-width: 768px) {
+    top: 60px;
+    left: var(--spacing-sm);
+    right: var(--spacing-sm);
+    max-width: none;
+  }
+}
+
+.alert {
+  background: var(--background);
+
+  &__description {
+    color: var(--text-primary);
+  }
+}

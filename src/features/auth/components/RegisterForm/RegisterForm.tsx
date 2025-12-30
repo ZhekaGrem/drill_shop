@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { useAuthStore } from '@/shared/stores/auth';
 import { showNotification } from '@/shared/utils/notifications';
 import { TextInput, Group, Stack, Alert, PasswordInput, ScrollArea } from '@mantine/core';
-import { IconAlertCircle, IconMail } from '@tabler/icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { useRouter } from 'next/navigation';
 import { PhoneInput } from '@/shared/components/Input';
@@ -64,13 +64,15 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
 
       await registerUser(cleanData);
 
-      // ВАЖЛИВЕ ПОВІДОМЛЕННЯ про підтвердження email
+      // ✅ Успішна реєстрація та автологін
       showNotification({
-        title: 'Підтвердіть email!',
-        message: 'Перевірте пошту та натисніть на посилання для завершення реєстрації.',
+        title: 'Вітаємо!',
+        message: 'Ви успішно зареєструвались та увійшли в систему.',
       });
-      setTimeout(() => router.push('/catalog'), 1500);
-      // Перемикаємо на login tab
+
+      // Закриваємо форму та перенаправляємо
+      if (onSuccess) onSuccess();
+      setTimeout(() => router.push('/catalog'), 1000);
     } catch (error: any) {
       console.error('❌ Registration form error:', error);
 

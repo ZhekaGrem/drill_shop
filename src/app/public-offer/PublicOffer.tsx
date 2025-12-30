@@ -1,18 +1,16 @@
 // src/app/public-offer/PublicOffer.tsx
 
-import { Container, Box } from '@mantine/core';
+import {  Box } from '@mantine/core';
 import styles from './publicOffer.module.scss';
 import { siteConfig } from '@/shared/config/site';
 
 const PublicOffer = () => {
   return (
     <div className={styles.page}>
-      <Container size={900}>
+      <div>
         <div className={styles.header}>
           <h1 className={styles.title}>Договір публічної оферти</h1>
-          <p className={styles.subtitle}>
-            Про надання послуг з продажу товарів через інтернет-магазин {siteConfig.name}
-          </p>
+          
         </div>
 
         <div className={styles.content}>
@@ -547,7 +545,7 @@ const PublicOffer = () => {
             </Box>
           </div>
         </div>
-      </Container>
+      </div>
     </div>
   );
 };
