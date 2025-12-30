@@ -327,7 +327,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
 
   return (
     <div className={styles.productPage}>
-      <div >
+      <div>
         {/* Breadcrumbs */}
         <nav className={styles.breadcrumbs}>
           <Link href="/" className={styles.breadcrumbs__link}>
@@ -364,9 +364,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     {sortedImages.map((image, index) => (
                       <button
                         key={image.id}
-                        className={`${styles.productGallery__thumbnail} ${
-                          index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
-                        }`}
+                        className={`${styles.productGallery__thumbnail} ${index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
+                          }`}
                         onClick={() => setSelectedImageIndex(index)}>
                         <CloudinaryImage
                           src={getImageUrl(image.url || image.publicId)}
@@ -396,9 +395,9 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   <CloudinaryImage
                     src={getImageUrl(
                       sortedImages[selectedImageIndex]?.url ||
-                        sortedImages[selectedImageIndex]?.publicId ||
-                        primaryImage?.url ||
-                        primaryImage?.publicId
+                      sortedImages[selectedImageIndex]?.publicId ||
+                      primaryImage?.url ||
+                      primaryImage?.publicId
                     )}
                     alt={product.name}
                     className={styles.productGallery__mainImage}
@@ -435,28 +434,25 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                   )}
 
                   {/* Dots для навігації по зображеннях */}
-                {sortedImages.length > 1 && (
-                  <div className={styles.productGallery__dots}>
-                    {sortedImages.map((_, index) => (
-                      <button
-                        key={index}
-                        className={`${styles.productGallery__dot} ${
-                          index === selectedImageIndex ? styles.productGallery__dotActive : ''
-                        }`}
-                        onClick={() => setSelectedImageIndex(index)}
-                        aria-label={`Зображення ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-                )}
+                  {sortedImages.length > 1 && (
+                    <div className={styles.productGallery__dots}>
+                      {sortedImages.map((_, index) => (
+                        <button
+                          key={index}
+                          className={`${styles.productGallery__dot} ${index === selectedImageIndex ? styles.productGallery__dotActive : ''
+                            }`}
+                          onClick={() => setSelectedImageIndex(index)}
+                          aria-label={`Зображення ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <ProductBadges product={product} selectedVariant={selectedVariant} />
 
                 {/* <div className={styles.favoriteButtonWrapper}>
                   <FavoriteButton product={product} />
                 </div> */}
-
-                
               </div>
             </div>
           </div>
@@ -464,319 +460,320 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
           {/* Product Info */}
           <div className={styles.productDetails__info}>
             <div className={styles.productDetails__container}>
-            <h1 className={styles.productDetails__title}>{product.name}</h1>
+              <h1 className={styles.productDetails__title}>{product.name}</h1>
 
-            <div className={styles.productDetails__price}>
-              {selectedVariant ? (
-                // Показуємо ціну обраного варіанту з акцією (якщо є)
-                (() => {
-                  const variantPriceData = calculateVariantPromoPrice(selectedVariant);
-                  if (variantPriceData.hasDiscount) {
+              <div className={styles.productDetails__price}>
+                {selectedVariant ? (
+                  // Показуємо ціну обраного варіанту з акцією (якщо є)
+                  (() => {
+                    const variantPriceData = calculateVariantPromoPrice(selectedVariant);
+                    if (variantPriceData.hasDiscount) {
+                      return (
+                        <>
+                          <span
+                            className={styles.productDetails__originalPrice}
+                            style={{ textDecoration: 'line-through', color: '#999', marginRight: '8px' }}>
+                            {formatPrice(variantPriceData.originalPrice)}
+                          </span>
+                          <span
+                            className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
+                            {formatPrice(variantPriceData.finalPrice)}
+                          </span>
+                        </>
+                      );
+                    }
                     return (
-                      <>
-                        <span
-                          className={styles.productDetails__originalPrice}
-                          style={{ textDecoration: 'line-through', color: '#999', marginRight: '8px' }}>
-                          {formatPrice(variantPriceData.originalPrice)}
-                        </span>
-                        <span
-                          className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
-                          {formatPrice(variantPriceData.finalPrice)}
-                        </span>
-                      </>
+                      <span className={styles.productDetails__currentPrice}>
+                        {formatPrice(selectedVariant.price)}
+                      </span>
                     );
-                  }
-                  return (
-                    <span className={styles.productDetails__currentPrice}>
-                      {formatPrice(selectedVariant.price)}
+                  })()
+                ) : basePromoData?.hasDiscount ? (
+                  // Показуємо знижену ціну (як в ProductCard)
+                  <>
+                    <span
+                      className={styles.productDetails__originalPrice}
+                      style={{ textDecoration: 'line-through', color: '#999', marginRight: '8px' }}>
+                      {formatPrice(basePromoData.originalPrice)}
                     </span>
-                  );
-                })()
-              ) : basePromoData?.hasDiscount ? (
-                // Показуємо знижену ціну (як в ProductCard)
-                <>
-                  <span
-                    className={styles.productDetails__originalPrice}
-                    style={{ textDecoration: 'line-through', color: '#999', marginRight: '8px' }}>
-                    {formatPrice(basePromoData.originalPrice)}
-                  </span>
-                  <span
-                    className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
-                    {formatPrice(basePromoData.finalPrice)}
-                  </span>
-                </>
-              ) : (
-                // Показуємо звичайну ціну
-                <span className={styles.productDetails__currentPrice}>{formatPrice(product?.price)}</span>
-              )}
-              {getCurrentWeight() && (
-                <span className={styles.productDetails__pricePerKg}> / {getCurrentWeight()}</span>
-              )}{' '}
-              {product.unitDisplay}
-            </div>
-
-            {/* Size Guide Button */}
-
-            {/* Variants Selector */}
-            {hasVariants && sortedVariants.length > 0 && (
-              <div className={styles.productDetails__variants}>
-                {/* ✅ Якщо варіанти мають size/color - показуємо чекбокси */}
-                {showVariantCheckboxes ? (
-                  <div>
-                    <label className={styles.variantLabel}>Варіант:</label>
-                    <div className={styles.variantCheckboxes}>
-                      {sortedVariants.map((variant: any) => {
-                        const stock = getVariantStock(variant);
-                        const isOutOfStock = stock <= 0;
-                        const displayValue = getVariantDisplayValue(variant);
-
-                        return (
-                          <label
-                            key={variant.id}
-                            className={`${styles.variantCheckbox} ${
-                              isOutOfStock ? styles.variantCheckbox_disabled : ''
-                            }`}>
-                            <input
-                              type="checkbox"
-                              checked={selectedVariant?.id === variant.id}
-                              disabled={isOutOfStock}
-                              onChange={(e) => {
-                                e.stopPropagation();
-                                if (!isOutOfStock) {
-                                  setSelectedVariant(variant);
-                                  setIsMainProduct(false);
-                                  setQuantity(1);
-                                }
-                              }}
-                            />
-                            <span className={styles.variantCheckboxText}>{displayValue}</span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </div>
+                    <span
+                      className={`${styles.productDetails__currentPrice} ${styles.productDetails__currentPrice_discount}`}>
+                      {formatPrice(basePromoData.finalPrice)}
+                    </span>
+                  </>
                 ) : (
-                  // ✅ Інакше - показуємо Select
-                  <Select
-                    className={styles.productDetails__variants__select}
-                    radius="xs"
-                    label="Варіант:"
-                    size="lg"
-                    value={selectedVariant?.id || (!product.hasVariants ? 'main' : undefined)}
-                    onChange={(value) => {
-                      if (value === 'main') {
-                        setSelectedVariant(null);
-                        setIsMainProduct(true);
-                      } else {
-                        const variant = sortedVariants.find((v) => v.id === value);
-                        setSelectedVariant(variant);
-                        setIsMainProduct(false);
-                      }
-                      setQuantity(1);
-                    }}
-                    data={[
-                      // Показуємо головний товар тільки якщо hasVariants = false
-                      ...(!product.hasVariants
-                        ? [
+                  // Показуємо звичайну ціну
+                  <span className={styles.productDetails__currentPrice}>{formatPrice(product?.price)}</span>
+                )}
+                {getCurrentWeight() && (
+                  <span className={styles.productDetails__pricePerKg}> / {getCurrentWeight()}</span>
+                )}{' '}
+                {product.unitDisplay}
+              </div>
+
+              {/* Size Guide Button */}
+
+              {/* Variants Selector */}
+              {hasVariants && sortedVariants.length > 0 && (
+                <div className={styles.productDetails__variants}>
+                  {/* ✅ Якщо варіанти мають size/color - показуємо чекбокси */}
+                  {showVariantCheckboxes ? (
+                    <div>
+                      <label className={styles.variantLabel}>Варіант:</label>
+                      <div className={styles.variantCheckboxes}>
+                        {sortedVariants.map((variant: any) => {
+                          const stock = getVariantStock(variant);
+                          const isOutOfStock = stock <= 0;
+                          const displayValue = getVariantDisplayValue(variant);
+
+                          return (
+                            <label
+                              key={variant.id}
+                              className={`${styles.variantCheckbox} ${isOutOfStock ? styles.variantCheckbox_disabled : ''
+                                }`}>
+                              <input
+                                type="checkbox"
+                                checked={selectedVariant?.id === variant.id}
+                                disabled={isOutOfStock}
+                                onChange={(e) => {
+                                  e.stopPropagation();
+                                  if (!isOutOfStock) {
+                                    setSelectedVariant(variant);
+                                    setIsMainProduct(false);
+                                    setQuantity(1);
+                                  }
+                                }}
+                              />
+                              <span className={styles.variantCheckboxText}>{displayValue}</span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    // ✅ Інакше - показуємо Select
+                    <Select
+                      className={styles.productDetails__variants__select}
+                      radius="xs"
+                      label="Варіант:"
+                      size="lg"
+                      value={selectedVariant?.id || (!product.hasVariants ? 'main' : undefined)}
+                      onChange={(value) => {
+                        if (value === 'main') {
+                          setSelectedVariant(null);
+                          setIsMainProduct(true);
+                        } else {
+                          const variant = sortedVariants.find((v) => v.id === value);
+                          setSelectedVariant(variant);
+                          setIsMainProduct(false);
+                        }
+                        setQuantity(1);
+                      }}
+                      data={[
+                        // Показуємо головний товар тільки якщо hasVariants = false
+                        ...(!product.hasVariants
+                          ? [
                             {
                               value: 'main',
                               label: `${product.name}`,
                             },
                           ]
-                        : []),
-                      ...(sortedVariants.map((variant: any) => ({
-                        value: variant.id,
-                        label: createVariantDisplayLabel(variant),
-                      })) || []),
-                    ]}
-                    placeholder="Оберіть варіант"
-                    style={{ marginTop: '8px' }}
-                  />
-                )}
+                          : []),
+                        ...(sortedVariants.map((variant: any) => ({
+                          value: variant.id,
+                          label: createVariantDisplayLabel(variant),
+                        })) || []),
+                      ]}
+                      placeholder="Оберіть варіант"
+                      style={{ marginTop: '8px' }}
+                    />
+                  )}
 
-                {/* Деталі обраного варіанта */}
-                {selectedVariant && !isMainProduct && selectedVariant.options && (
-                  <div
-                    style={{
-                      marginTop: '16px',
-                      marginBottom: '16px',
-                    }}>
-                    <div style={{ display: 'grid', gap: '8px' }}>
-                      {Object.keys(selectedVariant.options).length > 0 && (
-                        <div>
-                          <strong>Характеристики:</strong>
-                          <div
-                            style={{
-                              marginTop: '8px',
-                              display: 'flex',
-                              flexWrap: 'wrap',
-                              gap: '6px',
-                            }}>
-                            {Object.entries(selectedVariant.options).map(([key, value]) => {
-                              if (!value || !String(value).trim()) return null;
-
-                              const optionLabels: Record<string, string> = {
-                                color: 'Колір',
-                                size: 'Розмір',
-                                material: 'Матеріал',
-                                brand: 'Бренд',
-                                taste: 'Смак',
-                                origin: 'Походження',
-                              };
-
-                              const label = optionLabels[key] || key.charAt(0).toUpperCase() + key.slice(1);
-
-                              return (
-                                <Badge
-                                  key={key}
-                                  variant="outline"
-                                  color="red"
-                                  size="lg"
-                                  style={{ textTransform: 'none' }}>
-                                  {label}: {String(value)}
-                                </Badge>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Деталі головного товару */}
-              </div>
-            )}
-            {hasOptions && !selectedVariant && (
-              <div
-                style={{
-                  marginTop: hasVariants ? '0' : '16px',
-                  marginBottom: '16px',
-                }}>
-                <div style={{ display: 'grid', gap: '8px' }}>
-                  <div style={{ marginTop: '28px' }}>
-                    <strong>Характеристики:</strong>
+                  {/* Деталі обраного варіанта */}
+                  {selectedVariant && !isMainProduct && selectedVariant.options && (
                     <div
                       style={{
-                        marginTop: '8px',
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: '6px',
+                        marginTop: '16px',
+                        marginBottom: '16px',
                       }}>
-                      {Object.entries(product.options as Record<string, any>).map(([key, value]) => {
-                        if (!value || !String(value).trim()) return null;
+                      <div style={{ display: 'grid', gap: '8px' }}>
+                        {Object.keys(selectedVariant.options).length > 0 && (
+                          <div>
+                            <strong>Характеристики:</strong>
+                            <div
+                              style={{
+                                marginTop: '8px',
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                gap: '6px',
+                              }}>
+                              {Object.entries(selectedVariant.options).map(([key, value]) => {
+                                if (!value || !String(value).trim()) return null;
 
-                        const optionLabels: Record<string, string> = {
-                          color: 'Колір',
-                          size: 'Розмір',
-                          material: 'Матеріал',
-                          brand: 'Бренд',
-                          taste: 'Смак',
-                          origin: 'Походження',
-                        };
+                                const optionLabels: Record<string, string> = {
+                                  color: 'Колір',
+                                  size: 'Розмір',
+                                  material: 'Матеріал',
+                                  brand: 'Бренд',
+                                  taste: 'Смак',
+                                  origin: 'Походження',
+                                };
 
-                        const label = optionLabels[key] || key.charAt(0).toUpperCase() + key.slice(1);
+                                const label = optionLabels[key] || key.charAt(0).toUpperCase() + key.slice(1);
 
-                        return (
-                          <Badge
-                            key={key}
-                            variant="outline"
-                            color="red"
-                            size="lg"
-                            style={{ textTransform: 'none' }}>
-                            {label}: {String(value)}
-                          </Badge>
-                        );
-                      })}
+                                return (
+                                  <Badge
+                                    key={key}
+                                    variant="outline"
+                                    color="red"
+                                    size="lg"
+                                    style={{ textTransform: 'none' }}>
+                                    {label}: {String(value)}
+                                  </Badge>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            )}
+                  )}
 
-            {/* Add to Cart Section */}
-            <div className={styles.productDetails__actions}>
-              {isInStock ? (
-                <div className={styles.actionButtons}>
-                  <div className={styles.actionButtonsWrapper}>
-                    <div className={styles.quantitySelector}>
-                      <button
-                        className={styles.quantitySelector__button}
-                        onClick={() => handleQuantityChange(quantity - 1)}
-                        disabled={quantity <= 1}>
-                        −
-                      </button>
-                      <input
-                        type="number"
-                        className={styles.quantitySelector__input}
-                        value={quantity}
-                        onChange={(e) => handleQuantityChange(Number(e.target.value))}
-                        min="1"
-                        max={availableQuantity}
-                      />
-                      <button
-                        className={styles.quantitySelector__button}
-                        onClick={() => handleQuantityChange(quantity + 1)}
-                        disabled={quantity >= availableQuantity}>
-                        +
-                      </button>
-                    </div>
-                    {hasSizeGuide && (
-                      <Button variant="ghost" onClick={() => setSizeGuideOpened(true)} p={0}>
-                        <Image src="/assets/img/btnInfo.jpg" width={50} height={50} alt="btninfo" />
-                      </Button>
-                    )}
-                  </div>
-                  <Button
-                    variant="secondary"
-                    size="lg"
-                    className={styles.buyNowButton}
-                    onClick={handleAddToCart}>
-                    <IconCart3 /> {getButtonText()}
-                  </Button>
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
-                    onClick={() => {
-                      handleAddToCart();
-                      setTimeout(() => router.push('/checkout'), 500);
-                    }}>
-                    КУПИТИ ЗАРАЗ
-                  </Button>
-                </div>
-              ) : (
-                <div className={styles.actionButtons}>
-                  <Button variant="primary" size="lg" fullWidth onClick={() => setNotifyModalOpened(true)}>
-                    Сповістити мене про появу товару
-                  </Button>
+                  {/* Деталі головного товару */}
                 </div>
               )}
+              {hasOptions && !selectedVariant && (
+                <div
+                  style={{
+                    marginTop: hasVariants ? '0' : '16px',
+                    marginBottom: '16px',
+                  }}>
+                  <div style={{ display: 'grid', gap: '8px' }}>
+                    <div style={{ marginTop: '28px' }}>
+                      <strong>Характеристики:</strong>
+                      <div
+                        style={{
+                          marginTop: '8px',
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: '6px',
+                        }}>
+                        {Object.entries(product.options as Record<string, any>).map(([key, value]) => {
+                          if (!value || !String(value).trim()) return null;
+
+                          const optionLabels: Record<string, string> = {
+                            color: 'Колір',
+                            size: 'Розмір',
+                            material: 'Матеріал',
+                            brand: 'Бренд',
+                            taste: 'Смак',
+                            origin: 'Походження',
+                          };
+
+                          const label = optionLabels[key] || key.charAt(0).toUpperCase() + key.slice(1);
+
+                          return (
+                            <Badge
+                              key={key}
+                              variant="outline"
+                              color="red"
+                              size="lg"
+                              style={{ textTransform: 'none' }}>
+                              {label}: {String(value)}
+                            </Badge>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Add to Cart Section */}
+              <div className={styles.productDetails__actions}>
+                {isInStock ? (
+                  <div className={styles.actionButtons}>
+                    <div className={styles.actionButtonsWrapper}>
+                      <div className={styles.quantitySelector}>
+                        <button
+                          className={styles.quantitySelector__button}
+                          onClick={() => handleQuantityChange(quantity - 1)}
+                          disabled={quantity <= 1}>
+                          −
+                        </button>
+                        <input
+                          type="number"
+                          className={styles.quantitySelector__input}
+                          value={quantity}
+                          onChange={(e) => handleQuantityChange(Number(e.target.value))}
+                          min="1"
+                          max={availableQuantity}
+                        />
+                        <button
+                          className={styles.quantitySelector__button}
+                          onClick={() => handleQuantityChange(quantity + 1)}
+                          disabled={quantity >= availableQuantity}>
+                          +
+                        </button>
+                      </div>
+                      {hasSizeGuide && (
+                        <Button variant="ghost" onClick={() => setSizeGuideOpened(true)} p={0}>
+                          <Image src="/assets/img/btnInfo.jpg" width={50} height={50} alt="btninfo" />
+                        </Button>
+                      )}
+                    </div>
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      className={styles.buyNowButton}
+                      onClick={handleAddToCart}>
+                      <IconCart3 /> {getButtonText()}
+                    </Button>
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
+                      onClick={() => {
+                        handleAddToCart();
+                        setTimeout(() => router.push('/checkout'), 500);
+                      }}>
+                     ЗАИМОВИТИ В 1 КЛІК
+                    </Button>
+                  </div>
+                ) : (
+                  <div className={styles.actionButtons}>
+                    <Button variant="primary" size="lg" fullWidth onClick={() => setNotifyModalOpened(true)}>
+                      Сповістити мене про появу товару
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
-            </div>
-             {product.description && (
-          <div className={styles.productDescription}>
-            <h2 className={styles.productDescription__title}>Опис </h2>
-            <div
-              className={styles.productDescription__content}
-              dangerouslySetInnerHTML={{ __html: sanitizeHTML(product.description) }}
-            />
+            {product.description && (
+              <div className={styles.productDescription}>
+                <h2 className={styles.productDescription__title}>Опис </h2>
+                <div
+                  className={styles.productDescription__content}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHTML(product.description) }}
+                />
+              </div>
+            )}
           </div>
-        )}
-          </div>
-          
         </div>
 
         {/* Description */}
-       
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <section className={styles.relatedProducts}>
             <h2 className={styles.relatedProducts__title}>ЩЕ ТОВАРИ</h2>
             <div className={styles.relatedProducts__grid}>
-              {relatedProducts.slice(0, 3).map((relatedProduct) => (
-                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+              {relatedProducts.slice(0, 4).map((relatedProduct, index) => (
+                <ProductCard
+                  key={relatedProduct.id}
+                  product={relatedProduct}
+                  className={index === 3 ? styles.mobileOnly : undefined}
+                />
               ))}
             </div>
           </section>

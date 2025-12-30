@@ -108,7 +108,7 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
         }}>
         <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
       </Modal>
-      <Container size={1300} px={20} pb={50}>
+      <Container size={1300} px={40} pb={50}>
         {error && (
           <div className={styles.error}>
             <h3>Помилка завантаження</h3>
@@ -162,7 +162,9 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
         {/* Повідомлення якщо товарів немає */}
         {!isLoading && !error && products.length === 0 && (
           <Center py="xl">
-            <Text c="red" size="md">Товари не знайдено</Text>
+            <Text c="red" size="md">
+              Товари не знайдено
+            </Text>
           </Center>
         )}
       </Container>

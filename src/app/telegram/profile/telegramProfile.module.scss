@@ -6,6 +6,10 @@
   padding: 20px;
 }
 
+.container{
+  padding: var(--spacing-y) var(--spacing-x);
+}
+
 .menuItem {
   padding: 16px;
   cursor: pointer;

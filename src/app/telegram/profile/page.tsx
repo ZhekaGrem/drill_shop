@@ -29,7 +29,7 @@ export default function TelegramProfilePage() {
   };
 
   return (
-    <Container size="lg" p="md">
+    <div className={styles.container}>
       {/* Профіль користувача */}
       <Card className={styles.profileCard} mb="md">
         <Group>
@@ -87,6 +87,6 @@ export default function TelegramProfilePage() {
           </Group>
         </Card>
       </Stack>
-    </Container>
+    </div>
   );
 }

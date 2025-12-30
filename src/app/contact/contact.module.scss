@@ -56,7 +56,8 @@
 }
 
 .formContainer {
-  padding: 30px 20px;
+  padding: var(--spacing-y) var(--spacing-x);
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,7 +72,7 @@
   }
 
   @media (max-width: 768px) {
-    padding: 40px 20px;
+   padding: var(--spacing-y-m) var(--spacing-x);
   }
 
   form {

@@ -16,7 +16,7 @@
   color: var(--text-secondary);
   @media (max-width: 768px) {
     display: flex;
-
+    padding: var(--spacing-y-m) var(--spacing-x);
     justify-content: space-between;
     gap: 8px;
     border-bottom: var(--border-width) solid (var(--border-color));
@@ -91,7 +91,6 @@
   grid-template-columns: repeat(3, 370px); // 3 колонки по 370px
   gap: 0;
   justify-content: center; // По центру екрану
-
   &--loading {
     opacity: 0.7;
   }
@@ -184,7 +183,7 @@
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  padding: 12px 24px;
+  padding: var(--spacing-y-m) var(--spacing-x);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
 

@@ -45,8 +45,14 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
     return null;
   }
 
-  return (
-    <Container size={1200}>
+  return (<>
+
+    <div className={`${styles.conteinerTitle}`}>
+      <h1 className={styles.pageTitle}> ОСОБИСТИЙ КАБІНЕТ</h1>
+    </div>
+
+    <div className={styles.conteiner}>
+
       <div className={styles.grid}>
         {/* Sidebar Navigation */}
         <aside className={styles.sidebar}>
@@ -70,6 +76,6 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
         {/* Content Area */}
         <main className={styles.content}>{children}</main>
       </div>
-    </Container>
+    </div></>
   );
 }

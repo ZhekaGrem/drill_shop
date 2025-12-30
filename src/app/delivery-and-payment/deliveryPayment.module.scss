@@ -19,12 +19,12 @@
 .contentGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  height: 100vh;
   border-top: var(--border-width) solid var(--border-color);
 
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
     min-height: auto;
+    padding-bottom: 80px;
   }
 }
 
@@ -33,7 +33,7 @@
 
   @media (max-width: 992px) {
     border-right: none;
-    border-bottom: var(--border-width) solid var(--border-color);
+    order: 2;
   }
 }
 
@@ -65,6 +65,7 @@
 
   @media (max-width: 992px) {
     min-height: 400px;
+    order: 1;
   }
 }
 

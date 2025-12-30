@@ -312,6 +312,7 @@ p {
 
   --spacing-x: 40px;
   --spacing-y: 24px;
+  --spacing-y-m: 12px;
 
   /* Transitions */
   --transition-fast: 0.15s ease;
@@ -475,7 +476,7 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background-light);
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
