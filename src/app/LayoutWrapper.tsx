@@ -12,7 +12,10 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   // Головна сторінка - БЕЗ Header і Footer (тільки картинка і кнопка)
   const isHomePage = pathname === '/';
 
-  if (isHomePage) {
+  // Telegram сторінки - БЕЗ Header і Footer (свій окремий layout)
+  const isTelegramPage = pathname?.startsWith('/telegram');
+
+  if (isHomePage || isTelegramPage) {
     return <>{children}</>;
   }
 
