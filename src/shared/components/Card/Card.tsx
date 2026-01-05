@@ -12,9 +12,10 @@ interface ProductCardProps {
   product: Product;
   className?: string;
   styleText?: string;
+  basePath?: string;
 }
 
-export const Card: React.FC<ProductCardProps> = ({ product, className = '', styleText = 'title' }) => {
+export const Card: React.FC<ProductCardProps> = ({ product, className = '', styleText = 'title', basePath = '' }) => {
   const { initialize, isInitialized } = useFavoritesStore();
   const { addItem, isAddingItem } = useCart();
 
@@ -39,7 +40,7 @@ export const Card: React.FC<ProductCardProps> = ({ product, className = '', styl
     e.stopPropagation();
 
     if (hasVariants) {
-      window.location.href = `/catalog/${product.slug}`;
+      window.location.href = `${basePath}/catalog/${product.slug}`;
       return;
     }
 
@@ -48,7 +49,7 @@ export const Card: React.FC<ProductCardProps> = ({ product, className = '', styl
 
   return (
     <div className={`${styles.card} ${className}`}>
-      <Link href={`/catalog/${product.slug}`} className={styles.link}>
+      <Link href={`${basePath}/catalog/${product.slug}`} className={styles.link}>
         <div className={styles.productCardImageContainer}>
           <CloudinaryImage
             src={imageUrl || '/assets/img/placeholder-product.jpg'}

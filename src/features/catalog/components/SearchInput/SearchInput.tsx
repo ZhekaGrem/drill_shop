@@ -14,13 +14,15 @@ interface SearchInputProps {
   placeholder?: string;
   /** CSS клас для контейнера */
   className?: string;
+  /** Базовий шлях для навігації (наприклад, '/telegram') */
+  basePath?: string;
 }
 
 /**
  * Компонент пошуку товарів з autocomplete dropdown
  * Показує до 5 товарів під час введення
  */
-export const SearchInput = ({ placeholder = 'Пошук товарів...', className }: SearchInputProps) => {
+export const SearchInput = ({ placeholder = 'Пошук товарів...', className, basePath = '' }: SearchInputProps) => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -59,7 +61,7 @@ export const SearchInput = ({ placeholder = 'Пошук товарів...', clas
   const handleProductClick = (slug: string) => {
     setIsOpen(false);
     setQuery('');
-    router.push(`/catalog/${slug}`);
+    router.push(`${basePath}/catalog/${slug}`);
   };
 
   const handleClear = () => {

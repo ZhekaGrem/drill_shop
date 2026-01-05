@@ -14,6 +14,7 @@ interface UseProductCardActionsParams {
   variantLabel: string;
   enableQuickView: boolean;
   onQuickViewOpen?: () => void;
+  basePath?: string;
 }
 
 interface UseProductCardActionsReturn {
@@ -35,6 +36,7 @@ export const useProductCardActions = ({
   variantLabel,
   enableQuickView,
   onQuickViewOpen,
+  basePath = '',
 }: UseProductCardActionsParams): UseProductCardActionsReturn => {
   const router = useRouter();
   const { addItem } = useCart();
@@ -96,7 +98,7 @@ export const useProductCardActions = ({
         if (enableQuickView && onQuickViewOpen) {
           onQuickViewOpen();
         } else {
-          router.push(`/catalog/${product.slug}`);
+          router.push(`${basePath}/catalog/${product.slug}`);
         }
         return;
       }
@@ -139,6 +141,7 @@ export const useProductCardActions = ({
       enableQuickView,
       onQuickViewOpen,
       router,
+      basePath,
     ]
   );
 
@@ -147,7 +150,7 @@ export const useProductCardActions = ({
       // Quick View disabled for now
       // onQuickViewOpen();
     } else {
-      router.push(`/catalog/${product.slug}`);
+      router.push(`${basePath}/catalog/${product.slug}`);
     }
   };
 

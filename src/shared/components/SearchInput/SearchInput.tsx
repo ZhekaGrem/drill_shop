@@ -10,12 +10,14 @@ interface SearchInputProps {
   placeholder?: string;
   className?: string;
   onSearch?: (query: string) => void;
+  basePath?: string;
 }
 
 const SearchInputComponent: React.FC<SearchInputProps> = ({
   placeholder = 'Пошук товарів...',
   className = '',
   onSearch,
+  basePath = '',
 }) => {
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
@@ -41,13 +43,13 @@ const SearchInputComponent: React.FC<SearchInputProps> = ({
         setFilter('search', searchQuery || undefined);
 
         if (searchQuery.trim()) {
-          router.push(`/catalog?search=${encodeURIComponent(searchQuery.trim())}`);
+          router.push(`${basePath}/catalog?search=${encodeURIComponent(searchQuery.trim())}`);
         } else {
-          router.push('/catalog');
+          router.push(`${basePath}/catalog`);
         }
       }
     },
-    [onSearch, setFilter, router]
+    [onSearch, setFilter, router, basePath]
   );
 
   // Debounced search

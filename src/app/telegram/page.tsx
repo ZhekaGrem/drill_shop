@@ -39,7 +39,7 @@ export default function TelegramHomePage() {
                 />
               </div>
             )}
-            
+
             {/* 3D модель - завантажується одразу, але прихована поки не готова */}
             <div style={{ opacity: isSplineLoaded ? 1 : 0, transition: 'opacity 0.5s ease' }}>
               <Suspense fallback={null}>

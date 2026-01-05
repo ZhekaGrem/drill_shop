@@ -3,6 +3,7 @@
 'use client';
 import { Drawer, Text, ScrollArea, Stack, Group, Divider, Loader, Center, Box, em } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { usePathname } from 'next/navigation';
 
 import { IconCart3, IconX } from '@/shared/components/Svg';
 import { useCartDrawerState, useCartDrawerActions } from '@/shared/stores/cart';
@@ -14,6 +15,9 @@ import { Button } from '@/shared/components/Button/Button';
 import styles from './CartDrawer.module.scss';
 
 export const CartDrawer = () => {
+  const pathname = usePathname();
+  const basePath = pathname?.startsWith('/telegram') ? '/telegram' : '';
+
   const isOpen = useCartDrawerState();
   const { close } = useCartDrawerActions();
   const { items, calculations, isLoading, error, clearCart, isClearingCart } = useCart();
@@ -86,7 +90,7 @@ export const CartDrawer = () => {
                 <Text c="dimmed" ta="center" size={isMobile ? 'md' : 'sm'}>
                   Ваш кошик порожній
                 </Text>
-                <Link href="/catalog">
+                <Link href={`${basePath}/catalog`}>
                   <Button onClick={close} size={isMobile ? 'md' : 'sm'}>
                     Перейти до покупок
                   </Button>
@@ -117,12 +121,12 @@ export const CartDrawer = () => {
             </Group>
 
             <Stack gap="xs" p="md">
-              <Link href="/checkout">
+              <Link href={`${basePath}/checkout`}>
                 <Button size="lg" fullWidth onClick={close}>
                   Оформити замовлення
                 </Button>
               </Link>
-              <Link href="/cart">
+              <Link href={`${basePath}/cart`}>
                 <Button variant="primary" size="lg" fullWidth onClick={close}>
                   Переглянути кошик
                 </Button>
