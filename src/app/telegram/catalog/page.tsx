@@ -1,5 +1,5 @@
 import { productsApi, categoriesApi } from '@/features/catalog/api/products';
-import TelegramCatalogClient from './TelegramCatalogClient';
+import CatalogClient from '@/app/catalog/CatalogClient';
 
 export const revalidate = 26400; // 6 годин
 
@@ -36,5 +36,5 @@ async function getInitialCategories() {
 export default async function TelegramCatalogPage() {
   const [initialData, initialCategories] = await Promise.all([getInitialProducts(), getInitialCategories()]);
 
-  return <TelegramCatalogClient initialData={initialData} initialCategories={initialCategories} />;
+  return <CatalogClient initialData={initialData} initialCategories={initialCategories} basePath="/telegram" />;
 }

@@ -11,7 +11,12 @@ import Link from 'next/link';
 
 import { Button } from '@/shared/components/Button/Button';
 import styles from './Cart.module.scss';
-export default function CartPage() {
+
+interface CartPageProps {
+  basePath?: string;
+}
+
+export default function CartPage({ basePath = '' }: CartPageProps) {
   const { items, calculations, isLoading, clearCart, isClearingCart, error } = useCart();
 
   if (error) {
@@ -33,7 +38,7 @@ export default function CartPage() {
       <Group justify="space-between" p="xs">
         <Group justify="space-between">
           {' '}
-          <Link href="/catalog" className={styles.containerCart__link}>
+          <Link href={`${basePath}/catalog`} className={styles.containerCart__link}>
             {' '}
             <ArrowLeft />{' '}
             <Title order={1} className={styles.containerCart__title}>
@@ -67,12 +72,12 @@ export default function CartPage() {
             </Stack>
 
             <Group gap="sm" justify="center">
-              <Link href="/">
+              <Link href={`${basePath}/`}>
                 <Button variant="ghost" leftSection={<ArrowLeft />}>
                   На головну
                 </Button>
               </Link>
-              <Link href="/catalog">
+              <Link href={`${basePath}/catalog`}>
                 <Button>Перейти до каталогу</Button>
               </Link>
             </Group>
@@ -121,7 +126,7 @@ export default function CartPage() {
               </Text>
             </Group>
             <Stack gap="sm" mt="md">
-              <Link href="/checkout">
+              <Link href={`${basePath}/checkout`}>
                 <Button variant="primary" size="lg" fullWidth>
                   <span className={styles.checkoutButtonText}>
                     <span className={styles.desktopText}>Перейти до оформлення</span>

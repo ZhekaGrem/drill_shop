@@ -29,7 +29,11 @@
       "Bash(grep:*)",
       "Bash(cd:*)",
       "Bash(cat:*)",
-      "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\shared\\\\components\\\\ImageGalleryModal\\\\ImageGalleryModal.module.scss\")"
+      "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\shared\\\\components\\\\ImageGalleryModal\\\\ImageGalleryModal.module.scss\")",
+      "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\app\\\\telegram\\\\catalog\\\\TelegramCatalogClient.tsx\")",
+      "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\app\\\\telegram\\\\catalog\\\\[slug]\\\\TelegramProductDetailsClient.tsx\")",
+      "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\app\\\\telegram\\\\catalog\\\\telegramCatalog.module.scss\")",
+      "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\app\\\\telegram\\\\cart\\\\telegramCart.module.scss\")"
     ],
     "deny": [],
     "ask": []

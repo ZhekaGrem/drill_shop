@@ -15,9 +15,10 @@ import styles from './catalog.module.scss';
 interface CatalogProps {
   initialData?: ProductsResponse | null;
   initialCategories?: any[];
+  basePath?: string;
 }
 
-export default function CatalogClient({ initialData, initialCategories }: CatalogProps) {
+export default function CatalogClient({ initialData, initialCategories, basePath = '' }: CatalogProps) {
   const [initialized, setInitialized] = useState(false);
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
 
@@ -134,7 +135,7 @@ export default function CatalogClient({ initialData, initialCategories }: Catalo
           <>
             <div className={styles.products}>
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} basePath={basePath} />
               ))}
             </div>
 

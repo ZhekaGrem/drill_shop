@@ -16,6 +16,7 @@ interface ProductCardProps {
   product: Product;
   className?: string;
   enableQuickView?: boolean;
+  basePath?: string;
 }
 
 /**
@@ -23,7 +24,7 @@ interface ProductCardProps {
  * Оркеструє логіку відображення товару в каталозі
  */
 export const ProductCard = React.memo<ProductCardProps>(
-  ({ product, className = '', enableQuickView = false }) => {
+  ({ product, className = '', enableQuickView = false, basePath = '' }) => {
     const [quickViewOpened, setQuickViewOpened] = useState(false);
 
     // Використовуємо hooks для логіки
@@ -80,6 +81,7 @@ export const ProductCard = React.memo<ProductCardProps>(
             getVariantDisplayValue={getVariantDisplayValue}
             getVariantStock={getVariantStock}
             onVariantSelect={setSelectedVariant}
+            basePath={basePath}
           />
         </div>
 

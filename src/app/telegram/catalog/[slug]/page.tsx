@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { productsApi } from '@/features/catalog/api/products';
-import TelegramProductDetailsClient from './TelegramProductDetailsClient';
+import ProductDetailsClient from '@/app/catalog/[slug]/ProductDetailsClient';
 
 export const revalidate = 86400; // 24 години
 
@@ -39,5 +39,5 @@ export default async function TelegramProductPage({ params }: { params: Promise<
     notFound();
   }
 
-  return <TelegramProductDetailsClient initialProduct={productData} />;
+  return <ProductDetailsClient initialProduct={productData} basePath="/telegram" />;
 }

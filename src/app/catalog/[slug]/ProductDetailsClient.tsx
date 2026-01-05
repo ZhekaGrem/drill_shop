@@ -26,9 +26,10 @@ import { ImageGalleryModal } from '@/shared/components/ImageGalleryModal';
 
 interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
+  basePath?: string;
 }
 
-export default function ProductDetailsClient({ initialProduct }: ProductDetailsProps) {
+export default function ProductDetailsClient({ initialProduct, basePath = '' }: ProductDetailsProps) {
   const { addItem, isAddingItem } = useCart();
   const { isAuthenticated } = useAuthStore();
   const [product, setProduct] = useState<ProductWithRelations | null>(initialProduct || null);
@@ -296,7 +297,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
           <div className={styles.productPage__error}>
             <h1>Товар не знайдено</h1>
             <p>{error || 'Товар з таким адресом не існує'}</p>
-            <Button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => router.push('/catalog')}>
+            <Button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => router.push(`${basePath}/catalog`)}>
               Повернутися до каталогу
             </Button>
           </div>
@@ -332,11 +333,11 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
       <div>
         {/* Breadcrumbs */}
         <nav className={styles.breadcrumbs}>
-          <Link href="/" className={styles.breadcrumbs__link}>
+          <Link href={`${basePath}/`} className={styles.breadcrumbs__link}>
             Головна
           </Link>
           <span className={styles.breadcrumbs__separator}>›</span>
-          <Link href="/catalog" className={styles.breadcrumbs__link}>
+          <Link href={`${basePath}/catalog`} className={styles.breadcrumbs__link}>
             Каталог
           </Link>
           <span className={styles.breadcrumbs__separator}>›</span>
@@ -766,7 +767,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                       className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
                       onClick={() => {
                         handleAddToCart();
-                        setTimeout(() => router.push('/checkout'), 500);
+                        setTimeout(() => router.push(`${basePath}/checkout`), 500);
                       }}>
                       ЗАИМОВИТИ В 1 КЛІК
                     </Button>

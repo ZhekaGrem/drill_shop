@@ -16,6 +16,7 @@ interface ProductCardInfoProps {
   getVariantDisplayValue: (variant: any) => string;
   getVariantStock: (variantId: string) => number;
   onVariantSelect: (variantId: string) => void;
+  basePath?: string;
 }
 
 /**
@@ -32,6 +33,7 @@ export const ProductCardInfo: React.FC<ProductCardInfoProps> = ({
   getVariantDisplayValue,
   getVariantStock,
   onVariantSelect,
+  basePath = '',
 }) => {
   const priceData = calculatePromoPrice(product);
 
@@ -66,7 +68,7 @@ export const ProductCardInfo: React.FC<ProductCardInfoProps> = ({
 
   return (
     <div className={styles.content}>
-      <Link href={`/catalog/${product.slug}`} onClick={(e) => e.stopPropagation()}>
+      <Link href={`${basePath}/catalog/${product.slug}`} onClick={(e) => e.stopPropagation()}>
         <h3 className={styles.title}>
           {isImageHovered && product.shortDescription ? product.shortDescription : product.name}
         </h3>
