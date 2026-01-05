@@ -53,6 +53,7 @@ export const ProductCard = React.memo<ProductCardProps>(
       variantLabel,
       enableQuickView,
       onQuickViewOpen: () => setQuickViewOpened(true),
+      basePath,
     });
 
     return (
@@ -99,6 +100,7 @@ export const ProductCard = React.memo<ProductCardProps>(
             product={product}
             opened={quickViewOpened}
             onClose={() => setQuickViewOpened(false)}
+            basePath={basePath}
           />
         )}
       </div>

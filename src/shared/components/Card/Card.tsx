@@ -15,7 +15,12 @@ interface ProductCardProps {
   basePath?: string;
 }
 
-export const Card: React.FC<ProductCardProps> = ({ product, className = '', styleText = 'title', basePath = '' }) => {
+export const Card: React.FC<ProductCardProps> = ({
+  product,
+  className = '',
+  styleText = 'title',
+  basePath = '',
+}) => {
   const { initialize, isInitialized } = useFavoritesStore();
   const { addItem, isAddingItem } = useCart();
 

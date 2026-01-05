@@ -21,7 +21,12 @@ interface ProductQuickViewModalProps {
   basePath?: string;
 }
 
-export const ProductQuickViewModal = ({ product, opened, onClose, basePath = '' }: ProductQuickViewModalProps) => {
+export const ProductQuickViewModal = ({
+  product,
+  opened,
+  onClose,
+  basePath = '',
+}: ProductQuickViewModalProps) => {
   const { addItem, isAddingItem } = useCart();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -404,7 +409,10 @@ export const ProductQuickViewModal = ({ product, opened, onClose, basePath = '' 
           </div>
 
           {/* Кнопка переходу на повну сторінку */}
-          <Link href={`${basePath}/catalog/${product.slug}`} className={styles.fullDetailsLink} onClick={onClose}>
+          <Link
+            href={`${basePath}/catalog/${product.slug}`}
+            className={styles.fullDetailsLink}
+            onClick={onClose}>
             <Button variant="outline" fullWidth>
               Переглянути повністю
             </Button>

@@ -22,7 +22,11 @@ interface SearchInputProps {
  * Компонент пошуку товарів з autocomplete dropdown
  * Показує до 5 товарів під час введення
  */
-export const SearchInput = ({ placeholder = 'Пошук товарів...', className, basePath = '' }: SearchInputProps) => {
+export const SearchInput = ({
+  placeholder = 'Пошук товарів...',
+  className,
+  basePath = '',
+}: SearchInputProps) => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
