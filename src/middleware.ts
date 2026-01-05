@@ -1,47 +1,57 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
+import { createServerClient } from '@supabase/ssr';
 
-// ✅ КРИТИЧНИЙ ФІКС: matcher виключає статичні файли
+export async function middleware(request: NextRequest) {
+  // 1. Створюємо відповідь одразу, щоб мати змогу писати в неї куки
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value;
+        },
+        // ✅ ЦЕ ОБОВ'ЯЗКОВО! Middleware оновлює токени
+        set(name: string, value: string, options: any) {
+          request.cookies.set({ name, value, ...options });
+          response.cookies.set({ name, value, ...options });
+        },
+        remove(name: string, options: any) {
+          request.cookies.set({ name, value: '', ...options });
+          response.cookies.set({ name, value: '', ...options });
+        },
+      },
+    }
+  );
+
+  // 2. Оновлюємо сесію (це також викличе методи set/remove якщо треба)
+  // getUser безпечніше ніж getSession, бо валідує юзера в БД, а не тільки JWT
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // 3. Перевірка доступу до адмінки
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    if (!user) {
+      const redirectUrl = new URL('/login', request.url);
+      redirectUrl.searchParams.set('from', request.nextUrl.pathname);
+      return NextResponse.redirect(redirectUrl);
+    }
+    
+    // Опціонально: перевірка ролі (якщо вона в метаданих юзера, це швидко)
+    // if (user.app_metadata.role !== 'admin') { ... }
+  }
+
+  // 4. Повертаємо response з оновленими куками
+  return response;
+}
+
 export const config = {
   matcher: [
-    /*
-     * Match all request paths EXCEPT:
-     * - _next/static (static files)
-     * - _next/image (image optimization)
-     * - favicon.ico, robots.txt, sitemap.xml
-     * - public files (images, fonts)
-     */
-    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf)).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf)).*)',
   ],
 };
-
-export function middleware(request: NextRequest) {
-  // Redirects для старих URL
-  const redirects: Record<string, string> = {
-    '/delivery': '/delivery-and-payment',
-    '/returns': '/returns-exchanges',
-    '/terms': '/public-offer',
-  };
-
-  const redirect = redirects[request.nextUrl.pathname];
-  if (redirect) {
-    return NextResponse.redirect(new URL(redirect, request.url));
-  }
-
-  // CSRF protection для форм
-  if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(request.method)) {
-    const token = request.headers.get('X-CSRF-Token');
-    const cookie = request.cookies.get('csrf-token');
-
-    if (!token || token !== cookie?.value) {
-      // Дозволяємо API routes (вони мають свою auth)
-      if (request.nextUrl.pathname.startsWith('/api/')) {
-        return NextResponse.next();
-      }
-      // ❌ КРИТИЧНИЙ ФІКС БЕЗПЕКИ: блокуємо запит з недійсним CSRF-токеном
-      return new NextResponse('Invalid CSRF token', { status: 403 });
-    }
-  }
-
-  return NextResponse.next();
-}

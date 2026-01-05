@@ -402,8 +402,8 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     )}
                     alt={product.name}
                     className={styles.productGallery__mainImage}
-                    width={400}
-                    height={400}
+                    width={440}
+                    height={680}
                   />
 
                   {/* Navigation arrows - показуємо тільки якщо є більше 1 зображення */}

@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
     // ✅ Enable type checking during build for production safety
     ignoreBuildErrors: false,
   },
+    // ✅ Видаляємо console.* в production (крім error)
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === 'production'
+        ? {
+            exclude: ['error', 'warn'], // Залишаємо error та warn для critical logs
+          }
+        : false,
+  },
 
   experimental: {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
