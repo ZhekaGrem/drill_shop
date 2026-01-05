@@ -5,6 +5,10 @@
   text-transform: uppercase;
   line-height: 1;
   letter-spacing: 0.02em;
+  font-size: var(--text-2xl);
+  @media (max-width: 768px) {
+    font-size: var(--text-xl);
+  }
 }
 
 .container {

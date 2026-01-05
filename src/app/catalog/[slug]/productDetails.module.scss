@@ -262,7 +262,6 @@
       align-items: center;
       position: relative;
     }
-   
 
     &__scrollArrow {
       width: 80px;
@@ -446,8 +445,6 @@
       border: var(--border-width) solid var(--background-dark);
       cursor: pointer;
       transition: all var(--transition-fast);
-
-      
 
       &Active {
         background: var(--background-dark);
@@ -874,8 +871,6 @@
       font-size: var(--text-xs);
       gap: var(--spacing-xs);
     }
-
-   
 
     .quantitySelector__button {
       width: 40px;
