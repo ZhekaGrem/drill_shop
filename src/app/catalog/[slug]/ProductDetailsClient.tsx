@@ -297,7 +297,9 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           <div className={styles.productPage__error}>
             <h1>Товар не знайдено</h1>
             <p>{error || 'Товар з таким адресом не існує'}</p>
-            <Button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => router.push(`${basePath}/catalog`)}>
+            <Button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={() => router.push(`${basePath}/catalog`)}>
               Повернутися до каталогу
             </Button>
           </div>

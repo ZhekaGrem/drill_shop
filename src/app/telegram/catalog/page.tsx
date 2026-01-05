@@ -36,5 +36,7 @@ async function getInitialCategories() {
 export default async function TelegramCatalogPage() {
   const [initialData, initialCategories] = await Promise.all([getInitialProducts(), getInitialCategories()]);
 
-  return <CatalogClient initialData={initialData} initialCategories={initialCategories} basePath="/telegram" />;
+  return (
+    <CatalogClient initialData={initialData} initialCategories={initialCategories} basePath="/telegram" />
+  );
 }
