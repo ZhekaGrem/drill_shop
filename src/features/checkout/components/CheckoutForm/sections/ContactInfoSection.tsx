@@ -4,9 +4,10 @@ import styles from '../CheckoutForm.module.scss';
 
 interface ContactInfoSectionProps {
   form: UseFormReturn<any>;
+  showEmail?: boolean;
 }
 
-export const ContactInfoSection = ({ form }: ContactInfoSectionProps) => {
+export const ContactInfoSection = ({ form, showEmail = true }: ContactInfoSectionProps) => {
   const {
     register,
     control,
@@ -40,14 +41,15 @@ export const ContactInfoSection = ({ form }: ContactInfoSectionProps) => {
         />
       </div>
 
-      <Input
-        type="email"
-        label="Email"
-        placeholder="your@email.com"
-        required
-        error={emailError}
-        {...register('guestEmail')}
-      />
+      {showEmail && (
+        <Input
+          type="email"
+          label="Email"
+          placeholder="your@email.com"
+          error={emailError}
+          {...register('guestEmail')}
+        />
+      )}
 
       <Controller
         control={control}

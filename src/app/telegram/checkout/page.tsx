@@ -9,7 +9,7 @@ export default function TelegramCheckoutPage() {
       <Title order={2} mb="md">
         Оформлення замовлення
       </Title>
-      <CheckoutForm />
+      <CheckoutForm email={false} />
     </Container>
   );
 }

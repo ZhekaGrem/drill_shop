@@ -23,7 +23,12 @@ export const shippingAddressSchema = z.object({
 // Main checkout schema with conditional validation
 export const checkoutSchema = z
   .object({
-    guestEmail: z.string().email('Неправильний формат email').min(1, "Email є обов'язковим"),
+    guestEmail: z
+      .string()
+      .optional()
+      .refine((val) => !val || z.string().email().safeParse(val).success, {
+        message: 'Неправильний формат email',
+      }),
     notes: z.string().optional(),
     deliveryMethod: z.enum(['nova_poshta', 'courier', 'ukr_poshta', 'other'], {
       required_error: 'Виберіть спосіб доставки',

@@ -18,7 +18,11 @@ import { OrderSummary } from './OrderSummary/OrderSummary';
 
 import styles from './CheckoutForm.module.scss';
 
-const CheckoutFormComponent = () => {
+interface CheckoutFormProps {
+  email?: boolean;
+}
+
+const CheckoutFormComponent = ({ email = true }: CheckoutFormProps) => {
   const { items, calculations, isLoading: isCartLoading } = useCart();
   const { form, onSubmit, isLoading: isSubmitting, error: submitError } = useCheckout();
   const {
@@ -106,7 +110,7 @@ const CheckoutFormComponent = () => {
                 <Box component="ul" mt={8} pl={20}>
                   {errors.shippingAddress?.firstName && <li>{errors.shippingAddress.firstName.message}</li>}
                   {errors.shippingAddress?.lastName && <li>{errors.shippingAddress.lastName.message}</li>}
-                  {errors.guestEmail && <li>Email: {errors.guestEmail.message}</li>}
+                  {email && errors.guestEmail && <li>Email: {errors.guestEmail.message}</li>}
                   {errors.shippingAddress?.phone && <li>Телефон: {errors.shippingAddress.phone.message}</li>}
                   {errors.deliveryMethod && <li>{errors.deliveryMethod.message}</li>}
                   {errors.shippingAddress?.city && <li>Увага: {errors.shippingAddress.city.message}</li>}
@@ -128,7 +132,7 @@ const CheckoutFormComponent = () => {
             )}
 
             {/* Contact Info */}
-            <ContactInfoSection form={form} />
+            <ContactInfoSection form={form} showEmail={email} />
 
             {/* Delivery */}
             <DeliverySection
