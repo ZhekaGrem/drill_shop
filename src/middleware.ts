@@ -32,7 +32,9 @@ export async function middleware(request: NextRequest) {
 
   // 2. Оновлюємо сесію (це також викличе методи set/remove якщо треба)
   // getUser безпечніше ніж getSession, бо валідує юзера в БД, а не тільки JWT
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   // 3. Перевірка доступу до адмінки
   if (request.nextUrl.pathname.startsWith('/admin')) {
@@ -41,7 +43,7 @@ export async function middleware(request: NextRequest) {
       redirectUrl.searchParams.set('from', request.nextUrl.pathname);
       return NextResponse.redirect(redirectUrl);
     }
-    
+
     // Опціонально: перевірка ролі (якщо вона в метаданих юзера, це швидко)
     // if (user.app_metadata.role !== 'admin') { ... }
   }

@@ -46,7 +46,7 @@ const DeliveryAndPayment = () => {
           </div>
         </Box>
         <Box className={styles.imageContent}>
-          <Image src="/assets/img/about/about.webp" alt="Delivery" fill className={styles.sideImage} />
+          <Image src="/assets/img/about/about.webp" alt="Delivery" height={600} width={600} className={styles.sideImage} />
         </Box>
       </Box>
     </>

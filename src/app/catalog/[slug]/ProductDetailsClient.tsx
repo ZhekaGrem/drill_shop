@@ -22,6 +22,7 @@ import { IconCart3 } from '@/shared/components/Svg';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
 import Image from 'next/image';
 import { NotifyAvailabilityModal } from '@/features/notify-availability';
+import { ImageGalleryModal } from '@/shared/components/ImageGalleryModal';
 
 interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
@@ -42,6 +43,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
   const [sizeGuideOpened, setSizeGuideOpened] = useState(false);
   const [notifyModalOpened, setNotifyModalOpened] = useState(false);
   const [showScrollArrows, setShowScrollArrows] = useState(false);
+  const [galleryOpened, setGalleryOpened] = useState(false);
 
   const params = useParams();
   const router = useRouter();
@@ -392,7 +394,7 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
 
               {/* Main Image справа від thumbnails */}
               <div className={styles.productGallery__main}>
-                <div className={styles.productGallery__mainImageWrapper}>
+                <div className={styles.productGallery__mainImageWrapper} onClick={() => setGalleryOpened(true)}>
                   <CloudinaryImage
                     src={getImageUrl(
                       sortedImages[selectedImageIndex]?.url ||
@@ -406,12 +408,25 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                     height={680}
                   />
 
+                  {/* Іконка збільшення */}
+                  <div className={styles.productGallery__zoomIcon}>
+                    <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M0 0H20V16H0V0ZM2 14H18V2H2V14ZM6 4H8V6H6V8H4V4H6ZM14 12H12V10H14V8H16V12H14Z"
+                        fill="#33603B"
+                      />
+                    </svg>
+                  </div>
+
                   {/* Navigation arrows - показуємо тільки якщо є більше 1 зображення */}
                   {sortedImages.length > 1 && (
                     <>
                       <button
                         className={`${styles.productGallery__arrow} ${styles.productGallery__arrowLeft}`}
-                        onClick={handlePreviousImage}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePreviousImage();
+                        }}
                         aria-label="Попереднє зображення">
                         <Image
                           src="/svg/pixelarticons_arrow-left-box.svg"
@@ -422,7 +437,10 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                       </button>
                       <button
                         className={`${styles.productGallery__arrow} ${styles.productGallery__arrowRight}`}
-                        onClick={handleNextImage}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNextImage();
+                        }}
                         aria-label="Наступне зображення">
                         <Image
                           src="/svg/pixelarticons_arrow-right-box.svg"
@@ -443,7 +461,10 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
                           className={`${styles.productGallery__dot} ${
                             index === selectedImageIndex ? styles.productGallery__dotActive : ''
                           }`}
-                          onClick={() => setSelectedImageIndex(index)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedImageIndex(index);
+                          }}
                           aria-label={`Зображення ${index + 1}`}
                         />
                       ))}
@@ -801,6 +822,15 @@ export default function ProductDetailsClient({ initialProduct }: ProductDetailsP
           productName={product.name}
           productSlug={product.slug}
           variantName={selectedVariant?.name}
+        />
+
+        {/* Image Gallery Modal */}
+        <ImageGalleryModal
+          images={sortedImages}
+          opened={galleryOpened}
+          onClose={() => setGalleryOpened(false)}
+          initialIndex={selectedImageIndex}
+          productName={product.name}
         />
       </div>
     </div>

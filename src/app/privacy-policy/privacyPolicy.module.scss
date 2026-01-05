@@ -12,7 +12,6 @@
 
 .title {
   font-family: var(--font-price);
-  font-size: var(--text-4xl);
   font-weight: var(--fw-black);
   color: var(--text-primary);
   text-transform: uppercase;
@@ -32,9 +31,7 @@
 
 .content {
   background: var(--background);
-  border: var(--border-width) solid var(--border-color);
   padding: var(--spacing-2xl);
-  box-shadow: var(--shadow-md);
 
   @media (max-width: 768px) {
     padding: var(--spacing-lg);

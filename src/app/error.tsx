@@ -13,7 +13,7 @@ const Error = ({ error, reset }: { error: Error & { digest?: string }; reset: ()
     <MantineProvider>
       <Container className="py-20">
         <div className="text-center">
-          <Title order={1} className="text-6xl mb-4">
+          <Title order={1} className=" mb-4">
             Помилка
           </Title>
           <Title order={2} className="mb-4">

@@ -26,9 +26,9 @@ export function Footer() {
             <Text className={styles.columnTitle__about}>Про нас</Text>
             <Stack gap="xs">
               <Link href="/about">Зв'язок з нами</Link>
-              <Link href="/delivery">Доставка та оплата</Link>
-              <Link href="/returns">Обмін та Повернення</Link>
-              <Link href="/terms">Публічний договір</Link>
+              <Link href="/delivery-and-payment">Доставка та оплата</Link>
+              <Link href="/returns-exchanges">Обмін та Повернення</Link>
+              <Link href="/public-offer">Публічний договір</Link>
             </Stack>
           </div>
 

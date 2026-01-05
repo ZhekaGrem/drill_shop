@@ -50,6 +50,7 @@
     "react-hook-form": "^7.58.1",
     "react-hot-toast": "^2.5.2",
     "react-intersection-observer": "^9.16.0",
+    "yet-another-react-lightbox": "^3.28.0",
     "zod": "^3.25.67",
     "zustand": "^5.0.5"
   },

@@ -48,7 +48,6 @@
     }
     &__title {
       font-family: var(--font-price);
-      font-size: var(--text-4xl);
       font-weight: var(--fw-black);
       color: var(--text-primary);
       margin: 0 0 var(--spacing-md) 0;
@@ -171,6 +170,7 @@
     flex-wrap: wrap;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-lg);
+    z-index: 20;
   }
 
   .variantCheckbox {
@@ -262,6 +262,7 @@
       align-items: center;
       position: relative;
     }
+   
 
     &__scrollArrow {
       width: 80px;
@@ -330,18 +331,38 @@
       background: var(--background);
       overflow: hidden;
       width: max(280px, 36.67vw);
-height: max(433px, 56.67vw);
+      height: max(433px, 56.67vw);
     }
 
     &__mainImageWrapper {
       border-left: var(--border-width) solid var(--border-color);
       position: relative;
       overflow: hidden;
+      cursor: pointer;
     }
 
     &__mainImage {
       object-fit: contain;
       width: 100%;
+    }
+
+    &__zoomIcon {
+      position: absolute;
+      bottom: var(--spacing-md);
+      left: var(--spacing-md);
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.7;
+      transition: opacity var(--transition-fast);
+
+      svg {
+        display: block;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      }
+    }
+
+    &__mainImageWrapper:hover &__zoomIcon {
+      opacity: 1;
     }
 
     &__arrow {
@@ -364,6 +385,18 @@ height: max(433px, 56.67vw);
       justify-content: center;
       line-height: 1;
 
+      // Розширена зона кліку (невидима)
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+      }
+
       &:hover {
         transform: translateY(-50%) scale(1.05);
       }
@@ -378,6 +411,8 @@ height: max(433px, 56.67vw);
         width: 24px;
         height: 24px;
         opacity: 0.7;
+        position: relative;
+        z-index: 1;
       }
 
       &:hover img {
@@ -401,8 +436,6 @@ height: max(433px, 56.67vw);
       display: flex;
       gap: var(--spacing-sm);
       padding: var(--spacing-sm);
-      background: rgba(0, 0, 0, 0.5);
-      border: var(--border-width) solid var(--border-color);
     }
 
     &__dot {
@@ -410,16 +443,14 @@ height: max(433px, 56.67vw);
       height: 12px;
       padding: 0;
       background: var(--background-light);
-      border: var(--border-width) solid var(--border-color);
+      border: var(--border-width) solid var(--background-dark);
       cursor: pointer;
       transition: all var(--transition-fast);
 
-      &:hover {
-        background: var(--background-secondary);
-      }
+      
 
       &Active {
-        background: var(--btn-primary);
+        background: var(--background-dark);
         box-shadow: inset 1px 1px 0px rgba(43, 43, 39, 0.2);
       }
     }
@@ -697,6 +728,7 @@ height: max(433px, 56.67vw);
 
       &__mainImageWrapper {
         height: auto;
+        border-left: none;
       }
 
       &__mainImage {
@@ -766,7 +798,6 @@ height: max(433px, 56.67vw);
     }
 
     .productDetails__title {
-      font-size: var(--text-2xl);
       line-height: 1.3;
       margin-bottom: var(--spacing-sm);
     }
@@ -844,9 +875,7 @@ height: max(433px, 56.67vw);
       gap: var(--spacing-xs);
     }
 
-    .productDetails__title {
-      font-size: var(--text-xl);
-    }
+   
 
     .quantitySelector__button {
       width: 40px;

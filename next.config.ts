@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     // ✅ Enable type checking during build for production safety
     ignoreBuildErrors: false,
   },
-    // ✅ Видаляємо console.* в production (крім error)
+  // ✅ Видаляємо console.* в production (крім error)
   compiler: {
     removeConsole:
       process.env.NODE_ENV === 'production'

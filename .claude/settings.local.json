@@ -9,7 +9,6 @@
       "Bash(npm run lint)",
       "Bash(findstr:*)",
       "Bash(find:*)",
-      "Bash(npm run build:*)",
       "Bash(mkdir:*)",
       "Bash(npm run lint:*)",
       "Bash(npx tsc:*)",
@@ -17,7 +16,6 @@
       "Bash(node:*)",
       "Bash(timeout 20 node:*)",
       "Bash(timeout 20 tsc:*)",
-      "Bash(timeout 20 npm run build:*)",
       "Bash(npm run db:generate:*)",
       "Bash(tasklist:*)",
       "Bash(nul)",
@@ -26,13 +24,12 @@
       "Bash(mv:*)",
       "Bash(where:*)",
       "Bash(curl:*)",
-      "Bash(npm run dev:*)",
       "Bash(powershell -Command:*)",
       "Bash(sort:*)",
       "Bash(grep:*)",
       "Bash(cd:*)",
-      "Bash(timeout 120 npm run build:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\shared\\\\components\\\\ImageGalleryModal\\\\ImageGalleryModal.module.scss\")"
     ],
     "deny": [],
     "ask": []
