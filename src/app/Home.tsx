@@ -23,7 +23,7 @@ const Home = () => {
     <div className={styles.wrapper}>
       <div className={styles.landingPage}>
         <div className={styles.landingContent}>
-          <h1 className={styles.hiddenTitle}>Щільний Дріл Мерч НІЖНА ОКСАНА ПРОКЛЯТИЙ ХУЙ </h1>
+          <h1 className="hiddenTitle">Щільний Дріл Мерч НІЖНА ОКСАНА ПРОКЛЯТИЙ ХУЙ </h1>
           {/* Spline 3D модель - позаду кнопки */}
           <div className={styles.tshirtSpline}>
             {/* Placeholder - показується поки 3D не готова */}
