@@ -8,7 +8,7 @@ const DeliveryAndPayment = () => {
   return (
     <>
       <div className={styles.container}>
-        <Title className={styles.pageTitle}>ДОСТАВКА ТА ОПЛАТА</Title>
+        <Title order={1} className={styles.pageTitle}>ДОСТАВКА ТА ОПЛАТА</Title>
       </div>
 
       <Box className={styles.contentGrid}>

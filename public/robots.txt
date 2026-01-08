@@ -1,9 +1,5 @@
-# robots.txt для shchilnuidrill.com
-
 User-agent: *
 Allow: /
-
-# Блокуємо приватні розділи
 Disallow: /admin/
 Disallow: /profile/
 Disallow: /auth/
@@ -12,27 +8,11 @@ Disallow: /register
 Disallow: /forgot-password
 Disallow: /reset-password
 Disallow: /verify-email
-
-# Блокуємо процес покупки
+Disallow: /resend-verification
 Disallow: /cart
-Disallow: /checkout
 Disallow: /checkout/
 Disallow: /payment/
 Disallow: /orders/success
-
-# Блокуємо API
 Disallow: /api/
 
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: GPTBot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-
-# Sitemap
 Sitemap: https://www.shchilnuidrill.com/sitemap.xml
