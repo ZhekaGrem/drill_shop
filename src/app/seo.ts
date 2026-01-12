@@ -82,7 +82,7 @@ export const baseMetadata: Metadata = {
   icons: {
     icon: [
       { url: '/assets/favicon/android-chrome-192x192.png', type: 'image/png', sizes: '192x192' },
-      { url: '/assets/favicon/favicon.ico' },
+      { url: 'https://www.shchilnuidrill.com/assets/favicon/favicon.ico' },
       { url: '/assets/favicon/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
       { url: '/assets/favicon/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
       { url: '/assets/favicon/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
@@ -92,7 +92,7 @@ export const baseMetadata: Metadata = {
     other: [
       {
         rel: 'mask-icon',
-        url: '/assets/favicon/favicon.ico',
+        url: 'https://www.shchilnuidrill.com/assets/favicon/favicon.ico',
       },
     ],
   },
