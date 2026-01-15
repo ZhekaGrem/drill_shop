@@ -23,7 +23,6 @@ export default function TelegramHomePage() {
     <div className={styles.wrapper}>
       <div className={styles.landingPage}>
         <div className={styles.landingContent}>
-          
           {/* Spline 3D модель - позаду кнопки */}
           <div className={styles.tshirtSpline}>
             {/* Placeholder - показується поки 3D не готова */}

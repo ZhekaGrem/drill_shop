@@ -54,11 +54,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   // Показуємо loading поки профіль завантажується
   if (!isInitialized || isProfileLoading) {
     return (
-      <LoadingOverlay
-        visible
-        overlayProps={{ blur: 2 }}
-        loaderProps={{ size: 'lg', color: 'yellow' }}
-      />
+      <LoadingOverlay visible overlayProps={{ blur: 2 }} loaderProps={{ size: 'lg', color: 'yellow' }} />
     );
   }
 
