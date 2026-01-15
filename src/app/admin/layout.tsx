@@ -39,15 +39,28 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   // Check admin access
   const isAdmin = userProfile?.role === 'ADMIN' || userProfile?.role === 'SUPER_ADMIN';
   const isManager = userProfile?.role === 'MANAGER' || isAdmin;
-  const hasAccess = isAuthenticated && isManager;
+
+  // Чекаємо поки профіль завантажиться (якщо авторизований)
+  const isProfileLoading = isAuthenticated && !userProfile;
+
   useEffect(() => {
-    if (!isInitialized) return;
+    if (!isInitialized || isProfileLoading) return;
 
     if (!isAuthenticated || !isManager) {
       router.push('/');
     }
-  }, [isAuthenticated, isManager, isInitialized, router]);
-  // ВИПРАВЛЕНО: не блокуємо UI якщо є профіль
+  }, [isAuthenticated, isManager, isInitialized, isProfileLoading, router]);
+
+  // Показуємо loading поки профіль завантажується
+  if (!isInitialized || isProfileLoading) {
+    return (
+      <LoadingOverlay
+        visible
+        overlayProps={{ blur: 2 }}
+        loaderProps={{ size: 'lg', color: 'yellow' }}
+      />
+    );
+  }
 
   const navItems = [
     {
