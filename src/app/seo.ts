@@ -20,6 +20,10 @@ export const baseMetadata: Metadata = {
     'Drill shop - офіційний магазин стильного мерчу. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні. мерч від ніжна оксана  Слава КЕДР кучми ',
   keywords: [
     'мерч',
+    'shchilnuidrill',
+    'shchilnui drill',
+    'щільний дрілл',
+    'drill',
     'ніжна оксана',
     'ніжна оксана пін',
     'ніжна оксана футболка',
@@ -43,6 +47,7 @@ export const baseMetadata: Metadata = {
     'R4zyob',
     'мерч R4zyob',
     'R4zyob мерч',
+    'Ніжна Оксана мерч',
     'Проклятий хуй мерч',
     'мерч Проклятий хуй',
     'Проклятий хуй футболка',
@@ -88,7 +93,7 @@ export const baseMetadata: Metadata = {
       { url: '/assets/favicon/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
     ],
     apple: [{ url: '/assets/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
-    shortcut: '/assets/favicon/favicon-16x16.png',
+    shortcut: '/assets/favicon/android-chrome-192x192.png',
     other: [
       {
         rel: 'mask-icon',

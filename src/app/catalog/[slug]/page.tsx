@@ -45,16 +45,32 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     // ✅ Використовуємо кешований запит (дедуплікація з page component)
     const product = await getProduct(slug);
 
+    const description = product.shortDescription || product.description?.substring(0, 160);
+    const productUrl = `https://www.shchilnuidrill.com/catalog/${product.slug}`;
+    const image = product.images?.[0];
+
     return {
       title: `${product.name}`,
-      description: product.shortDescription || product.description?.substring(0, 160),
+      description,
       alternates: {
-        canonical: `https://shchilnuidrill.com/catalog/${product.slug}`,
+        canonical: productUrl,
       },
       openGraph: {
         title: product.name,
-        description: product.shortDescription || undefined,
-        images: product.images?.[0]?.url ? [{ url: product.images[0].url }] : [],
+        description,
+        url: productUrl,
+        siteName: 'Drill shop',
+        locale: 'uk_UA',
+        type: 'website',
+        images: image?.url
+          ? [{ url: image.url, width: 851, height: 1024, alt: image.altText || product.name }]
+          : [],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: product.name,
+        description,
+        images: image?.url ? [image.url] : [],
       },
     };
   } catch {
