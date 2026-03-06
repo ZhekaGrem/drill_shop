@@ -110,7 +110,7 @@ export default function CatalogClient({ initialData, initialCategories, basePath
         }}>
         <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
       </Modal>
-      <Container size={1300} px={40} pb={50}>
+      <Container size={1300} px={{ base: 20, sm: 40 }} pb={50}>
         {error && (
           <div className={styles.error}>
             <h3>Помилка завантаження</h3>

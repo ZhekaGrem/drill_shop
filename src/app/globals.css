@@ -407,6 +407,10 @@ h6 {
 
 /* === РЕСПОНСИВ === */
 @media (max-width: 768px) {
+  :root {
+    --spacing-x: 20px;
+  }
+
   h1 {
     font-size: var(--text-xl); /* 20px */
   }
