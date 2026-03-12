@@ -9,7 +9,7 @@ export const revalidate = 26400;
 export async function generateMetadata() {
   return {
     title: 'Каталог товарів | Drill shop',
-    description: "Широкий вибір свіжого м'яса та м'ясних продуктів",
+    description: 'Великий вибір мерчу онлайн — футболки, худі, аксесуари. Доставка по Україні від офіційного магазину Drill shop.',
   };
 }
 

@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         url: productUrl,
         siteName: 'Drill shop',
         locale: 'uk_UA',
-        type: 'website',
+        type: 'article',
         images: image?.url
           ? [{ url: image.url, width: 851, height: 1024, alt: image.altText || product.name }]
           : [],
@@ -117,7 +117,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     ? structuredData.breadcrumb(
         productData.breadcrumbs.map((crumb) => ({
           name: crumb.name,
-          url: `https://shchilnuidrill.com${crumb.url}`,
+          url: `https://www.shchilnuidrill.com${crumb.url}`,
         }))
       )
     : null;

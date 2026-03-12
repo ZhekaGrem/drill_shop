@@ -4,7 +4,7 @@ import { assets } from './assets';
 export const siteConfig = {
   name: 'shchilnui Drill',
   fullName: 'Магазин мерчу топових музиків shchilnui Drill',
-  description: 'Найкраща якість мерчу вашого столу.',
+  description: 'Офіційний магазин мерчу. Футболки, худі та аксесуари з доставкою по Україні.',
   url: 'https://www.shchilnuidrill.com',
   contacts: {
     phone: '+38 (093) 000000000',
@@ -33,8 +33,7 @@ export const footerLinks = [
 
 // Категорії для футера
 export const footerCategories = [
-  { link: '/catalog?categoryId=cmf5vl97x0005jh2ex97db97l', label: 'Сало' },
-  { link: '/catalog?categoryId=cmf6y0qoy0007eu1xoo58ecb5', label: 'Птиця' },
-  { link: '/catalog?categoryId=cmf5vk71r0001jh2eyhkyt1bw', label: 'Ковбасні вироби' },
-  { link: '/catalog?categoryId=cmgqwczj20008kv8ujp98ysfc', label: 'Соуси' },
+  { link: '/catalog?category=t-shirt', label: 'Футболки' },
+  { link: '/catalog?category=buba', label: 'Худі' },
+  { link: '/catalog?category=size', label: 'Аксесуари' },
 ];

@@ -34,7 +34,8 @@
       "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\app\\\\telegram\\\\catalog\\\\[slug]\\\\TelegramProductDetailsClient.tsx\")",
       "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\app\\\\telegram\\\\catalog\\\\telegramCatalog.module.scss\")",
       "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\app\\\\telegram\\\\cart\\\\telegramCart.module.scss\")",
-      "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\public\\\\robots.txt\")"
+      "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\public\\\\robots.txt\")",
+      "Bash(cd \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\" && npx next lint 2>&1 | tail -20)"
     ],
     "deny": [],
     "ask": []

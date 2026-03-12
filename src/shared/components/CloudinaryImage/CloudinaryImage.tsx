@@ -14,6 +14,7 @@ interface CloudinaryImageProps {
   loading?: 'lazy' | 'eager';
   placeholder?: 'blur' | 'empty';
   blurDataURL?: string;
+  sizes?: string;
 }
 
 export function CloudinaryImage({
@@ -24,6 +25,7 @@ export function CloudinaryImage({
   className = '',
   loading = 'lazy',
   priority = false,
+  sizes,
 }: CloudinaryImageProps) {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,7 +62,7 @@ export function CloudinaryImage({
     placeholder: 'blur' as const,
     blurDataURL: blurUrl,
     onLoad: () => setIsLoading(false),
-    sizes: '(max-width: 768px) 100vw, 400px',
+    sizes: sizes || `(max-width: 768px) 100vw, ${width}px`,
     onError: () => {
       setIsLoading(false);
       setImageError(true);

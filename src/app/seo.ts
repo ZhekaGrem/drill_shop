@@ -17,7 +17,7 @@ export const baseMetadata: Metadata = {
   },
 
   description:
-    'Drill shop - офіційний магазин стильного мерчу. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні. мерч від ніжна оксана  Слава КЕДР кучми ',
+    'Drill shop — офіційний магазин мерчу. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
   keywords: [
     'мерч',
     'shchilnuidrill',
@@ -58,25 +58,25 @@ export const baseMetadata: Metadata = {
   ],
 
   openGraph: {
-    title: 'Drill shop',
-    description: 'Офіційний магазин мерчу.  Щільний мерч для вас. ніжна оксана nizhna oksana  Слава КЕДР',
+    title: 'Drill shop — офіційний магазин мерчу',
+    description: 'Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
     url: 'https://www.shchilnuidrill.com',
     siteName: 'Drill shop',
     locale: 'uk_UA',
     type: 'website',
     images: [
       {
-        url: '/logo/logo.jpg',
+        url: 'https://www.shchilnuidrill.com/logo/logo.jpg',
         width: 1200,
         height: 630,
-        alt: 'Drill shop ніжна оксана nizhna oksana',
+        alt: 'Drill shop — офіційний магазин мерчу',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Drill shop ніжна оксана nizhna oksana',
-    description: 'Офіційний мерч. Доставка по Україні.',
+    title: 'Drill shop — офіційний магазин мерчу',
+    description: 'Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
     images: ['https://www.shchilnuidrill.com/logo/logo.jpg'],
   },
   robots: {
@@ -114,7 +114,7 @@ export const pageMetadata = {
   home: (): Metadata => ({
     title: 'Головна',
     description:
-      'Замовити мерч онлайн. Щільний мерч від офіційного магазину. Доставка по Україні. ніжна оксана nizhna oksana',
+      'Замовити мерч онлайн. Футболки, худі та аксесуари від офіційного магазину з доставкою по Україні.',
     alternates: {
       canonical: 'https://www.shchilnuidrill.com',
     },
@@ -170,25 +170,42 @@ export const structuredData = {
   organization: () => ({
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': 'https://www.shchilnuidrill.com/#organization',
     name: 'Drill shop',
     url: 'https://www.shchilnuidrill.com',
-    logo: 'https://www.shchilnuidrill.com/logo/logo.png',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://www.shchilnuidrill.com/logo/logo.png',
+    },
     image: 'https://www.shchilnuidrill.com/logo/logo.png',
-    description: 'Офіційний магазин мерчу. Щільний мерч з доставкою по Україні',
+    description: 'Офіційний магазин мерчу. Футболки, худі та аксесуари з доставкою по Україні',
+    email: 'team@shchilnuidrill.com',
     telephone: '+380930465811',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+380930465811',
+      contactType: 'customer service',
+      areaServed: 'UA',
+      availableLanguage: 'uk',
+    },
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Львів',
       addressCountry: 'UA',
     },
-    sameAs: ['https://www.instagram.com/r4zyob'],
+    sameAs: ['https://www.instagram.com/r4zyob', 'https://t.me/makaron_gang'],
   }),
 
   website: () => ({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': 'https://www.shchilnuidrill.com/#website',
     name: 'Drill shop',
     url: 'https://www.shchilnuidrill.com',
+    inLanguage: 'uk',
+    publisher: {
+      '@id': 'https://www.shchilnuidrill.com/#organization',
+    },
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -207,12 +224,13 @@ export const structuredData = {
     slug: string;
     sku?: string;
     category?: { name: string };
+    inStock?: boolean;
   }) => ({
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
     description: product.description,
-    image: product.images?.[0]?.url,
+    image: product.images?.map((img) => img.url) || [],
     sku: product.sku || product.slug,
     brand: {
       '@type': 'Brand',
@@ -224,7 +242,9 @@ export const structuredData = {
       url: `https://www.shchilnuidrill.com/catalog/${product.slug}`,
       priceCurrency: 'UAH',
       price: product.price,
-      availability: 'https://schema.org/InStock',
+      priceValidUntil: new Date(new Date().getFullYear() + 1, 0, 1).toISOString().split('T')[0],
+      itemCondition: 'https://schema.org/NewCondition',
+      availability: product.inStock !== false ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       seller: {
         '@type': 'Organization',
         name: 'Drill shop',
