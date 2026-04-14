@@ -75,6 +75,12 @@ export function Footer() {
             <p>L&H.STUDIO</p>
           </div>
           <div className={styles.designerSection}>
+            <span>Реалізовано</span>
+            <a href="https://galychyna.online/" target="_blank" rel="noopener noreferrer">
+              <span>Galychyna</span>
+            </a>
+          </div>
+          <div className={styles.designerSection}>
             <span>Designed by</span>
             <a href="https://d-okuniev.framer.website/" target="_blank" rel="noopener noreferrer">
               <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">

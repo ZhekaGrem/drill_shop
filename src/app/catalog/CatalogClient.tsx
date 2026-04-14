@@ -77,7 +77,6 @@ export default function CatalogClient({ initialData, initialCategories, basePath
 
   return (
     <div className={styles.catalogPage}>
-      <h1 className="hiddenTitle">Каталог товарів</h1>
       {/* Кнопка фільтрів для мобільних */}
       <Button
         variant="outline"

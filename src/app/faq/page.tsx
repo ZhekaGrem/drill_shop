@@ -1,5 +1,8 @@
 import { Metadata } from 'next';
 import FAQ from './FAQ';
+import { flatFaqItems } from './faq-data';
+import { JsonLd } from '../JsonLd';
+import { structuredData } from '../seo';
 
 export const metadata: Metadata = {
   title: 'Часті питання',
@@ -10,7 +13,12 @@ export const metadata: Metadata = {
 };
 
 const page = () => {
-  return <FAQ />;
+  return (
+    <>
+      <JsonLd data={structuredData.faqPage(flatFaqItems)} />
+      <FAQ />
+    </>
+  );
 };
 
 export default page;

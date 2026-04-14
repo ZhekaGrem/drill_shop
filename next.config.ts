@@ -40,7 +40,7 @@ const nextConfig: NextConfig = {
       },
     ],
     // Оптимізація форматів
-    formats: ['image/webp', 'image/avif'],
+    formats: ['image/webp'],
     // Розміри для responsive images
     deviceSizes: [640, 1080, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

@@ -18,44 +18,6 @@ export const baseMetadata: Metadata = {
 
   description:
     'Drill shop — офіційний магазин мерчу. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
-  keywords: [
-    'мерч',
-    'shchilnuidrill',
-    'shchilnui drill',
-    'щільний дрілл',
-    'drill',
-    'ніжна оксана',
-    'ніжна оксана пін',
-    'ніжна оксана футболка',
-    'футболка ніжна оксана',
-    'nizhna oksana',
-    'Щільний мерч',
-    'мерч Слава КЕДР',
-    'мерч КЕДР',
-    'КЕДР мерч',
-    'Слава КЕДР',
-    'Слава КЕДР мерч',
-    'Слава КЕДР футболка',
-    'ніжна оксана мерч',
-    'мерч ніжна оксана ',
-    'кедр мерч',
-    'Badstreet boys',
-    'drill shop',
-    'drill мерч',
-    'мерч drill',
-    'український мерч',
-    'R4zyob',
-    'мерч R4zyob',
-    'R4zyob мерч',
-    'Ніжна Оксана мерч',
-    'Проклятий хуй мерч',
-    'мерч Проклятий хуй',
-    'Проклятий хуй футболка',
-    'Антон Хендрікс',
-    'пін Ніжна Оксана',
-    'BSB Studio',
-    'BSB Production',
-  ],
 
   openGraph: {
     title: 'Drill shop — офіційний магазин мерчу',
@@ -193,7 +155,16 @@ export const structuredData = {
       addressLocality: 'Львів',
       addressCountry: 'UA',
     },
-    sameAs: ['https://www.instagram.com/r4zyob', 'https://t.me/makaron_gang'],
+    sameAs: [
+      'https://www.instagram.com/r4zyob',
+      'https://t.me/makaron_gang',
+      'https://www.youtube.com/@ShchilnuiDRILL',
+      'https://www.tiktok.com/@shchilnuidrillstudio',
+      'https://soundcloud.com/user-128119866-528294401',
+      'https://soundcloud.com/erythroleukoplakiarec',
+      'https://open.spotify.com/artist/2fg0ORMp9fg8rxo7x5xpKR',
+      'https://open.spotify.com/artist/5opQ0dBye5KCmz5CDzaMrl',
+    ],
   }),
 
   website: () => ({
@@ -225,6 +196,14 @@ export const structuredData = {
     sku?: string;
     category?: { name: string };
     inStock?: boolean;
+    aggregateRating?: { averageRating: number; totalReviews: number };
+    reviews?: {
+      author: string;
+      rating: number;
+      title?: string;
+      content?: string;
+      createdAt: string;
+    }[];
   }) => ({
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -244,12 +223,41 @@ export const structuredData = {
       price: product.price,
       priceValidUntil: new Date(new Date().getFullYear() + 1, 0, 1).toISOString().split('T')[0],
       itemCondition: 'https://schema.org/NewCondition',
-      availability: product.inStock !== false ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      availability:
+        product.inStock !== false ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       seller: {
         '@type': 'Organization',
         name: 'Drill shop',
       },
     },
+    ...(product.aggregateRating && product.aggregateRating.totalReviews > 0
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: Number(product.aggregateRating.averageRating.toFixed(2)),
+            reviewCount: product.aggregateRating.totalReviews,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {}),
+    ...(product.reviews && product.reviews.length > 0
+      ? {
+          review: product.reviews.slice(0, 5).map((r) => ({
+            '@type': 'Review',
+            author: { '@type': 'Person', name: r.author },
+            datePublished: r.createdAt,
+            reviewRating: {
+              '@type': 'Rating',
+              ratingValue: r.rating,
+              bestRating: 5,
+              worstRating: 1,
+            },
+            ...(r.title ? { name: r.title } : {}),
+            ...(r.content ? { reviewBody: r.content } : {}),
+          })),
+        }
+      : {}),
   }),
 
   breadcrumb: (items: { name: string; url: string }[]) => ({
@@ -260,6 +268,31 @@ export const structuredData = {
       position: index + 1,
       name: item.name,
       item: item.url,
+    })),
+  }),
+
+  faqPage: (items: { question: string; answer: string }[]) => ({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  }),
+
+  itemList: (products: { name: string; slug: string; image?: string }[]) => ({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: products.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `https://www.shchilnuidrill.com/catalog/${p.slug}`,
+      name: p.name,
+      ...(p.image ? { image: p.image } : {}),
     })),
   }),
 };

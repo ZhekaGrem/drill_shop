@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 import { productsApi } from '@/features/catalog/api/products';
+import { reviewsApi } from '@/features/reviews/api/reviews-api';
 import ProductDetailsClient from './ProductDetailsClient';
 import { JsonLd } from '../../JsonLd';
 import { structuredData } from '../../seo';
@@ -17,6 +18,21 @@ export const dynamicParams = true;
 const getProduct = cache(async (slug: string) => {
   const response = await productsApi.getProductBySlug(slug);
   return response.data;
+});
+
+// Кешовані відгуки для schema (top-5 найкорисніших). Errors = degrade gracefully.
+const getProductReviewsForSchema = cache(async (productId: string) => {
+  try {
+    const res = await reviewsApi.getProductReviews({
+      productId,
+      sortBy: 'helpful',
+      limit: 5,
+      offset: 0,
+    });
+    return { stats: res.stats, reviews: res.data };
+  } catch {
+    return null;
+  }
 });
 
 // Генеруємо статичні шляхи для ВСІХ товарів при білді
@@ -45,9 +61,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     // ✅ Використовуємо кешований запит (дедуплікація з page component)
     const product = await getProduct(slug);
 
-    const description = product.shortDescription || product.description?.substring(0, 160);
     const productUrl = `https://www.shchilnuidrill.com/catalog/${product.slug}`;
     const image = product.images?.[0];
+
+    const shortDesc = product.shortDescription?.trim();
+    const longDesc = product.description?.trim();
+    const description =
+      shortDesc && shortDesc.length >= 80
+        ? shortDesc.slice(0, 160)
+        : longDesc
+          ? longDesc.slice(0, 160)
+          : `Купити ${product.name} у Drill shop. Ціна від ${product.price} грн. Офіційний магазин мерчу Щільний Drill, доставка по Україні.`;
 
     return {
       title: `${product.name}`,
@@ -102,6 +126,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   // Витягуємо назву категорії з breadcrumbs якщо доступна
   const categoryName = productData.breadcrumbs?.find((b) => b.slug !== 'catalog')?.name;
 
+  const reviewsPayload = await getProductReviewsForSchema(productData.id);
+
   const productStructuredData = structuredData.product({
     name: productData.name,
     description: productData.description || productData.shortDescription || undefined,
@@ -110,23 +136,43 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     slug: productData.slug,
     sku: productData.id?.toString(),
     category: categoryName ? { name: categoryName } : undefined,
+    inStock: productData.isInStock,
+    ...(reviewsPayload && reviewsPayload.stats.totalReviews > 0
+      ? {
+          aggregateRating: {
+            averageRating: reviewsPayload.stats.averageRating,
+            totalReviews: reviewsPayload.stats.totalReviews,
+          },
+          reviews: reviewsPayload.reviews.map((r) => ({
+            author: r.author.name,
+            rating: r.rating,
+            title: r.title,
+            content: r.content,
+            createdAt: r.createdAt,
+          })),
+        }
+      : {}),
   });
 
-  // Генеруємо breadcrumb structured data
-  const breadcrumbData = productData.breadcrumbs
-    ? structuredData.breadcrumb(
-        productData.breadcrumbs.map((crumb) => ({
-          name: crumb.name,
-          url: `https://www.shchilnuidrill.com${crumb.url}`,
-        }))
-      )
-    : null;
+  // Генеруємо breadcrumb structured data (з fallback, якщо бекенд не повертає breadcrumbs)
+  const breadcrumbItems = productData.breadcrumbs?.length
+    ? productData.breadcrumbs.map((crumb) => ({
+        name: crumb.name,
+        url: `https://www.shchilnuidrill.com${crumb.url}`,
+      }))
+    : [
+        { name: 'Головна', url: 'https://www.shchilnuidrill.com' },
+        { name: 'Каталог', url: 'https://www.shchilnuidrill.com/catalog' },
+        { name: productData.name, url: `https://www.shchilnuidrill.com/catalog/${productData.slug}` },
+      ];
+
+  const breadcrumbData = structuredData.breadcrumb(breadcrumbItems);
 
   // Передаємо статичні дані в клієнтський компонент
   return (
     <>
       <JsonLd data={productStructuredData} />
-      {breadcrumbData && <JsonLd data={breadcrumbData} />}
+      <JsonLd data={breadcrumbData} />
       <ProductDetailsClient initialProduct={productData} />
     </>
   );

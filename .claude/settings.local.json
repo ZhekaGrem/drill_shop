@@ -35,7 +35,11 @@
       "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\app\\\\telegram\\\\catalog\\\\telegramCatalog.module.scss\")",
       "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\src\\\\app\\\\telegram\\\\cart\\\\telegramCart.module.scss\")",
       "Bash(del \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\\\\public\\\\robots.txt\")",
-      "Bash(cd \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\" && npx next lint 2>&1 | tail -20)"
+      "Bash(cd \"F:\\\\Progect\\\\2025\\\\shop_bogdan\\\\frontend\" && npx next lint 2>&1 | tail -20)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('next:', [v for k,v in d.get\\('dependencies',{}\\).items\\(\\) if 'next' == k]\\); print\\('mantine:', [v for k,v in d.get\\('dependencies',{}\\).items\\(\\) if 'mantine/core' in k]\\)\")",
+      "Skill(megathink)",
+      "Read(//c/Users/yevhe/.claude/skills/seo-audit/**)",
+      "WebFetch(domain:www.shchilnuidrill.com)"
     ],
     "deny": [],
     "ask": []

@@ -70,12 +70,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       { limit: 1000, offset: 0 }
     );
 
-    const productPages: MetadataRoute.Sitemap = productsResponse.data.map((product) => ({
-      url: `${baseUrl}/catalog/${product.slug}`,
-      lastModified: product.updatedAt ? new Date(product.updatedAt) : new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }));
+    const productPages: MetadataRoute.Sitemap = productsResponse.data.map((product) => {
+      const imageUrls = [
+        product.primaryImage?.url,
+        ...(product.images?.map((i) => i.url) ?? []),
+      ].filter((u): u is string => !!u);
+
+      return {
+        url: `${baseUrl}/catalog/${product.slug}`,
+        lastModified: product.updatedAt ? new Date(product.updatedAt) : new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+        ...(imageUrls.length ? { images: imageUrls } : {}),
+      };
+    });
 
     // Завантажуємо всі категорії
     const categoriesResponse = await categoriesApi.getCategories();

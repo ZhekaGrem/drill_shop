@@ -1,15 +1,20 @@
 // src/app/catalog/page.tsx - SSG with categories
 import { productsApi, categoriesApi } from '@/features/catalog/api/products';
 import CatalogClient from './CatalogClient';
+import { JsonLd } from '../JsonLd';
+import { structuredData } from '../seo';
 
-// ✅ Revalidate кожні 6 години
-export const revalidate = 26400;
-// export const revalidate = 300;
+// ✅ Revalidate кожні 6 годин
+export const revalidate = 21600;
 
 export async function generateMetadata() {
   return {
-    title: 'Каталог товарів | Drill shop',
-    description: 'Великий вибір мерчу онлайн — футболки, худі, аксесуари. Доставка по Україні від офіційного магазину Drill shop.',
+    title: 'Каталог товарів',
+    description:
+      'Великий вибір мерчу онлайн — футболки, худі, аксесуари. Доставка по Україні від офіційного магазину Drill shop.',
+    alternates: {
+      canonical: 'https://www.shchilnuidrill.com/catalog',
+    },
   };
 }
 
@@ -41,5 +46,23 @@ async function getInitialCategories() {
 export default async function CatalogPage() {
   const [initialData, initialCategories] = await Promise.all([getInitialProducts(), getInitialCategories()]);
 
-  return <CatalogClient initialData={initialData} initialCategories={initialCategories} />;
+  const itemListData = initialData?.data
+    ? structuredData.itemList(
+        initialData.data.map((p) => ({
+          name: p.name,
+          slug: p.slug,
+          image: p.primaryImage?.url || p.images?.[0]?.url,
+        }))
+      )
+    : null;
+
+  return (
+    <>
+      {itemListData && <JsonLd data={itemListData} />}
+      <h1 className="hiddenTitle">
+        Каталог мерчу Drill shop — футболки, худі, постери та аксесуари
+      </h1>
+      <CatalogClient initialData={initialData} initialCategories={initialCategories} />
+    </>
+  );
 }

@@ -6,8 +6,9 @@ import { TelegramAuthProvider } from '@/shared/providers/TelegramAuthProvider';
 import { TelegramBottomNav } from '@/widgets/TelegramBottomNav';
 
 export const metadata: Metadata = {
-  title: 'Telegram Mini App - Shop Sausages',
-  description: "Інтернет-магазин м'ясних виробів в Telegram",
+  title: 'Telegram Mini App | Drill shop',
+  description: 'Drill shop у Telegram — мерч Щільний Drill зі сплатою в один клік.',
+  robots: { index: false, follow: false, nocache: true },
 };
 
 export default function TelegramLayout({ children }: { children: React.ReactNode }) {

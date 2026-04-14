@@ -14,5 +14,67 @@ Disallow: /checkout/
 Disallow: /payment/
 Disallow: /orders/success
 Disallow: /api/
+Disallow: /telegram/
+Disallow: /test
+Disallow: /*?search=
+Disallow: /*?sort=
+
+# AI search crawlers — явно дозволяємо для AI Overviews / ChatGPT / Perplexity / Claude
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /auth/
+Disallow: /cart
+Disallow: /checkout/
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /cart
+Disallow: /checkout/
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /cart
+Disallow: /checkout/
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /cart
+Disallow: /checkout/
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /cart
+Disallow: /checkout/
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /cart
+Disallow: /checkout/
+Disallow: /api/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /cart
+Disallow: /checkout/
+Disallow: /api/
 
 Sitemap: https://www.shchilnuidrill.com/sitemap.xml

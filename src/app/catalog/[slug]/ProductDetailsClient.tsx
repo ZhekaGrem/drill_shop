@@ -332,7 +332,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
 
   return (
     <div className={styles.productPage}>
-      {product && <h1 className="hiddenTitle">{product.name}</h1>}
       <div>
         {/* Breadcrumbs */}
         <nav className={styles.breadcrumbs}>

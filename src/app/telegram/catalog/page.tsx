@@ -6,7 +6,7 @@ export const revalidate = 26400; // 6 годин
 export async function generateMetadata() {
   return {
     title: 'Каталог | Telegram Mini App',
-    description: "Широкий вибір свіжого м'яса та м'ясних продуктів",
+    description: 'Офіційний мерч Щільного Drill: футболки, худі, постери та аксесуари.',
   };
 }
 

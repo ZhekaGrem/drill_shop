@@ -1,0 +1,46 @@
+# Drill shop — Щільний Drill
+
+> Офіційний магазин мерчу українських drill-артистів (Щільний Drill, Слава КЕДР, Ніжна Оксана, R4zyob, Проклятий Хуй, Антон Хендрікс, BSB Studio / BSB Production). Футболки, худі, постери, касети, пін та інші аксесуари. Виробництво та доставка з Львова по всій Україні.
+
+Контакти: team@shchilnuidrill.com, +380930465811
+Мова сайту: українська (uk_UA)
+Валюта: гривня (UAH)
+
+## Основні розділи
+
+- [Каталог](https://www.shchilnuidrill.com/catalog): усі товари магазину
+- [Про нас](https://www.shchilnuidrill.com/about): історія бренду та команди
+- [Доставка і оплата](https://www.shchilnuidrill.com/delivery-and-payment): способи доставки (Нова Пошта, Укрпошта, кур'єр, самовивіз) та оплати (Visa/MasterCard, LiqPay, MonoPay, готівка)
+- [Обмін і повернення](https://www.shchilnuidrill.com/returns-exchanges): умови повернення та обміну товару
+- [Часті питання (FAQ)](https://www.shchilnuidrill.com/faq): відповіді на типові питання покупців
+- [Контакти](https://www.shchilnuidrill.com/contact): адреса, телефон, email, соцмережі
+- [Публічна оферта](https://www.shchilnuidrill.com/public-offer)
+- [Політика конфіденційності](https://www.shchilnuidrill.com/privacy-policy)
+
+## Артисти, мерч яких ми продаємо
+
+- **Щільний Drill** — центральний бренд магазину, базується у Львові. Мерч: футболки, худі, постери, касети, піни.
+- **Ніжна Оксана / R4zyob** — два сценічні амплуа одного й того ж українського виконавця. Релізи виходять на лейблі Erythroleukoplakia Records і доступні на [SoundCloud](https://soundcloud.com/erythroleukoplakiarec), Bandcamp, Apple Music, Spotify, Deezer. Профіль у соцмережах: [Instagram @r4zyob](https://www.instagram.com/r4zyob). Мерч: футболки, худі, піни, постери.
+- **Проклятий Хуй** — панк-рок гурт із Харкова. Дебютний самойменний альбом (10 треків) вийшов у травні 2023 року. Мерч: футболки, худі, постери.
+- **Антон Хендрікс** — український виконавець, пов'язаний зі сценою бренду.
+
+## Ключові факти
+
+- Усі товари — офіційні, виготовляються спеціально для магазину обмеженими тиражами.
+- Головний офіс і виробництво — Львів, Україна.
+- Доставка: Нова Пошта, Укрпошта, самовивіз (Львів). Безкоштовна доставка від 1000 грн.
+- Оплата: Visa / MasterCard (3D Secure), LiqPay, MonoPay, готівка при отриманні.
+- Валюта: гривня (UAH). Офіційна мова сайту: українська.
+
+## Sitemap
+
+- [XML sitemap](https://www.shchilnuidrill.com/sitemap.xml)
+
+## Соцмережі
+
+- Instagram: https://www.instagram.com/r4zyob
+- Telegram: https://t.me/makaron_gang
+- YouTube: https://www.youtube.com/@ShchilnuiDRILL
+- TikTok: https://www.tiktok.com/@shchilnuidrillstudio
+- SoundCloud: https://soundcloud.com/user-128119866-528294401, https://soundcloud.com/erythroleukoplakiarec
+- Spotify: https://open.spotify.com/artist/2fg0ORMp9fg8rxo7x5xpKR, https://open.spotify.com/artist/5opQ0dBye5KCmz5CDzaMrl

@@ -6,7 +6,7 @@
 
 ## 🎯 Огляд проекту
 
-**Shop ** — це Next.js e-commerce застосунок для продажу з використанням **Feature-Sliced Design (FSD)** архітектури.
+**shchilnui Drill** — це Next.js e-commerce магазин мерчу (футболки, худі, аксесуари) з використанням **Feature-Sliced Design (FSD)** архітектури.
 
 ### Ролі та цілі
 
@@ -21,7 +21,7 @@
 
 ### Стек технологій
 
-- **Frontend:** Next.js 16, TypeScript, Mantine UI 8.2.8, Zustand, TanStack Query
+- **Frontend:** Next.js 16, TypeScript, Mantine UI 8.3, Zustand, TanStack Query
 - **Backend Integration:** Express, Prisma, PostgreSQL (Supabase)
 - **Auth:** Supabase Authentication
 - **Images:** Cloudinary CDN
@@ -72,6 +72,8 @@ src/
 
 - `about/`, `admin/`, `auth/`, `catalog/`, `cart/`, `checkout/`
 - `payment/`, `profile/`, `orders/`, `contact/`, `faq/`
+- `delivery-and-payment/`, `forgot-password/`, `privacy-policy/`, `public-offer/`
+- `register/`, `resend-verification/`, `login/`
 
 #### `src/features/` - Feature-модулі
 
@@ -86,6 +88,7 @@ src/
 - `admin/` - Адміністративні функції
 - `profile/` - Профіль користувача
 - `favorites/` - Список обраного
+- `notify-availability/` - Сповіщення про наявність товару
 
 #### `src/shared/` - Спільні ресурси
 
@@ -95,6 +98,7 @@ src/
   - `cart.ts` - Стан кошика з підтримкою сесій
   - `categories.ts` - Категорії продуктів
   - `favorites.ts` - Обрані товари
+  - `telegram-auth.ts` - Telegram аутентифікація
 - **`types/`** - TypeScript типи та інтерфейси
 - **`utils/`** - Допоміжні функції:
   - `format.ts` - Форматування (ціна, дата)
@@ -105,13 +109,20 @@ src/
 - **`providers/`** - React providers (Auth, Error Boundary)
 - **`config/`** - Конфігурації:
   - `site.ts` - Дані про сайт (назва, контакти, соцмережі)
-  - `seo.ts` - SEO та metadata
   - `mantine-theme.ts` - Тема Mantine UI
+  - `assets.ts` - Шляхи до статичних ресурсів
+  - `content.ts` - Контентні конфігурації
+  - `design-tokens.ts` - Дизайн-токени
+  - `react-query.ts` - Конфігурація TanStack Query
 
 #### `src/widgets/` - Великі UI компоненти
 
 - `Header/` - Шапка сайту
 - `Footer/` - Підвал сайту
+- `ChatWidget/` - Чат-віджет
+- `HeroImage/` - Hero секція головної сторінки
+- `PopularProductsSlider/` - Слайдер популярних товарів
+- `TelegramBottomNav/` - Нижня навігація для Telegram
 
 ---
 
@@ -128,16 +139,7 @@ src/
   - `revalidate: 86400` (24 години) для blogs/статичного контенту
 - **ЗАБОРОНЕНО:** НЕ використовуй `export const dynamic = 'force-dynamic'` або `no-store` fetch, якщо це не критично необхідно для real-time user-specific даних (cart, profile)
 
-**Приклад:**
-
-```typescript
-// ✅ ПРАВИЛЬНО - ISR для товарів
-export const revalidate = 3600; // 1 година
-export default async function ProductPage() { ... }
-
-// ❌ НЕПРАВИЛЬНО - динамічний рендеринг
-export const dynamic = 'force-dynamic';
-```
+**Заборонено:** `export const dynamic = 'force-dynamic'` та `no-store` fetch без реальної потреби
 
 ### 2. Middleware Discipline
 
@@ -155,27 +157,8 @@ export const config = {
 
 ### 3. Database Connections (Serverless)
 
-- **SINGLETON PATTERN:** Використовуй глобальний singleton для Prisma/Supabase clients
-- **FORBIDDEN:** НІКОЛИ не створюй `new PrismaClient()` всередині функції/компонента (connection exhaustion)
-
-**Приклад:**
-
-```typescript
-// ✅ ПРАВИЛЬНО - Singleton
-// shared/utils/db.ts
-import { PrismaClient } from '@prisma/client';
-
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
-
-export const prisma = globalForPrisma.prisma || new PrismaClient();
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
-
-// ❌ НЕПРАВИЛЬНО
-async function handler() {
-  const prisma = new PrismaClient(); // Connection leak!
-}
-```
+- **SINGLETON PATTERN:** Глобальний singleton для Prisma/Supabase clients
+- **FORBIDDEN:** НІКОЛИ `new PrismaClient()` всередині функції/компонента (connection exhaustion)
 
 ### 4. Image Optimization
 
@@ -203,29 +186,7 @@ app → widgets → features → shared
 
 **Рішення:** Використовуй `shared` для спільної логіки або передавай через props/slots в `widgets`
 
-**Приклади:**
-
-```typescript
-// ✅ ПРАВИЛЬНО
-// features/cart/components/CartButton.tsx
-import { Button } from '@/shared/ui/Button';
-import { useCartStore } from '@/shared/stores/cart';
-
-// ❌ НЕПРАВИЛЬНО
-// features/cart/components/CartButton.tsx
-import { ProductCard } from '@/features/catalog/components/ProductCard'; // Cross-feature!
-
-// ❌ НЕПРАВИЛЬНО
-// shared/utils/helpers.ts
-import { useAuth } from '@/features/auth/hooks/useAuth'; // Shared → Features!
-```
-
-### Folder Structure Context
-
-- **`src/app/`** - Next.js App Router pages (`catalog`, `cart`, `checkout`, `admin`)
-- **`src/widgets/`** - Великі UI блоки (`Header`, `Footer`, `ProductList`)
-- **`src/features/`** - Бізнес-сценарії (`auth`, `cart`, `catalog`, `payment`, `admin`)
-- **`src/shared/`** - Переиспользуємі примітиви (`api`, `stores`, `ui`, `utils`)
+**Заборонено:** cross-feature imports (`features/cart` → `features/catalog`) та `shared` → `features`
 
 ---
 
@@ -285,97 +246,20 @@ import { useAuth } from '@/features/auth/hooks/useAuth'; // Shared → Features!
 
 ## 🏗️ Архітектурні патерни
 
-### State Management Pattern (Коли що використовувати)
+### State Management
 
-**Server Data (Products, Orders, Profile):** → **TanStack Query**
-
-```typescript
-// ✅ Використовуй для API даних
-import { useQuery } from '@tanstack/react-query';
-
-export const useProducts = (filters?: ProductFilters) => {
-  return useQuery({
-    queryKey: ['products', filters],
-    queryFn: () => productApi.getList(filters),
-    staleTime: 5 * 60 * 1000, // 5 хв кеш
-  });
-};
-```
-
-**Client State (Modals, Auth User, Cart items):** → **Zustand**
-
-```typescript
-// ✅ Використовуй для UI стану
-import { create } from 'zustand';
-
-export const useCartStore = create<CartState>((set) => ({
-  items: [],
-  addItem: (item) => set((state) => ({ items: [...state.items, item] })),
-}));
-```
-
-### Component Structure Template (Максимум 150 рядків)
-
-```typescript
-import React from 'react';
-import { Box, Button } from '@mantine/core';
-import { useProductLogic } from '../hooks/useProductLogic'; // Custom Hook
-import styles from './ProductCard.module.scss';
-
-interface Props {
-  product: Product;
-}
-
-export const ProductCard: React.FC<Props> = ({ product }) => {
-  // 1. Логіка винесена в hook
-  const { addToCart, isLoading } = useProductLogic(product);
-
-  // 2. Early returns
-  if (!product) return null;
-
-  // 3. Render
-  return (
-    <Box className={styles.card}>
-      {/* Mantine props для layout */}
-      <Box mt="md" display="flex">
-        <Button onClick={addToCart} loading={isLoading}>
-          Купити
-        </Button>
-      </Box>
-    </Box>
-  );
-};
-```
+- **Server Data** (Products, Orders, Profile) → **TanStack Query** (hooks в `features/*/hooks/`)
+- **Client State** (Modals, Auth, Cart) → **Zustand** (stores в `shared/stores/`)
 
 ### API інтеграція
 
-Всі API виклики використовують налаштований Axios клієнт з `src/shared/api/client.ts`:
-
-- Автоматично включає Supabase auth токени з кешуванням
-- Централізовані endpoints в `src/shared/api/endpoints.ts`
-- Feature-специфічні API файли (наприклад, `src/features/catalog/api/products.ts`)
-
-**Приклад:**
-
-```typescript
-import { apiClient } from '@/shared/api/client';
-import { API_ENDPOINTS } from '@/shared/api/endpoints';
-
-// GET запит
-const { data } = await apiClient.get(API_ENDPOINTS.PRODUCTS.LIST);
-
-// POST запит
-await apiClient.post(API_ENDPOINTS.ORDERS.CREATE, orderData);
-```
+- Axios клієнт: `src/shared/api/client.ts` (авто-включає Supabase auth токени)
+- Endpoints: `src/shared/api/endpoints.ts`
+- Feature API: `src/features/*/api/`
 
 ### Feature-модулі
 
-Кожна feature (наприклад, `cart`, `catalog`, `auth`) містить:
-
-- **`components/`** - Feature-специфічні React компоненти
-- **`api/`** - API виклики для feature
-- **`hooks/`** - Custom hooks для feature
-- **`types.ts`** - Feature-специфічні типи (за потреби)
+Кожна feature містить: `components/`, `api/`, `hooks/`, опціонально `types.ts`
 
 ---
 
@@ -487,336 +371,44 @@ TELEGRAM_CHAT_ID="..."
 
 ### Додавання нової feature
 
-1. Створіть директорію в `src/features/{featureName}`
-2. Додайте піддиректорії: `components/`, `api/`, `hooks/`
-3. Експортуйте публічний API через `index.ts` feature
-4. Імпортуйте та використовуйте в сторінках або інших features
-
-**Приклад структури:**
-
-```
-src/features/myfeature/
-├── components/
-│   ├── MyComponent.tsx
-│   └── index.ts
-├── api/
-│   └── myfeature-api.ts
-├── hooks/
-│   └── useMyFeature.ts
-└── index.ts  # Публічний API
-```
-
-### Додавання нового API endpoint
-
-1. Додайте константу endpoint в `src/shared/api/endpoints.ts`:
-
-   ```typescript
-   export const API_ENDPOINTS = {
-     // ...
-     MY_FEATURE: {
-       LIST: '/my-feature',
-       DETAIL: (id: string) => `/my-feature/${id}`,
-     },
-   };
-   ```
-
-2. Створіть feature-специфічний API файл:
-
-   ```typescript
-   // src/features/myfeature/api/myfeature-api.ts
-   import { apiClient } from '@/shared/api/client';
-   import { API_ENDPOINTS } from '@/shared/api/endpoints';
-
-   export const getMyFeatureList = async () => {
-     const { data } = await apiClient.get(API_ENDPOINTS.MY_FEATURE.LIST);
-     return data;
-   };
-   ```
-
-3. Використовуйте з TanStack Query в hook:
-
-   ```typescript
-   // src/features/myfeature/hooks/useMyFeature.ts
-   import { useQuery } from '@tanstack/react-query';
-   import { getMyFeatureList } from '../api/myfeature-api';
-
-   export const useMyFeatureList = () => {
-     return useQuery({
-       queryKey: ['my-feature-list'],
-       queryFn: getMyFeatureList,
-     });
-   };
-   ```
-
-### Додавання до глобального стану
-
-1. Створіть/оновіть store в `src/shared/stores/`:
-
-   ```typescript
-   // src/shared/stores/mystore.ts
-   import { create } from 'zustand';
-
-   interface MyStoreState {
-     value: string;
-     setValue: (value: string) => void;
-   }
-
-   export const useMyStore = create<MyStoreState>((set) => ({
-     value: '',
-     setValue: (value) => set({ value }),
-   }));
-   ```
-
-2. Використовуйте в компонентах:
-
-   ```typescript
-   import { useMyStore } from '@/shared/stores/mystore';
-
-   function MyComponent() {
-     const { value, setValue } = useMyStore();
-     // ...
-   }
-   ```
+1. Створіть `src/features/{featureName}/` з піддиректоріями: `components/`, `api/`, `hooks/`
+2. Endpoint → `src/shared/api/endpoints.ts`, API файл → `features/*/api/`, Hook з TanStack Query → `features/*/hooks/`
+3. Store (якщо потрібен) → `src/shared/stores/`
 
 ---
 
-## 🚫 Anti-Patterns & Guardrails
+## 🚫 Anti-Patterns (Короткий список)
 
-### ❌ NO N+1 Queries
-
-НІКОЛИ не робіть fetch даних всередині `.map()` циклу. Завантажуйте в bulk.
-
-```typescript
-// ❌ НЕПРАВИЛЬНО - N+1 запитів
-products.map(async (p) => {
-  const details = await fetch(`/api/products/${p.id}`); // N запитів!
-});
-
-// ✅ ПРАВИЛЬНО - один bulk запит
-const ids = products.map((p) => p.id);
-const details = await fetch(`/api/products/bulk?ids=${ids.join(',')}`);
-```
-
-### ❌ NO useEffect для Data Fetching
-
-Використовуй TanStack Query замість `useEffect`.
-
-```typescript
-// ❌ НЕПРАВИЛЬНО
-useEffect(() => {
-  fetch('/api/products').then(setProducts);
-}, []);
-
-// ✅ ПРАВИЛЬНО
-const { data: products } = useQuery({
-  queryKey: ['products'],
-  queryFn: () => productApi.getList(),
-});
-```
-
-### ❌ NO Generic `any`
-
-Використовуй `unknown` або визнач interface.
-
-```typescript
-// ❌ НЕПРАВИЛЬНО
-const data: any = await fetch(...);
-
-// ✅ ПРАВИЛЬНО
-interface Product { id: string; name: string; }
-const data: Product = await fetch(...);
-```
-
-### ❌ NO Direct API Calls в Components
-
-Завжди використовуй API layer (`src/shared/api` або `src/features/*/api`).
-
-```typescript
-// ❌ НЕПРАВИЛЬНО
-function ProductCard() {
-  const res = await fetch('/api/products/123');
-}
-
-// ✅ ПРАВИЛЬНО
-function ProductCard() {
-  const { data } = useProduct('123'); // Hook → API layer
-}
-```
-
-### ❌ NO Hardcoded Configs
-
-Використовуй `.env` та `src/shared/config`.
-
-```typescript
-// ❌ НЕПРАВИЛЬНО
-const API_URL = 'https://api.example.com';
-
-// ✅ ПРАВИЛЬНО
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-```
+- **NO N+1 Queries** — не fetch в `.map()`, завантажуй bulk
+- **NO useEffect для Data Fetching** — використовуй TanStack Query
+- **NO Generic `any`** — використовуй `unknown` або конкретний interface
+- **NO Direct API Calls в Components** — завжди через API layer (`shared/api` або `features/*/api`)
+- **NO Hardcoded Configs** — використовуй `.env` та `shared/config`
 
 ---
 
-## ⚠️ ОБОВ'ЯЗКОВИЙ ЧЕКЛИСТ ПРОСТОТИ
+## ⚠️ Принципи простоти (KISS)
 
-**СТОП! Перед написанням БУДЬ-ЯКОГО коду пройди цей чеклист:**
-
-### 🎯 Принцип простоти (KISS - Keep It Simple, Stupid)
-
-> **"Найпростіше рішення - це не те яке виглядає розумним, а те яке працює з мінімальною кількістю коду."**
-
-### ✅ Чеклист перед кодом (відповідь на ВСІ питання):
-
-1. **Чи можна це зробити ПРОСТІШЕ?**
-   - Якщо можна видалити код і воно все одно працює → видали
-   - Якщо логіка повторюється → це один рядок, не 20
-   - Якщо є 3+ рівні if/else → рефактор
-
-2. **Чи я додаю щось ЗАЙВЕ?**
-   - ❌ Функції "на майбутнє"
-   - ❌ Перевірки "на всяк випадок"
-   - ❌ Абстракції для 1-2 використань
-   - ❌ Універсальність яка не потрібна зараз
-
-3. **Чи є ДУБЛЮВАННЯ логіки?**
-   - Якщо копіюєш код 2+ рази → функція
-   - Якщо if/else роблять ТЕ САМЕ → один варіант
-   - Якщо різні платформи мають ОДНАКОВУ логіку → один код для всіх
-
-4. **Чи РОЗУМІЮ я навіщо кожен рядок?**
-   - Якщо не можеш пояснити за 10 секунд → не додавай
-   - Якщо "може знадобиться" → НЕ додавай зараз
-   - Якщо "для надійності" але не тестував → НЕ додавай
-
-5. **Чи зрозуміє це джун через 6 місяців?**
-   - Якщо потрібні коментарі щоб пояснити → спрости код
-   - Якщо назви змінних незрозумілі → переназви
-   - Якщо логіка заплутана → розбий на простіші частини
-
-### 🚫 ANTI-PATTERNS (НЕ РОБИ НІКОЛИ!)
-
-#### ❌ Дублювання однакової логіки:
-
-```typescript
-// WRONG - різні гілки, та сама логіка
-if (isIOS) {
-  doSomething();
-} else if (isAndroid) {
-  doSomething(); // ТА САМА ФУНКЦІЯ!
-} else {
-  doSomething(); // І ЗНОВУ!
-}
-
-// RIGHT - одна логіка для всіх
-doSomething(); // Просто і ясно
-```
-
-#### ❌ Передчасна оптимізація/універсалізація:
-
-```typescript
-// WRONG - "універсальна" функція для одного випадку
-function createUrl(type: string, platform: string, message: string, options?: {...}) {
-  // 50 рядків різних перевірок та логіки
-}
-
-// RIGHT - проста функція для конкретного випадку
-function createViberUrl(phone: string, message: string) {
-  return `viber://chat?number=${phone}&draft=${message}`;
-}
-```
-
-#### ❌ Зайві перевірки без реальної потреби:
-
-```typescript
-// WRONG - перевірки які нічого не змінюють
-if (isProduction && isEnabled && hasPermission && isValid) {
-  sendMessage(text);
-}
-
-// RIGHT - якщо всі умови завжди true, то навіщо?
-sendMessage(text);
-```
-
-### 🤔 КОЛИ ОБОВ'ЯЗКОВО ЗАПИТАТИ КОРИСТУВАЧА
-
-**ЗАВЖДИ питай ПЕРЕД тим як:**
-
-1. ✋ Додавати функціонал який "може знадобитись"
-2. ✋ Робити код "універсальнішим" без конкретної потреби
-3. ✋ Додавати перевірки платформи/браузера якщо логіка однакова
-4. ✋ Створювати абстракції для 1-2 використань
-5. ✋ Писати >50 рядків коду на простий таск
-6. ✋ Сумніваєшся чи потрібна ця складність
-
-**Формат питання:**
-
-> "Я хочу додати [ЩО]. Це потрібно для [НАВІЩО]. Але можна простіше [ЯК]. Що обрати?"
-
-### 📏 ЛІМІТИ СКЛАДНОСТІ (жорсткі правила)
+### Ліміти складності
 
 - **Функція:** максимум 50 рядків
 - **Component:** максимум 150 рядків
 - **If/else:** максимум 2 рівні вкладеності
-- **Дублювання:** 0 толерантності - DRY principle
-- **Параметри функції:** максимум 4 параметри
+- **Параметри функції:** максимум 4
+- **Дублювання:** 0 толерантності (DRY)
 
-**Правило:** Якщо перевищуєш ліміт → розбий на менші частини або спрости.
+### Коли запитати користувача
 
-### 🔍 САМОПЕРЕВІРКА ПІСЛЯ КОДУ
-
-Після написання коду, запитай себе:
-
-1. ✅ Чи можу я видалити 30%+ коду і воно все одно працює?
-2. ✅ Чи зрозуміє це джун без пояснень?
-3. ✅ Чи немає дублювання логіки?
-4. ✅ Чи всі перевірки/умови реально потрібні?
-5. ✅ Чи можна це написати простіше?
-
-**Якщо на БУДЬ-ЯКЕ питання відповідь "ні" → рефактор!**
+Питай ПЕРЕД тим як: додавати функціонал "на майбутнє", робити код "універсальнішим", створювати абстракції для 1-2 використань, або писати >50 рядків на простий таск.
 
 ---
 
 ## 📝 Правила роботи з кодом
 
-### Аналіз перед реалізацією
-
-**ОБОВ'ЯЗКОВО** перед написанням коду:
-
-1. Проаналізуй проблему та існуючий код
-2. Знайди всі дублювання операцій або патернів
-3. Запропонуй найпростіше та найефективніше рішення
-4. Запитай підтвердження перед реалізацією
-
-### Вимоги до коду
-
-- ✅ Найпростіше рішення без over-engineering
-- ✅ НЕ додавати нічого зайвого від себе
-- ✅ Повністю працююча система для продакшену
-- ✅ Готовий код без заглушок та TODO
-- ✅ Production-ready з обробкою помилок
-- ✅ Мінімальні зміни в існуючій структурі
-- ✅ Збереження бізнес-логіки
-- ✅ Type-safe TypeScript код
-
-### Перевірка на дублювання
-
-Перевір:
-
-- Однакові операції або функції
-- Повторювані патерни коду
-- Можливість винести спільну логіку
-
-**Якщо знайдеш - обов'язково повідом!**
-
-### Формат виводу змін
-
-Показувати тільки:
-
-- 1 рядок до зміни
-- Змінені рядки
-- 1 рядок після зміни
-
-**Повний код** - тільки якщо змінюється >50% файлу.
+- Аналізуй існуючий код та шукай дублювання перед реалізацією
+- Найпростіше рішення, production-ready, type-safe, без заглушок/TODO
+- Мінімальні зміни в існуючій структурі, збереження бізнес-логіки
+- Показуй тільки змінені рядки (+1 рядок контексту), повний код — якщо >50% файлу змінено
 
 ---
 
@@ -848,58 +440,13 @@ sendMessage(text);
 
 ## ⚠️ Важливі нотатки
 
-- Проект використовує **Next.js App Router** (не Pages Router)
-- **Supabase** - провайдер аутентифікації (розумійте SSR helper інтеграцію)
-- Build має `ignoreBuildErrors: false` - виправляйте помилки локально
-- Feature-модулі мають мінімізувати cross-feature залежності
-- Використовуйте **shared layer** для спільної логіки
+- **App Router** (не Pages Router), build з `ignoreBuildErrors: false`
 - Кошик підтримує гостьові сесії (auth не обов'язковий)
-- **Cost-Efficient:** Мінімальне використання Vercel Compute (Fluid Active CPU)
-- **Scalable:** Готовність до 1000+ користувачів без архітектурних змін
-- **Performant:** 95+ Lighthouse scores за замовчуванням
+- Supabase SSR helper інтеграція для аутентифікації
 
 ---
 
 ## 🎯 Контекст проекту
 
-- **Stack:** Next.js 16, TypeScript, Zustand, Mantine 8.2.8, TanStack React Query, Express, Prisma, PostgreSQL (Supabase)
-- **Architecture:** Feature-Sliced Design (frontend) + Clean Architecture (backend)
-- **Domain:** Український e-commerce магазин м'ясних виробів
+- **Domain:** Український магазин мерчу музикантів shchilnui Drill
 - **Roles:** customer, manager, admin, super_admin
-
----
-
-## 🚀 Швидкий старт для розробника
-
-```bash
-# 1. Клонування та встановлення
-git clone <repo-url>
-cd nameprogect/frontend
-npm install
-
-# 2. Налаштування
-cp .env.example .env.local
-# Відредагуйте .env.local
-
-# 3. Запуск
-npm run dev
-```
-
-Детальніше дивись **README.md**.
-
----
-
-## 📚 Корисні посилання
-
-- [Next.js 16 Docs](https://nextjs.org/docs)
-- [Mantine UI 8](https://mantine.dev/)
-- [Zustand](https://docs.pmnd.rs/zustand/)
-- [TanStack Query](https://tanstack.com/query/latest)
-- [Feature-Sliced Design](https://feature-sliced.design/)
-- [Supabase Auth](https://supabase.com/docs/guides/auth)
-- [Vercel Edge Middleware](https://vercel.com/docs/concepts/functions/edge-middleware)
-- [Next.js Image Optimization](https://nextjs.org/docs/app/building-your-application/optimizing/images)
-
----
-
-**Успішної розробки! 🎉**
