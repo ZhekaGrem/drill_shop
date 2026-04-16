@@ -18,8 +18,7 @@ const FAQ = () => {
       .map((category) => ({
         ...category,
         questions: category.questions.filter(
-          (item) =>
-            item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q)
+          (item) => item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q)
         ),
       }))
       .filter((category) => category.questions.length > 0);
@@ -62,8 +61,8 @@ const FAQ = () => {
           </h1>
 
           <p className={styles.heroSub}>
-            Тут усе, що треба знати про замовлення, доставку, оплату, розміри й мерч{' '}
-            <b>Щільного Drill</b>. Не знайшов відповіді — писни нам напряму, ми на зв&apos;язку.
+            Тут усе, що треба знати про замовлення, доставку, оплату, розміри й мерч <b>Щільного Drill</b>. Не
+            знайшов відповіді — писни нам напряму, ми на зв&apos;язку.
           </p>
 
           <div className={styles.heroStats}>
@@ -110,9 +109,7 @@ const FAQ = () => {
           filtered.map((category, categoryIndex) => (
             <section key={category.category} className={styles.category}>
               <header className={styles.categoryHead}>
-                <span className={styles.categoryIndex}>
-                  {String(categoryIndex + 1).padStart(2, '0')}
-                </span>
+                <span className={styles.categoryIndex}>{String(categoryIndex + 1).padStart(2, '0')}</span>
                 <h2 className={styles.categoryTitle}>{category.category}</h2>
                 <span className={styles.categoryCount}>
                   [{String(category.questions.length).padStart(2, '0')} Q]
@@ -124,9 +121,7 @@ const FAQ = () => {
                   <li key={item.question}>
                     <details className={styles.qItem}>
                       <summary className={styles.qTrigger}>
-                        <span className={styles.qNum}>
-                          Q.{String(index + 1).padStart(2, '0')}
-                        </span>
+                        <span className={styles.qNum}>Q.{String(index + 1).padStart(2, '0')}</span>
                         <span className={styles.qText}>{item.question}</span>
                         <span className={styles.qToggle} aria-hidden="true">
                           <span className={styles.qToggleBar} />
@@ -189,10 +184,7 @@ const FAQ = () => {
 
           <ul className={styles.ctaLinks}>
             <li>
-              <a
-                href="https://t.me/makaron_gang"
-                target="_blank"
-                rel="noopener noreferrer">
+              <a href="https://t.me/makaron_gang" target="_blank" rel="noopener noreferrer">
                 <span>telegram</span>
                 <b>@makaron_gang</b>
                 <i aria-hidden="true">→</i>

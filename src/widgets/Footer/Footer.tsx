@@ -70,12 +70,9 @@ export function Footer() {
         <div className={styles.bottomSection}>
           <Text className={styles.copyright}>© {currentYear} shchilnuidrill.com</Text>
 
+         
           <div className={styles.designerSection}>
             <span>Developed</span>
-            <p>L&H.STUDIO</p>
-          </div>
-          <div className={styles.designerSection}>
-            <span>Реалізовано</span>
             <a href="https://galychyna.online/" target="_blank" rel="noopener noreferrer">
               <span>Galychyna</span>
             </a>

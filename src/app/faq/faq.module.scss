@@ -16,11 +16,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: repeating-linear-gradient(
-      135deg,
-      transparent 0 40px,
-      rgba(43, 43, 39, 0.04) 40px 42px
-    );
+    background: repeating-linear-gradient(135deg, transparent 0 40px, rgba(43, 43, 39, 0.04) 40px 42px);
     z-index: 0;
   }
 }
