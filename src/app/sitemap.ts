@@ -71,10 +71,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     );
 
     const productPages: MetadataRoute.Sitemap = productsResponse.data.map((product) => {
-      const imageUrls = [
-        product.primaryImage?.url,
-        ...(product.images?.map((i) => i.url) ?? []),
-      ].filter((u): u is string => !!u);
+      const imageUrls = [product.primaryImage?.url, ...(product.images?.map((i) => i.url) ?? [])].filter(
+        (u): u is string => !!u
+      );
 
       return {
         url: `${baseUrl}/catalog/${product.slug}`,

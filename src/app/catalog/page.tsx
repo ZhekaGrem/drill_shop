@@ -59,9 +59,7 @@ export default async function CatalogPage() {
   return (
     <>
       {itemListData && <JsonLd data={itemListData} />}
-      <h1 className="hiddenTitle">
-        Каталог мерчу Drill shop — футболки, худі, постери та аксесуари
-      </h1>
+      <h1 className="hiddenTitle">Каталог мерчу Drill shop — футболки, худі, постери та аксесуари</h1>
       <CatalogClient initialData={initialData} initialCategories={initialCategories} />
     </>
   );
