@@ -409,8 +409,8 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                     )}
                     alt={product.name}
                     className={styles.productGallery__mainImage}
-                    width={440}
-                    height={680}
+                    width={390}
+                    height={580}
                   />
 
                   {/* Іконка збільшення */}
@@ -771,7 +771,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                         handleAddToCart();
                         setTimeout(() => router.push(`${basePath}/checkout`), 500);
                       }}>
-                      ЗАИМОВИТИ В 1 КЛІК
+                      ЗАМОВИТИ В 1 КЛІК
                     </Button>
                   </div>
                 ) : (
