@@ -50,14 +50,15 @@ On-demand revalidation через webhook «бекенд → фронтенд»:
   Валідувати вхід (є `slug`; `event` з допустимих). Причина семантичного контракту: структуру URL знає лише фронтенд — бекенд не має знати про `/catalog/[slug]` vs `/telegram/catalog/[slug]`. Зміниться роутинг — правимо тільки цей файл.
 - **Маппінг у `revalidatePath`:**
 
-  | Умова | Шляхи |
-  |---|---|
-  | завжди | `/catalog/${slug}`, `/telegram/catalog/${slug}` |
-  | завжди | `/catalog`, `/telegram/catalog` |
+  | Умова                        | Шляхи                                                 |
+  | ---------------------------- | ----------------------------------------------------- |
+  | завжди                       | `/catalog/${slug}`, `/telegram/catalog/${slug}`       |
+  | завжди                       | `/catalog`, `/telegram/catalog`                       |
   | `oldSlug` заданий і ≠ `slug` | `/catalog/${oldSlug}`, `/telegram/catalog/${oldSlug}` |
-  | кожен `c` у `categorySlugs` | `/catalog/category/${c}` |
+  | кожен `c` у `categorySlugs`  | `/catalog/category/${c}`                              |
 
   Головну `/` **не чіпаємо** (лендинг без товарів; `PopularProductsSlider` ніде не змонтований). `/sitemap.xml` — поза скоупом.
+
 - **Семантика свіжості (формулювати обережно):** `revalidatePath` **інвалідує** cache entry; регенерація відбувається на наступному запиті. Тобто наступний запит тригерить revalidation/regeneration і **має** отримати свіжий результат — це не жорстка SLA-обіцянка «вже віддає свіже».
 - **Відповідь:** `200 { revalidated: true, paths: string[] }`; на неочікуваній помилці `500` (логи на боці бекенду через swallow).
 
