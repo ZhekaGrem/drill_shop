@@ -12,7 +12,7 @@ export function IconUser({ className, ...props }: IconProps) {
       xmlns="http://www.w3.org/2000/svg">
       <path
         d="M11 0H5V2H3V8H5V2H11V0ZM11 8H5V10H11V8ZM11 2H13V8H11V2ZM0 14H2V12H14V14H2V18H14V14H16V20H0V14Z"
-        fill="#33603B"
+        fill="currentColor"
       />
     </svg>
   );

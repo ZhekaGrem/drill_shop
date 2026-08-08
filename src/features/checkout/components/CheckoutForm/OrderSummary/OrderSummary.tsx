@@ -1,7 +1,6 @@
 import { Checkbox } from '@mantine/core';
 import { UseFormReturn } from 'react-hook-form';
 import Link from 'next/link';
-import { IconAlertCircle } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { PromoCodeInput } from '../../PromoCodeInput/PromoCodeInput';
 import { CartItemsList } from './CartItemsList';
@@ -79,7 +78,6 @@ export const OrderSummary = ({
       </Button>
 
       <div className={styles.agreementNoticePhone}>
-        <IconAlertCircle size={20} />
         <p className={styles.agreementText}>
           Натискаючи "Підтвердити замовлення", ви погоджуєтесь з умовами{' '}
           <Link href="/public-offer" className={styles.agreementLink}>

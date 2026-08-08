@@ -16,7 +16,7 @@ export function IconPhone({ className, size = 24, ...props }: IconProps) {
       height={size}
       viewBox="0 0 24 24"
       fill="none">
-      <path d="M4 24H18V2H4V24ZM6 22V4H8V6H14V4H16V22H6Z" fill="#33603B" />
+      <path d="M4 24H18V2H4V24ZM6 22V4H8V6H14V4H16V22H6Z" fill="currentColor" />
     </svg>
   );
 }

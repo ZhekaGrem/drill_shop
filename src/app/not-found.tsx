@@ -17,7 +17,7 @@ const NotFoundPage = () => {
 
         <Group justify="center" mt="xl">
           <Link href="/">
-            <Button size="promo" variant="yellow">
+            <Button size="promo" variant="primary">
               <span className={styles.bthSpan}>
                 В МАГАЗИН <ArrowRight />
               </span>

@@ -12,7 +12,7 @@ export function ArrowLeft({ className, ...props }: IconProps) {
       xmlns="http://www.w3.org/2000/svg">
       <path
         d="M16 6V8H4V10H2V8H0V6H2V4H4V6H16ZM6 2H4V4H6V2ZM6 2H8V0H6V2ZM6 12H4V10H6V12ZM6 12H8V14H6V12Z"
-        fill="#33603B"
+        fill="currentColor"
       />
     </svg>
   );

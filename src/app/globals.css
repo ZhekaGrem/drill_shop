@@ -520,23 +520,6 @@ hr {
   padding: 0 1rem;
 }
 
-/* Utility класи для кольорів тексту */
-.text-on-light {
-  color: #2b2b27; /* Темний текст на світлому фоні #E0DDCA */
-}
-
-.text-on-dark {
-  color: #e0ddca; /* Світлий текст на темному фоні #33603B */
-}
-
-.text-secondary {
-  color: #33603b; /* Другорядний текст (зелений) */
-}
-
-.text-accent-red {
-  color: #a63c48; /* Червоний для ховерів, помилок та цін зі знижкою */
-}
-
 /* Utility класи для кнопок */
 .btn-text {
   font-family: var(--font-body);

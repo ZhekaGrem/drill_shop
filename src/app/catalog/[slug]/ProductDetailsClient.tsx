@@ -423,7 +423,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                       xmlns="http://www.w3.org/2000/svg">
                       <path
                         d="M0 0H20V16H0V0ZM2 14H18V2H2V14ZM6 4H8V6H6V8H4V4H6ZM14 12H12V10H14V8H16V12H14Z"
-                        fill="#33603B"
+                        fill="currentColor"
                       />
                     </svg>
                   </div>

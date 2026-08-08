@@ -447,7 +447,7 @@
 
       &Active {
         background: var(--background-dark);
-        box-shadow: inset 1px 1px 0px rgba(43, 43, 39, 0.2);
+        box-shadow: var(--shadow-xs);
       }
     }
   }

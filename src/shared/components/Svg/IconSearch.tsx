@@ -12,7 +12,7 @@ export function IconSearch({ className, ...props }: IconProps) {
       xmlns="http://www.w3.org/2000/svg">
       <path
         d="M4 0H12V2H4V0ZM2 4V2H4V4H2ZM2 12H0V4H2V12ZM4 14H2V12H4V14ZM12 14V16H4V14H12ZM14 12H12V14H14V16H16V18H18V20H20V18H18V16H16V14H14V12ZM14 4H16V12H14V4ZM14 4V2H12V4H14Z"
-        fill="#33603B"
+        fill="currentColor"
       />
     </svg>
   );

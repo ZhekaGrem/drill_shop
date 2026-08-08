@@ -73,8 +73,8 @@
 
   &.badgeFeatured {
     right: 8px;
-    background-color: var(--primary); // #33603B
-    color: var(--secondary); // #E0DDCA
+    background-color: var(--primary);
+    color: var(--secondary);
     z-index: 2;
   }
 
@@ -202,15 +202,15 @@
   font-weight: var(--fw-bold);
   font-size: var(--text-lg);
   border: var(--border-width) solid var(--border-color);
-  background: var(--accent); // #E6DB1B
-  color: var(--text-primary); // #2B2B27
+  background: var(--accent);
+  color: var(--text-primary);
   cursor: pointer;
   transition: var(--transition-fast);
   text-align: center;
   box-shadow: var(--shadow-sm);
 
   &:hover:not(.disabled) {
-    color: var(--primary); // #33603B
+    color: var(--primary);
     transform: translate(1px, 1px);
     box-shadow: var(--shadow-xs);
   }
