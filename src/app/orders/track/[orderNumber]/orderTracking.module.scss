@@ -4,7 +4,7 @@
 
 .pageTitle {
   font-weight: var(--fw-bold);
-  color: var(--text-green);
+  color: var(--text-primary);
   text-transform: uppercase;
   line-height: 1;
   letter-spacing: 0.02em;
@@ -24,7 +24,7 @@
 }
 
 .price {
-  color: var(--text-yellow);
+  color: var(--btn-primary);
   font-family: var(--font-price);
 }
 

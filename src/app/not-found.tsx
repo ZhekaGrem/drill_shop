@@ -19,7 +19,7 @@ const NotFoundPage = () => {
           <Link href="/">
             <Button size="promo" variant="primary">
               <span className={styles.bthSpan}>
-                В МАГАЗИН <ArrowRight />
+                В магазин <ArrowRight />
               </span>
             </Button>
           </Link>

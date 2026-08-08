@@ -28,6 +28,13 @@
 }
 
 .summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: 1;
+  padding: 20px;
+  position: sticky;
+  top: 20px;
   background: var(--background);
   border-radius: var(--border-radius-md);
   border-top: 2px solid var(--text-primary);

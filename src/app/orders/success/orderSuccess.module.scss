@@ -1,7 +1,7 @@
 .title {
   font-family: var(--font-price);
   font-weight: var(--fw-bold);
-  color: var(--text-green);
+  color: var(--text-primary);
   text-transform: uppercase;
   line-height: 1;
   letter-spacing: 0.02em;
@@ -62,7 +62,7 @@
 }
 
 .amount {
-  color: var(--text-yellow);
+  color: var(--btn-primary);
   font-family: var(--font-price);
   font-size: 20px;
 }
@@ -82,6 +82,6 @@
   border: var(--border-width) solid var(--border-color);
   width: 340px;
   &:hover {
-    background-color: var(--text-yellow);
+    background-color: var(--btn-primary-hover);
   }
 }

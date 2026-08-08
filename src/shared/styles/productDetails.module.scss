@@ -48,7 +48,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-2xl);
-    margin-bottom: var(--spacing-3xl);
+    margin-bottom: var(--spacing-2xl);
 
     &__title {
       font-family: var(--font-price);
@@ -176,7 +176,7 @@
   // ✅ Стилі для checkbox варіантів (size/color)
   .variantLabel {
     font-family: var(--font-condensed);
-    font-size: var(--text-md);
+    font-size: var(--text-base);
     font-weight: var(--fw-bold);
     color: var(--text-primary);
     display: block;
@@ -251,7 +251,7 @@
 
   .variantMenuItem {
     font-size: var(--text-base);
-    font-weight: var(--fw-lg);
+    font-weight: var(--fw-medium);
     padding: 10px var(--spacing-md);
     background: var(--background);
     border-bottom: var(--border-width) solid var(--border-color);
@@ -274,12 +274,11 @@
       display: inline-block;
       font-family: var(--font-condensed);
       font-size: var(--text-sm);
-      font-weight: var(--fw-black);
-      color: var(--text-inverse);
-      background: var(--text-green);
+      font-weight: var(--fw-medium);
+      color: var(--success-green);
+      background: var(--background-secondary);
       padding: 6px var(--spacing-md);
-      border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
+      border-radius: var(--radius-pill);
       margin-bottom: var(--spacing-lg);
     }
 
@@ -615,7 +614,7 @@
 
   // ============ RELATED PRODUCTS ============
   .relatedProducts {
-    padding: var(--spacing-3xl) 0;
+    padding: var(--spacing-2xl) 0;
     margin-bottom: 2px;
 
     &__title {

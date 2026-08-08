@@ -92,7 +92,7 @@ export const VariantSelector = ({
                     border: 'var(--border-width) solid var(--border-color)',
                     background: 'var(--background)',
                     color: 'var(--text-primary)',
-                    fontWeight: 'var(--fw-lg)',
+                    fontWeight: 'var(--fw-medium)',
                     fontSize: 'var(--text-base)',
                     padding: '10px var(--spacing-md)',
                     borderRadius: 0,

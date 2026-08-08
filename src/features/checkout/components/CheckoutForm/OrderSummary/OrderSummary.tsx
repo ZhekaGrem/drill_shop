@@ -59,11 +59,6 @@ export const OrderSummary = ({
         checked={doNotCall}
         onChange={(e) => onDoNotCallChange(e.currentTarget.checked)}
         className={styles.btnConfirmPhone}
-        radius={0}
-        styles={{
-          root: { padding: 'var(--spacing-sm) var(--spacing-md)' },
-          label: { fontFamily: 'var(--font-condensed)', fontSize: 'var(--text-sm)' },
-        }}
       />
 
       <Button

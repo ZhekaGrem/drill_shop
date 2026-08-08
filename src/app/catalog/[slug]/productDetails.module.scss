@@ -41,7 +41,7 @@
   .productDetails {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    margin-bottom: var(--spacing-3xl);
+    margin-bottom: var(--spacing-2xl);
 
     &__container {
       padding: var(--spacing-y) var(--spacing-x);
@@ -157,7 +157,7 @@
 
   // ✅ Стилі для checkbox варіантів (size/color)
   .variantLabel {
-    font-size: var(--text-md);
+    font-size: var(--text-base);
     font-weight: var(--fw-bold);
     color: var(--text-primary);
     display: block;
@@ -228,11 +228,11 @@
     &__availability {
       display: inline-block;
       font-size: var(--text-sm);
-      font-weight: var(--fw-black);
-      color: var(--text-inverse);
-      background: var(--text-green);
+      font-weight: var(--fw-medium);
+      color: var(--success-green);
+      background: var(--background-secondary);
       padding: 6px var(--spacing-md);
-      border: var(--border-width) solid var(--border-color);
+      border-radius: var(--radius-pill);
       margin-bottom: var(--spacing-lg);
     }
 

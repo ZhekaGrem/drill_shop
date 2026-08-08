@@ -92,7 +92,7 @@ const OrderSuccess = () => {
 
         <Text ta="center" size="sm" c="dimmed">
           Маєте питання?{' '}
-          <Text component={Link} href="/contact" td="underline" span c="var(--text-yellow)">
+          <Text component={Link} href="/contact" td="underline" span c="var(--accent)">
             Зверніться до нашої служби підтримки
           </Text>
         </Text>

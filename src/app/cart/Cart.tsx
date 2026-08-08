@@ -10,7 +10,7 @@ import { formatPrice } from '@/shared/utils/cart-calculations';
 import Link from 'next/link';
 
 import { Button } from '@/shared/components/Button/Button';
-import styles from './Cart.module.scss';
+import styles from './cart.module.scss';
 
 interface CartPageProps {
   basePath?: string;
@@ -90,7 +90,7 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
           <div className={styles.divider} />
 
           {/* Підсумок замовлення */}
-          <Stack gap="md" flex={1} p={20} pos="sticky" top={20} className={styles.summary}>
+          <Stack className={styles.summary}>
             <Title order={3}>Всього</Title>
 
             <Stack gap="xs">
