@@ -9,13 +9,10 @@ import { EmailVerificationBanner } from '@/shared/components/EmailVerificationBa
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  // Головна сторінка - БЕЗ Header і Footer (тільки картинка і кнопка)
-  const isHomePage = pathname === '/';
-
   // Telegram сторінки - БЕЗ Header і Footer (свій окремий layout)
   const isTelegramPage = pathname?.startsWith('/telegram');
 
-  if (isHomePage || isTelegramPage) {
+  if (isTelegramPage) {
     return <>{children}</>;
   }
 
