@@ -56,15 +56,6 @@ const CheckoutSuccessPage: React.FC = () => {
                   {orderNumber}
                 </Text>
               </Group>
-
-              <Group justify="space-between" mt="xs">
-                <Text size="sm" c="dimmed">
-                  ID замовлення:
-                </Text>
-                <Text size="sm" ff="monospace">
-                  {orderId}
-                </Text>
-              </Group>
             </Paper>
 
             <Group w="100%">

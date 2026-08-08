@@ -18,7 +18,6 @@
     font-weight: var(--fw-black);
     color: var(--text-primary);
     margin: 0 0 var(--spacing-md) 0;
-    text-transform: uppercase;
   }
 
   &__text {
@@ -49,7 +48,9 @@
 // ============ FORM SECTION ============
 .formSection {
   padding: var(--spacing-xl);
-  border-right: var(--border-width) solid var(--border-color);
+  background: var(--background);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
@@ -61,7 +62,6 @@
   font-weight: var(--fw-black);
   color: var(--text-primary);
   margin: var(--spacing-lg) 0 var(--spacing-md) 0;
-  text-transform: uppercase;
   letter-spacing: 0.03em;
 
   &:first-of-type {
@@ -207,6 +207,10 @@
 // ============ ORDER SUMMARY ============
 .orderSummary {
   padding: var(--spacing-xl);
+  background: var(--background);
+  border-radius: var(--border-radius-md);
+  border-top: 2px solid var(--text-primary);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
@@ -217,7 +221,6 @@
   font-weight: var(--fw-black);
   color: var(--text-primary);
   margin: 0 0 var(--spacing-md) 0;
-  text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
@@ -308,7 +311,6 @@
   font-size: var(--text-2xl);
   font-weight: var(--fw-black);
   color: var(--text-primary);
-  text-transform: uppercase;
 }
 
 .totalAmount {
@@ -385,7 +387,6 @@
   }
   .formSection,
   .orderSummary {
-    border-right: none;
     padding: var(--spacing-md);
   }
 

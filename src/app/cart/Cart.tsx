@@ -17,7 +17,7 @@ interface CartPageProps {
 }
 
 export default function CartPage({ basePath = '' }: CartPageProps) {
-  const { items, calculations, isLoading, clearCart, isClearingCart, error } = useCart();
+  const { items, calculations, isLoading, error } = useCart();
 
   if (error) {
     return (
@@ -46,14 +46,7 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
               Кошик
             </Title>
           </Link>{' '}
-          {/* <Text> {calculations.itemsCount} товари</Text> */}
         </Group>
-
-        {/* {items.length > 0 && (
-          <Button variant="red" size="promo" loading={isClearingCart} onClick={clearCart}>
-            Очистити
-          </Button>
-        )} */}
       </Group>
 
       {items.length === 0 ? (

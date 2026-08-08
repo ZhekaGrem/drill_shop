@@ -11,6 +11,8 @@ import Link from 'next/link';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
 import { getVariantDisplayBadges } from '@/shared/utils/variant-display';
 import { useDebounce } from '@/shared/hooks';
+import { showNotification, hideNotification } from '@/shared/utils/notifications';
+import { Button } from '@/shared/components/Button/Button';
 import styles from './CartItem.module.scss';
 
 interface CartItemProps {
@@ -20,7 +22,7 @@ interface CartItemProps {
 }
 
 const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemProps) => {
-  const { updateItemQuantity, removeItem, isUpdatingItem, isRemovingItem } = useCart();
+  const { updateItemQuantity, removeItem, addItem, isUpdatingItem, isRemovingItem } = useCart();
   const [quantity, setQuantity] = useState(item.quantity);
   const maxAvailable = item.variant?.availableQuantity ?? item.product.availableQuantity ?? 0;
   const isMaxReached = quantity >= maxAvailable;
@@ -41,8 +43,30 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
   );
 
   const handleRemove = useCallback(() => {
+    const snapshot = {
+      productId: item.product.id,
+      quantity: item.quantity,
+      variantId: item.variant?.id,
+      productData: item.product,
+    };
     removeItem(item.id);
-  }, [item.id, removeItem]);
+    showNotification({
+      id: `undo-${item.id}`,
+      title: 'Товар видалено',
+      message: (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            addItem(snapshot.productId, snapshot.quantity, snapshot.variantId, snapshot.productData);
+            hideNotification(`undo-${item.id}`);
+          }}>
+          Повернути
+        </Button>
+      ),
+      autoClose: 5000,
+    });
+  }, [item, removeItem, addItem]);
 
   const displayPrice = item.finalPrice;
   const originalPrice = item.hasPromo ? item.originalPrice : null;

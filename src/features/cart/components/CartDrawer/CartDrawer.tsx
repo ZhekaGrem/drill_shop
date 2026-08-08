@@ -20,7 +20,7 @@ export const CartDrawer = () => {
 
   const isOpen = useCartDrawerState();
   const { close } = useCartDrawerActions();
-  const { items, calculations, isLoading, error, clearCart, isClearingCart } = useCart();
+  const { items, calculations, isLoading, error } = useCart();
 
   // Mobile detection
   const isMobile = useMediaQuery(`(max-width: ${em(768)})`);
@@ -61,18 +61,6 @@ export const CartDrawer = () => {
             </Text>
           </Box>
         )}
-        {/* {hasItems && (
-          <Box p={isMobile ? '16px 20px' : 'md'}>
-            <Group justify="space-between">
-              <Text size="sm" c="dimmed">
-                {calculations.itemsCount} товар(ів)
-              </Text>
-              <Button variant="red" size="promo" color="red" loading={isClearingCart} onClick={clearCart}>
-                Очистити
-              </Button>
-            </Group>
-          </Box>
-        )} */}
 
         {/* Content */}
         <ScrollArea

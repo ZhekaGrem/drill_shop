@@ -171,7 +171,6 @@ const CheckoutFormComponent = ({ email = true }: CheckoutFormProps) => {
             </Button>
 
             <div className={styles.agreementNotice}>
-              <IconAlertCircle size={20} />
               <p className={styles.agreementText}>
                 Натискаючи "Підтвердити замовлення", ви погоджуєтесь з умовами{' '}
                 <Link href="/public-offer" className={styles.agreementLink}>

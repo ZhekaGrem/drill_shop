@@ -3,7 +3,7 @@
 
 .checkoutPage {
   min-height: 100vh;
-  background: var(--background);
+  background: var(--background-secondary);
 
   .pageTitle {
     font-family: var(--font-price);
@@ -12,7 +12,6 @@
     color: var(--text-primary);
     text-align: center;
     margin: 0 0 var(--spacing-2xl) 0;
-    text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 }
