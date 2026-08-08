@@ -233,93 +233,94 @@ p {
 
 /* === CSS ЗМІННІ З FIGMA "ЩІЛЬНИЙ ДРІЛ" === */
 :root {
-  /* Кольори фону */
-  --background: #e0ddca; /* Primary beige background */
-  --background-secondary: #33603b; /* Dark green */
-  --background-light: #edecda;
-  --background-dark: #2b2b27;
-  --foreground: #2b2b27; /* Primary dark text */
+  /* Фони */
+  --background: #ffffff;
+  --background-secondary: #e7eef3; /* фірмовий фон секцій Дії */
+  --background-light: #f6f9fc;
+  --background-dark: #000000;
+  --foreground: #000000;
 
   /* Основні кольори */
-  --primary: #33603b; /* Primary green */
-  --secondary: #e0ddca; /* Beige */
-  --accent: #e6db1b; /* Yellow */
-  --accent-red: #a63c48; /* Red */
+  --primary: #000000; /* чорні pill-кнопки */
+  --secondary: #ffffff;
+  --accent: #0073e6; /* лінки/фокус */
+  --accent-deep: #004bc1;
+  --accent-red: #a63c48; /* ТІЛЬКИ знижки/промо */
 
-  /* Статусні кольори */
-  --success: #56da64;
-  --success-green: #16a34a; /* Green для discount badges */
-  --warning: #e6db1b;
-  --info: #0088ff;
+  /* Статусні */
+  --success: #28a745;
+  --success-green: #16a34a;
+  --warning: #d39e00;
+  --info: #0073e6;
+  --error: #a63c48;
 
-  /* Кольори тексту */
-  --text-primary: #2b2b27; /* Dark text on light bg */
-  --text-secondary: #33603b; /* Green secondary text */
-  --text-tertiary: #595959;
-  --text-inverse: #e0ddca; /* Light text on dark bg */
+  /* Текст */
+  --text-primary: #000000;
+  --text-secondary: #606060;
+  --text-tertiary: #8a8a8a;
+  --text-inverse: #ffffff;
   --text-white: #ffffff;
 
-  /* Кольори кнопок */
-  --btn-primary: #33603b; /* Primary green button */
-  --btn-primary-hover: #254a2c; /* Darker green on hover */
-  --btn-secondary: #e6db1b; /* Yellow button */
-  --btn-danger: #a63c48; /* Red button */
+  /* Кнопки */
+  --btn-primary: #000000;
+  --btn-primary-hover: #333333;
+  --btn-danger: #a63c48;
 
-  /* Шрифти */
-
-  /* Вага шрифту */
-  --fw-normal: 500;
+  /* Вага шрифту (Дія — легша) */
+  --fw-light: 300;
+  --fw-normal: 400;
   --fw-medium: 500;
-  --fw-semibold: 600;
-  --fw-bold: 700;
-  --fw-black: 900;
+  --fw-semibold: 500;
+  --fw-bold: 500;
+  --fw-black: 500;
 
-  /* Розміри шрифту */
-  --text-xs: 0.75rem; /* 12px */
-  --text-sm: 0.875rem; /* 14px */
-  --text-base: 1rem; /* 16px */
-  --text-lg: 1.125rem; /* 18px */
-  --text-xl: 1.25rem; /* 20px */
-  --text-2xl: 1.5rem; /* 24px */
-  --text-3xl: 1.75rem; /* 27px */
-  --text-4xl: 2rem; /* 32px */
-  --text-5xl: 2.25rem; /* 36px */
-  --text-6xl: 2.5rem; /* 40px */
+  /* Розміри шрифту — без змін */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.75rem;
+  --text-4xl: 2rem;
+  --text-5xl: 2.25rem;
+  --text-6xl: 2.5rem;
 
-  /* Тіні (pixel art стиль) */
-  --shadow-xs: 2px 2px 0px rgba(43, 43, 39, 0.1);
-  --shadow-sm: 2px 2px 0px rgba(43, 43, 39, 0.2);
-  --shadow-md: 3px 3px 0px rgba(43, 43, 39, 0.3);
-  --shadow-lg: 4px 4px 0px rgba(43, 43, 39, 0.4);
-  --shadow-xl: 5px 5px 0px rgba(43, 43, 39, 0.5);
+  /* Тіні — м'які */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.12);
 
   /* Border */
-  --border-width: 2px;
-  --border-color: #33603b;
+  --border-width: 2px; /* лише роздільники-акценти 2px solid #000 */
+  --border-color: #000000;
+  --border-subtle: #d6dde4; /* тонкі межі інпутів/карток */
 
-  /* Радіуси (pixel art - все квадратне) */
-  --border-radius-sm: 0px;
-  --border-radius-md: 0px;
-  --border-radius-lg: 0px;
+  /* Радіуси */
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 32px;
+  --radius-pill: 100px;
 
-  /* Spacing */
+  /* Spacing — без змін */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
-
   --spacing-x: 40px;
   --spacing-y: 24px;
   --spacing-y-m: 12px;
 
   /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.2s ease;
-  --transition-slow: 0.3s ease;
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.2s ease-in-out;
+  --transition-slow: 0.3s ease-in-out;
 
-  /* Layout */
+  /* Layout — без змін */
   --container-max-width: 1200px;
   --container-wide: 1600px;
   --container-mobile: 320px;
@@ -354,55 +355,40 @@ main {
 }
 
 /* === ТИПОГРАФІКА === */
-h1 {
-  font-family: var(--font-price); /* Rubik */
-  font-size: var(--text-2xl); /* 24px */
-  font-weight: var(--fw-black); /* 900 */
-  line-height: 1.2;
-  letter-spacing: 0;
-  color: var(--text-primary); /* #2B2B27 on light bg */
-}
-
-h2 {
-  font-family: var(--font-price);
-  font-size: var(--text-5xl);
-  font-weight: var(--fw-normal);
-  line-height: 1.2;
-  letter-spacing: 0;
-  color: var(--text-primary);
-}
-
-h3 {
-  font-family: var(--font-price);
-  font-size: var(--text-4xl);
-  font-weight: var(--fw-normal);
-  line-height: 1.2;
-  letter-spacing: 0;
-  color: var(--text-primary);
-}
-
+h1,
+h2,
+h3,
 h4 {
-  font-family: var(--font-price);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+h1 {
+  font-size: var(--text-5xl);
+}
+h2 {
+  font-size: var(--text-4xl);
+}
+h3 {
   font-size: var(--text-3xl);
-  font-weight: var(--fw-normal);
-  line-height: 1.2;
-  color: var(--text-primary);
 }
-
-h5 {
-  font-family: var(--font-body);
+h4 {
   font-size: var(--text-2xl);
-  font-weight: var(--fw-bold);
-  line-height: 1.2;
-  color: var(--text-primary);
 }
-
+h5,
 h6 {
   font-family: var(--font-body);
-  font-size: var(--text-xl);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   line-height: 1.2;
   color: var(--text-primary);
+}
+h5 {
+  font-size: var(--text-xl);
+}
+h6 {
+  font-size: var(--text-lg);
 }
 
 /* === РЕСПОНСИВ === */
@@ -412,88 +398,80 @@ h6 {
   }
 
   h1 {
-    font-size: var(--text-xl); /* 20px */
+    font-size: var(--text-3xl);
   }
   h2 {
-    font-size: var(--text-lg);
+    font-size: var(--text-2xl);
   }
   h3 {
-    font-size: var(--text-lg);
+    font-size: var(--text-xl);
   }
   h4 {
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
   }
 }
 
-/* === INPUT СТИЛІ (Pixel Art) === */
+/* Інпути (база; деталі — mantine-theme) */
 input,
 textarea,
 select {
-  font-family: var(--font-condensed);
+  font-family: var(--font-body);
   font-size: var(--text-base);
   padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 0;
+  border-radius: var(--border-radius-sm);
   background: var(--background);
   color: var(--text-primary);
   transition: var(--transition-fast);
 }
-
 input::placeholder,
 textarea::placeholder {
-  color: var(--text-tertiary);
-  opacity: 0.7;
+  color: var(--text-secondary);
+  font-weight: var(--fw-light);
+  opacity: 1;
 }
-
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #e0ddca inset !important;
-  -webkit-text-fill-color: var(--text-primary, #000) !important;
-  transition: background-color 5000s ease-in-out 0s;
-  border-bottom: var(--border-width, 2px) solid #33603b !important;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
 }
 
-/* === ФОКУС === */
+/* Фокус — фірмовий синій Дії */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
+  outline: 3px solid var(--accent);
   outline-offset: 2px;
 }
 
-/* === PIXEL ART ЕЛЕМЕНТИ === */
-
-/* Links */
+/* Лінки */
 a {
   color: var(--text-primary);
   text-decoration: none;
   transition: var(--transition-fast);
 }
-
 a:hover {
-  color: var(--accent-red); /* #A63C48 red hover */
+  color: var(--accent);
 }
 
-/* Scrollbar (pixel art стиль) */
+/* Скролбар — нейтральний */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--background-secondary);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--accent);
+  background: #b9c4cf;
+  border-radius: var(--radius-pill);
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: var(--text-secondary);
 }
 
-/* Selection */
 ::selection {
-  background: var(--accent);
+  background: var(--background-secondary);
   color: var(--text-primary);
 }
 
@@ -561,50 +539,11 @@ hr {
 
 /* Utility класи для кнопок */
 .btn-text {
-  font-family: 'IBM Plex Sans Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 20px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 18px;
   line-height: 1.2;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-/* === CHECKBOX СТИЛІ === */
-/* Mantine Checkbox глобальні стилі */
-.mantine-Checkbox-input {
-  background-color: transparent !important;
-  border: var(--border-width) solid var(--border-color) !important;
-  border-radius: 0 !important;
-  cursor: pointer;
-}
-
-.mantine-Checkbox-input:checked {
-  background-color: var(--border-color) !important;
-  border-color: var(--border-color) !important;
-  background-image: url('/svg/chekbox.svg') !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-size: contain !important;
-}
-
-/* Ховаємо стандартну іконку Mantine */
-.mantine-Checkbox-icon {
-  display: none !important;
-}
-
-.mantine-Checkbox-input:disabled {
-  background-color: transparent !important;
-  border-color: var(--text-tertiary) !important;
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.mantine-Checkbox-input:disabled:checked {
-  background-color: var(--text-tertiary) !important;
-  background-image: url('/svg/chekbox.svg') !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-size: contain !important;
+  letter-spacing: -0.02em;
 }
 
 /* SEO: Візуально прихований H1 (screen reader only) */
