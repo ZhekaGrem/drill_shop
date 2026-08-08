@@ -3,7 +3,6 @@ import React from 'react';
 import { Product } from '@/shared/types';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
 import { ProductBadges } from '@/features/catalog/components/ProductBadges/ProductBadges';
-import { FavoriteButton } from '@/features/favorites/components/FavoriteButton/FavoriteButton';
 import styles from './ProductCard.module.scss';
 
 interface ProductCardImageProps {
@@ -33,10 +32,7 @@ export const ProductCardImage: React.FC<ProductCardImageProps> = ({
 }) => {
   return (
     <div className={styles.productCardImageContainer} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      <div
-        className={`${styles.productCardImageContainer__ImageWrapper} ${
-          isImageHovered && secondaryImage ? styles.glitching : ''
-        }`}>
+      <div className={styles.productCardImageContainer__ImageWrapper}>
         <CloudinaryImage
           src={imageUrl || '/assets/img/placeholder-product.jpg'}
           alt={
@@ -51,15 +47,6 @@ export const ProductCardImage: React.FC<ProductCardImageProps> = ({
         />
       </div>
       <ProductBadges product={product} selectedVariant={selectedVariantObject} />
-
-      {/* <div
-        className={styles.favoriteButtonWrapper}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}>
-        <FavoriteButton product={product} />
-      </div> */}
     </div>
   );
 };

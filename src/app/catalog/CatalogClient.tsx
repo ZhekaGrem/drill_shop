@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation';
-import { Modal, Loader, Center, Text, Container } from '@mantine/core';
+import { Modal, Loader, Center, Text, Container, Title, Stack } from '@mantine/core';
 import { IconFilter, IconChevronDown } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
@@ -24,7 +24,7 @@ export default function CatalogClient({ initialData, initialCategories, basePath
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { filters, setFromUrlParams } = useCatalogFilters();
+  const { filters, setFromUrlParams, clearFilters } = useCatalogFilters();
 
   const observerTarget = useRef<HTMLDivElement>(null);
 
@@ -74,6 +74,10 @@ export default function CatalogClient({ initialData, initialCategories, basePath
   const handleFiltersChange = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
+
+  const handleResetFilters = useCallback(() => {
+    clearFilters();
+  }, [clearFilters]);
 
   return (
     <div className={styles.catalogPage}>
@@ -152,7 +156,7 @@ export default function CatalogClient({ initialData, initialCategories, basePath
             {/* Повідомлення про кінець списку */}
             {!hasNextPage && products.length > 0 && (
               <Center py="xl">
-                <Text c="red" size="md">
+                <Text c="dimmed" size="md">
                   Всі товари завантажено ({totalCount})
                 </Text>
               </Center>
@@ -163,9 +167,18 @@ export default function CatalogClient({ initialData, initialCategories, basePath
         {/* Повідомлення якщо товарів немає */}
         {!isLoading && !error && products.length === 0 && (
           <Center py="xl">
-            <Text c="red" size="md">
-              Товари не знайдено
-            </Text>
+            <Stack align="center" gap="md" maw={400}>
+              <IconFilter size={64} color="var(--mantine-color-gray-5)" />
+              <Title order={3} ta="center">
+                Нічого не знайдено
+              </Title>
+              <Text ta="center" c="dimmed">
+                За обраними фільтрами товарів немає. Спробуйте змінити або скинути фільтри.
+              </Text>
+              <Button variant="secondary" onClick={handleResetFilters}>
+                Скинути фільтри
+              </Button>
+            </Stack>
           </Center>
         )}
       </Container>

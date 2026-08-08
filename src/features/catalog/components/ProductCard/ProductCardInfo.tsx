@@ -69,9 +69,7 @@ export const ProductCardInfo: React.FC<ProductCardInfoProps> = ({
   return (
     <div className={styles.content}>
       <Link href={`${basePath}/catalog/${product.slug}`} onClick={(e) => e.stopPropagation()}>
-        <h3 className={styles.title}>
-          {isImageHovered && product.shortDescription ? product.shortDescription : product.name}
-        </h3>
+        <h3 className={styles.title}>{product.name}</h3>
       </Link>
       <Divider className={styles.divider} />
 
@@ -103,7 +101,8 @@ export const ProductCardInfo: React.FC<ProductCardInfoProps> = ({
                         isOutOfStock ? styles.variantCheckbox_disabled : ''
                       }`}>
                       <input
-                        type="checkbox"
+                        type="radio"
+                        name={'variant-' + product.id}
                         checked={selectedVariant === 'main'}
                         disabled={isOutOfStock}
                         onChange={(e) => {
@@ -131,7 +130,8 @@ export const ProductCardInfo: React.FC<ProductCardInfoProps> = ({
                       isOutOfStock ? styles.variantCheckbox_disabled : ''
                     }`}>
                     <input
-                      type="checkbox"
+                      type="radio"
+                      name={'variant-' + product.id}
                       checked={selectedVariant === variant.id}
                       disabled={isOutOfStock}
                       onChange={(e) => {

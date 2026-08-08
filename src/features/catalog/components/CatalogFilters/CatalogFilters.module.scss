@@ -170,14 +170,18 @@
 }
 
 .checkboxText {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
   padding: 6px 12px;
   min-width: 50px;
   font-size: 14px;
   font-weight: var(--fw-bold);
   color: var(--text-primary);
   background: transparent;
-  border: var(--border-width) solid var(--border-color);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
   cursor: pointer;
   transition: var(--transition-fast);
   text-align: center;
