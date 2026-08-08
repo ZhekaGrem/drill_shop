@@ -14,6 +14,14 @@ import { AuthDrawer } from '@/features/auth/components/AuthDrawer/AuthDrawer';
 import { content } from '@/shared/config/content';
 import { siteConfig } from '@/shared/config/site';
 import { IconX, MenuIcon, IconSearch, IconCart, IconUser } from '@/shared/components/Svg';
+
+const NAV_ITEMS = [
+  { label: 'Каталог', href: '/catalog' },
+  { label: 'Розпродаж', href: '/catalog?promo=true' },
+  { label: 'Про нас', href: '/about' },
+  { label: 'Контакти', href: '/contact' },
+];
+
 // SINGLE logout handler
 const useLogoutHandler = () => {
   const logout = useAuthStore((state) => state.logout);
@@ -126,16 +134,6 @@ const MobileMenu = React.memo(
       await handleLogout();
     };
 
-    const menuItems = [
-      { label: 'КАТАЛОГ', href: '/catalog' },
-      { label: 'КОНТАКТИ', href: '/contact' },
-      { label: 'ПРО НАС', href: '/about' },
-      { label: 'Розпродаж', href: '/catalog?promo=true' },
-      // { label: 'Футболки', href: '/catalog?category=t-shirts' },
-      // { label: 'Худі', href: '/catalog?category=hoodies' },
-      // { label: 'Кепки', href: '/catalog?category=caps' },
-    ];
-
     return (
       <Drawer
         closeButtonProps={{
@@ -147,7 +145,7 @@ const MobileMenu = React.memo(
         size="480px"
         className={styles.drawer}>
         <ScrollArea h="calc(100vh - 80px)">
-          {menuItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <Link key={item.href} href={item.href} className={styles.menuLink} onClick={onNavigate}>
               <div className={styles.menuIcon}>
                 <span>{item.label}</span>
@@ -160,11 +158,14 @@ const MobileMenu = React.memo(
   }
 );
 
+const RECENT_KEY = 'recent-searches';
+
 export function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [authDrawerOpened, { open: openAuthDrawer, close: closeAuthDrawer }] = useDisclosure(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const calculations = useCartCalculations();
   const { toggle: toggleCartDrawer } = useCartDrawerActions();
   const syncCart = useCartStore((state) => state.syncCart);
@@ -173,9 +174,23 @@ export function Header() {
     syncCart();
   }, [syncCart]);
 
+  useEffect(() => {
+    try {
+      setRecentSearches(JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'));
+    } catch {
+      setRecentSearches([]);
+    }
+  }, [isSearchExpanded]);
+
+  const saveRecent = (q: string) => {
+    const next = [q, ...recentSearches.filter((s) => s !== q)].slice(0, 5);
+    localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+  };
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      saveRecent(searchQuery.trim());
       window.location.href = `/catalog?search=${encodeURIComponent(searchQuery)}`;
       setIsSearchExpanded(false);
     }
@@ -198,22 +213,8 @@ export function Header() {
   return (
     <Box className={styles.wrapper}>
       <header className={styles.header}>
-        {/* Left section: Menu + Search (Desktop only) */}
-        <div className={`${styles.leftSection} ${styles.desktopOnly}`}>
-          <button className={styles.iconButton} onClick={toggleDrawer}>
-            {drawerOpened ? <IconX /> : <MenuIcon />}
-          </button>
-          <button
-            type="button"
-            className={styles.searchTrigger}
-            onClick={handleSearchFocus}
-            aria-label="Відкрити пошук">
-            <IconSearch className={styles.searchPlaceholder} />
-          </button>
-        </div>
-
-        {/* Mobile left: Menu only */}
-        <div className={`${styles.leftSection} ${styles.mobileOnly}`}>
+        {/* Left section: Menu + Search */}
+        <div className={styles.leftSection}>
           <button className={styles.iconButton} onClick={toggleDrawer}>
             {drawerOpened ? <IconX /> : <MenuIcon />}
           </button>
@@ -231,6 +232,15 @@ export function Header() {
           <Image src={siteConfig.logo} alt={siteConfig.name} className={styles.logo} />
         </Link>
 
+        {/* Desktop navigation */}
+        <nav className={styles.desktopNav} aria-label="Основна навігація">
+          {NAV_ITEMS.map((item) => (
+            <Link key={item.href} href={item.href} className={styles.navLink}>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
         {/* Right section: Cart + User */}
         <div className={styles.rightSection}>
           <button className={styles.cartButton} onClick={toggleCartDrawer}>
@@ -240,7 +250,6 @@ export function Header() {
                 {calculations.itemsCount > 99 ? '99+' : calculations.itemsCount}
               </Badge>
             )}
-            <span className={styles.desktopOnly}>{calculations?.itemsCount || 0}</span>
           </button>
           <AuthControl
             onOpenAuth={openAuthDrawer}
@@ -277,6 +286,23 @@ export function Header() {
               </button>
             )}
           </form>
+          {recentSearches.length > 0 && !searchQuery && (
+            <div className={styles.searchSuggestions}>
+              <span className={styles.suggestionsLabel}>Останні запити</span>
+              {recentSearches.map((q) => (
+                <button
+                  key={q}
+                  type="button"
+                  className={styles.suggestionItem}
+                  onMouseDown={() => {
+                    saveRecent(q);
+                    window.location.href = `/catalog?search=${encodeURIComponent(q)}`;
+                  }}>
+                  {q}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

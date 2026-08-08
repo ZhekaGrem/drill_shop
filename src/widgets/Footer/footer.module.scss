@@ -1,9 +1,9 @@
 // src/widgets/Footer/footer.module.scss
-// Pixel art Footer з Figma "Щільний дріл"
+// Diia-style Footer
 
 .footer {
   background: var(--background-secondary);
-
+  border-top: 2px solid var(--text-primary);
   margin-top: auto;
 }
 
@@ -23,22 +23,23 @@
     gap: var(--spacing-lg);
   }
 }
+
 .line {
   width: 100%;
-  border-bottom: 1px solid var(--background);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 // Column title
 .columnTitle {
-  color: var(--text-inverse); // #E0DDCA on dark bg
+  color: var(--text-primary);
   margin-bottom: var(--spacing-md);
-  text-transform: none;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   font-size: var(--text-xl);
   line-height: 130%;
+
   &__about {
-    color: var(--text-inverse);
-    font-weight: 400;
+    color: var(--text-primary);
+    font-weight: var(--fw-normal);
     font-size: var(--text-xl);
   }
 }
@@ -53,17 +54,15 @@
 .linksColumn a,
 .blogLinks a {
   font-size: var(--text-xl);
-  font-weight: var(--fw-medium);
-  color: var(--text-inverse); // #E0DDCA on dark bg
+  font-weight: var(--fw-light);
+  color: var(--text-primary);
   text-decoration: none;
   transition: var(--transition-fast);
   padding: var(--spacing-xs) 0;
   display: inline-block;
 
   &:hover {
-    background-color: var(--accent-red); // #A63C48 red hover
-    transform: translateX(2px);
-    color: var(--text-inverse);
+    color: var(--accent);
   }
 }
 
@@ -80,15 +79,15 @@
   gap: var(--spacing-sm);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
-  color: var(--text-inverse); // #E0DDCA on dark bg
+  color: var(--text-primary);
 
   a {
-    color: var(--text-inverse);
+    color: var(--text-primary);
     text-decoration: none;
     transition: var(--transition-fast);
 
     &:hover {
-      color: var(--accent-red); // #A63C48 red hover
+      color: var(--accent);
     }
   }
 }
@@ -96,7 +95,7 @@
 .phoneNumber {
   font-size: var(--text-lg);
   font-weight: var(--fw-bold);
-  color: var(--text-inverse); // #E0DDCA on dark bg
+  color: var(--text-primary);
 }
 
 // Social section
@@ -109,7 +108,7 @@
 .socialDescription {
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
-  color: var(--text-inverse); // #E0DDCA on dark bg
+  color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
   white-space: pre-line;
 }
@@ -127,20 +126,14 @@
   padding: 8px var(--spacing-md);
   font-size: var(--text-base);
   font-weight: var(--fw-bold);
-  color: var(--text-inverse); // #E0DDCA on dark bg
+  color: var(--text-primary);
   text-decoration: none;
   background: transparent;
+  border-radius: var(--radius-pill);
   transition: var(--transition-fast);
 
   &:hover {
-    background: var(--accent-red); // #A63C48 red hover
-    color: var(--text-inverse);
-    border-color: var(--accent-red);
-    transform: translate(1px, 1px);
-  }
-
-  &:active {
-    transform: translate(2px, 2px);
+    background: var(--background);
   }
 
   svg {
@@ -155,21 +148,14 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: var(--background-light);
-  border: var(--border-width) solid var(--border-color);
+  background: var(--background);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
   cursor: pointer;
   transition: var(--transition-fast);
-  box-shadow: var(--shadow-sm);
 
   &:hover {
-    background: var(--accent);
-    transform: translate(1px, 1px);
-    box-shadow: var(--shadow-xs);
-  }
-
-  &:active {
-    transform: translate(2px, 2px);
-    box-shadow: none;
+    background: var(--background-secondary);
   }
 }
 
@@ -198,7 +184,7 @@
 .copyright {
   font-size: var(--text-sm);
   font-weight: var(--fw-medium);
-  color: var(--text-inverse); // #E0DDCA on dark bg
+  color: var(--text-primary);
 }
 
 .legalLinks {
@@ -213,12 +199,12 @@
   a {
     font-size: var(--text-sm);
     font-weight: var(--fw-medium);
-    color: var(--text-inverse); // #E0DDCA on dark bg
+    color: var(--text-primary);
     text-decoration: none;
     transition: var(--transition-fast);
 
     &:hover {
-      color: var(--accent-red); // #A63C48 red hover
+      color: var(--accent);
     }
   }
 }
@@ -230,11 +216,10 @@
   gap: 24px;
   font-size: 20px;
   font-weight: var(--fw-medium);
-  color: var(--text-inverse);
-  // #E0DDCA on dark bg
+  color: var(--text-primary);
 
   a {
-    color: var(--text-inverse);
+    color: var(--text-primary);
     text-decoration: underline;
     display: flex;
     gap: 8px;
@@ -244,7 +229,7 @@
     transition: var(--transition-fast);
 
     &:hover {
-      color: var(--accent-red); // #A63C48 red hover
+      color: var(--accent);
     }
   }
 }
@@ -269,7 +254,7 @@
 .companyDescription {
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
-  color: var(--text-inverse); // #E0DDCA on dark bg
+  color: var(--text-primary);
   line-height: 1.5;
 }
 
@@ -301,5 +286,3 @@
     padding: 6px var(--spacing-sm);
   }
 }
-
-// Animation
