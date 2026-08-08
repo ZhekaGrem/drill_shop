@@ -8,7 +8,7 @@ import { useTelegramAuthStore } from '@/shared/stores/telegram-auth';
 import { Suspense, lazy, useState } from 'react';
 import Image from 'next/image';
 import { ArrowRight } from '@/shared/components/Svg';
-import styles from '../home.module.scss';
+import styles from './telegramHome.module.scss';
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
 export default function TelegramHomePage() {
