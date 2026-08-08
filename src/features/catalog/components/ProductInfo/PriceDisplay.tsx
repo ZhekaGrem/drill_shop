@@ -22,11 +22,7 @@ export const PriceDisplay = ({ product, selectedVariant, unitDisplay, currentWei
           if (variantPriceData.hasDiscount) {
             return (
               <>
-                <Box
-                  component="span"
-                  className={styles.productDetails__originalPrice}
-                  mr={8}
-                  style={{ textDecoration: 'line-through', color: '#999' }}>
+                <Box component="span" className={styles.productDetails__originalPrice} mr={8}>
                   {formatPrice(variantPriceData.originalPrice)}
                 </Box>
                 <span
@@ -43,11 +39,7 @@ export const PriceDisplay = ({ product, selectedVariant, unitDisplay, currentWei
       ) : basePromoData?.hasDiscount ? (
         // Показуємо знижену ціну (як в ProductCard)
         <>
-          <Box
-            component="span"
-            className={styles.productDetails__originalPrice}
-            mr={8}
-            style={{ textDecoration: 'line-through', color: '#999' }}>
+          <Box component="span" className={styles.productDetails__originalPrice} mr={8}>
             {formatPrice(basePromoData.originalPrice)}
           </Box>
           <span

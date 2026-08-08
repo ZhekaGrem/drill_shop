@@ -1,6 +1,5 @@
 import { Button } from '@/shared/components/Button/Button';
 import { IconCart3 } from '@/shared/components/Svg';
-import Image from 'next/image';
 import styles from '../../../../shared/styles/productDetails.module.scss';
 
 interface ProductActionsProps {
@@ -58,8 +57,20 @@ export const ProductActions = ({
               </button>
             </div>
             {hasSizeGuide && (
-              <Button variant="ghost" onClick={onOpenSizeGuide} p={0}>
-                <Image src="/assets/img/btnInfo.jpg" width={50} height={50} alt="btninfo" />
+              <Button
+                variant="outline"
+                onClick={onOpenSizeGuide}
+                className={styles.sizeGuideButton}
+                aria-label="Таблиця розмірів">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M3 8h18M3 8v8a1 1 0 001 1h16a1 1 0 001-1V8M3 8l2-4h14l2 4M7 8v3M11 8v5M15 8v3M19 8v5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                Розміри
               </Button>
             )}
           </div>
@@ -71,7 +82,7 @@ export const ProductActions = ({
             size="lg"
             className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
             onClick={onBuyNow}>
-            КУПИТИ ЗАРАЗ
+            Купити зараз
           </Button>
         </div>
       ) : (

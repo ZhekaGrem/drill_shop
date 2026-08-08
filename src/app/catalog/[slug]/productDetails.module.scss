@@ -52,7 +52,6 @@
       color: var(--text-primary);
       margin: 0 0 var(--spacing-md) 0;
       line-height: 1.2;
-      text-transform: uppercase;
       letter-spacing: 0.02em;
     }
 
@@ -83,15 +82,15 @@
     &__originalPrice {
       font-family: var(--font-price);
       font-size: var(--text-2xl);
-      font-weight: var(--fw-medium);
+      font-weight: var(--fw-light);
       color: var(--text-secondary);
       text-decoration: line-through;
     }
 
     &__currentPrice {
       font-family: var(--font-price);
-      font-size: var(--text-4xl);
-      font-weight: var(--fw-black);
+      font-size: var(--text-3xl);
+      font-weight: var(--fw-medium);
       color: var(--btn-primary);
       line-height: 1;
 
@@ -177,19 +176,11 @@
     position: relative;
     cursor: pointer;
 
-    input[type='checkbox'] {
+    input[type='radio'] {
       position: absolute;
       opacity: 0;
       width: 0;
       height: 0;
-    }
-
-    // Checked стан
-    input[type='checkbox']:checked + .variantCheckboxText {
-      background: var(--border-color);
-      color: var(--text-inverse);
-      border-color: var(--border-color);
-      font-weight: var(--fw-bold);
     }
 
     &_disabled {
@@ -204,23 +195,32 @@
   }
 
   .variantCheckboxText {
-    display: inline-block;
-    padding: var(--spacing-sm) var(--spacing-md);
-    min-width: 60px;
-    font-size: var(--text-md);
-    font-weight: var(--fw-bold);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    min-width: 44px;
+    padding: 4px 12px;
+    font-size: var(--text-sm);
+    font-weight: var(--fw-medium);
     color: var(--text-primary);
     background: transparent;
-    border: var(--border-width) solid var(--border-color);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
     cursor: pointer;
     transition: var(--transition-fast);
     text-align: center;
     user-select: none;
 
     &:hover {
-      background: var(--accent-red);
-      color: var(--text-inverse);
+      border-color: var(--text-primary);
     }
+  }
+
+  .variantCheckbox input:checked + .variantCheckboxText {
+    background: var(--text-primary);
+    color: var(--text-inverse);
+    border-color: var(--text-primary);
   }
 
   .productDetails {
@@ -234,7 +234,6 @@
       padding: 6px var(--spacing-md);
       border: var(--border-width) solid var(--border-color);
       margin-bottom: var(--spacing-lg);
-      text-transform: uppercase;
     }
 
     &__actions {
@@ -461,12 +460,18 @@
   }
   .actionButtonsWrapper {
     display: flex;
-    gap: 8px;
     align-items: center;
-    justify-content: space-between;
+    gap: var(--spacing-sm);
+  }
+  .sizeGuideButton {
+    height: 48px; /* = висота quantitySelector — спільна вісь ряду */
   }
   .quantitySelector {
-    display: flex;
+    height: 48px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+    display: inline-flex;
     align-items: center;
     gap: 0;
     width: fit-content;
@@ -538,15 +543,10 @@
 
   .addToCartButton {
     width: 100%;
-    font-weight: var(--fw-black);
-    text-transform: uppercase;
   }
 
   .buyNowButton {
     width: 100%;
-    font-weight: var(--fw-black);
-    text-transform: uppercase;
-    border: var(--border-width) solid var(--border-color);
   }
 
   // ============ FAVORITE BUTTON ============
@@ -566,7 +566,6 @@
       font-weight: var(--fw-black);
       color: var(--text-primary);
       margin: 0 0 var(--spacing-xl) 0;
-      text-transform: uppercase;
       padding-top: 20px;
     }
 
@@ -609,7 +608,6 @@
       font-size: var(--text-3xl);
       font-weight: var(--fw-black);
       color: var(--text-primary);
-      text-transform: uppercase;
       border-bottom: var(--border-width) solid var(--border-color);
     }
 
@@ -817,8 +815,10 @@
     }
 
     .variantCheckboxText {
-      padding: var(--spacing-xs) var(--spacing-sm);
-      font-size: var(--text-sm);
+      min-height: 32px;
+      min-width: 36px;
+      font-size: 12px;
+      padding: 3px 8px;
     }
 
     // Кнопка size guide

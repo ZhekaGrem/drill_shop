@@ -53,7 +53,8 @@ export const VariantSelector = ({
                   key={variant.id}
                   className={`${styles.variantCheckbox} ${isOutOfStock ? styles.variantCheckbox_disabled : ''}`}>
                   <input
-                    type="checkbox"
+                    type="radio"
+                    name="product-variant"
                     checked={selectedVariant?.id === variant.id}
                     disabled={isOutOfStock}
                     onChange={(e) => {
