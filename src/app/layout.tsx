@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Sans, IBM_Plex_Sans_Condensed, IBM_Plex_Mono, Rubik, Rubik_Glitch } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import '@mantine/core/styles.css';
 import { Providers } from '@/shared/providers/Providers';
@@ -9,40 +9,23 @@ import { baseMetadata, siteViewport, structuredData } from './seo';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { JsonLd } from './JsonLd';
 
-// Шрифти з Figma "Щільний дріл"
-const ibmPlexSans = IBM_Plex_Sans({
+// Шрифти e-Ukraine (Diia redesign) — офіційні шрифти thedigital.gov.ua/fonts, CC BY 4.0
+const eUkraine = localFont({
+  src: [
+    { path: '../../public/fonts/e-ukraine/e-Ukraine-Light.woff2', weight: '300', style: 'normal' },
+    { path: '../../public/fonts/e-ukraine/e-Ukraine-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../../public/fonts/e-ukraine/e-Ukraine-Medium.woff2', weight: '500', style: 'normal' },
+  ],
   variable: '--font-body',
-  subsets: ['latin', 'cyrillic'],
-  weight: ['500', '600', '700'],
   display: 'swap',
 });
 
-const ibmPlexSansCondensed = IBM_Plex_Sans_Condensed({
-  variable: '--font-condensed',
-  subsets: ['cyrillic-ext'],
-  weight: ['500', '700'],
-  display: 'swap',
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: '--font-mono',
-  subsets: ['latin', 'cyrillic'],
-  weight: ['500', '600', '700'],
-  display: 'swap',
-});
-
-const rubik = Rubik({
-  variable: '--font-price',
-  subsets: ['latin', 'cyrillic'],
-  weight: ['500', '600', '700', '900'],
-  display: 'swap',
-});
-
-// Rubik Glitch для заголовків (pixel art/glitch стиль) - з Google Fonts
-const rubikGlitch = Rubik_Glitch({
+const eUkraineHead = localFont({
+  src: [
+    { path: '../../public/fonts/e-ukraine/e-UkraineHead-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../../public/fonts/e-ukraine/e-UkraineHead-Medium.woff2', weight: '500', style: 'normal' },
+  ],
   variable: '--font-heading',
-  subsets: ['latin', 'cyrillic'],
-  weight: '400',
   display: 'swap',
 });
 
@@ -61,7 +44,14 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
       </head>
       <body
-        className={`${ibmPlexSans.variable} ${ibmPlexSansCondensed.variable} ${ibmPlexMono.variable} ${rubik.variable} ${rubikGlitch.variable}`}>
+        className={`${eUkraine.variable} ${eUkraineHead.variable}`}
+        style={
+          {
+            '--font-condensed': 'var(--font-body)',
+            '--font-price': 'var(--font-body)',
+            '--font-mono': 'var(--font-body)',
+          } as React.CSSProperties
+        }>
         <JsonLd data={structuredData.organization()} />
         <JsonLd data={structuredData.website()} />
         <GoogleAnalytics gaId="G-2DZN3ZESDB" />
