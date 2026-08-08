@@ -1,135 +1,75 @@
 // src/shared/config/mantine-theme.ts
+// Diia-style: білі поля, radius 8, синій фокус, чорні контроли
 import { createTheme, Input } from '@mantine/core';
 
 const inputStyles = {
   input: {
-    // Фон (бежевий #e0ddca або змінна)
-    backgroundColor: '#e0ddca',
-
-    // Прибираємо всі бордери
-    border: 'none',
-
-    // Додаємо тільки нижній бордер (темно-зелений #33603b)
-    // Використовуємо твою змінну ширини або 2px як фолбек
-    borderBottom: 'var(--border-width, 2px) solid #33603b',
-
-    // Квадратні кути
-    borderRadius: 0,
-
-    // Колір тексту
-    color: 'var(--text-primary, #000)',
-
-    // Трохи відступів, щоб текст не лип
-    padding: 'var(--spacing-xs) var(--spacing-sm)',
-
-    // Стилі при фокусі (щоб не було стандартної синьої обводки Mantine, якщо не треба)
+    backgroundColor: '#ffffff',
+    border: '1px solid var(--border-subtle)',
+    borderRadius: 'var(--border-radius-sm)',
+    color: 'var(--text-primary)',
+    padding: 'var(--spacing-sm) var(--spacing-md)',
+    transition: 'var(--transition-fast)',
     '&:focus': {
-      borderBottomColor: '#254a2c', // Можна зробити темнішим при активності
+      borderColor: 'var(--accent)',
     },
-
-    // Плейсхолдер (підказка)
     '&::placeholder': {
-      color: '#33603b', // Колір плейсхолдера (можна зробити прозорішим opacity: 0.6)
-      opacity: 0.7,
+      color: 'var(--text-secondary)',
+      fontWeight: 300,
+      opacity: 1,
     },
+  },
+  label: {
+    color: 'var(--text-primary)',
+    fontWeight: 400,
+    marginBottom: '4px',
   },
 };
+
 export const mantineTheme = createTheme({
-  primaryColor: 'green',
-
-  fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif',
-  fontFamilyMonospace: 'IBM Plex Mono, Courier, monospace',
-
+  primaryColor: 'dark',
+  fontFamily: 'var(--font-body)',
+  fontFamilyMonospace: 'var(--font-body)',
   headings: {
-    fontFamily: 'Rubik, IBM Plex Sans, sans-serif',
-    fontWeight: '900',
+    fontFamily: 'var(--font-heading)',
+    fontWeight: '400',
   },
-
-  defaultRadius: 0,
-  colors: {
-    red: [
-      '#FFE8EB', // 0 - lightest
-      '#FFD1D6', // 1
-      '#FFA3AD', // 2
-      '#FF7585', // 3
-      '#FF475C', // 4
-      '#A63C48', // 5 - main color (default)
-      '#8F3440', // 6
-      '#782C37', // 7
-      '#61242E', // 8
-      '#4A1C25', // 9 - darkest
-    ],
-  },
+  defaultRadius: 'md',
   components: {
     InputWrapper: Input.Wrapper.extend({
       styles: {
-        error: {
-          color: '#a63c48', // Твій колір
-          fontWeight: '700',
-        },
+        error: { color: 'var(--error)', fontWeight: '500' },
       },
     }),
     Anchor: {
       styles: {
-        root: {
-          '&:hover': {
-            color: '#A63C48',
-          },
-        },
+        root: { '&:hover': { color: 'var(--accent)' } },
       },
     },
-    TextInput: {
-      styles: inputStyles,
-    },
+    TextInput: { styles: inputStyles },
     PasswordInput: {
       styles: {
         ...inputStyles,
-
-        innerInput: {
-          backgroundColor: 'transparent',
-        },
+        innerInput: { backgroundColor: 'transparent' },
       },
     },
-    Textarea: {
-      styles: inputStyles,
-    },
+    Textarea: { styles: inputStyles },
     Select: {
       styles: {
-        input: {
-          // Фон (бежевий #e0ddca або змінна)
-          backgroundColor: '#e0ddca',
-
-          // Прибираємо всі бордери
-          border: '2px solid var(--border-color)',
-
-          // Додаємо тільки нижній бордер (темно-зелений #33603b)
-          // Використовуємо твою змінну ширини або 2px як фолбек
-          boxShadow: 'none',
-          // Квадратні кути
-          borderRadius: 0,
-
-          // Колір тексту
-          color: 'var(--text-primary)',
-
-          // Трохи відступів, щоб текст не лип
-          padding: 'var(--spacing-xs) var(--spacing-sm)',
-        },
+        input: inputStyles.input,
+        label: inputStyles.label,
         dropdown: {
           backgroundColor: 'var(--background)',
-          border: 'none',
-          borderRadius: 0,
-          boxShadow: 'none',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: 'var(--border-radius-sm)',
+          boxShadow: 'var(--shadow-md)',
         },
         option: {
           padding: 'var(--spacing-sm) var(--spacing-md)',
           color: 'var(--text-primary)',
-          border: '2px solid var(--border-color)',
-          '&:hover': {
-            backgroundColor: 'var(--background-secondary)',
-          },
-          '&[dataSelected]': {
-            backgroundColor: 'var(--background-secondary)',
-          },
+          borderRadius: 'var(--border-radius-sm)',
+          '&:hover': { backgroundColor: 'var(--background-secondary)' },
+          '&[dataSelected]': { backgroundColor: 'var(--background-secondary)' },
         },
       },
     },
@@ -137,83 +77,80 @@ export const mantineTheme = createTheme({
       styles: {
         root: {
           backgroundColor: 'var(--background)',
+          borderRadius: 'var(--border-radius-md)',
         },
       },
     },
     Alert: {
       styles: () => ({
-        message: {
-          // Червоний текст для помилок (color: 'red')
-          color: '#A63C48',
-          fontWeight: '600',
+        root: {
+          borderRadius: 'var(--border-radius-md)',
+          borderTop: '2px solid var(--text-primary)',
         },
+        message: { color: 'var(--text-primary)', fontWeight: '400' },
       }),
     },
     Notification: {
       styles: () => ({
         root: {
-          border: '2px solid var(--text-primary)',
-          borderRadius: 'var(--border-radius-sm)',
+          border: 'none',
+          borderTop: '2px solid var(--text-primary)',
+          borderRadius: 'var(--border-radius-md)',
           background: 'var(--background)',
           padding: 'var(--spacing-md)',
-          boxShadow: 'var(--shadow-md)',
+          boxShadow: 'var(--shadow-lg)',
         },
-        title: {
-          fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif',
-          fontSize: 'var(--text-lg)',
-          fontWeight: '800',
-        },
-        description: {
-          fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif',
-          fontSize: 'var(--text-base)',
-          color: 'var(--text-primary)',
-          // Червоний текст для помилок (color: 'red')
-          fontWeight: '600',
-        },
+        title: { fontSize: 'var(--text-base)', fontWeight: '500' },
+        description: { fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' },
         closeButton: {
           color: 'var(--text-secondary)',
-          '&:hover': {
-            background: 'rgba(0, 0, 0, 0.05)',
-          },
+          '&:hover': { background: 'var(--background-secondary)' },
         },
       }),
+    },
+    Modal: {
+      styles: {
+        content: { borderRadius: 'var(--border-radius-md)' },
+        header: { borderBottom: '2px solid var(--text-primary)' },
+      },
     },
     Checkbox: {
       styles: {
         input: {
-          backgroundColor: 'transparent',
-          border: 'var(--border-width) solid var(--border-color)',
-          borderRadius: 0,
+          backgroundColor: '#ffffff',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: '4px',
           cursor: 'pointer',
           '&:checked': {
-            backgroundColor: 'var(--border-color)',
-            borderColor: 'var(--border-color)',
-            backgroundImage: "url('/svg/chekbox.svg')",
+            backgroundColor: 'var(--text-primary)',
+            borderColor: 'var(--text-primary)',
+            backgroundImage: "url('/svg/checkmark-white.svg')",
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
-            backgroundSize: 'contain',
+            backgroundSize: '12px',
           },
           '&:disabled': {
-            backgroundColor: 'transparent',
-            borderColor: 'var(--text-tertiary)',
-            opacity: 0.5,
+            opacity: 0.4,
             cursor: 'not-allowed',
-            '&:checked': {
-              backgroundColor: 'var(--text-tertiary)',
-              backgroundImage: "url('/svg/chekbox.svg')",
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-              backgroundSize: 'contain',
-            },
           },
         },
-        icon: {
-          display: 'none',
+        icon: { display: 'none' },
+      },
+    },
+    Radio: {
+      styles: {
+        radio: {
+          backgroundColor: '#ffffff',
+          border: '1px solid var(--border-subtle)',
+          cursor: 'pointer',
+          '&:checked': {
+            backgroundColor: 'var(--text-primary)',
+            borderColor: 'var(--text-primary)',
+          },
         },
       },
     },
   },
-
   focusRing: 'auto',
   cursorType: 'pointer',
 });
