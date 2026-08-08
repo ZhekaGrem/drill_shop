@@ -110,8 +110,10 @@ export const mantineTheme = createTheme({
     },
     Modal: {
       styles: {
-        content: { borderRadius: 'var(--border-radius-md)' },
-        header: { borderBottom: '2px solid var(--text-primary)' },
+        content: {
+          borderRadius: 'var(--border-radius-md)',
+          borderTop: '2px solid var(--text-primary)',
+        },
       },
     },
     Checkbox: {
