@@ -25,6 +25,8 @@
 
   @media (min-width: 1024px) {
     display: flex;
+    flex: 1;
+    justify-content: center;
   }
 }
 
@@ -209,7 +211,7 @@
   font-size: var(--text-base);
   font-weight: var(--fw-normal);
   color: var(--text-primary);
-  background: #fff;
+  background: var(--background);
 
   &:focus {
     outline: none;
