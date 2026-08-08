@@ -1,8 +1,8 @@
 // src/widgets/Header/Header.tsx
 'use client';
 import React, { useState } from 'react';
-import { IconLogout, IconSettings, IconHeart } from '@tabler/icons-react';
-import { Box, Drawer, Menu, ScrollArea, Stack, Divider, Text, Group, Badge, Image } from '@mantine/core';
+import { IconLogout, IconSettings } from '@tabler/icons-react';
+import { Box, Drawer, Menu, ScrollArea, Badge, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect } from 'react';
 import styles from './header.module.scss';
@@ -49,7 +49,6 @@ const AuthControl = React.memo(
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     const isInitialized = useAuthStore((state) => state.isInitialized);
     const handleLogout = useLogoutHandler();
-    const [userMenuOpened, setUserMenuOpened] = useState(false);
     const isAdmin = userProfile?.role === 'ADMIN' || userProfile?.role === 'SUPER_ADMIN';
     const isManager = userProfile?.role === 'MANAGER' || isAdmin;
 
@@ -74,7 +73,9 @@ const AuthControl = React.memo(
             divider: styles.menuDivider,
           }}>
           <Menu.Target>
-            <button className={styles.iconButton}>{userMenuOpened ? <IconX /> : <IconUser />}</button>
+            <button className={styles.iconButton}>
+              <IconUser />
+            </button>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Label>{content.header.accountMenu.label}</Menu.Label>
@@ -122,18 +123,6 @@ const AuthControl = React.memo(
 // ✅ Mobile menu з іконками та chevron
 const MobileMenu = React.memo(
   ({ opened, onClose, onNavigate }: { opened: boolean; onClose: () => void; onNavigate: () => void }) => {
-    const userProfile = useAuthStore((state) => state.userProfile);
-    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-    const handleLogout = useLogoutHandler();
-
-    const isAdmin = userProfile?.role === 'ADMIN' || userProfile?.role === 'SUPER_ADMIN';
-    const isManager = userProfile?.role === 'MANAGER' || isAdmin;
-
-    const handleLogoutClick = async () => {
-      onNavigate();
-      await handleLogout();
-    };
-
     return (
       <Drawer
         closeButtonProps={{
@@ -174,14 +163,6 @@ export function Header() {
     syncCart();
   }, [syncCart]);
 
-  useEffect(() => {
-    try {
-      setRecentSearches(JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'));
-    } catch {
-      setRecentSearches([]);
-    }
-  }, [isSearchExpanded]);
-
   const saveRecent = (q: string) => {
     const next = [q, ...recentSearches.filter((s) => s !== q)].slice(0, 5);
     localStorage.setItem(RECENT_KEY, JSON.stringify(next));
@@ -197,6 +178,11 @@ export function Header() {
   };
 
   const handleSearchFocus = () => {
+    try {
+      setRecentSearches(JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'));
+    } catch {
+      setRecentSearches([]);
+    }
     setIsSearchExpanded(true);
   };
 

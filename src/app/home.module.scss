@@ -64,6 +64,11 @@
   object-fit: contain;
 }
 
+.splineWrapper {
+  position: absolute;
+  inset: 0;
+}
+
 .section {
   margin: var(--spacing-2xl) var(--spacing-x);
 

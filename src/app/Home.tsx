@@ -51,7 +51,9 @@ const Home = () => {
               priority
             />
           )}
-          <div style={{ opacity: isSplineLoaded ? 1 : 0, transition: 'opacity 0.5s ease' }}>
+          <div
+            className={styles.splineWrapper}
+            style={{ opacity: isSplineLoaded ? 1 : 0, transition: 'opacity 0.5s ease' }}>
             <Suspense fallback={null}>
               <Spline
                 scene="https://prod.spline.design/j2veMJqqV2QABEh9/scene.splinecode"
