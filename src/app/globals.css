@@ -542,3 +542,74 @@ hr {
   clip: rect(0 0 0 0);
   overflow: hidden;
 }
+
+/* === MANTINE STATE-DEPENDENT STYLES ===
+   Mantine 8 (без @mantine/emotion) застосовує `styles` як inline-стилі —
+   ключі-псевдоселектори там ('&:checked', '&:hover', ...) мовчки ігноруються.
+   Тому :hover/:focus/:checked/::placeholder/[data-selected] стани для
+   Mantine-компонентів живуть тут, через статичні className, а не в
+   mantine-theme.ts. */
+
+.mantine-Checkbox-input {
+  background-color: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.mantine-Checkbox-input:checked {
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+  background-image: url('/svg/checkmark-white.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px;
+}
+.mantine-Checkbox-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.mantine-Checkbox-icon {
+  display: none;
+}
+
+.mantine-Radio-radio {
+  background-color: #ffffff;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+}
+.mantine-Radio-radio:checked {
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.mantine-Anchor-root:hover {
+  color: var(--accent);
+}
+
+.mantine-TextInput-input:focus,
+.mantine-PasswordInput-input:focus,
+.mantine-Textarea-input:focus,
+.mantine-Select-input:focus {
+  border-color: var(--accent);
+}
+
+.mantine-TextInput-input::placeholder,
+.mantine-PasswordInput-input::placeholder,
+.mantine-Textarea-input::placeholder {
+  color: var(--text-secondary);
+  font-weight: 300;
+  opacity: 1;
+}
+
+/* Select/Combobox options are rendered by @mantine/core's Combobox, static
+   class is scoped to the consuming component (Select -> mantine-Select-option).
+   data-combobox-active = keyboard/hover highlight, data-checked = selected item. */
+.mantine-Select-option:hover,
+.mantine-Select-option[data-combobox-active],
+.mantine-Select-option[data-checked] {
+  background-color: var(--background-secondary);
+}
+
+.mantine-Notification-closeButton:hover {
+  background: var(--background-secondary);
+}
