@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { useSearchParams, usePathname } from 'next/navigation';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { Modal, Loader, Center, Text, Container, Title, Stack } from '@mantine/core';
 import { IconFilter, IconChevronDown } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
@@ -24,6 +24,7 @@ export default function CatalogClient({ initialData, initialCategories, basePath
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const router = useRouter();
   const { filters, setFromUrlParams, clearFilters } = useCatalogFilters();
 
   const observerTarget = useRef<HTMLDivElement>(null);
@@ -77,7 +78,8 @@ export default function CatalogClient({ initialData, initialCategories, basePath
 
   const handleResetFilters = useCallback(() => {
     clearFilters();
-  }, [clearFilters]);
+    router.replace(pathname);
+  }, [clearFilters, router, pathname]);
 
   return (
     <div className={styles.catalogPage}>
