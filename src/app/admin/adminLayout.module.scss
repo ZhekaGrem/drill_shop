@@ -31,5 +31,5 @@
 .navLink[data-active='true'] {
   background: var(--mantine-color-blue-light);
   color: var(--mantine-color-blue-filled);
-  font-weight: 600;
+  font-weight: var(--fw-medium);
 }

@@ -46,7 +46,7 @@
 
 .marqueeText {
   color: #fff;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   font-size: var(--text-lg);
   padding-right: 100px;
   display: inline-block;

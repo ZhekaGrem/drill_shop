@@ -43,20 +43,20 @@
 }
 
 .productName {
-  font-weight: 800;
+  font-weight: var(--fw-bold);
   text-transform: uppercase;
   color: var(--text-primary);
   line-height: 1.2;
 }
 
 .variantText {
-  font-weight: 600;
+  font-weight: var(--fw-medium);
   text-transform: uppercase;
   color: var(--text-primary);
   font-size: var(--text-sm);
 
   span {
-    font-weight: 400;
+    font-weight: var(--fw-normal);
     margin-right: 4px;
   }
 }
@@ -73,13 +73,13 @@
 }
 
 .currentPrice {
-  font-weight: 800;
+  font-weight: var(--fw-bold);
   font-size: var(--text-xl);
 }
 
 .deleteText {
   color: var(--background-secondary);
-  font-weight: 600;
+  font-weight: var(--fw-medium);
   font-size: var(--text-sm);
   text-transform: uppercase;
 }

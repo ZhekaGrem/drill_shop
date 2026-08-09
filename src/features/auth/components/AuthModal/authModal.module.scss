@@ -1,7 +1,7 @@
 // src/features/auth/components/AuthModal/authModal.module.scss
 .title {
   font-size: var(--mantine-font-size-xl);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   color: var(--text-primary);
 }
 

@@ -624,10 +624,10 @@ hr {
 /* Utility класи для кнопок */
 .btn-text {
   font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 18px;
+  font-weight: var(--fw-medium);
+  font-size: var(--text-lg);
   line-height: 1.2;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 /* SEO: Візуально прихований H1 (screen reader only) */
@@ -697,8 +697,8 @@ hr {
 .mantine-TextInput-input::placeholder,
 .mantine-PasswordInput-input::placeholder,
 .mantine-Textarea-input::placeholder {
-  color: var(--text-secondary);
-  font-weight: 300;
+  color: var(--text-tertiary);
+  font-weight: var(--fw-normal);
   opacity: 1;
 }
 
