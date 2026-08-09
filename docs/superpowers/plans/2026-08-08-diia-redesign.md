@@ -1663,6 +1663,22 @@ git commit -m "feat(v2): final Diia cleanup - static pages, shared components, z
 
 ---
 
+### Task 13: Телеграм-версія в дизайн застосунку (скоуп-зміна користувача 2026-08-09)
+
+**Files:**
+
+- Modify: `src/app/telegram/telegramHome.module.scss` (старий пиксель-арт лендінг → Дія-стиль: градієнт, картки)
+- Modify: `src/app/telegram/page.tsx` (структура за зразком нової головної, спрощена під WebApp)
+- Modify: `src/app/telegram/catalog/[slug]/productDetails.module.scss` (та сама чистка, що Task 6 зробив для основної копії)
+- Modify: `src/widgets/TelegramBottomNav/TelegramBottomNav.module.scss` (біла напівпрозора панель з blur, активний пункт чорний, radius-pill)
+- Modify: `src/app/telegram/profile/telegramProfile.module.scss`, `src/app/telegram/layout.tsx` (фон-градієнт)
+
+**Правила:** ті самі токени/патерни v2.1 (градієнт-фон, білі картки, паспорт-картки товару вже успадковуються через спільні компоненти). Деприкейтед Button-варіанти `yellow/red/beige` в телеграм-сторінках замінити на `primary/secondary/ghost` — після цього аліаси можна видалити з button.module.scss.
+
+- [ ] Прохід по файлах, build green, commit: `feat(v2.1): telegram webapp in Diia app style`
+
+---
+
 ## Self-Review (виконано при написанні)
 
 - **Spec coverage:** токени/типографіка → Task 2; шрифти+ліцензія (CC BY 4.0 підтверджена, атрибуція → Task 4 Step 4) → Task 1; Button/Badge/інпути/checkbox/modal → Task 3; Header/Footer + фікси №3,7,9,11,13 → Task 4; каталог + №1,4,5,6,15a → Task 5; товар + №10 → Task 6; кошик/чекаут + №8,12,14,15b → Task 7; головна + №2 → Task 8; статика/чистка → Task 9. Фікси №4a/4b у Task 5. Всі 15 фіксів покриті.
