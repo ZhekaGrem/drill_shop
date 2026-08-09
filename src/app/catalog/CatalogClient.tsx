@@ -2,9 +2,12 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { Loader, Center, Text, Container, Title, Stack } from '@mantine/core';
-import { IconFilter, IconChevronDown } from '@tabler/icons-react';
+import { Loader, Center } from '@mantine/core';
+import { IconFilter, IconMoodEmpty } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
+import { Page } from '@/shared/components/Page/Page';
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
+import { Breadcrumbs } from '@/shared/components/Breadcrumbs';
 import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
 import { CatalogFilters } from '@/features/catalog/components/CatalogFilters/CatalogFilters';
 import { MobileFilterModal } from '@/features/catalog/components/MobileFilterModal/MobileFilterModal';
@@ -12,6 +15,9 @@ import { useCatalogFilters, countActiveFilters } from '@/features/catalog/hooks/
 import { useCatalogProducts } from '@/features/catalog/hooks/useCatalogProducts';
 import { ProductsResponse } from '@/features/catalog/api/products';
 import styles from './catalog.module.scss';
+
+/** Скільки сторінок дотягує автоскрол, перш ніж передати кермо людині */
+const AUTO_PAGES_STEP = 2;
 
 interface CatalogProps {
   initialData?: ProductsResponse | null;
@@ -22,6 +28,10 @@ interface CatalogProps {
 export default function CatalogClient({ initialData, initialCategories, basePath = '' }: CatalogProps) {
   const [initialized, setInitialized] = useState(false);
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
+  // Нескінченний скрол ховав футер назавжди: сторінка довантажувалась швидше,
+  // ніж людина доходила до низу, а в футері живуть єдині посилання на оферту,
+  // повернення й політику. Дві автопідвантаження — далі явна кнопка.
+  const [autoPagesBudget, setAutoPagesBudget] = useState(AUTO_PAGES_STEP);
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -52,8 +62,15 @@ export default function CatalogClient({ initialData, initialCategories, basePath
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [pathname, filters]); // Спрацює при зміні маршруту або фільтрів
 
+  // Скільки сторінок уже дотягнув автоскрол — рахуємо з самих даних, а не
+  // окремим станом: при зміні фільтрів TanStack Query і так починає з однієї
+  // сторінки, тож скидати нічого не треба.
+  const autoLoadExhausted = (data?.pages.length ?? 1) - 1 >= autoPagesBudget;
+
   // Intersection Observer для безкінечного скролу
   useEffect(() => {
+    if (autoLoadExhausted) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
@@ -73,9 +90,10 @@ export default function CatalogClient({ initialData, initialCategories, basePath
         observer.unobserve(currentTarget);
       }
     };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, autoLoadExhausted]);
 
   const handleFiltersChange = useCallback(() => {
+    setAutoPagesBudget(AUTO_PAGES_STEP);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
@@ -85,19 +103,27 @@ export default function CatalogClient({ initialData, initialCategories, basePath
   }, [clearFilters, router, pathname]);
 
   return (
-    <div className={styles.catalogPage}>
-      {/* Кнопка фільтрів для мобільних — з лічильником активних */}
+    <Page className={styles.catalogPage}>
+      <Breadcrumbs items={[{ label: 'Головна', href: `${basePath}/` }, { label: 'Каталог' }]} />
+      <PageHeader
+        title="Каталог"
+        description="Футболки, худі, постери та аксесуари — офіційний мерч, лімітовані тиражі."
+        aside={totalCount > 0 ? <span className={styles.totalCount}>{totalCount} товарів</span> : null}
+      />
+
+      {/* Кнопка фільтрів для мобільних — з лічильником активних.
+          Була ще й IconChevronDown праворуч: «шеврон вниз» обіцяє акордеон,
+          а відкривався bottom sheet. Одна іконка = одне значення (3.11). */}
       <Button
-        variant="outline"
+        variant="secondary"
         className={styles.filtersButton}
         onClick={() => setFiltersModalOpened(true)}
+        aria-haspopup="dialog"
+        aria-expanded={filtersModalOpened}
         fullWidth>
-        <div>
-          <IconFilter size={16} />
-          Фільтри
-          {activeFilterCount > 0 && <span className={styles.filtersBadge}>{activeFilterCount}</span>}
-        </div>
-        <IconChevronDown size={16} />
+        <IconFilter size={18} stroke={1.5} />
+        <span>Фільтри</span>
+        {activeFilterCount > 0 && <span className={styles.filtersBadge}>{activeFilterCount}</span>}
       </Button>
 
       {/* Фільтри для десктопу */}
@@ -117,7 +143,8 @@ export default function CatalogClient({ initialData, initialCategories, basePath
         initialCategories={initialCategories}
         resultsCount={totalCount}
       />
-      <Container size={1300} px={{ base: 20, sm: 40 }} pb={50}>
+
+      <div className={styles.results}>
         {error && (
           <div className={styles.error}>
             <h3>Не вдалося завантажити товари</h3>
@@ -135,8 +162,10 @@ export default function CatalogClient({ initialData, initialCategories, basePath
                 <div className={styles.productSkeleton__image} />
                 <div className={styles.productSkeleton__content}>
                   <div className={styles.productSkeleton__title} />
+                  <div className={styles.productSkeleton__stock} />
                   <div className={styles.productSkeleton__price} />
                 </div>
+                <div className={styles.productSkeleton__action} />
               </div>
             ))}
           </div>
@@ -151,7 +180,7 @@ export default function CatalogClient({ initialData, initialCategories, basePath
             </div>
 
             {/* Intersection observer target */}
-            <div ref={observerTarget} style={{ height: '20px', margin: '20px 0' }} />
+            <div ref={observerTarget} className={styles.observerTarget} />
 
             {/* Індикатор завантаження наступної сторінки */}
             {isFetchingNextPage && (
@@ -160,35 +189,45 @@ export default function CatalogClient({ initialData, initialCategories, basePath
               </Center>
             )}
 
-            {/* Повідомлення про кінець списку */}
+            {/* Після ліміту автопідвантажень — явна дія, щоб футер став досяжним */}
+            {hasNextPage && autoLoadExhausted && !isFetchingNextPage && (
+              <div className={styles.loadMore}>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setAutoPagesBudget((n) => n + AUTO_PAGES_STEP);
+                    fetchNextPage();
+                  }}>
+                  Показати ще
+                </Button>
+                <span className={styles.loadMoreHint}>
+                  Показано {products.length} з {totalCount}
+                </span>
+              </div>
+            )}
+
+            {/* Повідомлення про кінець списку. Було Text c="dimmed" — сірий
+                Mantine повз токени проєкту. */}
             {!hasNextPage && products.length > 0 && (
-              <Center py="xl">
-                <Text c="dimmed" size="md">
-                  Всі товари завантажено ({totalCount})
-                </Text>
-              </Center>
+              <p className={styles.listEnd}>Всі товари завантажено ({totalCount})</p>
             )}
           </>
         )}
 
         {/* Повідомлення якщо товарів немає */}
         {!isLoading && !error && products.length === 0 && (
-          <Center py="xl">
-            <Stack align="center" gap="md" maw={400}>
-              <IconFilter size={64} color="var(--mantine-color-gray-5)" />
-              <Title order={3} ta="center">
-                Нічого не знайдено
-              </Title>
-              <Text ta="center" c="dimmed">
-                За обраними фільтрами товарів немає. Спробуйте змінити або скинути фільтри.
-              </Text>
-              <Button variant="secondary" onClick={handleResetFilters}>
-                Скинути фільтри
-              </Button>
-            </Stack>
-          </Center>
+          <div className={styles.empty}>
+            {/* Була IconFilter — та сама іконка, що й на кнопці «Фільтри»:
+                один знак ніс два різні значення */}
+            <IconMoodEmpty size={40} stroke={1.5} className={styles.emptyIcon} />
+            <h3>Нічого не знайдено</h3>
+            <p>За обраними фільтрами товарів немає. Спробуйте змінити або скинути фільтри.</p>
+            <Button variant="secondary" onClick={handleResetFilters}>
+              Скинути фільтри
+            </Button>
+          </div>
         )}
-      </Container>
-    </div>
+      </div>
+    </Page>
   );
 }

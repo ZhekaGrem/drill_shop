@@ -8,7 +8,7 @@ import styles from './ProductCard.module.scss';
 
 interface ProductCardInfoProps {
   product: Product;
-  isImageHovered: boolean;
+  isInStock: boolean;
   selectedVariant: string | null;
   selectedVariantObject: any;
   sortedVariants: any[];
@@ -25,7 +25,7 @@ interface ProductCardInfoProps {
  */
 export const ProductCardInfo: React.FC<ProductCardInfoProps> = ({
   product,
-  isImageHovered,
+  isInStock,
   selectedVariant,
   selectedVariantObject,
   sortedVariants,
@@ -71,6 +71,13 @@ export const ProductCardInfo: React.FC<ProductCardInfoProps> = ({
       <Link href={`${basePath}/catalog/${product.slug}`} onClick={(e) => e.stopPropagation()}>
         <h3 className={styles.title}>{product.name}</h3>
       </Link>
+
+      {/* Наявність — та сама метадана, що й на сторінці товару. Крапка + текст,
+          а не тільки колір: колір не може бути єдиним носієм сенсу (WCAG 1.4.1). */}
+      <span className={`${styles.stock} ${isInStock ? '' : styles.stock_out}`}>
+        {isInStock ? 'В наявності' : 'Немає в наявності'}
+      </span>
+
       <Divider className={styles.divider} />
 
       <Group justify="space-between" className={styles.contentPriceVariants}>
@@ -149,7 +156,6 @@ export const ProductCardInfo: React.FC<ProductCardInfoProps> = ({
           </div>
         )}
       </Group>
-      <div className={styles.footer}></div>
     </div>
   );
 };

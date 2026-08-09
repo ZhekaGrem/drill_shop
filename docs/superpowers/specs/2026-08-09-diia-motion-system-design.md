@@ -22,16 +22,16 @@
 
 Виміряно на коміті `d988b55`.
 
-| Факт | Значення |
-| --- | --- |
-| Оголошень `transition:` у `src/` | 103 у 46 файлах |
-| З них `transition: all` або `var(--transition-*)` | **76** |
-| Кривих у проєкті | одна — `ease-in-out`, у всіх трьох токенах |
-| Файлів із `:active` press-фідбеком | 5 із 46 |
-| Файлів із `@media (hover: hover)` | **0** |
-| Файлів із `prefers-reduced-motion` | 1 (`HeroVisual`) |
-| `template.tsx` / переходи сторінок | немає |
-| Файлів із Mantine `Modal`/`Drawer` | 22 |
+| Факт                                              | Значення                                   |
+| ------------------------------------------------- | ------------------------------------------ |
+| Оголошень `transition:` у `src/`                  | 103 у 46 файлах                            |
+| З них `transition: all` або `var(--transition-*)` | **76**                                     |
+| Кривих у проєкті                                  | одна — `ease-in-out`, у всіх трьох токенах |
+| Файлів із `:active` press-фідбеком                | 5 із 46                                    |
+| Файлів із `@media (hover: hover)`                 | **0**                                      |
+| Файлів із `prefers-reduced-motion`                | 1 (`HeroVisual`)                           |
+| `template.tsx` / переходи сторінок                | немає                                      |
+| Файлів із Mantine `Modal`/`Drawer`                | 22                                         |
 
 Три токени в `globals.css:363-365`:
 
@@ -61,14 +61,14 @@
 
 ## Ухвалені рішення
 
-| # | Рішення | Альтернативи, які відхилено |
-| --- | --- | --- |
-| 1 | **CSS-first**: рух у CSS, framer-motion лише на жест шторки | framer-motion всюди — +35 kB, усе на main thread, кожен анімований компонент стає `'use client'`, що бʼє по RSC-правилу проєкту |
-| 2 | **Оновити Next 16.0.7 → 16.3.x** | лишитись на 16.0.7 з `experimental.viewTransition` — продакшн-магазин на експериментальній збірці React |
-| 3 | **Власний `<Sheet>`** на Mantine `Drawer.Root` + framer-motion | `vaul` — якісніший жест, але друга модальна система поряд з Mantine |
-| 4 | **Обсяг — тільки вітрина**, `/admin` не чіпаємо | адмінка — внутрішній інструмент; часті повторювані дії анімувати шкідливо |
-| 5 | **Старі токени лишаються** як застарілі аліаси з новою кривою | видалення — переписування 76 місць одним комітом |
-| 6 | **Shared element** фото картки → фото товару | без нього губиться найпомітніший момент «це застосунок» |
+| #   | Рішення                                                        | Альтернативи, які відхилено                                                                                                     |
+| --- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **CSS-first**: рух у CSS, framer-motion лише на жест шторки    | framer-motion всюди — +35 kB, усе на main thread, кожен анімований компонент стає `'use client'`, що бʼє по RSC-правилу проєкту |
+| 2   | **Оновити Next 16.0.7 → 16.3.x**                               | лишитись на 16.0.7 з `experimental.viewTransition` — продакшн-магазин на експериментальній збірці React                         |
+| 3   | **Власний `<Sheet>`** на Mantine `Drawer.Root` + framer-motion | `vaul` — якісніший жест, але друга модальна система поряд з Mantine                                                             |
+| 4   | **Обсяг — тільки вітрина**, `/admin` не чіпаємо                | адмінка — внутрішній інструмент; часті повторювані дії анімувати шкідливо                                                       |
+| 5   | **Старі токени лишаються** як застарілі аліаси з новою кривою  | видалення — переписування 76 місць одним комітом                                                                                |
+| 6   | **Shared element** фото картки → фото товару                   | без нього губиться найпомітніший момент «це застосунок»                                                                         |
 
 Рішення 5 повторює прецедент, уже закріплений у `DESIGN_SYSTEM.md` для `--spacing-x/y`
 і `--border-width`: старе лишається аліасом, нове пишеться поруч, міграція йде поступово.
@@ -81,34 +81,34 @@
 
 ```css
 /* Криві — розділені за призначенням */
---ease-out:    cubic-bezier(0.23, 1, 0.32, 1);     /* входи, появи, відпускання пальця */
---ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);    /* рух і морфінг на екрані */
---ease-sheet:  cubic-bezier(0.32, 0.72, 0, 1);     /* шторки — крива з iOS */
+--ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* входи, появи, відпускання пальця */
+--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1); /* рух і морфінг на екрані */
+--ease-sheet: cubic-bezier(0.32, 0.72, 0, 1); /* шторки — крива з iOS */
 
 /* Тривалості */
---dur-press: 120ms;   /* натискання */
---dur-hover: 160ms;   /* колір, фон, межа */
---dur-pop:   180ms;   /* dropdown, tooltip, popover, бейдж */
---dur-modal: 220ms;   /* модалка */
---dur-sheet: 300ms;   /* шторка */
---dur-exit:  150ms;   /* вихід — завжди швидший за вхід */
+--dur-press: 120ms; /* натискання */
+--dur-hover: 160ms; /* колір, фон, межа */
+--dur-pop: 180ms; /* dropdown, tooltip, popover, бейдж */
+--dur-modal: 220ms; /* модалка */
+--dur-sheet: 300ms; /* шторка */
+--dur-exit: 150ms; /* вихід — завжди швидший за вхід */
 
 /* Дистанції */
---motion-rise: 8px;             /* вхід елемента знизу */
---motion-slide: 60px;           /* зсув екрана при переході */
---motion-press-scale: 0.97;     /* натискання */
+--motion-rise: 8px; /* вхід елемента знизу */
+--motion-slide: 60px; /* зсув екрана при переході */
+--motion-press-scale: 0.97; /* натискання */
 
 /* Каскад */
 --stagger-step: 40ms;
---stagger-max: 8;               /* далі не затримуємо */
+--stagger-max: 8; /* далі не затримуємо */
 ```
 
 Ретаргет застарілих:
 
 ```css
---transition-fast:   150ms var(--ease-out);   /* @deprecated — property-scoped запис */
---transition-normal: 200ms var(--ease-out);   /* @deprecated */
---transition-slow:   300ms var(--ease-out);   /* @deprecated */
+--transition-fast: 150ms var(--ease-out); /* @deprecated — property-scoped запис */
+--transition-normal: 200ms var(--ease-out); /* @deprecated */
+--transition-slow: 300ms var(--ease-out); /* @deprecated */
 ```
 
 **Правило:** тривалість руху в UI не перевищує 300 мс. Виняток — тільки перехід сторінки
@@ -117,10 +117,10 @@
 ### Шар 1 — міксини (`src/shared/styles/_motion.scss`, новий)
 
 ```scss
-@mixin press($scale: var(--motion-press-scale));   // :active + transition
-@mixin hoverable;                                   // @media (hover: hover) and (pointer: fine)
-@mixin enter-rise;                                  // @starting-style: opacity 0 + translateY
-@mixin stagger-child;                               // animation-delay через --i
+@mixin press($scale: var(--motion-press-scale)); // :active + transition
+@mixin hoverable; // @media (hover: hover) and (pointer: fine)
+@mixin enter-rise; // @starting-style: opacity 0 + translateY
+@mixin stagger-child; // animation-delay через --i
 ```
 
 Потрібні, щоб шість файлів ядра не дублювали одні й ті самі три рядки.
@@ -169,14 +169,14 @@ CSS напрямків — за рецептом з документації Nex
 
 ### Шар 3 — press / hover / focus у ядрі
 
-| Файл | Зміна |
-| --- | --- |
-| `shared/components/Button/button.module.scss` | `:active` → `scale(0.97)`; `transition: all` → `background, border-color, transform` |
-| `shared/components/ListGroup/ListGroup.module.scss` | press на `.rowInteractive`; стрілка зсувається на 2px |
-| `shared/components/ArrowCircle/ArrowCircle.module.scss` | press; hover під `hoverable()` |
-| `shared/components/Card/Card.module.scss` | press замість hover-підйому на тач |
-| `features/catalog/.../ProductCard.module.scss` | press; hover-підйом під `hoverable()`; прибрати дубль `blurFadeIn` |
-| `shared/components/Input`, `Select`, `SearchInput` | фокус — `border-color` + `box-shadow`, без `all` |
+| Файл                                                    | Зміна                                                                                |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `shared/components/Button/button.module.scss`           | `:active` → `scale(0.97)`; `transition: all` → `background, border-color, transform` |
+| `shared/components/ListGroup/ListGroup.module.scss`     | press на `.rowInteractive`; стрілка зсувається на 2px                                |
+| `shared/components/ArrowCircle/ArrowCircle.module.scss` | press; hover під `hoverable()`                                                       |
+| `shared/components/Card/Card.module.scss`               | press замість hover-підйому на тач                                                   |
+| `features/catalog/.../ProductCard.module.scss`          | press; hover-підйом під `hoverable()`; прибрати дубль `blurFadeIn`                   |
+| `shared/components/Input`, `Select`, `SearchInput`      | фокус — `border-color` + `box-shadow`, без `all`                                     |
 
 **Усі hover-ефекти йдуть під `@media (hover: hover) and (pointer: fine)`.** Зараз такої
 огорожі немає ніде — на тачі hover залипає після тапу, і картка лишається піднятою.
@@ -205,14 +205,14 @@ CSS напрямків — за рецептом з документації Nex
 
 ### Шар 5 — дрібне
 
-| Патерн | Реалізація |
-| --- | --- |
-| Каскад списків | `animation-delay: calc(var(--i) * var(--stagger-step))`, `--i` інлайном; обріз на 8-му |
-| Скелетони | shimmer через `transform` на псевдоелементі замість `filter: blur` (дорого) |
-| `StatusPage` | іконка малюється через `stroke-dashoffset` — рідкісний екран, тут можна delight |
-| Табки й чіпи фільтрів | `clip-path` для переїзду активного стану, не транзишн кольору |
-| Лічильник кошика | pop `scale(1) → 1.15 → 1` при зміні |
-| Тости | `@mantine/notifications` через `transitionProps` у темі |
+| Патерн                | Реалізація                                                                             |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| Каскад списків        | `animation-delay: calc(var(--i) * var(--stagger-step))`, `--i` інлайном; обріз на 8-му |
+| Скелетони             | shimmer через `transform` на псевдоелементі замість `filter: blur` (дорого)            |
+| `StatusPage`          | іконка малюється через `stroke-dashoffset` — рідкісний екран, тут можна delight        |
+| Табки й чіпи фільтрів | `clip-path` для переїзду активного стану, не транзишн кольору                          |
+| Лічильник кошика      | pop `scale(1) → 1.15 → 1` при зміні                                                    |
+| Тости                 | `@mantine/notifications` через `transitionProps` у темі                                |
 
 **`shared/config/mantine-theme.ts`** — `transitionProps` для `Modal`, `Drawer`, `Menu`,
 `Popover`, `Tooltip`, `Select`. Одне місце перекриває всі 22 файли з модалками.
@@ -227,7 +227,9 @@ CSS напрямків — за рецептом з документації Nex
 
 ```css
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(*), ::view-transition-new(*), ::view-transition-group(*) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
     animation-duration: 0s !important;
     animation-delay: 0s !important;
   }
@@ -302,9 +304,9 @@ CSS напрямків — за рецептом з документації Nex
 
 ## Відкриті ризики
 
-| Ризик | Ймовірність | Мітигація |
-| --- | --- | --- |
-| Апгрейд Next ламає білд | низька (мінор у межах 16) | крок 1, до будь-яких змін коду |
-| Два трансформи бʼються в `<Sheet>` | середня | останній крок; відкат на варіант без жесту |
-| Значення переходу сторінки з доків завеликі для Дії | висока | тюнимо після першого перегляду, стартові значення не догма |
-| Переведення 5 сторінок на `<Page>` зачепить їхню верстку | середня | крок 5, кожна сторінка перевіряється окремо; правка чисто структурна |
+| Ризик                                                    | Ймовірність               | Мітигація                                                            |
+| -------------------------------------------------------- | ------------------------- | -------------------------------------------------------------------- |
+| Апгрейд Next ламає білд                                  | низька (мінор у межах 16) | крок 1, до будь-яких змін коду                                       |
+| Два трансформи бʼються в `<Sheet>`                       | середня                   | останній крок; відкат на варіант без жесту                           |
+| Значення переходу сторінки з доків завеликі для Дії      | висока                    | тюнимо після першого перегляду, стартові значення не догма           |
+| Переведення 5 сторінок на `<Page>` зачепить їхню верстку | середня                   | крок 5, кожна сторінка перевіряється окремо; правка чисто структурна |

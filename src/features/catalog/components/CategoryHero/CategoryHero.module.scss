@@ -1,18 +1,19 @@
 // src/features/catalog/components/CategoryHero/CategoryHero.module.scss
+// Біла картка на градієнті сторінки. Було: власний --gradient-brand поверх
+// градієнтного фону сторінки (два шари одного градієнта) плюс власні поля
+// --spacing-x, які всередині <Page> подвоювались.
 .hero {
   position: relative;
   display: flex;
   align-items: center;
-  background: var(--gradient-brand);
-  border-radius: var(--border-radius-lg);
-  margin: var(--spacing-lg) var(--spacing-x);
-  min-height: 280px;
-  box-shadow: var(--shadow-md);
+  min-height: 240px;
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 
   @media (max-width: 768px) {
-    margin: var(--spacing-md);
-    min-height: 200px;
+    min-height: 180px;
   }
 }
 
@@ -44,25 +45,21 @@
   }
 }
 
+// Підкладка 0.82 більше не потрібна: картка сама біла, текст лежить
+// на суцільній поверхні, контраст детермінований.
 .heroText {
   flex: 1;
-  // Біла «скляна» підкладка під текстом. 0.82 — не на око: при 0.35 сірий
-  // --text-secondary над синім кінцем градієнта давав 2.93:1 (провал WCAG
-  // 1.4.3 AA, треба 4.5:1). При 0.82 виходить 5.12:1.
-  background: rgba(255, 255, 255, 0.82);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-lg);
-
-  @media (max-width: 768px) {
-    padding: var(--spacing-md);
-  }
+  min-width: 0;
 }
 
 .title {
   font-family: var(--font-heading);
-  color: var(--text-primary);
   font-size: var(--text-5xl);
-  margin-bottom: var(--spacing-sm);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
 
   @media (max-width: 768px) {
     font-size: var(--text-3xl);
@@ -70,11 +67,8 @@
 }
 
 .description {
+  font-size: var(--text-base);
+  font-weight: var(--fw-light);
+  line-height: 1.55;
   color: var(--text-secondary);
-  font-size: var(--text-lg);
-  line-height: 1.6;
-
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-  }
 }

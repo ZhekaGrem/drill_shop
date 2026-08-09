@@ -53,7 +53,7 @@
   font-weight: 600;
   text-transform: uppercase;
   color: var(--text-primary);
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
 
   span {
     font-weight: 400;
@@ -68,19 +68,19 @@
 .oldPrice {
   color: var(--text-primary);
   text-decoration: line-through;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   opacity: 0.7;
 }
 
 .currentPrice {
   font-weight: 800;
-  font-size: 1.2rem;
+  font-size: var(--text-xl);
 }
 
 .deleteText {
   color: var(--background-secondary);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   text-transform: uppercase;
 }
 

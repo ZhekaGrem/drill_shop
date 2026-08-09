@@ -5,39 +5,6 @@
   min-height: 100vh;
   // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
 
-  // ============ BREADCRUMBS ============
-  // Горизонтальні поля й максимальну ширину задає <Page> — тут тільки
-  // внутрішній ритм. Раніше кожен блок сторінки додавав власний --spacing-x.
-  .breadcrumbs {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding-bottom: var(--space-4);
-
-    font-size: var(--text-sm);
-    font-weight: var(--fw-medium);
-
-    &__link {
-      color: var(--text-primary);
-      text-decoration: none;
-      transition: color var(--transition-fast);
-
-      &:hover {
-        color: var(--btn-primary);
-        text-decoration: underline;
-      }
-    }
-
-    &__separator {
-      color: var(--text-secondary);
-      user-select: none;
-    }
-
-    &__current {
-      color: var(--text-secondary);
-    }
-  }
-
   // ============ PRODUCT DETAILS GRID ============
   .productDetails {
     display: grid;
@@ -54,13 +21,21 @@
         padding: var(--card-padding);
       }
     }
+    // letter-spacing був +0.02em — літери в назві товару розповзались, тоді як
+    // уся система заголовків стоїть на -0.02em. Розмір теж заданий явно:
+    // раніше він приходив із глобального h1 (36px) і був завеликий для колонки.
     &__title {
       font-family: var(--font-body);
+      font-size: var(--text-3xl);
       font-weight: var(--fw-medium);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
       color: var(--text-primary);
-      margin: 0 0 var(--spacing-md) 0;
-      line-height: 1.2;
-      letter-spacing: 0.02em;
+      margin: 0 0 var(--space-3) 0;
+
+      @media (max-width: 768px) {
+        font-size: var(--text-2xl);
+      }
     }
 
     // Артикул і наявність — на одній осі, вирівняні по центру:
@@ -70,7 +45,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: var(--space-2);
-      margin-bottom: var(--spacing-md);
+      margin-bottom: var(--space-5);
       font-size: var(--text-sm);
       color: var(--text-secondary);
     }
@@ -85,7 +60,7 @@
     }
 
     &__price {
-      margin-bottom: var(--spacing-lg);
+      margin-bottom: var(--space-6);
       display: flex;
       align-items: baseline;
       color: var(--text-secondary);
@@ -99,12 +74,17 @@
       font-weight: var(--fw-light);
       color: var(--text-secondary);
       text-decoration: line-through;
+      // Відступ був інлайном у JSX разом з кольором #999 — тепер вигляд
+      // цього елемента живе в одному місці
+      margin-right: var(--space-2);
     }
 
     &__currentPrice {
       font-family: var(--font-body);
       font-size: var(--text-3xl);
-      font-weight: var(--fw-medium);
+      // Ціна — другий (після h1) важкий елемент на сторінці. У Дії ієрархію
+      // тримає саме вага, а не розмір: важких елементів одиниці, решта легка.
+      font-weight: var(--fw-bold);
       color: var(--btn-primary);
       line-height: 1;
 
@@ -119,14 +99,14 @@
       font-weight: var(--fw-medium);
     }
 
+    // Короткий опис — тихий рядок під назвою, а не ще одна плашка.
+    // Підкладка + падінг робили з нього окремий блок і рвали ритм колонки.
     &__shortDescription {
+      margin-bottom: var(--space-5);
       font-size: var(--text-base);
-      color: var(--text-primary);
-      line-height: 1.6;
-      margin-bottom: var(--spacing-lg);
-      padding: var(--spacing-md);
-      background: var(--background-secondary);
-      border-radius: var(--border-radius-sm);
+      font-weight: var(--fw-light);
+      line-height: 1.55;
+      color: var(--text-secondary);
     }
 
     &__variants {
@@ -170,19 +150,20 @@
   }
 
   // ✅ Стилі для checkbox варіантів (size/color)
+  // Підпис належить своєму контролу — 16px між ними читались як розрив
   .variantLabel {
-    font-size: var(--text-base);
-    font-weight: var(--fw-medium);
-    color: var(--text-primary);
     display: block;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--fw-medium);
+    color: var(--text-secondary);
   }
 
   .variantCheckboxes {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-lg);
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
     z-index: 20;
   }
 
@@ -190,11 +171,19 @@
     position: relative;
     cursor: pointer;
 
+    // Ці правила давно цілились у radio, а JSX рендерив checkbox — тобто
+    // нативний квадратик не ховався і стирчав поруч із чіпом.
     input[type='radio'] {
       position: absolute;
       opacity: 0;
       width: 0;
       height: 0;
+    }
+
+    // Інпут прихований — фокус з клавіатури підсвічуємо на самому чіпі
+    input[type='radio']:focus-visible + .variantCheckboxText {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
     }
 
     &_disabled {
@@ -263,18 +252,25 @@
       flex-direction: column;
       gap: var(--spacing-md);
     }
-    // Дві окремі білі картки-«документи»: галерея (&__images) та інфо-колонка (&__info)
+    // Дві білі картки-«документи» поруч. Внутрішній падінг у них має бути ОДИН:
+    // було 24px у галереї проти 32px в інфо-колонці, і вміст двох сусідніх
+    // карток стояв на різних вертикалях.
     &__images {
       height: 100%;
       width: 100%;
+      padding: var(--space-8);
       background: var(--surface-card);
-      border-radius: var(--border-radius-lg);
+      border-radius: var(--radius-card);
       box-shadow: var(--shadow-sm);
-      padding: var(--spacing-lg);
+
+      @media (max-width: 768px) {
+        padding: var(--card-padding);
+      }
     }
+
     &__info {
       background: var(--surface-card);
-      border-radius: var(--border-radius-lg);
+      border-radius: var(--radius-card);
       box-shadow: var(--shadow-sm);
       overflow: hidden;
     }
@@ -463,14 +459,25 @@
     flex-direction: column;
     gap: var(--spacing-md);
   }
-  .actionButtonsWrapper {
+
+  .secondaryAction {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  // Кількість — окремий рядок «підпис → контрол», а не безіменні − 5 +
+  .quantityRow {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
   }
-  .sizeGuideButton {
-    height: 48px; /* = висота quantitySelector — спільна вісь ряду */
+
+  .quantityLabel {
+    font-size: var(--text-sm);
+    font-weight: var(--fw-normal);
+    color: var(--text-secondary);
   }
+
   .quantitySelector {
     height: 48px;
     border: 1px solid var(--border-subtle);
@@ -559,9 +566,13 @@
   }
 
   // ============ DESCRIPTION ============
+  // Окрема біла картка на всю ширину — більше не вкладена в інфо-колонку
   .productDescription {
-    border-top: 1px solid var(--border-subtle);
+    margin-top: var(--section-gap);
     padding: var(--space-8);
+    background: var(--surface-card);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
 
     @media (max-width: 768px) {
       padding: var(--card-padding);
@@ -570,17 +581,25 @@
     &__title {
       font-size: var(--text-2xl);
       font-weight: var(--fw-medium);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
       color: var(--text-primary);
-      margin: 0 0 var(--space-5) 0;
+      margin: 0 0 var(--space-6) 0;
     }
 
     &__content {
+      // Довгий текст не має тягнутись на всю ширину картки:
+      // за ~75 знаків у рядку око губить початок наступного
+      max-width: 70ch;
       font-size: var(--text-base);
+      font-weight: var(--fw-light);
       line-height: 1.7;
       color: var(--text-primary);
 
+      // Відступ між абзацами в em, а не в px: він масштабується разом
+      // із розміром шрифту й лишається пропорційним до інтерліньяжу
       p {
-        margin-bottom: var(--spacing-md);
+        margin-bottom: 0.75em;
 
         &:last-child {
           margin-bottom: 0;
@@ -589,12 +608,29 @@
 
       ul,
       ol {
-        margin-bottom: var(--spacing-md);
-        padding-left: var(--spacing-xl);
+        margin-bottom: 0.75em;
+        padding-left: 1.5em;
+        list-style: disc;
       }
 
       li {
-        margin-bottom: var(--spacing-xs);
+        margin-bottom: 0.25em;
+      }
+
+      // Заголовок усередині опису притискається до СВОГО тексту й
+      // відбивається від попереднього: це і є групування абзаців
+      h2,
+      h3,
+      h4 {
+        margin: 1.75em 0 0.5em;
+        font-size: var(--text-lg);
+        font-weight: var(--fw-medium);
+        line-height: 1.35;
+        color: var(--text-primary);
+
+        &:first-child {
+          margin-top: 0;
+        }
       }
 
       strong {
@@ -811,19 +847,17 @@
       padding: 0 10px;
     }
 
-    .actionButtonsWrapper {
-      gap: var(--spacing-sm);
-      padding-bottom: var(--space-4);
-      flex-wrap: wrap;
-    }
-
-    // Sticky кнопки внизу екрану
+    // Липка панель тримає РІВНО ОДНУ дію. Раніше сюди потрапляли лічильник
+    // кількості (48px) і дві кнопки по 56px — ≈190px, приклеєних до низу
+    // назавжди, тобто чверть екрана телефона. Тепер ~88px.
+    // Плюс верхня межа: без неї контент заповзав під панель без розділення.
     .actionButtons {
       position: sticky;
       bottom: 0;
       left: 0;
       right: 0;
       background: var(--background);
+      border-top: 1px solid var(--border-subtle);
       padding: var(--spacing-md);
       margin: 0 calc(var(--spacing-md) * -1);
       z-index: 100;
@@ -848,11 +882,6 @@
   }
 
   @media (max-width: 480px) {
-    .breadcrumbs {
-      font-size: var(--text-xs);
-      gap: var(--spacing-xs);
-    }
-
     .quantitySelector__button {
       width: 40px;
       height: 40px;

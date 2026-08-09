@@ -1,56 +1,51 @@
 // src/app/catalog/category/[slug]/category.module.scss
+// Поля й ширину задає <Page>. Раніше тут був Mantine <Container size="xl">
+// з падінгами в rem — четвертий контейнер у проєкті.
 .categoryPage {
   min-height: calc(100vh - 200px);
-  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
-}
-
-.content {
-  padding: 2rem 1rem;
-
-  @media (max-width: 768px) {
-    padding: 1.5rem 1rem;
-  }
 }
 
 .breadcrumbs {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
   font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
 
   &__link {
-    color: var(--primary);
-    text-decoration: none;
+    color: var(--text-primary);
 
     &:hover {
-      text-decoration: underline;
+      color: var(--accent);
     }
   }
 
-  &__separator,
+  &__separator {
+    color: var(--text-secondary);
+    user-select: none;
+  }
+
   &__current {
     color: var(--text-secondary);
   }
 }
 
+.content {
+  margin-top: var(--space-6);
+}
+
+// Та сама сітка, що й у каталозі — картки не мають виглядати по-різному
+// залежно від того, звідки на них зайшли. Було `gap: 0` — картки торкались.
 .productsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 370px); // 3 колонки по 370px
-  gap: 0;
-  justify-content: center; // По центру екрану
-  margin-bottom: 3rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
 
-  // Для екранів < 1200px - адаптивно
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
-
-  // Для мобільних - 2 колонки
   @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    justify-content: center;
-    gap: 0;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 }
 
@@ -62,7 +57,8 @@
 }
 
 .spinner {
-  font-size: 1.125rem;
+  font-size: var(--text-lg);
+  font-weight: var(--fw-light);
   color: var(--text-secondary);
   animation: pulse 1.5s ease-in-out infinite;
 }
@@ -72,12 +68,12 @@
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
 }
 
 .paginationWrapper {
-  margin-top: 3rem;
-  padding-bottom: 2rem;
+  margin-top: var(--space-8);
 }

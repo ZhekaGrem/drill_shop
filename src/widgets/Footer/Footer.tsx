@@ -15,27 +15,53 @@ export function Footer() {
     <footer className={`${styles.footer} `} data-footer role="contentinfo" aria-label="Інформація про сайт">
       <div className={styles.container}>
         {/* Main footer grid */}
+        {/* Чотири колонки, і в КОЖНОЇ є заголовок одного класу. Раніше третя
+            (контакти) заголовка не мала взагалі, а перші дві мали два різні
+            класи — .columnTitle і .columnTitle__about, — які відрізнялись лише
+            відсутнім margin-bottom, тож їхні перші рядки стояли на різній висоті. */}
         <div className={styles.footerGrid}>
-          {/* Column 1: Час роботи */}
+          {/* Column 1: Магазин — у футері не було посилань на те, заради чого
+              сайт існує: каталог і розпродаж */}
           <div className={styles.linksColumn}>
-            <Text className={styles.columnTitle}>Час роботи</Text>
-            <Text className={styles.socialDescription}>Понеділок - Неділя{'\n'}З 8:00 до 23:00</Text>
+            <Text component="h2" className={styles.columnTitle}>
+              Магазин
+            </Text>
+            <Stack gap="xs">
+              <Link href="/catalog">Каталог</Link>
+              <Link href="/catalog?promo=true">Розпродаж</Link>
+              <Link href="/about">Про нас</Link>
+              <Link href="/orders/track">Відстежити замовлення</Link>
+            </Stack>
           </div>
 
-          {/* Column 2: Про нас */}
+          {/* Column 2: Покупцю */}
           <div className={styles.linksColumn}>
-            <Text className={styles.columnTitle__about}>Про нас</Text>
+            <Text component="h2" className={styles.columnTitle}>
+              Покупцю
+            </Text>
             <Stack gap="xs">
               <Link href="/contact">Зв'язок з нами</Link>
               <Link href="/delivery-and-payment">Доставка та оплата</Link>
               <Link href="/returns-exchanges">Обмін та Повернення</Link>
+              <Link href="/faq">Питання та відповіді</Link>
               <Link href="/public-offer">Публічний договір</Link>
               <Link href="/privacy-policy">Політика конфіденційності</Link>
             </Stack>
           </div>
 
-          {/* Column 3: Контакти + Соцмережі */}
+          {/* Column 3: Час роботи */}
+          <div className={styles.linksColumn}>
+            <Text component="h2" className={styles.columnTitle}>
+              Час роботи
+            </Text>
+            <Text className={styles.workingHours}>Понеділок — Неділя{'\n'}з 8:00 до 23:00</Text>
+          </div>
+
+          {/* Column 4: Контакти + Соцмережі */}
           <div className={styles.socialSection}>
+            <Text component="h2" className={styles.columnTitle}>
+              Контакти
+            </Text>
             <div className={styles.contactInfo}>
               <a href={`mailto:${siteConfig.contacts.email}`} className={styles.contactItem}>
                 {siteConfig.contacts.email}
@@ -71,35 +97,40 @@ export function Footer() {
       <div className={styles.line} />
       {/* Bottom section */}
       <div className={styles.container}>
+        {/* Кредити були набрані 20px medium — тобто більшими й важчими за
+            навігацію магазину (16px light) і за копірайт (14px). У футері
+            магазину найпомітнішим виявлялось те, що потрібне найменше.
+            Тепер це один тихий рядок 14px поруч з копірайтом. */}
         <div className={styles.bottomSection}>
-          <div className={styles.footerLogo}>
-            <Logo size="sm" />
+          <div className={styles.bottomBrand}>
+            <div className={styles.footerLogo}>
+              <Logo size="sm" />
+            </div>
+            <Text className={styles.copyright}>© {currentYear} ye-dril.com</Text>
           </div>
-          <Text className={styles.copyright}>© {currentYear} ye-dril.com</Text>
 
-          <div className={styles.designerSection}>
-            <span>Developed</span>
-            <a href="https://galychyna.online/" target="_blank" rel="noopener noreferrer">
-              <span>Galychyna</span>
-            </a>
-          </div>
-          <div className={styles.designerSection}>
-            <span>Designed by</span>
-            <a href="https://d-okuniev.framer.website/" target="_blank" rel="noopener noreferrer">
-              <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M17.6162 3.4668C21.3429 3.4668 24.5089 4.60698 26.46 7.0293C28.393 9.42923 28.8048 12.5904 28.2295 15.8623C27.448 20.3069 24.9372 23.1129 22.041 24.7109C19.2699 26.2398 16.2902 26.6806 13.8945 26.6807H0.473633L2.0293 22.5488H6.38281V15.0889H10.7021V22.5488H13.8945C16.4478 22.5488 18.2168 21.9356 19.791 20.8955C21.3651 19.8554 23.0432 18.0025 23.5479 15.1328C23.9499 12.8462 23.6454 11.0123 22.7793 9.68457C21.9129 8.3568 20.2557 7.60254 17.6162 7.60254H15.0225V15.0889H10.7021V7.60254H4.88867L6.45605 3.4668H17.6162Z"
-                  fill="currentColor"
-                />
-              </svg>
-              <span>Danil Okuniev</span>
-            </a>
-          </div>
-          <div className={styles.designerSection}>
-            <span>Шрифт</span>
-            <a href="https://thedigital.gov.ua/fonts" target="_blank" rel="noopener noreferrer">
-              <span>e-Ukraine © Мінцифра, CC BY 4.0</span>
-            </a>
+          <div className={styles.credits}>
+            <span>
+              Розробка{' '}
+              <a href="https://galychyna.online/" target="_blank" rel="noopener noreferrer">
+                Galychyna
+              </a>
+            </span>
+            <span aria-hidden="true">·</span>
+            <span>
+              Дизайн{' '}
+              <a href="https://d-okuniev.framer.website/" target="_blank" rel="noopener noreferrer">
+                Danil Okuniev
+              </a>
+            </span>
+            <span aria-hidden="true">·</span>
+            <span>
+              Шрифт{' '}
+              <a href="https://thedigital.gov.ua/fonts" target="_blank" rel="noopener noreferrer">
+                e-Ukraine
+              </a>{' '}
+              © Мінцифра, CC BY 4.0
+            </span>
           </div>
         </div>
       </div>

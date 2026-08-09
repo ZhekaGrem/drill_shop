@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Container, Title, Text, Group, MantineProvider } from '@mantine/core';
+import Link from 'next/link';
+import { IconAlertTriangle } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
+import { StatusPage } from '@/shared/components/StatusPage/StatusPage';
 
 const Error = ({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) => {
   useEffect(() => {
@@ -10,26 +12,23 @@ const Error = ({ error, reset }: { error: Error & { digest?: string }; reset: ()
   }, [error]);
 
   return (
-    <MantineProvider>
-      <Container className="py-20">
-        <div className="text-center">
-          <Title order={1} className=" mb-4">
-            Помилка
-          </Title>
-          <Title order={2} className="mb-4">
-            Ой, щось пішло не так...
-          </Title>
-          <Text size="lg" className="mb-8 text-gray-600">
-            На жаль, сталася непередбачена помилка. Наша команда вже отримала сповіщення.
-          </Text>
-          <Group justify="center">
-            <Button variant="ghost" size="md" onClick={reset}>
-              Спробувати знову
-            </Button>
-          </Group>
-        </div>
-      </Container>
-    </MantineProvider>
+    <StatusPage
+      tone="error"
+      icon={<IconAlertTriangle stroke={1.5} />}
+      eyebrow={error.digest ? `Код: ${error.digest}` : 'Помилка'}
+      title="Щось пішло не так"
+      description="Сталася непередбачена помилка. Спробуйте оновити сторінку — ми вже отримали сповіщення."
+      actions={
+        <>
+          <Button variant="primary" onClick={reset}>
+            Спробувати знову
+          </Button>
+          <Link href="/">
+            <Button variant="secondary">На головну</Button>
+          </Link>
+        </>
+      }
+    />
   );
 };
 

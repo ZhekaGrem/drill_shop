@@ -1,15 +1,15 @@
-// src/app/(shop)/cart/page.tsx
-
+// src/app/cart/Cart.tsx
 'use client';
-import { Container, Title, Stack, Group, Text, Paper, Divider, Center } from '@mantine/core';
+
+import Link from 'next/link';
 import { IconShoppingCart } from '@tabler/icons-react';
 import { ArrowLeft } from '@/shared/components/Svg';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { CartItem } from '@/features/cart/components/CartItem/CartItem';
 import { formatPrice } from '@/shared/utils/cart-calculations';
-import Link from 'next/link';
-
 import { Button } from '@/shared/components/Button/Button';
+import { Page } from '@/shared/components/Page/Page';
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import styles from './cart.module.scss';
 
 interface CartPageProps {
@@ -17,133 +17,91 @@ interface CartPageProps {
 }
 
 export default function CartPage({ basePath = '' }: CartPageProps) {
-  const { items, calculations, isLoading, error } = useCart();
+  const { items, calculations, error } = useCart();
 
   if (error) {
     return (
-      <Container size="lg">
-        <Center py="xl">
-          <Stack align="center" gap="md">
-            <Text c="red">Помилка завантаження кошика</Text>
-            <Button onClick={() => window.location.reload()}>Спробувати знову</Button>
-          </Stack>
-        </Center>
-      </Container>
+      <Page>
+        <PageHeader title="Кошик" />
+        <div className={styles.state}>
+          <h2>Не вдалося завантажити кошик</h2>
+          <p>Перевірте зʼєднання з інтернетом і спробуйте ще раз.</p>
+          <Button onClick={() => window.location.reload()}>Спробувати знову</Button>
+        </div>
+      </Page>
     );
   }
 
   return (
-    <Container size="lg" className={styles.containerCart}>
-      {/* Header */}
-      <Group justify="space-between" p="xs">
-        <Group justify="space-between">
-          {' '}
-          <Link href={`${basePath}/catalog`} className={styles.containerCart__link}>
-            {' '}
-            <ArrowLeft />{' '}
-            <Title order={1} className={styles.containerCart__title}>
-              {' '}
-              Кошик
-            </Title>
-          </Link>{' '}
-        </Group>
-      </Group>
+    <Page>
+      <PageHeader
+        title="Кошик"
+        description={
+          items.length > 0 ? `${calculations.itemsCount} товарів у замовленні` : 'Поки що порожній'
+        }
+        aside={
+          <Link href={`${basePath}/catalog`} className={styles.backLink}>
+            <ArrowLeft size={18} />
+            До каталогу
+          </Link>
+        }
+      />
 
       {items.length === 0 ? (
-        /* Порожній кошик */
-        <Center py="xl">
-          <Stack align="center" gap="xl" maw={400}>
-            <IconShoppingCart size={80} color="var(--mantine-color-gray-5)" />
-
-            <Stack align="center" gap="sm">
-              <Title order={2} ta="center" c="dimmed">
-                Ваш кошик порожній
-              </Title>
-              <Text ta="center" c="dimmed">
-                Додайте товари до кошика, щоб продовжити покупки
-              </Text>
-            </Stack>
-
-            <Group gap="sm" justify="center">
-              <Link href={`${basePath}/`}>
-                <Button variant="ghost" leftSection={<ArrowLeft />}>
-                  На головну
-                </Button>
-              </Link>
-              <Link href={`${basePath}/catalog`}>
-                <Button>Перейти до каталогу</Button>
-              </Link>
-            </Group>
-          </Stack>
-        </Center>
+        <div className={styles.state}>
+          <IconShoppingCart size={48} stroke={1.5} className={styles.stateIcon} />
+          <h2>Ваш кошик порожній</h2>
+          <p>Додайте товари до кошика, щоб продовжити покупки.</p>
+          <div className={styles.stateActions}>
+            <Button variant="primary" onClick={() => (window.location.href = `${basePath}/catalog`)}>
+              Перейти до каталогу
+            </Button>
+          </div>
+        </div>
       ) : (
-        /* Заповнений кошик */
         <div className={styles.cart}>
-          {/* Список товарів — біла картка-«документ» */}
-          <Stack className={styles.itemsList} gap={0}>
+          {/* Список товарів — одна біла картка, рядки розділені всередині */}
+          <div className={styles.itemsList}>
             {items.map((item, index) => (
               <CartItem key={item.id} item={item} compact={false} isFirst={index === 0} />
             ))}
-          </Stack>
+          </div>
 
-          {/* Підсумок замовлення — «документ»: градієнтна картка з білим бланком даних */}
-          <Stack className={styles.summary}>
-            <Stack className={styles.summaryInner}>
-              <Title order={3}>Всього</Title>
+          {/* Підсумок. Раніше це була картка з градієнтом, у яку вкладалась ще
+              одна біла картка — градієнт на градієнті сторінки. */}
+          <aside className={styles.summary}>
+            <h2 className={styles.summaryTitle}>Разом</h2>
 
-              <Stack gap="xs">
-                <Group justify="space-between">
-                  <Text>Товари {calculations.itemsCount} на суму</Text>{' '}
-                  <Text>{formatPrice(calculations.subtotal)}</Text>
-                </Group>
-              </Stack>
+            <div className={styles.summaryRow}>
+              <span>Товари ({calculations.itemsCount})</span>
+              <span>{formatPrice(calculations.subtotal)}</span>
+            </div>
 
-              <Divider />
+            <div className={styles.summaryRow}>
+              <span>Доставка</span>
+              <span className={styles.summaryMuted}>За тарифами перевізника</span>
+            </div>
 
-              <Group justify="space-between" className={styles.totalSection}>
-                <Text fw={700} size="lg">
-                  Загалом:
-                </Text>
-                <Text fw={900} className={styles.totalSection__price}>
-                  {formatPrice(calculations.totalAmount)}
-                </Text>
-              </Group>
-              <Group justify="space-between">
-                <Text size="sm" c="dimmed">
-                  Доставка:
-                </Text>
-                <Text size="sm" c="dimmed">
-                  За тарифами служби доставки
-                </Text>
-              </Group>
-              <Stack gap="sm" mt="md">
-                <Link href={`${basePath}/checkout`}>
-                  <Button variant="primary" size="lg" fullWidth>
-                    <span className={styles.checkoutButtonText}>
-                      <span className={styles.desktopText}>Перейти до оформлення</span>
-                      <span className={styles.mobileText}>Оформити</span>
-                    </span>
-                  </Button>
-                </Link>
-              </Stack>
+            <div className={styles.total}>
+              <span>До сплати</span>
+              <span className={styles.totalPrice}>{formatPrice(calculations.totalAmount)}</span>
+            </div>
 
-              {/* Інформація про доставку */}
-              <Stack gap="xs" mt="lg">
-                <Text size="sm" fw={500} c="dimmed">
-                  Інформація:
-                </Text>
+            <Link href={`${basePath}/checkout`} className={styles.checkoutLink}>
+              <Button variant="primary" size="lg" fullWidth>
+                <span className={styles.desktopText}>Перейти до оформлення</span>
+                <span className={styles.mobileText}>Оформити</span>
+              </Button>
+            </Link>
 
-                <Text size="xs" c="dimmed">
-                  • Доставка протягом 1-2 днів
-                </Text>
-                <Text size="xs" c="dimmed">
-                  • Можливість оплати при отриманні
-                </Text>
-              </Stack>
-            </Stack>
-          </Stack>
+            <ul className={styles.notes}>
+              <li>Відправка за 1–2 робочі дні</li>
+              <li>Оплата карткою або при отриманні</li>
+              <li>14 днів на повернення</li>
+            </ul>
+          </aside>
         </div>
       )}
-    </Container>
+    </Page>
   );
 }

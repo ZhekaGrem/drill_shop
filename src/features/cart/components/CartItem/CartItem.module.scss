@@ -2,39 +2,25 @@
 
 // Кольори з картинки (приблизні)
 // Світло-зелений фон
-.wrapperMini {
-  background-color: var(--background);
-  border: 1px solid var(--border-subtle);
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-
-  // Всі крім першого - тонкий верхній бордер (уникаємо склеювання)
-  &:not(:first-child) {
-    border-top-width: 1px;
-  }
-
-  // Всі крім останнього - тонкий нижній бордер (уникаємо склеювання)
-  &:not(:last-child) {
-    border-bottom-width: 1px;
-  }
-}
-
+// Рядки лежать усередині однієї білої картки списку, тому власної рамки в них
+// бути не повинно: раніше кожен товар був окремою коробкою в коробці. Розділяє
+// їх той самий інсетнутий hairline, що й рядки <ListGroup>.
+.wrapperMini,
 .wrapper {
-  background-color: var(--background);
-  border: 1px solid var(--border-subtle);
-  overflow: hidden;
   position: relative;
   width: 100%;
+  background-color: var(--surface-card);
+  overflow: hidden;
 
-  // Всі крім першого - тонкий верхній бордер (уникаємо склеювання)
-  &:not(:first-child) {
-    border-top-width: 1px;
-  }
-
-  // Всі крім останнього - тонкий нижній бордер (уникаємо склеювання)
-  &:not(:last-child) {
-    border-bottom-width: 1px;
+  & + & {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: var(--card-padding);
+      right: var(--card-padding);
+      border-top: 1px solid var(--border-subtle);
+    }
   }
 }
 
@@ -46,21 +32,24 @@
   height: 100%;
 }
 
+// Було 16/16/16/24 — лівий відступ не збігався з рештою й текст «плив»
 .info {
   display: flex;
   flex-direction: column;
   align-self: stretch;
-  padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) var(--spacing-lg);
+  gap: var(--space-1);
+  padding: var(--card-padding);
 }
 
 .bottomControls {
   margin-top: auto;
 }
 
+// Було `3px dotted` — залишок піксель-арт мови
 .bottomControlsFull {
   margin-top: auto;
-  padding-top: 12px;
-  border-top: 3px dotted var(--primary);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .wrapperFirst {
@@ -68,9 +57,10 @@
 }
 
 .productName {
-  font-weight: 800;
+  font-size: var(--text-base);
+  font-weight: var(--fw-medium);
+  line-height: 1.35;
   color: var(--text-primary);
-  line-height: 1.2;
 }
 
 .GroupVariantText {
@@ -81,13 +71,13 @@
 }
 
 .variantText {
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
 
   span {
-    font-weight: 400;
-    margin-right: 4px;
+    font-weight: var(--fw-light);
+    margin-right: var(--space-1);
   }
 }
 
@@ -96,26 +86,27 @@
 }
 
 .oldPrice {
-  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-light);
+  color: var(--text-secondary);
   text-decoration: line-through;
-  font-size: 0.9rem;
-  opacity: 0.7;
 }
 
 .currentPrice {
-  font-weight: 800;
-  font-size: 1.2rem;
+  font-size: var(--text-xl);
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
 }
 
 // Стилізація блоку кількості (Квадратні кнопки)
 .quantityControl {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
 
   .qtyBtn {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -137,24 +128,25 @@
   }
 
   .qtyValue {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: transparent;
     color: var(--text-primary);
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: var(--fw-medium);
+    font-size: var(--text-base);
   }
 }
 
+// Ваги 600–800 у e-Ukraine не існує — браузер малював синтетичний жир
 .deleteText {
-  color: var(--text-secondary);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 5px;
   display: block;
+  padding: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
 }
 
 .trashBtn {
@@ -178,8 +170,7 @@
 @media (max-width: 768px) {
   .wrapper,
   .wrapperMini {
-    border-right: 1px solid var(--border-subtle);
-    min-height: 180px;
+    min-height: 160px;
 
     // Переконуємось що Group має align-items: stretch
     :global(.mantine-Group-root) {
@@ -190,47 +181,52 @@
   .image {
     align-self: stretch;
     object-fit: cover;
-    max-width: 150px;
-    height: 200px;
+    max-width: 130px;
+    height: 100%;
   }
 
   .info {
-    padding: 12px;
+    padding: var(--card-padding);
   }
 
+  // Було 0.7rem (≈11px) на назві та 0.75rem (12px) на ціні — назву неможливо
+  // прочитати, а найважливіше число в рядку виявлялось дрібнішим за неї.
+  // Ієрархія відновлена: ціна лишається найбільшою.
   .productName {
-    font-size: 0.7rem;
+    font-size: var(--text-sm);
   }
 
   .variantText {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
   }
 
   .currentPrice {
-    font-size: 0.75rem;
+    font-size: var(--text-lg);
   }
 
   .oldPrice {
-    font-size: 0.8rem;
+    font-size: var(--text-xs);
   }
 
+  // 24px не дотягували навіть до мінімальних 24×24 разом із проміжками;
+  // тримаємо 40px — нижню межу тап-таргета за дизайн-системою
   .quantityControl {
-    .qtyBtn {
-      width: 24px;
-      height: 24px;
+    .qtyBtn,
+    .qtyValue {
+      width: 40px;
+      height: 40px;
     }
 
     .qtyValue {
-      width: 24px;
-      height: 24px;
-      font-size: 0.75rem;
+      font-size: var(--text-sm);
     }
   }
 
   .deleteText {
     display: none;
   }
+
   .imageCartPage {
-    max-width: 170px;
+    max-width: 150px;
   }
 }

@@ -14,16 +14,14 @@ interface MobileFilterModalProps {
   resultsCount?: number;
 }
 
-/** «Показати 24 товари» / «Показати 1 товар» */
-function formatApplyLabel(count?: number): string {
-  if (count === undefined) return 'Показати результати';
-
+/** «24 товари» / «1 товар» */
+function formatProducts(count: number): string {
   const mod10 = count % 10;
   const mod100 = count % 100;
 
-  if (mod10 === 1 && mod100 !== 11) return `Показати ${count} товар`;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `Показати ${count} товари`;
-  return `Показати ${count} товарів`;
+  if (mod10 === 1 && mod100 !== 11) return `${count} товар`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${count} товари`;
+  return `${count} товарів`;
 }
 
 export const MobileFilterModal: React.FC<MobileFilterModalProps> = ({
@@ -47,10 +45,19 @@ export const MobileFilterModal: React.FC<MobileFilterModalProps> = ({
         resultsCount={resultsCount}
       />
 
-      {/* Головна дія sheet — закріплена, не тікає при скролі списку фільтрів */}
+      {/* Кнопка звалась «Показати 24 товари», а її обробник — onClose.
+          Фільтри застосовуються миттєво, тобто показувати вже нічого не треба:
+          напис обіцяв дію, якої не було (Nielsen #2 — мова системи ≠ реальність).
+          Тепер це чесне «Готово», а число живе поруч як тихий підпис —
+          саме воно і є зворотним звʼязком про результат фільтрації. */}
       <div className={styles.footer}>
+        {resultsCount !== undefined && (
+          <span className={styles.footerCount} aria-live="polite">
+            Знайдено {formatProducts(resultsCount)}
+          </span>
+        )}
         <button type="button" className={styles.applyButton} onClick={onClose}>
-          {formatApplyLabel(resultsCount)}
+          Готово
         </button>
       </div>
     </Drawer>

@@ -1,6 +1,7 @@
 // src/widgets/Header/Header.tsx
 'use client';
 import React, { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { IconLogout, IconSettings } from '@tabler/icons-react';
 import { Box, Drawer, Menu, ScrollArea, Badge } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -130,8 +131,30 @@ const AuthControl = React.memo(
 );
 
 // ✅ Mobile menu з іконками та chevron
+/** Порівнюємо ТІЛЬКИ pathname, свідомо.
+ *
+ *  Щоб відрізнити «Розпродаж» (`/catalog?promo=true`) від «Каталог»
+ *  (`/catalog`), потрібен `useSearchParams()`, а він у Next вимагає Suspense
+ *  і вибиває сторінку зі статичної генерації. Цей проєкт тримається на
+ *  SSG/ISR (`revalidate`, `generateStaticParams`) — активний підкреслений
+ *  пункт того не вартий. Тому пункти з query активними не стають. */
+const isNavItemActive = (href: string, pathname: string) => {
+  if (href.includes('?')) return false;
+  return pathname === href || pathname.startsWith(`${href}/`);
+};
+
 const MobileMenu = React.memo(
-  ({ opened, onClose, onNavigate }: { opened: boolean; onClose: () => void; onNavigate: () => void }) => {
+  ({
+    opened,
+    onClose,
+    onNavigate,
+    pathname,
+  }: {
+    opened: boolean;
+    onClose: () => void;
+    onNavigate: () => void;
+    pathname: string;
+  }) => {
     return (
       <Drawer
         closeButtonProps={{
@@ -143,13 +166,21 @@ const MobileMenu = React.memo(
         size="480px"
         className={styles.drawer}>
         <ScrollArea h="calc(100vh - 80px)">
-          {NAV_ITEMS.map((item) => (
-            <Link key={item.href} href={item.href} className={styles.menuLink} onClick={onNavigate}>
-              <div className={styles.menuIcon}>
-                <span>{item.label}</span>
-              </div>
-            </Link>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            const active = isNavItemActive(item.href, pathname);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${styles.menuLink} ${active ? styles.menuLinkActive : ''}`}
+                aria-current={active ? 'page' : undefined}
+                onClick={onNavigate}>
+                <div className={styles.menuIcon}>
+                  <span>{item.label}</span>
+                </div>
+              </Link>
+            );
+          })}
         </ScrollArea>
       </Drawer>
     );
@@ -159,6 +190,8 @@ const MobileMenu = React.memo(
 const RECENT_KEY = 'recent-searches';
 
 export function Header() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [authDrawerOpened, { open: openAuthDrawer, close: closeAuthDrawer }] = useDisclosure(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -177,13 +210,20 @@ export function Header() {
     localStorage.setItem(RECENT_KEY, JSON.stringify(next));
   };
 
+  // router.push, а не window.location.href: останнє перезавантажує весь
+  // документ (заново шрифти, JS, стан кошика) там, де достатньо клієнтського
+  // переходу. Пошук — найчастіша дія в магазині, і саме вона була найповільнішою
+  // (4.7 Doherty: відгук має вкладатись у ~400 мс).
+  const goToSearch = (query: string) => {
+    saveRecent(query);
+    router.push(`/catalog?search=${encodeURIComponent(query)}`);
+    setIsSearchExpanded(false);
+  };
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      saveRecent(searchQuery.trim());
-      window.location.href = `/catalog?search=${encodeURIComponent(searchQuery)}`;
-      setIsSearchExpanded(false);
-    }
+    const query = searchQuery.trim();
+    if (query) goToSearch(query);
   };
 
   const handleSearchFocus = () => {
@@ -224,11 +264,18 @@ export function Header() {
 
           {/* Desktop navigation */}
           <nav className={styles.desktopNav} aria-label="Основна навігація">
-            {NAV_ITEMS.map((item) => (
-              <Link key={item.href} href={item.href} className={styles.navLink}>
-                {item.label}
-              </Link>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const active = isNavItemActive(item.href, pathname);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
+                  aria-current={active ? 'page' : undefined}>
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
 
@@ -256,7 +303,7 @@ export function Header() {
           <button className={styles.cartButton} onClick={toggleCartDrawer} aria-label="Кошик">
             <IconCart />
             {calculations && calculations.itemsCount > 0 && (
-              <Badge size="sm" circle color="red" className={styles.cartIconBadge}>
+              <Badge size="sm" circle className={styles.cartIconBadge}>
                 {calculations.itemsCount > 99 ? '99+' : calculations.itemsCount}
               </Badge>
             )}
@@ -304,10 +351,7 @@ export function Header() {
                   key={q}
                   type="button"
                   className={styles.suggestionItem}
-                  onMouseDown={() => {
-                    saveRecent(q);
-                    window.location.href = `/catalog?search=${encodeURIComponent(q)}`;
-                  }}>
+                  onMouseDown={() => goToSearch(q)}>
                   {q}
                 </button>
               ))}
@@ -317,7 +361,7 @@ export function Header() {
       )}
 
       {/* Mobile Drawer Menu */}
-      <MobileMenu opened={drawerOpened} onClose={closeDrawer} onNavigate={closeDrawer} />
+      <MobileMenu opened={drawerOpened} onClose={closeDrawer} onNavigate={closeDrawer} pathname={pathname} />
 
       {/* Cart Drawer */}
       <CartDrawer />

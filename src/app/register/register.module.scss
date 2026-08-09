@@ -1,0 +1,39 @@
+// src/app/register/register.module.scss
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+// Форма живе в такій самій білій картці, як і решта поверхонь сайту.
+// Раніше це був Mantine <Paper withBorder> — межа плюс власні радіуси Mantine.
+.card {
+  width: 100%;
+  padding: var(--space-8);
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+
+  @media (max-width: 768px) {
+    padding: var(--card-padding);
+  }
+}
+
+.title {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.description {
+  margin-bottom: var(--space-6);
+  font-size: var(--text-base);
+  font-weight: var(--fw-light);
+  line-height: 1.55;
+  color: var(--text-secondary);
+}

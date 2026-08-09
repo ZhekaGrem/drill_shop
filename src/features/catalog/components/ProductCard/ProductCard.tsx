@@ -74,7 +74,7 @@ export const ProductCard = React.memo<ProductCardProps>(
           {/* Product Info */}
           <ProductCardInfo
             product={product}
-            isImageHovered={isImageHovered}
+            isInStock={isInStock}
             selectedVariant={selectedVariant}
             selectedVariantObject={selectedVariantObject}
             sortedVariants={sortedVariants}

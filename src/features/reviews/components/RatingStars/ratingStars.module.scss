@@ -12,7 +12,7 @@
 .star {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: var(--text-2xl);
   color: var(--accent);
   cursor: pointer;
   transition: color 0.2s ease;
@@ -35,15 +35,15 @@
 
 /* Size variants */
 .sm .star {
-  font-size: 1rem;
+  font-size: var(--text-base);
 }
 
 .md .star {
-  font-size: 1.25rem;
+  font-size: var(--text-xl);
 }
 
 .lg .star {
-  font-size: 1.75rem;
+  font-size: var(--text-3xl);
 }
 
 .ratingText {

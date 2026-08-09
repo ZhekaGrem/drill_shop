@@ -10,11 +10,18 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { JsonLd } from './JsonLd';
 
 // Шрифти e-Ukraine (Diia redesign) — офіційні шрифти thedigital.gov.ua/fonts, CC BY 4.0
+//
+// Bold (700) додано навмисно. Раніше в проєкті лежали тільки Light/Regular/Medium,
+// і з цього був зроблений висновок, що важчих ваг у e-Ukraine «не існує». Вони існують:
+// у застосунку Дії заголовки екранів («Меню», «Сервіси», «Привіт, …») набрані саме Bold,
+// і це єдиний важкий елемент на екрані — весь контраст ієрархії тримається на ньому.
+// Без 700 сторінка виходила рівно-легкою, тобто плоскою.
 const eUkraine = localFont({
   src: [
     { path: '../../public/fonts/e-ukraine/e-Ukraine-Light.woff2', weight: '300', style: 'normal' },
     { path: '../../public/fonts/e-ukraine/e-Ukraine-Regular.woff2', weight: '400', style: 'normal' },
     { path: '../../public/fonts/e-ukraine/e-Ukraine-Medium.woff2', weight: '500', style: 'normal' },
+    { path: '../../public/fonts/e-ukraine/e-Ukraine-Bold.woff2', weight: '700', style: 'normal' },
   ],
   variable: '--font-body',
   display: 'swap',
@@ -24,6 +31,7 @@ const eUkraineHead = localFont({
   src: [
     { path: '../../public/fonts/e-ukraine/e-UkraineHead-Regular.woff2', weight: '400', style: 'normal' },
     { path: '../../public/fonts/e-ukraine/e-UkraineHead-Medium.woff2', weight: '500', style: 'normal' },
+    { path: '../../public/fonts/e-ukraine/e-UkraineHead-Bold.woff2', weight: '700', style: 'normal' },
   ],
   variable: '--font-heading',
   display: 'swap',

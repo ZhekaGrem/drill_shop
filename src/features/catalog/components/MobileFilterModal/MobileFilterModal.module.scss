@@ -78,6 +78,15 @@
   border-top: 1px solid var(--border-subtle);
 }
 
+.footerCount {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-normal);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
 .applyButton {
   display: flex;
   align-items: center;

@@ -293,12 +293,17 @@ app → widgets → features → shared
 Кастомна тема в `src/shared/config/mantine-theme.ts`:
 
 ```typescript
-import { theme } from '@/shared/config/mantine-theme';
+import { mantineTheme } from '@/shared/config/mantine-theme';
 
-// Основні кольори
-primaryColor: 'yellow';
-colors.yellow[6]; // #FFB800 - основний жовтий
+primaryColor: 'dark'; // чорні pill-контроли, мова застосунку Дія
 ```
+
+**Джерело правди по кольорах/розмірах — `src/app/globals.css` (блок `:root`),
+а не Mantine.** Тут описано в `DESIGN_SYSTEM.md`. Не хардкодь hex у компонентах
+і не бери кольори Mantine (`color="red"`, `c="dimmed"`) — вони повз токени.
+
+> Раніше в цьому файлі стояло `primaryColor: 'yellow'` / `#FFB800`. Це відстало
+> на цілий редизайн і активно вводило в оману кожного, хто читав CLAUDE.md.
 
 ### Стиль коду
 

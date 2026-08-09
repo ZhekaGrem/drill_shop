@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Container, Loader, Center, Text } from '@mantine/core';
+import { Loader, Center, Text } from '@mantine/core';
+import { Page } from '@/shared/components/Page/Page';
 import Link from 'next/link';
 import { IconPackage } from '@tabler/icons-react';
 import { Category, Product } from '@/shared/types';
@@ -58,20 +59,20 @@ export default function CategoryPageClient({ initialCategory, initialProducts }:
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className={styles.categoryPage}>
+    <Page className={styles.categoryPage}>
+      {/* Breadcrumbs — той самий роздільник, що й на сторінці товару */}
+      <nav className={styles.breadcrumbs}>
+        <Link href="/catalog" className={styles.breadcrumbs__link}>
+          Каталог
+        </Link>
+        <span className={styles.breadcrumbs__separator}>›</span>
+        <span className={styles.breadcrumbs__current}>{initialCategory.name}</span>
+      </nav>
+
       {/* Hero секція з даними категорії */}
       <CategoryHero category={initialCategory} productsCount={totalCount} />
 
-      <Container size="xl" className={styles.content}>
-        {/* Breadcrumbs */}
-        <nav className={styles.breadcrumbs}>
-          <Link href="/catalog" className={styles.breadcrumbs__link}>
-            Каталог
-          </Link>
-          <span className={styles.breadcrumbs__separator}>→</span>
-          <span className={styles.breadcrumbs__current}>{initialCategory.name}</span>
-        </nav>
-
+      <div className={styles.content}>
         {/* Список товарів */}
         {isLoading ? (
           <div className={styles.loading}>
@@ -116,7 +117,7 @@ export default function CategoryPageClient({ initialCategory, initialProducts }:
             }
           />
         )}
-      </Container>
-    </div>
+      </div>
+    </Page>
   );
 }

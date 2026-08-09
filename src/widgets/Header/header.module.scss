@@ -60,9 +60,13 @@
   }
 }
 
+// «Де я» — базовий орієнтир, якого в хедері не було взагалі: активний пункт
+// нічим не відрізнявся від решти (Nielsen #1, видимість статусу системи).
+// Підкреслення, а не колір: колір не має бути єдиним носієм сенсу (WCAG 1.4.1).
 .navLink {
+  position: relative;
   font-size: var(--text-base);
-  font-weight: var(--fw-light);
+  font-weight: var(--fw-normal);
   color: var(--text-primary);
   padding: var(--spacing-sm) 0;
   text-decoration: none;
@@ -70,6 +74,21 @@
 
   &:hover {
     color: var(--accent);
+  }
+}
+
+.navLinkActive {
+  font-weight: var(--fw-medium);
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: var(--radius-pill);
+    background: var(--text-primary);
   }
 }
 
@@ -104,30 +123,6 @@
 .menuDivider {
   border-color: var(--border-subtle);
   margin: 0;
-}
-
-// Icon buttons
-.iconButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  color: var(--text-primary);
-
-  &:hover {
-    background: var(--background-secondary);
-  }
-
-  svg {
-    width: 24px;
-    height: 24px;
-  }
 }
 
 // Burger — mobile only, desktop shows nav links instead
@@ -225,6 +220,10 @@
   }
 }
 
+// Чорний кружок, а не червоний. Було `color="red"` — це червоний Mantine
+// (#fa5252), а не токен --accent-red, який за дизайн-системою дозволений
+// ТІЛЬКИ для знижок і промо. Лічильник кошика — не знижка.
+// Чорне коло — той самий афорданс, що й ArrowCircle: одна мова.
 .cartIconBadge {
   position: absolute;
   top: -2px;
@@ -237,7 +236,9 @@
   line-height: 20px;
   font-weight: var(--fw-medium);
   z-index: 10;
+  background: var(--text-primary);
   color: var(--text-inverse);
+  border: 2px solid var(--background);
 }
 
 // Search trigger button — icon only, mobile (< 1024px)
@@ -284,11 +285,15 @@
   // Тонка межа відрізняє клікабельну пігулку від «голого» інпута (affordance)
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
-  padding: 12px 50px 12px 25px;
-  font-weight: var(--fw-light);
-  font-size: 16px;
+  // 44px рівно: 9 + 24 + 9 + 2px межі. Було 12/12 → 50px, тобто пошук стирчав
+  // на 6px вище за сусідні іконки-кнопки й кнопку «Кабінет» — ряд контролів
+  // у хедері не мав спільної осі.
+  height: 44px;
+  padding: 0 50px 0 25px;
+  font-weight: var(--fw-normal);
+  font-size: var(--text-base);
   line-height: 24px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   color: var(--text-secondary);
   background: var(--background);
   cursor: pointer;
@@ -322,7 +327,7 @@
 .expandedSearchContainer {
   width: 100%;
   background: var(--background);
-  padding: 0 var(--spacing-x) var(--spacing-md);
+  padding: 0 var(--page-padding-x) var(--spacing-md);
 }
 
 .expandedSearchForm {
@@ -438,6 +443,11 @@
   }
 }
 
+.menuLinkActive {
+  font-weight: var(--fw-bold);
+  background: var(--background-secondary);
+}
+
 .menuLink {
   display: flex;
   align-items: center;
@@ -476,57 +486,17 @@
   }
 }
 
-.button {
-  position: relative;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  color: var(--text-primary);
-}
-
-.buttonMobile {
-  background: none;
-  border: none;
-  padding: 0;
-}
-
-.link {
-  padding: var(--spacing-md);
-  font-size: var(--text-lg);
-  font-weight: var(--fw-medium);
-  text-decoration: none;
-  color: var(--text-primary);
-  transition: var(--transition-fast);
-
-  &:hover {
-    background: var(--background-secondary);
-  }
-}
-
-.link_user {
-  font-weight: var(--fw-medium);
-  font-size: var(--text-base);
-}
-
-.logoutLink {
-  cursor: pointer;
-  color: var(--error);
-}
-
 // Mobile styles
 @media (max-width: 768px) {
-  .header,
-  .expandedSearchInput {
-    padding: var(--spacing-y-m) var(--spacing-x);
-  }
-
+  // Тут стояло `padding: var(--spacing-y-m) var(--spacing-x)` одразу на .header
+  // і на .expandedSearchInput: (1) .header уже має мобільний падінг вище в
+  // файлі — два конкурентні правила на один елемент; (2) полю пошуку діставались
+  // ПОЛЯ СТОРІНКИ, від чого його висота їхала тільки на мобільному;
+  // (3) --spacing-x/--spacing-y-m у globals.css позначені DEPRECATED.
   .expandedSearchContainer {
-    padding: 0 var(--spacing-x) var(--spacing-sm);
+    padding: 0 var(--page-padding-x) var(--spacing-sm);
   }
 
-  .iconButton,
   .burgerButton,
   .cartButton,
   .searchTrigger {
@@ -555,10 +525,5 @@
     span {
       display: none;
     }
-  }
-
-  .link {
-    width: 100%;
-    border-bottom: 1px solid var(--border-subtle);
   }
 }

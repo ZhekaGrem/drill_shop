@@ -6,11 +6,11 @@ import { ProductReviews } from '@/features/reviews/components/ProductReviews/Pro
 import { productsApi, ProductResponse } from '@/features/catalog/api/products';
 import { Product, ProductWithRelations } from '@/shared/types';
 import { useAuthStore } from '@/shared/stores/auth';
-import Link from 'next/link';
 import { Select } from '@mantine/core';
 import { IconRuler } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { Page } from '@/shared/components/Page/Page';
+import { Breadcrumbs } from '@/shared/components/Breadcrumbs';
 import { Section } from '@/shared/components/Section/Section';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
@@ -370,19 +370,15 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   return (
     <Page className={styles.productPage}>
       <div>
-        {/* Breadcrumbs */}
-        <nav className={styles.breadcrumbs}>
-          <Link href={`${basePath}/`} className={styles.breadcrumbs__link}>
-            Головна
-          </Link>
-          <span className={styles.breadcrumbs__separator}>›</span>
-          <Link href={`${basePath}/catalog`} className={styles.breadcrumbs__link}>
-            Каталог
-          </Link>
-          <span className={styles.breadcrumbs__separator}>›</span>
-
-          <span className={styles.breadcrumbs__current}>{product.name}</span>
-        </nav>
+        {/* Крихти — спільний <Breadcrumbs>, а не власна розмітка сторінки:
+            раніше вони існували тільки тут і тільки в цьому вигляді */}
+        <Breadcrumbs
+          items={[
+            { label: 'Головна', href: `${basePath}/` },
+            { label: 'Каталог', href: `${basePath}/catalog` },
+            { label: product.name },
+          ]}
+        />
 
         {/* Product Details */}
         <div className={styles.productDetails}>
@@ -510,9 +506,11 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                 </div>
                 <ProductBadges product={product} selectedVariant={selectedVariant} />
 
-                {/* <div className={styles.favoriteButtonWrapper}>
+                {/* Було закоментовано, при тому що фіча, стор і сторінка
+                    /profile/favorites існують — обране не було як наповнити. */}
+                <div className={styles.favoriteButtonWrapper}>
                   <FavoriteButton product={product} />
-                </div> */}
+                </div>
               </div>
             </div>
           </div>
@@ -544,9 +542,10 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                     if (variantPriceData.hasDiscount) {
                       return (
                         <>
-                          <span
-                            className={styles.productDetails__originalPrice}
-                            style={{ textDecoration: 'line-through', color: '#999', marginRight: '8px' }}>
+                          {/* Було style={{ color: '#999' }} інлайном — 2.85:1 на
+                              білому при потрібних 4.5:1 (WCAG 1.4.3 AA). Вигляд
+                              задає клас, який бере --text-secondary (6.29:1). */}
+                          <span className={styles.productDetails__originalPrice}>
                             {formatPrice(variantPriceData.originalPrice)}
                           </span>
                           <span
@@ -565,9 +564,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                 ) : basePromoData?.hasDiscount ? (
                   // Показуємо знижену ціну (як в ProductCard)
                   <>
-                    <span
-                      className={styles.productDetails__originalPrice}
-                      style={{ textDecoration: 'line-through', color: '#999', marginRight: '8px' }}>
+                    <span className={styles.productDetails__originalPrice}>
                       {formatPrice(basePromoData.originalPrice)}
                     </span>
                     <span
@@ -584,8 +581,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                 )}{' '}
                 {product.unitDisplay}
               </div>
-
-              {/* Size Guide Button */}
 
               {/* Variants Selector */}
               {hasVariants && sortedVariants.length > 0 && (
@@ -606,8 +601,13 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                               className={`${styles.variantCheckbox} ${
                                 isOutOfStock ? styles.variantCheckbox_disabled : ''
                               }`}>
+                              {/* radio, а не checkbox: вибір варіанта
+                                  взаємовиключний. У картці каталогу цей самий
+                                  контрол уже radio — скрінрідер оголошував два
+                                  різні контроли для однієї сутності. */}
                               <input
-                                type="checkbox"
+                                type="radio"
+                                name={`variant-${product.id}`}
                                 checked={selectedVariant?.id === variant.id}
                                 disabled={isOutOfStock}
                                 onChange={(e) => {
@@ -666,13 +666,21 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
               {/* Add to Cart Section */}
               <div className={styles.productDetails__actions}>
                 {isInStock ? (
-                  <div className={styles.actionButtons}>
-                    <div className={styles.actionButtonsWrapper}>
+                  <>
+                    {/* Кількість винесена з липкої панелі: це параметр товару,
+                        а не дія. Разом з двома кнопками вона робила на мобільному
+                        липкий блок ~190px — чверть екрана назавжди. */}
+                    <div className={styles.quantityRow}>
+                      <span className={styles.quantityLabel} id="qty-label">
+                        Кількість
+                      </span>
                       <div className={styles.quantitySelector}>
                         <button
+                          type="button"
                           className={styles.quantitySelector__button}
                           onClick={() => handleQuantityChange(quantity - 1)}
-                          disabled={quantity <= 1}>
+                          disabled={quantity <= 1}
+                          aria-label="Зменшити кількість">
                           −
                         </button>
                         <input
@@ -682,33 +690,55 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                           onChange={(e) => handleQuantityChange(Number(e.target.value))}
                           min="1"
                           max={availableQuantity}
+                          aria-labelledby="qty-label"
                         />
                         <button
+                          type="button"
                           className={styles.quantitySelector__button}
                           onClick={() => handleQuantityChange(quantity + 1)}
-                          disabled={quantity >= availableQuantity}>
+                          disabled={quantity >= availableQuantity}
+                          aria-label="Збільшити кількість">
                           +
                         </button>
                       </div>
                     </div>
-                    <Button
-                      variant="secondary"
-                      size="lg"
-                      className={styles.buyNowButton}
-                      onClick={handleAddToCart}>
-                      <IconCart3 /> {getButtonText()}
-                    </Button>
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      className={`${styles.addToCartButton} ${isClicked ? styles.addToCartButton__success : ''}`}
-                      onClick={() => {
-                        handleAddToCart();
-                        setTimeout(() => router.push(`${basePath}/checkout`), 500);
-                      }}>
-                      ЗАМОВИТИ В 1 КЛІК
-                    </Button>
-                  </div>
+
+                    {/* Була назва «ЗАМОВИТИ В 1 КЛІК» — це не 1 клік: товар
+                        клався в кошик і людина все одно заповнювала форму на
+                        /checkout. Плюс капсу в Дії немає в жодній кнопці.
+                        setTimeout(500) прибрано: це була затримка без жодного
+                        візуального відгуку, за порогом Догерті (~400 мс). */}
+                    <div className={styles.secondaryAction}>
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        fullWidth
+                        className={styles.buyNowButton}
+                        onClick={() => {
+                          handleAddToCart();
+                          router.push(`${basePath}/checkout`);
+                        }}>
+                        Купити зараз
+                      </Button>
+                    </div>
+
+                    {/* Головна дія магазину — чорна, і в липкій панелі вона одна.
+                        Раніше чорною була «ЗАМОВИТИ В 1 КЛІК», а додавання в
+                        кошик виглядало вторинним: дві кнопки однакового розміру
+                        билися за роль головної (Von Restorff). */}
+                    <div className={styles.actionButtons}>
+                      <Button
+                        variant="primary"
+                        size="lg"
+                        fullWidth
+                        className={`${styles.addToCartButton} ${
+                          isClicked ? styles.addToCartButton__success : ''
+                        }`}
+                        onClick={handleAddToCart}>
+                        <IconCart3 /> {getButtonText()}
+                      </Button>
+                    </div>
+                  </>
                 ) : (
                   <div className={styles.actionButtons}>
                     <Button variant="primary" size="lg" fullWidth onClick={() => setNotifyModalOpened(true)}>
@@ -717,17 +747,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                   </div>
                 )}
               </div>
-
             </div>
-            {product.description && (
-              <div className={styles.productDescription}>
-                <h2 className={styles.productDescription__title}>Опис</h2>
-                <div
-                  className={styles.productDescription__content}
-                  dangerouslySetInnerHTML={{ __html: sanitizeHTML(product.description) }}
-                />
-              </div>
-            )}
           </div>
         </div>
 
@@ -758,6 +778,19 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           <ServicesGroup />
         </div>
 
+        {/* Опис на всю ширину. Раніше він лежав у правій колонці сітки — вузька
+            колонка розтягувалась на кілька екранів, поки ліва (галерея)
+            закінчувалась угорі, і сторінка ставала кривою. */}
+        {product.description && (
+          <section className={styles.productDescription}>
+            <h2 className={styles.productDescription__title}>Опис</h2>
+            <div
+              className={styles.productDescription__content}
+              dangerouslySetInnerHTML={{ __html: sanitizeHTML(product.description) }}
+            />
+          </section>
+        )}
+
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <Section
@@ -776,8 +809,11 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           </Section>
         )}
 
-        {/* Reviews Section */}
-        {/* <ProductReviews productId={product.id} canReview={isAuthenticated} /> */}
+        {/* Відгуки були закоментовані, але сторінка при цьому віддавала
+            aggregateRating і review в JSON-LD (page.tsx → structuredData.product).
+            Розмітка описувала контент, якого на сторінці не видно, — окрім
+            втраченої довіри це ще й пряме порушення вимог до rich results. */}
+        <ProductReviews productId={product.id} canReview={isAuthenticated} />
 
         {/* Size Guide Modal */}
         {hasSizeGuide && (

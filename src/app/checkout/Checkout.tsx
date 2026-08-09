@@ -1,18 +1,19 @@
 // src/app/checkout/Checkout.tsx
 'use client';
 
-import { Container } from '@mantine/core';
 import { CheckoutForm } from '@/features/checkout/components/CheckoutForm/CheckoutForm';
-import styles from './checkout.module.scss';
+import { Page } from '@/shared/components/Page/Page';
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 
 const CheckoutPage = () => {
   return (
-    <div className={styles.checkoutPage}>
-      <Container size={1200}>
-        <h1 className={styles.pageTitle}>Оформлення замовлення</h1>
-        <CheckoutForm />
-      </Container>
-    </div>
+    <Page>
+      <PageHeader
+        title="Оформлення замовлення"
+        description="Заповніть дані отримувача, оберіть доставку й спосіб оплати."
+      />
+      <CheckoutForm />
+    </Page>
   );
 };
 

@@ -18,13 +18,14 @@
   height: 100%;
   background: var(--surface-card);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
   color: var(--text-primary);
   transition: var(--transition-normal);
 
+  // Реагує афорданс (коло-стрілка), а не вся картка: підйом+тінь на hover —
+  // мова шаблонного e-commerce, у Дії картки не «підстрибують».
   &:hover {
-    box-shadow: var(--shadow-md);
     color: var(--text-primary);
 
     .slideArrow {
@@ -120,8 +121,8 @@
 
 .skeletonSlide {
   flex: 0 0 calc((100% - 2 * var(--spacing-lg)) / 3);
-  border: 1px solid var(--border-subtle);
-  border-radius: 24px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   background: var(--surface-card);
   overflow: hidden;
   animation: sliderSkeletonPulse 1.5s ease-in-out infinite;
@@ -180,9 +181,8 @@
   gap: var(--spacing-md);
   padding: var(--spacing-xl);
   background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
 .errorText {

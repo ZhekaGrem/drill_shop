@@ -30,7 +30,7 @@
 // лінія через увесь документ кричить голосніше за сам текст. Ієрархію тримають
 // розмір і вага, роздільник — тихий hairline.
 .sectionTitle {
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-6);
   padding-bottom: var(--space-3);
   font-family: var(--font-heading);
   font-size: var(--text-2xl);
@@ -41,15 +41,21 @@
   border-bottom: 1px solid var(--border-subtle);
 }
 
+// Відступ ЗВЕРХУ помітно більший за відступ ЗНИЗУ — підзаголовок «прилипає»
+// до свого тексту й відбивається від попереднього блоку. Раніше обидва були
+// близькі, тому абзаци не групувались і читались суцільною стіною.
 .subsectionTitle {
-  margin: var(--space-6) 0 var(--space-2);
+  margin: 2em 0 0.5em;
   font-size: var(--text-lg);
   font-weight: var(--fw-medium);
+  line-height: 1.35;
   color: var(--text-primary);
 }
 
+// Відступи всередині тексту — в em: масштабуються разом із розміром шрифту
+// й лишаються пропорційними до інтерліньяжу
 .textBlock {
-  margin-bottom: var(--space-4);
+  margin-bottom: 0.85em;
   font-size: var(--text-base);
   font-weight: var(--fw-light);
   line-height: 1.7;
@@ -57,12 +63,12 @@
 }
 
 .list {
-  margin: var(--space-4) 0;
-  padding-left: var(--space-6);
+  margin: 0.85em 0;
+  padding-left: 1.5em;
   list-style: disc;
 
   li {
-    margin-bottom: var(--space-2);
+    margin-bottom: 0.4em;
     font-size: var(--text-base);
     font-weight: var(--fw-light);
     line-height: 1.7;
@@ -179,7 +185,7 @@
 }
 
 .stepTitle {
-  margin-bottom: var(--space-2);
+  margin-bottom: 0.4em;
   font-family: var(--font-heading);
   font-size: var(--text-lg);
   font-weight: 400;
