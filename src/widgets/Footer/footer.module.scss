@@ -218,28 +218,10 @@
   }
 }
 
-// Logo in footer
-.logo {
-  max-width: 120px;
-  height: auto;
-  margin-bottom: var(--spacing-md);
-
-  @media (max-width: 768px) {
-    max-width: 100px;
-  }
-}
-
-.companySection {
+// Logo in footer (bottom row, next to copyright)
+.footerLogo {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.companyDescription {
-  font-size: var(--text-base);
-  font-weight: var(--fw-medium);
-  color: var(--text-primary);
-  line-height: 1.5;
+  align-items: center;
 }
 
 // Mobile styles

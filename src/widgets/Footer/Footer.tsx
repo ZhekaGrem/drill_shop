@@ -6,6 +6,7 @@ import { IconTelegram, IconInstagram } from '@/shared/components/Svg';
 import Link from 'next/link';
 import styles from './footer.module.scss';
 import { siteConfig } from '@/shared/config/site';
+import { Logo } from '@/shared/components/Logo';
 
 const currentYear = new Date().getFullYear();
 
@@ -71,6 +72,9 @@ export function Footer() {
       {/* Bottom section */}
       <div className={styles.container}>
         <div className={styles.bottomSection}>
+          <div className={styles.footerLogo}>
+            <Logo size="sm" />
+          </div>
           <Text className={styles.copyright}>© {currentYear} ye-dril.com</Text>
 
           <div className={styles.designerSection}>

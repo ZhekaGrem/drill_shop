@@ -97,14 +97,6 @@
   margin: 0;
 }
 
-// Logo
-.logo {
-  height: 50px;
-  width: auto;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
 // Icon buttons
 .iconButton {
   display: flex;
@@ -509,10 +501,6 @@
 
   .expandedSearchContainer {
     padding: 0 var(--spacing-x) var(--spacing-sm);
-  }
-
-  .logo {
-    height: 40px;
   }
 
   .iconButton,

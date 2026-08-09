@@ -2,7 +2,7 @@
 'use client';
 import React, { useState } from 'react';
 import { IconLogout, IconSettings } from '@tabler/icons-react';
-import { Box, Drawer, Menu, ScrollArea, Badge, Image } from '@mantine/core';
+import { Box, Drawer, Menu, ScrollArea, Badge } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect } from 'react';
 import styles from './header.module.scss';
@@ -12,7 +12,7 @@ import { useAuthStore } from '@/shared/stores/auth';
 import { CartDrawer } from '@/features/cart/components/CartDrawer/CartDrawer';
 import { AuthDrawer } from '@/features/auth/components/AuthDrawer/AuthDrawer';
 import { content } from '@/shared/config/content';
-import { siteConfig } from '@/shared/config/site';
+import { Logo } from '@/shared/components/Logo';
 import { IconX, MenuIcon, IconSearch, IconCart, IconUser } from '@/shared/components/Svg';
 
 const NAV_ITEMS = [
@@ -211,8 +211,8 @@ export function Header() {
           </button>
 
           {/* Logo (Left) */}
-          <Link href="/" className={styles.logoLink}>
-            <Image src={siteConfig.logo} alt={siteConfig.name} className={styles.logo} />
+          <Link href="/" className={styles.logoLink} aria-label="ye-dril — на головну">
+            <Logo />
           </Link>
 
           {/* Desktop navigation */}

@@ -4,8 +4,8 @@
 export const assets = {
   // ===== ЛОГОТИПИ =====
   logo: {
-    main: '/logo/logo2.webp',
-    og: '/logo/logo.jpg', // для Open Graph
+    main: '/assets/logo/ye-dril-logo.svg', // ye-dril ворд-марка (SVG-фолбек; у UI рендериться live через <Logo>)
+    og: '/logo/logo.jpg', // для Open Graph (растр, окремо від ворд-марки)
     favicon: '/assets/favicon/favicon.ico',
     appleTouchIcon: '/assets/favicon/apple-touch-icon.png',
   },
