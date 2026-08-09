@@ -1,32 +1,27 @@
+// Іконка з Tabler Icons (outline, MIT) — єдина іконографіка в мові Дії.
+// Згенеровано з @tabler/icons/icons/outline/brand-instagram.svg
 import React from 'react';
-
-// 1. Добавляем size в интерфейс (он может быть числом или строкой)
 interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {
-  size?: number | string;
+  size?: number;
 }
-
-// 2. Деструктурируем size и задаем значение по умолчанию (например, 17)
 export function IconInstagram({ className, size = 24, ...props }: IconProps) {
   return (
     <svg
       className={className}
       {...props}
+      xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <g>
-        <path
-          d="M2 4H0V22H2V4ZM2 4H20V2H2V4ZM2 24H20V22H2V24ZM6 16H8V10H6V16ZM8 18H14V16H8V18ZM8 10H14V8H8V10ZM14 16H16V10H14V16ZM20 22H22V4H20V22ZM16 8H18V6H16V8Z"
-          fill="currentColor"
-        />
-      </g>
-      <defs>
-        <clipPath id="clip0_8_476">
-          <rect width="24" height="24" fill="white" />
-        </clipPath>
-      </defs>
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" />
+      <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+      <path d="M16.5 7.5v.01" />
     </svg>
   );
 }

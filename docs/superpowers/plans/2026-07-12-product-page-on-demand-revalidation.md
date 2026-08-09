@@ -29,10 +29,12 @@
 ### Task 1: Frontend — роут `/api/revalidate`
 
 **Files:**
+
 - Create: `F:\Progect\2025\shop_bogdan\frontend\src\app\api\revalidate\route.ts`
 - Env (локально, НЕ комітиться): `F:\Progect\2025\shop_bogdan\frontend\.env.local` — додати `REVALIDATE_SECRET`
 
 **Interfaces:**
+
 - Produces: HTTP endpoint `POST /api/revalidate`, header `x-revalidate-secret`, JSON body `{ event: 'create'|'update'|'delete', slug: string, oldSlug?: string }`. Відповіді: `200 { revalidated: true, event, paths: string[] }`, `400` (невалідний JSON/поля), `401` (нема/невірний секрет). Бекенд-сервіс із Task 2 споживає саме цей контракт.
 
 - [ ] **Step 1: Додати секрет у `frontend/.env.local`**
@@ -117,9 +119,11 @@ export async function POST(request: NextRequest) {
 - [ ] **Step 3: Lint + typecheck**
 
 Run (у `F:\Progect\2025\shop_bogdan\frontend`):
+
 ```bash
 npm run lint
 ```
+
 Expected: без помилок по `src/app/api/revalidate/route.ts`.
 
 - [ ] **Step 4: Підняти dev і перевірити 401/400/200 через curl**
@@ -145,6 +149,7 @@ curl -i -X POST http://localhost:3000/api/revalidate \
   -H "Content-Type: application/json" -H "x-revalidate-secret: <SECRET>" \
   -d '{"event":"update","slug":"<REAL_SLUG>"}'
 ```
+
 Expected: статуси `401`, `401`, `400`, `200` відповідно; останній повертає `paths` із `/catalog/<REAL_SLUG>` тощо.
 
 - [ ] **Step 5: Commit**
@@ -159,10 +164,12 @@ git commit -m "feat(revalidate): add /api/revalidate on-demand revalidation rout
 ### Task 2: Backend — `RevalidationService`
 
 **Files:**
+
 - Create: `F:\Progect\2025\shop_bogdan\backend\src\shared\services\revalidation.service.ts`
 - Env (локально, НЕ комітиться): `F:\Progect\2025\shop_bogdan\backend\.env` — додати `REVALIDATE_SECRET` (те саме значення, що у frontend). `FRONTEND_URL` там уже є.
 
 **Interfaces:**
+
 - Consumes: HTTP endpoint `POST ${FRONTEND_URL}/api/revalidate` із Task 1.
 - Produces: singleton `revalidationService` з методом
   `revalidateProduct(input: { event: 'create'|'update'|'delete'; slug: string; oldSlug?: string }): Promise<void>` —
@@ -237,9 +244,11 @@ export const revalidationService = new RevalidationService();
 - [ ] **Step 3: Typecheck (build)**
 
 Run (у `F:\Progect\2025\shop_bogdan\backend`):
+
 ```bash
 npm run build
 ```
+
 Expected: `Build completed`, без TS-помилок у `revalidation.service.ts`.
 
 - [ ] **Step 4: Commit**
@@ -254,98 +263,118 @@ git commit -m "feat(revalidate): add RevalidationService to notify frontend on p
 ### Task 3: Backend — тригери у 3 use-case'ах
 
 **Files:**
+
 - Modify: `F:\Progect\2025\shop_bogdan\backend\src\modules\products\application\use-cases\create-product.use-case.ts:146-147`
 - Modify: `F:\Progect\2025\shop_bogdan\backend\src\modules\products\application\use-cases\update-product.use-case.ts:213`
 - Modify: `F:\Progect\2025\shop_bogdan\backend\src\modules\products\application\use-cases\delete-product.use-case.ts:17,29`
 
 **Interfaces:**
+
 - Consumes: `revalidationService` із Task 2 (import shлях `../../../../shared/services/revalidation.service`).
 - Виклики fire-and-forget (без `await`, з `.catch(() => {})`) — не додають латентності відповіді адмінки.
 
 - [ ] **Step 1: `create-product.use-case.ts` — import + виклик**
 
 Додати import після рядка 6 (після імпорту `CreateProductData`):
+
 ```ts
 import { revalidationService } from '../../../../shared/services/revalidation.service';
 ```
 
 Замінити фінальний блок (рядки 146-147):
+
 ```ts
-    console.log('✅ Product creation completed:', product.name);
-    return product;
+console.log('✅ Product creation completed:', product.name);
+return product;
 ```
+
 на:
+
 ```ts
-    console.log('✅ Product creation completed:', product.name);
+console.log('✅ Product creation completed:', product.name);
 
-    // Ревалідація публічних сторінок товару (fire-and-forget; ніколи не блокує/не кидає)
-    revalidationService.revalidateProduct({ event: 'create', slug: product.slug }).catch(() => {});
+// Ревалідація публічних сторінок товару (fire-and-forget; ніколи не блокує/не кидає)
+revalidationService.revalidateProduct({ event: 'create', slug: product.slug }).catch(() => {});
 
-    return product;
+return product;
 ```
 
 - [ ] **Step 2: `update-product.use-case.ts` — import + виклик**
 
 Додати import після рядка 6 (після `import { Product } from '@prisma/client';`):
+
 ```ts
 import { revalidationService } from '../../../../shared/services/revalidation.service';
 ```
 
 Замінити фінал (рядок 213):
-```ts
-    return product;
-```
-на:
-```ts
-    // Ревалідація: новий slug + старий (якщо змінився при перейменуванні)
-    revalidationService
-      .revalidateProduct({ event: 'update', slug: product.slug, oldSlug: existingProduct.slug })
-      .catch(() => {});
 
-    return product;
+```ts
+return product;
+```
+
+на:
+
+```ts
+// Ревалідація: новий slug + старий (якщо змінився при перейменуванні)
+revalidationService
+  .revalidateProduct({ event: 'update', slug: product.slug, oldSlug: existingProduct.slug })
+  .catch(() => {});
+
+return product;
 ```
 
 - [ ] **Step 3: `delete-product.use-case.ts` — import + виклики**
 
 Додати import після рядка 1:
+
 ```ts
 import { revalidationService } from '../../../../shared/services/revalidation.service';
 ```
 
 У методі `execute` замінити рядок 17:
-```ts
-    // Soft delete the product
-    await this.productRepository.delete(productId);
-```
-на:
-```ts
-    // Soft delete the product
-    await this.productRepository.delete(productId);
 
-    // Ревалідація сторінок видаленого товару
-    revalidationService.revalidateProduct({ event: 'delete', slug: product.slug }).catch(() => {});
+```ts
+// Soft delete the product
+await this.productRepository.delete(productId);
+```
+
+на:
+
+```ts
+// Soft delete the product
+await this.productRepository.delete(productId);
+
+// Ревалідація сторінок видаленого товару
+revalidationService.revalidateProduct({ event: 'delete', slug: product.slug }).catch(() => {});
 ```
 
 У методі `hardDelete` замінити рядок 29:
-```ts
-    // For now, we'll use soft delete as it's safer
-    await this.productRepository.delete(productId);
-```
-на:
-```ts
-    // For now, we'll use soft delete as it's safer
-    await this.productRepository.delete(productId);
 
-    revalidationService.revalidateProduct({ event: 'delete', slug: product.slug }).catch(() => {});
+```ts
+// For now, we'll use soft delete as it's safer
+await this.productRepository.delete(productId);
 ```
+
+на:
+
+```ts
+// For now, we'll use soft delete as it's safer
+await this.productRepository.delete(productId);
+
+revalidationService.revalidateProduct({ event: 'delete', slug: product.slug }).catch(() => {});
+```
+
 (`bulkDelete` покривається автоматично — він викликає `execute`.)
 
 - [ ] **Step 4: Typecheck (build)**
 
 Run (у backend):
+
 ```bash
 npm run build
 ```
+
 Expected: `Build completed`, без TS-помилок.
 
 - [ ] **Step 5: E2E-перевірка (обидва сервери підняті + секрет заданий з обох боків)**

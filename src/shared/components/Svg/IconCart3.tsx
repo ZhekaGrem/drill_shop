@@ -1,19 +1,28 @@
+// Іконка з Tabler Icons (outline, MIT) — єдина іконографіка в мові Дії.
+// Згенеровано з @tabler/icons/icons/outline/shopping-cart.svg
 import React from 'react';
-interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {}
-export function IconCart3({ className, ...props }: IconProps) {
+interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {
+  size?: number;
+}
+export function IconCart3({ className, size = 24, ...props }: IconProps) {
   return (
     <svg
-      width="18"
-      height="20"
-      viewBox="0 0 18 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       className={className}
-      {...props}>
-      <path
-        d="M6 0H12V2H6V0ZM12 4V2H14V4H18V20H0V4H4V2H6V4H12ZM12 6H6V8H4V6H2V18H16V6H14V8H12V6Z"
-        fill="currentColor"
-      />
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M17 17h-11v-14h-2" />
+      <path d="M6 5l14 1l-1 7h-13" />
     </svg>
   );
 }

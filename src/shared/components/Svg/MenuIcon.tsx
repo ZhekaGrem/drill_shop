@@ -1,16 +1,27 @@
+// Іконка з Tabler Icons (outline, MIT) — єдина іконографіка в мові Дії.
+// Згенеровано з @tabler/icons/icons/outline/menu-2.svg
 import React from 'react';
-interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {}
-export function MenuIcon({ className, ...props }: IconProps) {
+interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {
+  size?: number;
+}
+export function MenuIcon({ className, size = 24, ...props }: IconProps) {
   return (
     <svg
       className={className}
       {...props}
-      width="16"
-      height="12"
-      viewBox="0 0 16 12"
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 0H16V2H0V0ZM0 5H16V7H0V5ZM16 10H0V12H16V10Z" fill="currentColor" />
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M4 6l16 0" />
+      <path d="M4 12l16 0" />
+      <path d="M4 18l16 0" />
     </svg>
   );
 }

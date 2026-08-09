@@ -1,19 +1,27 @@
+// Іконка з Tabler Icons (outline, MIT) — єдина іконографіка в мові Дії.
+// Згенеровано з @tabler/icons/icons/outline/arrow-right.svg
 import React from 'react';
-interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {}
-export function ArrowRight({ className, ...props }: IconProps) {
+interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {
+  size?: number;
+}
+export function ArrowRight({ className, size = 24, ...props }: IconProps) {
   return (
     <svg
       className={className}
       {...props}
-      width="18"
-      height="16"
-      viewBox="0 0 16 14"
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M0 6V8H12V10H14V8H16V6H14V4H12V6H0ZM10 2H12V4H10V2ZM10 2H8V0H10V2ZM10 12H12V10H10V12ZM10 12H8V14H10V12Z"
-        fill="currentColor"
-      />
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M5 12l14 0" />
+      <path d="M13 18l6 -6" />
+      <path d="M13 6l6 6" />
     </svg>
   );
 }
