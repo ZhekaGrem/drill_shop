@@ -21,6 +21,13 @@ const ADVANTAGES = [
   { title: 'Обмін і повернення', text: '14 днів без питань' },
 ];
 
+// Slug'и, для яких згенеровано власну ілюстрацію (public/assets/img/categories/).
+// Категорії поза цим списком показують category-generic.webp — без runtime 404.
+const KNOWN_ILLUSTRATIONS = new Set(['t-shirts', 'hoodies', 'caps', 'accessories']);
+
+const getCategoryIllustration = (slug: string) =>
+  `/assets/img/categories/${KNOWN_ILLUSTRATIONS.has(slug) ? slug : 'category-generic'}.webp`;
+
 const Home = () => {
   const router = useRouter();
   const [isSplineLoaded, setIsSplineLoaded] = useState(false);
@@ -71,6 +78,14 @@ const Home = () => {
           <div className={styles.categoryGrid}>
             {categories.slice(0, 4).map((cat) => (
               <Link key={cat.id} href={`/catalog/category/${cat.slug}`} className={styles.categoryCard}>
+                <Image
+                  src={getCategoryIllustration(cat.slug)}
+                  alt=""
+                  width={64}
+                  height={64}
+                  loading="lazy"
+                  className={styles.categoryIllustration}
+                />
                 <span className={styles.categoryName}>{cat.name}</span>
                 <ArrowRight />
               </Link>

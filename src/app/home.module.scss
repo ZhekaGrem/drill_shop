@@ -97,7 +97,7 @@
 .categoryCard {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--spacing-md);
   background: var(--surface-card);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-lg);
@@ -111,7 +111,15 @@
   }
 }
 
+.categoryIllustration {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
 .categoryName {
+  flex: 1;
   font-size: var(--text-lg);
   font-weight: var(--fw-medium);
 }
