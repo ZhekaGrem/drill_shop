@@ -2,11 +2,14 @@
 
 .container {
   position: absolute;
-  top: 5px;
-  left: -4px;
+  // Бейдж лежить УСЕРЕДИНІ фото-вставки з тим самим відступом від її країв —
+  // від'ємний left звисав на білу рамку картки (фото втоплене на 12px)
+  top: var(--spacing-sm);
+  left: var(--spacing-sm);
   z-index: 3;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
   pointer-events: none;
 }

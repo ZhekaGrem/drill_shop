@@ -6,8 +6,8 @@ import { TelegramAuthProvider } from '@/shared/providers/TelegramAuthProvider';
 import { TelegramBottomNav } from '@/widgets/TelegramBottomNav';
 
 export const metadata: Metadata = {
-  title: 'Telegram Mini App | Drill shop',
-  description: 'Drill shop у Telegram — мерч Щільний Drill зі сплатою в один клік.',
+  title: 'Telegram Mini App | Є.Дріл',
+  description: 'Є.Дріл у Telegram — мерч Щільний Drill зі сплатою в один клік.',
   robots: { index: false, follow: false, nocache: true },
 };
 

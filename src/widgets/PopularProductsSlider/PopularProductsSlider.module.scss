@@ -1,56 +1,227 @@
 // src/widgets/PopularProductsSlider/PopularProductsSlider.module.scss
-.section {
-  // Прозорий фон — крізь секцію видно var(--gradient-page) сторінки,
-  // самі картки товарів — білі поверхні на градієнтному фоні сторінки.
-}
+// Карусель «як у Дії» (патерн картки «Що нового?»): високе фото на всю картку,
+// підпис + кругла стрілка всередині, крапки знизу.
+// Зовнішні відступи секції задає сторінка (home .section) — тут їх НЕМАЄ.
 
-.container {
-  padding: 60px 0;
-}
-
+// Заголовок — та сама мова, що й .sectionTitle на головній
 .title {
-  font-family: var(--font-heading);
-  font-size: var(--text-4xl);
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
-  text-align: center;
-  margin-bottom: 40px;
+  font-size: var(--text-2xl);
+  text-align: left;
+  margin-bottom: var(--spacing-lg);
 }
 
 .slider {
-  margin-bottom: 40px;
+  // keen-slider сам ріже overflow; радіус збігається з картками
+  margin-bottom: var(--spacing-md);
 }
 
-.slide {
-  min-width: 300px;
-  width: 300px;
+// ============ Картка-слайд ============
+.slideCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  color: var(--text-primary);
+  transition: var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    color: var(--text-primary);
+
+    .slideArrow {
+      background: var(--btn-primary-hover);
+    }
+  }
 }
 
-.loading {
+// Високе («довше») фото на всю ширину картки — портретні пропорції 3:4
+.slideImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: var(--background-secondary);
+  overflow: hidden;
+}
+
+.slideImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Підпис усередині картки: назва + ціна зліва, чорна кругла стрілка справа
+.slideCaption {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 60px;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) var(--spacing-lg);
+}
+
+.slideCaptionText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.slidePrice {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-normal);
   color: var(--text-secondary);
 }
 
-.viewAll {
+.slideName {
+  display: -webkit-box;
+  font-size: var(--text-base);
+  font-weight: var(--fw-medium);
+  line-height: 1.4;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.slideArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: var(--text-primary);
+  border-radius: var(--radius-pill);
+  color: var(--text-inverse);
+  transition: var(--transition-fast);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// ============ Крапки-пагінація ============
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--border-strong);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.dotActive {
+  background: var(--text-primary);
+  transform: scale(1.25);
+}
+
+// ============ Скелетон завантаження ============
+// Та сама геометрія, що й у реальних слайдів — нічого не стрибає
+.skeletonRow {
+  display: flex;
+  gap: var(--spacing-lg);
+  overflow: hidden;
+}
+
+.skeletonSlide {
+  flex: 0 0 calc((100% - 2 * var(--spacing-lg)) / 3);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  background: var(--surface-card);
+  overflow: hidden;
+  animation: sliderSkeletonPulse 1.5s ease-in-out infinite;
+
+  @media (max-width: 1119px) {
+    flex: 0 0 calc((100% - var(--spacing-lg)) / 2.2);
+  }
+
+  @media (max-width: 767px) {
+    flex: 0 0 87%;
+  }
+}
+
+.skeletonImage {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: var(--background-secondary);
+}
+
+.skeletonCaption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.skeletonLine {
+  height: 16px;
+  border-radius: 4px;
+  background: var(--background-secondary);
+}
+
+.skeletonLineShort {
+  height: 16px;
+  width: 60%;
+  border-radius: 4px;
+  background: var(--background-secondary);
+}
+
+@keyframes sliderSkeletonPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+// ============ Помилка завантаження ============
+.errorCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.errorText {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
   text-align: center;
 }
 
-// Responsive
-@media (max-width: 768px) {
-  .container {
-    padding: 40px 0;
-  }
+.retryButton {
+  height: 44px;
+  padding: 0 var(--spacing-lg);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: var(--transition-fast);
 
-  .title {
-    font-size: var(--text-2xl);
-    margin-bottom: 24px;
-  }
-
-  .slide {
-    min-width: 280px;
-    width: 280px;
+  &:hover {
+    background: var(--btn-primary-hover);
   }
 }

@@ -34,7 +34,7 @@
 // ============ PRODUCT NAME ============
 .productName {
   font-size: var(--text-sm);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
   line-height: 1.3;
   word-break: break-word;
@@ -52,7 +52,7 @@
 .currentPrice {
   font-family: var(--font-body);
   font-size: var(--text-base);
-  font-weight: var(--fw-black);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
   white-space: nowrap;
 }
@@ -76,7 +76,7 @@
   border-radius: var(--radius-pill);
 
   span {
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-medium);
     margin-right: 2px;
   }
 }

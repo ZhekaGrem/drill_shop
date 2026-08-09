@@ -52,7 +52,7 @@
 
     &__title {
       font-family: var(--font-body);
-      font-weight: var(--fw-black);
+      font-weight: var(--fw-medium);
       color: var(--text-primary);
       margin: 0 0 var(--spacing-md) 0;
       line-height: 1.2;
@@ -160,7 +160,7 @@
 
           &[data-selected] {
             background: var(--btn-primary);
-            font-weight: var(--fw-black);
+            font-weight: var(--fw-medium);
           }
 
           &:hover {
@@ -175,7 +175,7 @@
   .variantLabel {
     font-family: var(--font-body);
     font-size: var(--text-base);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-medium);
     color: var(--text-primary);
     display: block;
     margin-bottom: var(--spacing-md);
@@ -214,9 +214,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 32px;
+    // 44px — та сама висота, що в чіпів на картці товару і в фільтрах
+    min-height: 44px;
     min-width: 44px;
-    padding: 4px 12px;
+    padding: 0 12px;
     font-family: var(--font-body);
     font-size: var(--text-sm);
     font-weight: var(--fw-medium);
@@ -410,7 +411,7 @@
       border: none;
       font-family: var(--font-body);
       font-size: 32px;
-      font-weight: var(--fw-black);
+      font-weight: var(--fw-medium);
       color: var(--text-primary);
       cursor: pointer;
       transition: all var(--transition-fast);
@@ -583,7 +584,7 @@
 
     &__title {
       font-size: var(--text-3xl);
-      font-weight: var(--fw-black);
+      font-weight: var(--fw-medium);
       color: var(--text-primary);
       margin: 0 0 var(--spacing-xl) 0;
       padding-top: 20px;
@@ -614,7 +615,7 @@
       }
 
       strong {
-        font-weight: var(--fw-bold);
+        font-weight: var(--fw-medium);
       }
     }
   }
@@ -627,7 +628,7 @@
     &__title {
       padding-top: 20px;
       font-size: var(--text-3xl);
-      font-weight: var(--fw-black);
+      font-weight: var(--fw-medium);
       color: var(--text-primary);
       margin: 0 0 var(--spacing-xl) 0;
     }
@@ -835,10 +836,11 @@
     }
 
     .variantCheckboxText {
-      min-height: 32px;
-      min-width: 36px;
+      // 40px — мобільна висота чіпів, як на картці товару
+      min-height: 40px;
+      min-width: 40px;
       font-size: 12px;
-      padding: 3px 8px;
+      padding: 0 10px;
     }
 
     // Кнопка size guide

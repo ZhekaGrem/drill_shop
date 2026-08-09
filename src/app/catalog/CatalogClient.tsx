@@ -30,11 +30,12 @@ export default function CatalogClient({ initialData, initialCategories, basePath
 
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  const { data, isLoading, error, isFetchingNextPage, fetchNextPage, hasNextPage } = useCatalogProducts({
-    filters: filters,
-    enabled: initialized,
-    initialData: initialData,
-  });
+  const { data, isLoading, error, refetch, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useCatalogProducts({
+      filters: filters,
+      enabled: initialized,
+      initialData: initialData,
+    });
 
   // Об'єднуємо всі сторінки в один масив
   const products = data?.pages.flatMap((page) => page.data) || [];
@@ -119,8 +120,11 @@ export default function CatalogClient({ initialData, initialCategories, basePath
       <Container size={1300} px={{ base: 20, sm: 40 }} pb={50}>
         {error && (
           <div className={styles.error}>
-            <h3>Помилка завантаження</h3>
-            <p>{error instanceof Error ? error.message : 'Невідома помилка'}</p>
+            <h3>Не вдалося завантажити товари</h3>
+            <p>Перевірте з&apos;єднання з інтернетом і спробуйте ще раз.</p>
+            <Button variant="primary" onClick={() => refetch()}>
+              Спробувати ще раз
+            </Button>
           </div>
         )}
 

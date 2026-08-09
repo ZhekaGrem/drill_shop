@@ -11,15 +11,15 @@
   background: var(--gradient-brand);
   border-radius: var(--border-radius-lg);
   margin: var(--spacing-lg) var(--spacing-x);
-  padding: var(--spacing-2xl) var(--spacing-xl);
-  min-height: 520px;
+  // Висоту задає контент, а не фіксовані 520px — інакше під текстом
+  // лишалась порожня смуга градієнта на пів екрана
+  padding: var(--spacing-xl);
   box-shadow: var(--shadow-md);
 
   @media (max-width: 768px) {
     flex-direction: column-reverse;
     margin: var(--spacing-md);
     padding: var(--spacing-lg);
-    min-height: auto;
   }
 }
 
@@ -32,7 +32,6 @@
   // --text-secondary над синім кінцем градієнта давав 2.93:1 (провал WCAG
   // 1.4.3 AA, треба 4.5:1). При 0.82 виходить 5.12:1.
   background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(8px);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-lg);
 }
@@ -56,13 +55,13 @@
 
 .heroVisual {
   position: relative;
-  width: 520px;
-  height: 520px;
+  width: 420px;
+  height: 420px;
   flex-shrink: 0;
 
   @media (max-width: 768px) {
-    width: 320px;
-    height: 320px;
+    width: 280px;
+    height: 280px;
   }
 }
 
@@ -85,7 +84,10 @@
   }
 }
 
+// Секційні заголовки — як у Дії: зліва, один розмір, один відступ до контенту
 .sectionTitle {
+  font-size: var(--text-2xl);
+  text-align: left;
   margin-bottom: var(--spacing-lg);
 }
 
@@ -100,6 +102,7 @@
   align-items: center;
   gap: var(--spacing-md);
   background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
@@ -136,6 +139,7 @@
   flex-direction: column;
   gap: var(--spacing-xs);
   background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);

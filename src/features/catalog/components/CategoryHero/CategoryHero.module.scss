@@ -50,7 +50,6 @@
   // --text-secondary над синім кінцем градієнта давав 2.93:1 (провал WCAG
   // 1.4.3 AA, треба 4.5:1). При 0.82 виходить 5.12:1.
   background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(8px);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-lg);
 

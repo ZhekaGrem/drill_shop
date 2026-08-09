@@ -51,7 +51,7 @@ const Home = () => {
           {!isSplineLoaded && (
             <Image
               src="/assets/img/tshirt.webp"
-              alt="Футболка Drill shop — офіційний мерч"
+              alt="Футболка Є.Дріл — офіційний мерч"
               width={520}
               height={520}
               className={styles.placeholderImage}

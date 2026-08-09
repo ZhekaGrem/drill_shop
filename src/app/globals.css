@@ -277,13 +277,11 @@ p {
      --font-mono визначаємо тут: окремий моно-шрифт не вантажимо. */
   --font-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', 'Liberation Mono', menlo, consolas, monospace;
 
-  /* Вага шрифту (Дія — легша) */
+  /* Вага шрифту (Дія — легша). e-Ukraine має лише 300/400/500 —
+     важчих ваг НЕ існує, тому й токенів bold/black немає. */
   --fw-light: 300;
   --fw-normal: 400;
   --fw-medium: 500;
-  --fw-semibold: 500;
-  --fw-bold: 500;
-  --fw-black: 500;
 
   /* Розміри шрифту — без змін */
   --text-xs: 0.75rem;

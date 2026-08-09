@@ -58,7 +58,7 @@
 
 .title {
   font-size: var(--text-3xl);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
   margin: 0 0 8px 0;
 }
@@ -92,11 +92,12 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 
-  // Для мобільних - 2 колонки
+  // Мобільні: одна колонка широких карток-«документів», як списки в Дії —
+  // дві колонки по ~170px плющили фото, чіпи варіантів і кнопку
   @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     justify-content: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
   }
 }
 
@@ -110,7 +111,7 @@
 
   h3 {
     font-size: var(--text-xl);
-    font-weight: var(--fw-semibold);
+    font-weight: var(--fw-medium);
     color: var(--text-primary);
     margin: 0 0 8px 0;
   }

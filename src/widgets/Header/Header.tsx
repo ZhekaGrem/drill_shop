@@ -58,7 +58,14 @@ const AuthControl = React.memo(
     };
 
     if (!isInitialized) {
-      return null;
+      // Той самий розмір, що й справжня пігулка — інакше хедер стрибає,
+      // коли auth ініціалізується і кнопка «Кабінет» з'являється
+      return (
+        <button className={styles.accountPill} disabled aria-hidden="true" tabIndex={-1}>
+          <IconUser />
+          <span>Кабінет</span>
+        </button>
+      );
     }
 
     if (isAuthenticated && userProfile) {
@@ -73,7 +80,7 @@ const AuthControl = React.memo(
             divider: styles.menuDivider,
           }}>
           <Menu.Target>
-            <button className={styles.accountPill}>
+            <button className={styles.accountPill} aria-label="Кабінет">
               <IconUser />
               <span>Кабінет</span>
             </button>
@@ -114,7 +121,7 @@ const AuthControl = React.memo(
       }
     };
     return (
-      <button className={styles.accountPill} onClick={handleAuthToggle}>
+      <button className={styles.accountPill} onClick={handleAuthToggle} aria-label="Кабінет">
         {isAuthDrawerOpen ? <IconX /> : <IconUser />}
         <span>Кабінет</span>
       </button>

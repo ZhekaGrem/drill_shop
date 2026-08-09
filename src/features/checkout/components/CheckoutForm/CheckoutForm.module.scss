@@ -16,7 +16,7 @@
   &__title {
     font-family: var(--font-body);
     font-size: var(--text-3xl);
-    font-weight: var(--fw-black);
+    font-weight: var(--fw-medium);
     color: var(--text-primary);
     margin: 0 0 var(--spacing-md) 0;
   }
@@ -60,7 +60,7 @@
 // ============ SECTION TITLES ============
 .sectionTitle {
   font-size: var(--text-2xl);
-  font-weight: var(--fw-black);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
   margin: var(--spacing-lg) 0 var(--spacing-md) 0;
   letter-spacing: 0.03em;
@@ -113,7 +113,7 @@
     border-color: var(--text-primary);
 
     .radioLabel {
-      font-weight: var(--fw-black);
+      font-weight: var(--fw-medium);
     }
   }
 }
@@ -228,7 +228,7 @@
 
 .summaryTitle {
   font-size: var(--text-2xl);
-  font-weight: var(--fw-black);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
   margin: 0 0 var(--spacing-md) 0;
   letter-spacing: 0.03em;
@@ -243,7 +243,7 @@
 
 .promoTitle {
   font-size: var(--text-lg);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
   margin: 0;
 }
@@ -319,14 +319,14 @@
 .totalLabel {
   font-family: var(--font-body);
   font-size: var(--text-2xl);
-  font-weight: var(--fw-black);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
 }
 
 .totalAmount {
   font-family: var(--font-body);
   font-size: var(--text-2xl);
-  font-weight: var(--fw-black);
+  font-weight: var(--fw-medium);
   color: var(--btn-primary);
 }
 

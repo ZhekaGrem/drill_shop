@@ -86,7 +86,7 @@
 
 .menuLabel {
   font-size: var(--text-sm);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   padding: 8px var(--spacing-md);
   background: var(--background);
   color: var(--text-secondary);
@@ -173,6 +173,15 @@
     background: var(--btn-primary-hover);
   }
 
+  // Плейсхолдер до ініціалізації auth — виглядає як кнопка, але не реагує
+  &:disabled {
+    cursor: default;
+
+    &:hover {
+      background: var(--text-primary);
+    }
+  }
+
   svg {
     width: 18px;
     height: 20px;
@@ -207,13 +216,15 @@
 
 .cartIconBadge {
   position: absolute;
-  top: -4px;
-  right: -4px;
-  min-width: 18px;
-  height: 18px;
-  font-size: 14px;
-  line-height: 130%;
-  font-weight: var(--fw-bold);
+  top: -2px;
+  right: -2px;
+  // 20px кружок зі шрифтом 11px — у 18px з 14px шрифтом «99+» не вміщалось
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  font-size: 11px;
+  line-height: 20px;
+  font-weight: var(--fw-medium);
   z-index: 10;
   color: var(--text-inverse);
 }
@@ -259,7 +270,8 @@
   position: relative;
   align-items: center;
   min-width: 240px;
-  border: none;
+  // Тонка межа відрізняє клікабельну пігулку від «голого» інпута (affordance)
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
   padding: 12px 50px 12px 25px;
   font-weight: var(--fw-light);
@@ -399,7 +411,7 @@
 
   :global(.mantine-Drawer-title) {
     font-size: var(--text-xl);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-medium);
   }
 
   :global(.mantine-Drawer-body) {
@@ -421,7 +433,7 @@
   justify-content: space-between;
   padding: var(--spacing-md);
   font-size: var(--text-xl);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
   text-decoration: none;
   border-bottom: 1px solid var(--border-subtle);
@@ -472,7 +484,7 @@
 .link {
   padding: var(--spacing-md);
   font-size: var(--text-lg);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   text-decoration: none;
   color: var(--text-primary);
   transition: var(--transition-fast);
@@ -483,7 +495,7 @@
 }
 
 .link_user {
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   font-size: var(--text-base);
 }
 
