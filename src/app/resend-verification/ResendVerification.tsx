@@ -95,7 +95,7 @@ const ResendVerification = () => {
                   size="sm"
                   onClick={() => router.push('/forgot-password')}
                   disabled={isLoading}
-                  style={{ fontWeight: 600, color: 'var(--accent-yellow)' }}>
+                  style={{ fontWeight: 600, color: 'var(--accent)' }}>
                   Відновити пароль
                 </Anchor>
               </Text>

@@ -71,7 +71,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         ? shortDesc.slice(0, 160)
         : longDesc
           ? longDesc.slice(0, 160)
-          : `Купити ${product.name} у Drill shop. Ціна від ${product.price} грн. Офіційний магазин мерчу Щільний Drill, доставка по Україні.`;
+          : `Купити ${product.name} у Є.Дріл. Ціна від ${product.price} грн. Офіційний магазин мерчу Щільний Drill, доставка по Україні.`;
 
     return {
       title: `${product.name}`,
@@ -83,7 +83,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         title: product.name,
         description,
         url: productUrl,
-        siteName: 'Drill shop',
+        siteName: 'Є.Дріл',
         locale: 'uk_UA',
         type: 'article',
         images: image?.url

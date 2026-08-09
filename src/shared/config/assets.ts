@@ -5,7 +5,7 @@ export const assets = {
   // ===== ЛОГОТИПИ =====
   logo: {
     main: '/assets/logo/ye-dril-logo.svg', // ye-dril ворд-марка (SVG-фолбек; у UI рендериться live через <Logo>)
-    og: '/logo/logo.jpg', // для Open Graph (растр, окремо від ворд-марки)
+    og: '/logo/og-image.png', // для Open Graph (1200×630, генерується з ворд-марки)
     favicon: '/assets/favicon/favicon.ico',
     appleTouchIcon: '/assets/favicon/apple-touch-icon.png',
   },

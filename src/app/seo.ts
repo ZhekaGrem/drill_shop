@@ -12,34 +12,34 @@ export const baseMetadata: Metadata = {
   metadataBase: new URL('https://www.ye-dril.com'),
 
   title: {
-    default: 'Drill shop | Щільний Drill для вас',
-    template: '%s | Drill shop',
+    default: 'Є.Дріл — офіційний мерч shchilnui Drill',
+    template: '%s | Є.Дріл',
   },
 
   description:
-    'Drill shop — офіційний магазин мерчу. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
+    'Є.Дріл — офіційний магазин мерчу shchilnui Drill. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
 
   openGraph: {
-    title: 'Drill shop — офіційний магазин мерчу',
+    title: 'Є.Дріл — офіційний магазин мерчу',
     description: 'Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
     url: 'https://www.ye-dril.com',
-    siteName: 'Drill shop',
+    siteName: 'Є.Дріл',
     locale: 'uk_UA',
     type: 'website',
     images: [
       {
-        url: 'https://www.ye-dril.com/logo/logo.jpg',
+        url: 'https://www.ye-dril.com/logo/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Drill shop — офіційний магазин мерчу',
+        alt: 'Є.Дріл — офіційний магазин мерчу',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Drill shop — офіційний магазин мерчу',
+    title: 'Є.Дріл — офіційний магазин мерчу',
     description: 'Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
-    images: ['https://www.ye-dril.com/logo/logo.jpg'],
+    images: ['https://www.ye-dril.com/logo/og-image.png'],
   },
   robots: {
     index: true,
@@ -101,7 +101,7 @@ export const pageMetadata = {
 
   about: (): Metadata => ({
     title: 'Про нас',
-    description: 'Офіційний магазин мерчу Drill shop.  Щільний мерч для справжніх фанатів.',
+    description: 'Офіційний магазин мерчу Є.Дріл.  Щільний мерч для справжніх фанатів.',
     alternates: {
       canonical: 'https://www.ye-dril.com/about',
     },
@@ -109,7 +109,7 @@ export const pageMetadata = {
 
   contact: (): Metadata => ({
     title: 'Контакти',
-    description: 'Контакти Drill shop. Телефони, адреса, графік роботи.',
+    description: 'Контакти Є.Дріл. Телефони, адреса, графік роботи.',
     alternates: {
       canonical: 'https://www.ye-dril.com/contact',
     },
@@ -133,13 +133,13 @@ export const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     '@id': 'https://www.ye-dril.com/#organization',
-    name: 'Drill shop',
+    name: 'Є.Дріл',
     url: 'https://www.ye-dril.com',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://www.ye-dril.com/logo/logo.png',
+      url: 'https://www.ye-dril.com/assets/favicon/android-chrome-512x512.png',
     },
-    image: 'https://www.ye-dril.com/logo/logo.png',
+    image: 'https://www.ye-dril.com/assets/favicon/android-chrome-512x512.png',
     description: 'Офіційний магазин мерчу. Футболки, худі та аксесуари з доставкою по Україні',
     email: 'team@ye-dril.com',
     telephone: '+380930465811',
@@ -171,7 +171,7 @@ export const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': 'https://www.ye-dril.com/#website',
-    name: 'Drill shop',
+    name: 'Є.Дріл',
     url: 'https://www.ye-dril.com',
     inLanguage: 'uk',
     publisher: {
@@ -213,7 +213,7 @@ export const structuredData = {
     sku: product.sku || product.slug,
     brand: {
       '@type': 'Brand',
-      name: 'Drill shop',
+      name: 'Є.Дріл',
     },
     category: product.category?.name,
     offers: {
@@ -227,7 +227,7 @@ export const structuredData = {
         product.inStock !== false ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       seller: {
         '@type': 'Organization',
-        name: 'Drill shop',
+        name: 'Є.Дріл',
       },
     },
     ...(product.aggregateRating && product.aggregateRating.totalReviews > 0

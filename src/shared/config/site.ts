@@ -1,6 +1,4 @@
 // src/config/site.ts
-import { assets } from './assets';
-
 export const siteConfig = {
   name: 'shchilnui Drill',
   fullName: 'Магазин мерчу топових музиків shchilnui Drill',
@@ -19,7 +17,6 @@ export const siteConfig = {
     telegram: 'https://t.me/makaron_gang?direct',
   },
   workingHours: 'Пн-Пт: 08:00 - 20:00 | Сб-Нд: 09:00 - 18:00',
-  logo: assets.logo.main,
 };
 
 export const footerLinks = [

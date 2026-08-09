@@ -3,7 +3,7 @@ import PrivacyPolicy from './PrivacyPolicy';
 
 export const metadata: Metadata = {
   title: 'Політика конфіденційності',
-  description: 'Політика конфіденційності та обробки персональних даних Drill shop.',
+  description: 'Політика конфіденційності та обробки персональних даних Є.Дріл.',
   alternates: {
     canonical: 'https://www.ye-dril.com/privacy-policy',
   },

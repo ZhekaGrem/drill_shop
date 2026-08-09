@@ -5,7 +5,7 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: 'Контакти',
-  description: 'Контакти Drill shop. Телефон, email, адреса та графік роботи магазину.',
+  description: 'Контакти Є.Дріл. Телефон, email, адреса та графік роботи магазину.',
   alternates: {
     canonical: 'https://www.ye-dril.com/contact',
   },

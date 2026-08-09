@@ -11,7 +11,7 @@ export async function generateMetadata() {
   return {
     title: 'Каталог товарів',
     description:
-      'Великий вибір мерчу онлайн — футболки, худі, аксесуари. Доставка по Україні від офіційного магазину Drill shop.',
+      'Великий вибір мерчу онлайн — футболки, худі, аксесуари. Доставка по Україні від офіційного магазину Є.Дріл.',
     alternates: {
       canonical: 'https://www.ye-dril.com/catalog',
     },
@@ -59,7 +59,7 @@ export default async function CatalogPage() {
   return (
     <>
       {itemListData && <JsonLd data={itemListData} />}
-      <h1 className="hiddenTitle">Каталог мерчу Drill shop — футболки, худі, постери та аксесуари</h1>
+      <h1 className="hiddenTitle">Каталог мерчу Є.Дріл — футболки, худі, постери та аксесуари</h1>
       <CatalogClient initialData={initialData} initialCategories={initialCategories} />
     </>
   );

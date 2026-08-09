@@ -14,8 +14,8 @@
   <text
     x="0"
     y="34"
-    font-family="'e-Ukraine Head', 'Arial Black', system-ui, sans-serif"
-    font-weight="700"
+    font-family="'e-Ukraine Head', 'Arial', system-ui, sans-serif"
+    font-weight="500"
     font-size="34"
     letter-spacing="-0.5"
     fill="#000000">Є<tspan fill="#0073e6">.</tspan>Дріл</text>

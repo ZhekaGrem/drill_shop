@@ -6,7 +6,7 @@ import { structuredData } from '../seo';
 
 export const metadata: Metadata = {
   title: 'Часті питання',
-  description: 'Відповіді на питання про замовлення, доставку, оплату, повернення та обмін в Drill shop.',
+  description: 'Відповіді на питання про замовлення, доставку, оплату, повернення та обмін в Є.Дріл.',
   alternates: {
     canonical: 'https://www.ye-dril.com/faq',
   },
