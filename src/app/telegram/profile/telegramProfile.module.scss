@@ -1,22 +1,26 @@
 // src/app/telegram/profile/telegramProfile.module.scss
 
-.profileCard {
-  background: linear-gradient(135deg, #ffb800 0%, #ffd54f 100%);
-  color: white;
-  padding: 20px;
-}
-
 .container {
   padding: var(--spacing-y) var(--spacing-x);
 }
 
+.profileCard {
+  background: var(--surface-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-lg);
+}
+
 .menuItem {
-  padding: 16px;
+  background: var(--surface-card);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-md);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-normal);
 
   &:hover {
-    background: #f8f9fa;
-    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
   }
 }

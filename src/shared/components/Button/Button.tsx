@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import styles from './button.module.scss';
 
 interface ButtonProps extends Omit<MantineButtonProps, 'variant' | 'size'> {
-  variant?: 'primary' | 'secondary' | 'yellow' | 'red' | 'beige' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'menu' | 'fl' | 'promo';
   fullWidth?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;

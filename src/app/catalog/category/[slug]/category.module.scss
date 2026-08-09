@@ -1,11 +1,7 @@
 // src/app/catalog/category/[slug]/category.module.scss
 .categoryPage {
   min-height: calc(100vh - 200px);
-  background-image: url('/assets/img/bg/page.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
 }
 
 .content {
@@ -67,7 +63,7 @@
 
 .spinner {
   font-size: 1.125rem;
-  color: #666;
+  color: var(--text-secondary);
   animation: pulse 1.5s ease-in-out infinite;
 }
 

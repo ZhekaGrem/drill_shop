@@ -1,93 +1,80 @@
 // src/features/catalog/components/CategoryHero/CategoryHero.module.scss
 .hero {
   position: relative;
-  min-height: 280px;
   display: flex;
   align-items: center;
-  background: #ff6a14;
-  margin-bottom: 2rem;
+  background: var(--gradient-brand);
+  border-radius: var(--border-radius-lg);
+  margin: var(--spacing-lg) var(--spacing-x);
+  min-height: 280px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
 
   @media (max-width: 768px) {
+    margin: var(--spacing-md);
     min-height: 200px;
-  }
-  &::after {
-    display: block;
-    content: '';
-    z-index: 11;
-    width: 100%;
-    height: 17px;
-    position: absolute;
-    background-size: 781px 20px;
-    left: -1px;
-    bottom: -17px;
-    background-image: url(./heroInlinerSvg.svg);
   }
 }
 
 .heroContent {
   position: relative;
   z-index: 1;
-  padding: 2rem 1rem;
   display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-xl);
+  width: 100%;
 
   @media (max-width: 768px) {
-    padding: 2rem 1rem;
+    padding: var(--spacing-lg);
   }
 }
 
 .heroImage {
-  width: 100%;
-  height: 100%;
+  width: 160px;
+  height: 160px;
+  flex-shrink: 0;
   display: block;
   object-fit: cover;
-  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.35);
-  border-top-left-radius: 80px 80px;
-  border-bottom-left-radius: 80px 80px;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+
   @media (max-width: 768px) {
     display: none;
   }
 }
+
 .heroText {
-  background: var(--background) url(../../../../../public/assets/img/bg/bg-rugged.png) repeat 50% 50%;
-  max-width: 520px;
-  padding: 48px;
-  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.35);
-  position: relative;
-  border-top-right-radius: 80px 80px;
-  border-bottom-right-radius: 80px 80px;
+  flex: 1;
+  // Легка біла "скляна" підкладка під текстом — тримає контраст незалежно
+  // від того, яка ділянка градієнта (--gradient-brand) опиняється під нею.
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(8px);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+
   @media (max-width: 768px) {
-    border-radius: 80px 80px;
-    padding: 28px;
+    padding: var(--spacing-md);
   }
 }
 
 .title {
+  font-family: var(--font-heading);
   color: var(--text-primary);
-  font-size: 3rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: var(--text-5xl);
+  margin-bottom: var(--spacing-sm);
 
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: var(--text-3xl);
   }
 }
 
 .description {
   color: var(--text-secondary);
-  font-size: 1.125rem;
+  font-size: var(--text-lg);
   line-height: 1.6;
-  margin-bottom: 0.75rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 
   @media (max-width: 768px) {
-    font-size: 1rem;
+    font-size: var(--text-base);
   }
-}
-
-.productsCount {
-  color: #ffd700;
-  font-size: 1rem;
-  font-weight: 600;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }

@@ -13,31 +13,26 @@ interface CategoryHeroProps {
 
 export function CategoryHero({ category, productsCount }: CategoryHeroProps) {
   return (
-    <>
-      <section className={styles.hero}>
-        {/* Фонове зображення категорії */}
+    <section className={styles.hero}>
+      <Container size="xl" className={styles.heroContent}>
+        {category.image && (
+          <CloudinaryImage
+            src={category.image}
+            alt={category.name}
+            width={320}
+            height={320}
+            className={styles.heroImage}
+            priority
+          />
+        )}
+        <div className={styles.heroText}>
+          <Title order={1} className={styles.title}>
+            {category.name}
+          </Title>
 
-        <Container size="xl" className={styles.heroContent}>
-          {category.image && (
-            <CloudinaryImage
-              src={category.image}
-              alt={category.name}
-              width={1920}
-              height={400}
-              className={styles.heroImage}
-              priority
-            />
-          )}
-          <div className={styles.heroText}>
-            <Title order={1} className={styles.title}>
-              {category.name}
-            </Title>
-
-            {category.description && <Text className={styles.description}>{category.description}</Text>}
-          </div>
-        </Container>
-      </section>
-      <div className={styles.heroInliner} />
-    </>
+          {category.description && <Text className={styles.description}>{category.description}</Text>}
+        </div>
+      </Container>
+    </section>
   );
 }

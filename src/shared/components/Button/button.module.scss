@@ -53,36 +53,6 @@
     }
   }
 
-  // DEPRECATED аліаси (використовує /telegram та старі екрани до їх проходу).
-  // Не видаляти до окремого рішення по /telegram.
-  &--yellow {
-    background: var(--btn-primary);
-    color: var(--text-inverse);
-
-    &:hover:not(:disabled) {
-      background: var(--btn-primary-hover);
-    }
-  }
-
-  &--red {
-    background: transparent;
-    color: var(--btn-danger);
-
-    &:hover:not(:disabled) {
-      background: var(--background-secondary);
-    }
-  }
-
-  &--beige {
-    background: var(--background);
-    color: var(--text-primary);
-    border: 1px solid var(--text-primary);
-
-    &:hover:not(:disabled) {
-      background: var(--background-secondary);
-    }
-  }
-
   // Sizes (висоти збережені — верстка не стрибає)
   &--sm {
     padding: 10px 20px;

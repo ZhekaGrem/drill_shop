@@ -1,9 +1,16 @@
 .paymentSuccessPage {
   min-height: 100vh;
-  background-image: url('/assets/img/bg/page.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  padding: 20px 0;
+  padding: var(--spacing-xl) 0;
+  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
+}
+
+.wrapper {
+  background: var(--surface-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-xl);
+}
+
+.image {
+  border-radius: var(--border-radius-md);
 }

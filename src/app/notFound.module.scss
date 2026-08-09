@@ -1,89 +1,45 @@
-// src/app/notFound.module.scss - UPDATED
+// src/app/notFound.module.scss
 .root {
   width: 100%;
   min-height: 100vh;
-  background-image: url('/assets/img/bg/bg-onion.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  padding: var(--spacing-xl) 0;
+  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
+}
+
+.card {
+  background: var(--surface-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  display: flex;
   flex-direction: column;
-  @media (max-width: 768px) {
-    background-image: none;
-    min-height: 100%;
-  }
-}
-.phoneImg {
-  @media (max-width: 768px) {
-    width: 100%;
-    min-height: 200px;
-    background-image: url('/assets/img/bg/bg-onion.webp');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-}
-
-.label {
+  align-items: center;
   text-align: center;
-  font-weight: 900;
-  font-size: 220px;
-  line-height: 1;
-  margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
-  color: rgba(255, 255, 255, 0.4);
-  user-select: none;
 
-  @media (max-width: var(--mantine-breakpoint-sm)) {
-    font-size: 120px;
+  @media (max-width: 768px) {
+    padding: var(--spacing-xl) var(--spacing-lg);
   }
+}
+
+.code {
+  font-family: var(--font-heading);
+  font-size: var(--text-6xl);
+  color: var(--text-tertiary);
+  line-height: 1;
+  margin-bottom: var(--spacing-md);
 }
 
 .title {
-  font-family: var(--font-price);
-  text-align: center;
-  font-weight: 700;
-  font-size: 38px;
-  color: var(--text-inverse);
-  margin-bottom: var(--mantine-spacing-md);
-
-  @media (max-width: var(--mantine-breakpoint-sm)) {
-    font-size: 32px;
-  }
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
 }
 
 .description {
-  background-color: var(--background);
-  max-width: 600px;
-  margin: auto;
-  margin-top: var(--mantine-spacing-xl);
-  margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
-  color: var(--text-primary);
-  padding: 20px;
-  line-height: 150%;
-  text-align: center;
-  @media (max-width: 768px) {
-    margin-top: 0;
-  }
-}
-
-.popularLinks {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.link {
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  transition: color 0.2s ease;
-
-  &:hover {
-    color: var(--text-inverse);
-    text-decoration: underline;
-  }
+  color: var(--text-secondary);
+  max-width: 480px;
 }
 
 .bthSpan {
@@ -91,5 +47,4 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: color 0.2s ease;
 }

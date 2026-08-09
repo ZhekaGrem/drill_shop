@@ -91,7 +91,6 @@ export function TelegramBottomNav() {
 
   return (
     <Box className={styles.bottomNav}>
-      <div className={styles.topLine} />
       <nav className={styles.navContainer}>
         {navItems.map((item) => {
           const Icon = item.icon;
