@@ -16,7 +16,15 @@
 
 Ці правила діють у **кожному** завданні — не повторюються в кожному кроці.
 
-- **Next ≥ 16.3.0.** До завдання 1 `<ViewTransition>` недоступний; не намагайся його імпортувати раніше.
+- **`<ViewTransition>` уже працює — апгрейд Next не потрібен.** Перевірено 2026-08-09 на Next **16.0.7** + React 19.2.1: `import { ViewTransition } from 'react'` збирається (`next build` exit 0, без помилок типів) і рендериться в SSR. App Router підміняє `react` на власний canary під час білду. Завдання 1 закрито без змін коду.
+  **Але:** `@types/react@19.2.7` цей експорт **не описує**, тому IDE (tsserver) підсвічуватиме `ViewTransition` як помилку там, де `next build` проходить. Це відомо й очікувано — **не додавай `@ts-expect-error` і не міняй типи**, орієнтуйся на `next build`.
+- **`npm run lint` ЗАВЖДИ віддає exit 1.** База на старті робіт: **298 errors, 123 warnings** (переважно `@typescript-eslint/no-explicit-any`), усі передіснуючі. Зелений лінт недосяжний і не є метою.
+  Твій критерій: **`npm run build` exit 0**, і кількість errors у лінті **не зросла понад 298**. Перевіряй так:
+  ```bash
+  npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
+  ```
+  Передіснуючі помилки в чужих файлах **не чіпай** — це не твоє завдання.
+- **`npm run build` шумить `ECONNREFUSED` / `Failed to fetch products`** — це непіднятий локальний бекенд під час префетчу, **не падіння**. Єдиний критерій — exit code.
 - **Ніякого `transition: all`** у файлах, яких торкаєшся. Властивості перелічуються явно.
 - **Тривалість руху ≤ 300 мс.** Винятки — тільки перехід сторінки (завдання 8–9) і `StatusPage` (завдання 15).
 - **Кожен `:hover` — під `@media (hover: hover) and (pointer: fine)`.** На тачі `:hover` залипає після тапу.
@@ -38,8 +46,8 @@
 
 У проєкті **немає** тестового фреймворку: `package.json` містить лише `dev`, `build`, `start`, `lint`, `format`. Розгортати Jest/Playwright у межах цієї роботи ми не домовлялись, тому червоно-зелений сигнал дають:
 
-- `npm run build` — типи й ESLint увімкнені в `next.config.ts` (`ignoreBuildErrors: false`), це головний гейт;
-- `npm run lint`;
+- `npm run build` — типи й ESLint увімкнені в `next.config.ts` (`ignoreBuildErrors: false`), це **головний і єдиний бінарний гейт**: exit 0 або ні;
+- `npm run lint` — **порівняльний**, не бінарний: база 298 errors, зростання = регресія (див. Global Constraints);
 - **grep-перевірки** — фальсифіковані твердження про стан коду (напр. «у цьому файлі не лишилось `transition: all`»);
 - **візуальний критерій приймання** — конкретний, перевірюваний оком, а не «має виглядати добре».
 
@@ -145,7 +153,7 @@ npm run build
 
 ```bash
 rm -rf src/app/vt-smoke
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 Очікувано: обидві команди PASS, маршруту `/vt-smoke` у виводі більше немає.
@@ -264,10 +272,10 @@ grep -c "ease-out\|dur-press\|motion-rise\|motion-rise-in" src/app/globals.css
 - [ ] **Крок 5: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
-Очікувано: обидві PASS.
+Очікувано: `BUILD EXIT: 0`, а в лінті **не більше 298 errors** (база на старті робіт). Лінт завжди віддає exit 1 — див. Global Constraints.
 
 - [ ] **Крок 6: Візуальний критерій**
 
@@ -466,7 +474,7 @@ grep -c "hoverable" src/shared/components/Button/button.module.scss
 - [ ] **Крок 6: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 7: Візуальний критерій**
@@ -618,7 +626,7 @@ grep -c "@keyframes blurFadeIn" src/features/catalog/components/ProductCard/Prod
 - [ ] **Крок 6: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 7: Візуальний критерій**
@@ -673,7 +681,7 @@ grep -n "transition: var(--transition-\|transition: all" src/shared/components/I
 - [ ] **Крок 4: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 5: Візуальний критерій**
@@ -755,7 +763,7 @@ grep -c "^    Modal:" src/shared/config/mantine-theme.ts
 - [ ] **Крок 4: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 5: Візуальний критерій**
@@ -904,7 +912,7 @@ return (
 - [ ] **Крок 3: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 4: Перевірка**
@@ -976,7 +984,7 @@ export const Page = ({ children, className, width = 'default', as: Tag = 'div' }
 - [ ] **Крок 2: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 Очікувано: PASS. Якщо помилка типів на `ViewTransition` — завдання 1 не завершене.
@@ -1063,7 +1071,7 @@ npm run build
 - [ ] **Крок 5: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 6: Візуальний критерій — тут зʼявляється головний ефект**
@@ -1127,7 +1135,7 @@ grep -rLn "shared/components/Page" src/app/login src/app/orders src/app/verify-e
 - [ ] **Крок 4: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 5: Візуальний критерій**
@@ -1199,7 +1207,7 @@ grep -n "product-\${" src/features/catalog/components/ProductCard/ProductCard.ts
 - [ ] **Крок 4: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 5: Візуальний критерій**
@@ -1418,7 +1426,7 @@ export { Sheet } from './Sheet';
 - [ ] **Крок 5: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 6: Візуальний критерій — обовʼязково на реальному телефоні**
@@ -1537,7 +1545,7 @@ grep -rn "skeletonPulse\|blurFadeIn" src/
 - [ ] **Крок 6: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 7: Візуальний критерій**
@@ -1595,7 +1603,7 @@ git commit -m "feat(v2): каскад карток каталогу, shimmer-с�
 - [ ] **Крок 2: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 3: Візуальний критерій**
@@ -1740,7 +1748,7 @@ const activeIndex = navItems.findIndex((item) => isActive(item.href));
 - [ ] **Крок 3: Білд і лінт**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 ```
 
 - [ ] **Крок 4: Візуальний критерій**
@@ -1887,7 +1895,7 @@ npm run build
 - [ ] **Крок 5: Фінальна перевірка всього**
 
 ```bash
-npm run build && npm run lint
+npm run build; echo "BUILD EXIT: $?"; npm run lint 2>&1 | grep -E "problems"
 grep -rn "transition: all" src/ || echo "OK: transition: all нема"
 ```
 
