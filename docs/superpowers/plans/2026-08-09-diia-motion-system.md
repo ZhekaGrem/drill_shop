@@ -24,7 +24,7 @@
 - **SCSS-аліасів `@/` у проєкті немає.** Імпорт партіалів — відносним шляхом: `@use '../../styles/motion' as motion;`. Аліас `@/` працює тільки в TS/TSX.
 - **Mantine 8 без `@mantine/emotion`:** проп `styles` застосовується як inline-стилі, псевдоселектори там мовчки ігноруються. У темі — тільки `transitionProps` і статичні властивості. Стани — в `globals.css` або SCSS-модулях.
 - **Правило єдиного джерела стилізації:** на одному елементі або Mantine-пропси, або SCSS-клас. Ніколи разом.
-- **Коментарі в коді — українською**, як у решті проєкту. Пояснюй *чому*, а не *що*.
+- **Коментарі в коді — українською**, як у решті проєкту. Пояснюй _чому_, а не _що_.
 - **Ліміти:** компонент ≤ 150 рядків, функція ≤ 50 рядків.
 - **Prettier:** 110 колонок, одинарні лапки, 2 пробіли, крапки з комою обовʼязкові.
 - **`/admin` не чіпаємо.** Він успадкує лише ретаргет токенів із завдання 2.
@@ -51,15 +51,15 @@
 
 **Створюються:**
 
-| Файл | Відповідальність |
-| --- | --- |
-| `src/shared/styles/_motion.scss` | Міксини руху. Без значень — вони в `globals.css`. |
-| `src/shared/components/AppLink/AppLink.tsx` | `next/link` + напрямок переходу. |
-| `src/shared/components/AppLink/index.ts` | Реекспорт. |
-| `src/shared/components/Sheet/Sheet.tsx` | Шторка: Mantine `Drawer.Root` + жест. |
-| `src/shared/components/Sheet/Sheet.module.scss` | Стилі шторки. |
-| `src/shared/components/Sheet/useSheetDrag.ts` | Логіка жесту, відокремлена від розмітки. |
-| `src/shared/components/Sheet/index.ts` | Реекспорт. |
+| Файл                                            | Відповідальність                                  |
+| ----------------------------------------------- | ------------------------------------------------- |
+| `src/shared/styles/_motion.scss`                | Міксини руху. Без значень — вони в `globals.css`. |
+| `src/shared/components/AppLink/AppLink.tsx`     | `next/link` + напрямок переходу.                  |
+| `src/shared/components/AppLink/index.ts`        | Реекспорт.                                        |
+| `src/shared/components/Sheet/Sheet.tsx`         | Шторка: Mantine `Drawer.Root` + жест.             |
+| `src/shared/components/Sheet/Sheet.module.scss` | Стилі шторки.                                     |
+| `src/shared/components/Sheet/useSheetDrag.ts`   | Логіка жесту, відокремлена від розмітки.          |
+| `src/shared/components/Sheet/index.ts`          | Реекспорт.                                        |
 
 **Видаляється:** `src/shared/components/Skeleton/catalog/` — мертвий компонент із порожнім стилем (завдання 17).
 
@@ -74,6 +74,7 @@
 Гейт перед усім іншим. Якщо не злітає — решта плану не має сенсу в поточному вигляді.
 
 **Files:**
+
 - Modify: `package.json`, `package-lock.json`
 - Temp: `src/app/vt-smoke/page.tsx` (створюється і видаляється в межах завдання)
 
@@ -85,6 +86,7 @@
 node -p "require('next/package.json').version"
 node -p "require('react/package.json').version"
 ```
+
 Очікувано: `16.0.7` і `19.2.1`. Запиши їх — знадобляться для відкату.
 
 - [ ] **Крок 2: Написати перевірку, яка зараз має впасти**
@@ -110,6 +112,7 @@ export default function VtSmokePage() {
 ```bash
 npm run build
 ```
+
 Очікувано: **FAIL** — `'"react"' has no exported member named 'ViewTransition'` або аналогічна помилка типів.
 
 Якщо білд раптом **пройшов** — `<ViewTransition>` уже доступний, апгрейд не потрібен. Пропусти кроки 4–5, перейди до кроку 6 і зазнач це в комміті.
@@ -125,6 +128,7 @@ npm install next@^16.3.0 eslint-config-next@^16.3.0
 ```bash
 node -p "require('next/package.json').version"
 ```
+
 Очікувано: `16.3.x` або вище.
 
 - [ ] **Крок 6: Переконатися, що перевірка тепер проходить**
@@ -132,6 +136,7 @@ node -p "require('next/package.json').version"
 ```bash
 npm run build
 ```
+
 Очікувано: **PASS**, маршрут `/vt-smoke` присутній у виводі білду.
 
 Якщо все ще FAIL — **зупинись і доповідай**. Запасний варіант зі спеки: `experimental.viewTransition: true` в `next.config.ts`, але це опт-ін в експериментальну збірку React, і рішення про нього приймає власник проєкту, а не виконавець.
@@ -142,6 +147,7 @@ npm run build
 rm -rf src/app/vt-smoke
 npm run build && npm run lint
 ```
+
 Очікувано: обидві команди PASS, маршруту `/vt-smoke` у виводі більше немає.
 
 - [ ] **Крок 8: Комміт**
@@ -161,6 +167,7 @@ React <ViewTransition> потрібен для переходів сторіно
 ## Завдання 2: Шар motion-токенів
 
 **Files:**
+
 - Modify: `src/app/globals.css`
 
 **Produces:** CSS-змінні `--ease-out`, `--ease-in-out`, `--ease-sheet`, `--dur-press`, `--dur-hover`, `--dur-pop`, `--dur-modal`, `--dur-sheet`, `--dur-exit`, `--motion-rise`, `--motion-slide`, `--motion-press-scale`, `--stagger-step`; keyframe `motion-rise-in`.
@@ -170,6 +177,7 @@ React <ViewTransition> потрібен для переходів сторіно
 ```bash
 grep -n "transition-fast\|transition-normal\|transition-slow" src/app/globals.css
 ```
+
 На коміті `d988b55` це рядки 363–365. **Файл редагують паралельно — довіряй виводу grep, а не цим номерам.**
 
 - [ ] **Крок 2: Замінити три рядки на повний шар**
@@ -177,36 +185,36 @@ grep -n "transition-fast\|transition-normal\|transition-slow" src/app/globals.cs
 Замінюєш **тільки** три оголошення `--transition-*`, решту `:root` не чіпаєш:
 
 ```css
-  /* ============ Рух ============
+/* ============ Рух ============
      Криві розділені за призначенням. Раніше все анімувалось однією
      ease-in-out, яка стартує повільно — саме тому інтерфейс читався
      повільнішим за Дію при тих самих тривалостях. ease-out стартує
      миттєво й гальмує в кінці: рух видно рівно тоді, коли користувач
      дивиться найуважніше. */
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+--ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+--ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
 
-  --dur-press: 120ms;
-  --dur-hover: 160ms;
-  --dur-pop: 180ms;
-  --dur-modal: 220ms;
-  --dur-sheet: 300ms;
-  --dur-exit: 150ms;
+--dur-press: 120ms;
+--dur-hover: 160ms;
+--dur-pop: 180ms;
+--dur-modal: 220ms;
+--dur-sheet: 300ms;
+--dur-exit: 150ms;
 
-  --motion-rise: 8px;
-  --motion-slide: 60px;
-  --motion-press-scale: 0.97;
-  --stagger-step: 40ms;
+--motion-rise: 8px;
+--motion-slide: 60px;
+--motion-press-scale: 0.97;
+--stagger-step: 40ms;
 
-  /* @deprecated. Не мають property, тому розкриваються в `transition: all`
+/* @deprecated. Не мають property, тому розкриваються в `transition: all`
      і анімують заразом box-shadow, border-color та все інше.
      У новому коді пиши явно: `transition: background var(--dur-hover) var(--ease-out)`.
      Лишені з новою кривою, щоб полагодити моторику в 76 наявних місцях,
      не переписуючи 46 файлів одним комітом. */
-  --transition-fast: 150ms var(--ease-out);
-  --transition-normal: 200ms var(--ease-out);
-  --transition-slow: 300ms var(--ease-out);
+--transition-fast: 150ms var(--ease-out);
+--transition-normal: 200ms var(--ease-out);
+--transition-slow: 300ms var(--ease-out);
 ```
 
 - [ ] **Крок 3: Додати keyframe і reduced-motion у кінець файлу**
@@ -250,6 +258,7 @@ grep -n "transition-fast\|transition-normal\|transition-slow" src/app/globals.cs
 ```bash
 grep -c "ease-out\|dur-press\|motion-rise\|motion-rise-in" src/app/globals.css
 ```
+
 Очікувано: ≥ 8.
 
 - [ ] **Крок 5: Білд і лінт**
@@ -257,6 +266,7 @@ grep -c "ease-out\|dur-press\|motion-rise\|motion-rise-in" src/app/globals.css
 ```bash
 npm run build && npm run lint
 ```
+
 Очікувано: обидві PASS.
 
 - [ ] **Крок 6: Візуальний критерій**
@@ -275,9 +285,11 @@ git commit -m "feat(v2): шар motion-токенів, ретаргет заст
 ## Завдання 3: Міксини руху
 
 **Files:**
+
 - Create: `src/shared/styles/_motion.scss`
 
 **Interfaces — Produces:**
+
 - `@mixin press($scale: var(--motion-press-scale))` — тільки правило `:active`
 - `@mixin pressable-transition` — готовий `transition` для натискних елементів
 - `@mixin hoverable` — обгортка `@media`, приймає `@content`
@@ -346,6 +358,7 @@ git commit -m "feat(v2): шар motion-токенів, ретаргет заст
 ```bash
 npm run build
 ```
+
 Очікувано: PASS, без помилок Sass.
 
 Рядок лишається — він знадобиться в завданні 4.
@@ -362,6 +375,7 @@ git commit -m "feat(v2): міксини руху (_motion.scss)"
 ## Завдання 4: Ядро — контроли (Button, ArrowCircle)
 
 **Files:**
+
 - Modify: `src/shared/components/Button/button.module.scss`
 - Modify: `src/shared/components/ArrowCircle/ArrowCircle.module.scss`
 
@@ -372,6 +386,7 @@ git commit -m "feat(v2): міксини руху (_motion.scss)"
 ```bash
 grep -c ":active" src/shared/components/Button/button.module.scss src/shared/components/ArrowCircle/ArrowCircle.module.scss
 ```
+
 Очікувано: `0` в обох. Це та відсутність, яку закриваємо.
 
 - [ ] **Крок 2: Button — замінити transition і додати натискання**
@@ -379,8 +394,8 @@ grep -c ":active" src/shared/components/Button/button.module.scss src/shared/com
 У `.button` заміни рядок `transition: var(--transition-normal);` на:
 
 ```scss
-  @include motion.pressable-transition;
-  @include motion.press;
+@include motion.pressable-transition;
+@include motion.press;
 ```
 
 (`@use '../../styles/motion' as motion;` уже стоїть першим рядком із завдання 3.)
@@ -390,16 +405,16 @@ grep -c ":active" src/shared/components/Button/button.module.scss src/shared/com
 Кожен із чотирьох варіантів має `&:hover:not(:disabled)`. Загорни їх у `motion.hoverable`. Приклад для `primary`, решту — так само:
 
 ```scss
-  &--primary {
-    background: var(--btn-primary);
-    color: var(--text-inverse);
+&--primary {
+  background: var(--btn-primary);
+  color: var(--text-inverse);
 
-    @include motion.hoverable {
-      &:hover:not(:disabled) {
-        background: var(--btn-primary-hover);
-      }
+  @include motion.hoverable {
+    &:hover:not(:disabled) {
+      background: var(--btn-primary-hover);
     }
   }
+}
 ```
 
 - [ ] **Крок 4: ArrowCircle — те саме**
@@ -439,11 +454,13 @@ grep -c ":active" src/shared/components/Button/button.module.scss src/shared/com
 ```bash
 grep -n "transition: var(--transition-\|transition: all" src/shared/components/Button/button.module.scss src/shared/components/ArrowCircle/ArrowCircle.module.scss
 ```
+
 Очікувано: **порожньо**.
 
 ```bash
 grep -c "hoverable" src/shared/components/Button/button.module.scss
 ```
+
 Очікувано: `4` (по одному на варіант).
 
 - [ ] **Крок 6: Білд і лінт**
@@ -469,6 +486,7 @@ git commit -m "feat(v2): press-фідбек і огорожа hover на кно�
 ## Завдання 5: Ядро — поверхні (Card, ListGroup, ProductCard)
 
 **Files:**
+
 - Modify: `src/shared/components/Card/Card.module.scss`
 - Modify: `src/shared/components/ListGroup/ListGroup.module.scss`
 - Modify: `src/features/catalog/components/ProductCard/ProductCard.module.scss`
@@ -508,9 +526,9 @@ git commit -m "feat(v2): press-фідбек і огорожа hover на кно�
 У `.row` рядок `transition: background var(--transition-fast);` замінити на:
 
 ```scss
-  transition:
-    background var(--dur-hover) var(--ease-out),
-    transform var(--dur-press) var(--ease-out);
+transition:
+  background var(--dur-hover) var(--ease-out),
+  transform var(--dur-press) var(--ease-out);
 ```
 
 `.rowInteractive` повністю:
@@ -545,20 +563,20 @@ git commit -m "feat(v2): press-фідбек і огорожа hover на кно�
 У `.card` заміни `transition: var(--transition-normal);` і hover-блок на:
 
 ```scss
-  transition:
-    box-shadow var(--dur-hover) var(--ease-out),
-    transform var(--dur-press) var(--ease-out);
+transition:
+  box-shadow var(--dur-hover) var(--ease-out),
+  transform var(--dur-press) var(--ease-out);
 
-  @include motion.press;
+@include motion.press;
 
-  // Підйом картки — тільки під курсором. На тачі він залипав після тапу
-  // й картка лишалась піднятою до наступного тапу деінде.
-  @include motion.hoverable {
-    &:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
-    }
+// Підйом картки — тільки під курсором. На тачі він залипав після тапу
+// й картка лишалась піднятою до наступного тапу деінде.
+@include motion.hoverable {
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
   }
+}
 ```
 
 У `.productImage` заміни `transition: var(--transition-fast);` на `transition: transform var(--dur-hover) var(--ease-out);`.
@@ -568,14 +586,15 @@ git commit -m "feat(v2): press-фідбек і огорожа hover на кно�
 У `.variantCheckboxText` заміни `transition: var(--transition-fast);` на:
 
 ```scss
-  transition:
-    background var(--dur-hover) var(--ease-out),
-    border-color var(--dur-hover) var(--ease-out),
-    color var(--dur-hover) var(--ease-out),
-    transform var(--dur-press) var(--ease-out);
+transition:
+  background var(--dur-hover) var(--ease-out),
+  border-color var(--dur-hover) var(--ease-out),
+  color var(--dur-hover) var(--ease-out),
+  transform var(--dur-press) var(--ease-out);
 
-  @include motion.press;
+@include motion.press;
 ```
+
 і загороди його `&:hover` у `motion.hoverable`.
 
 - [ ] **Крок 4: Прибрати дубль keyframe**
@@ -587,11 +606,13 @@ git commit -m "feat(v2): press-фідбек і огорожа hover на кно�
 ```bash
 grep -rn "transition: var(--transition-\|transition: all" src/shared/components/Card src/shared/components/ListGroup src/features/catalog/components/ProductCard
 ```
+
 Очікувано: **порожньо**.
 
 ```bash
 grep -c "@keyframes blurFadeIn" src/features/catalog/components/ProductCard/ProductCard.module.scss
 ```
+
 Очікувано: `0`.
 
 - [ ] **Крок 6: Білд і лінт**
@@ -618,6 +639,7 @@ git commit -m "feat(v2): press-фідбек на поверхнях, огоро�
 ## Завдання 6: Ядро — поля вводу
 
 **Files:**
+
 - Modify: `src/shared/components/Input/Input.module.scss`
 - Modify: `src/shared/components/Select/select.module.scss`
 - Modify: `src/shared/components/SearchInput/SearchInput.module.scss`
@@ -633,9 +655,9 @@ grep -n "transition" src/shared/components/Input/Input.module.scss src/shared/co
 Для полів анімуються рівно дві властивості — межа й кільце фокуса:
 
 ```scss
-  transition:
-    border-color var(--dur-hover) var(--ease-out),
-    box-shadow var(--dur-hover) var(--ease-out);
+transition:
+  border-color var(--dur-hover) var(--ease-out),
+  box-shadow var(--dur-hover) var(--ease-out);
 ```
 
 Якщо в конкретному правилі змінюється ще й фон — додай `background var(--dur-hover) var(--ease-out)`. Нічого зайвого не додавай: поле не має рухатись.
@@ -645,6 +667,7 @@ grep -n "transition" src/shared/components/Input/Input.module.scss src/shared/co
 ```bash
 grep -n "transition: var(--transition-\|transition: all" src/shared/components/Input src/shared/components/Select src/shared/components/SearchInput
 ```
+
 Очікувано: **порожньо**.
 
 - [ ] **Крок 4: Білд і лінт**
@@ -671,6 +694,7 @@ git commit -m "feat(v2): property-scoped переходи на полях вво
 Одна правка перекриває всі 22 файли з `Modal`/`Drawer`.
 
 **Files:**
+
 - Modify: `src/shared/config/mantine-theme.ts`
 
 - [ ] **Крок 1: Додати `transitionProps` у наявний блок `components`**
@@ -725,6 +749,7 @@ git commit -m "feat(v2): property-scoped переходи на полях вво
 ```bash
 grep -c "^    Modal:" src/shared/config/mantine-theme.ts
 ```
+
 Очікувано: `1`. Якщо `2` — обʼєднай в один обʼєкт, інакше другий мовчки перезапише перший разом зі `styles`.
 
 - [ ] **Крок 4: Білд і лінт**
@@ -749,6 +774,7 @@ git commit -m "feat(v2): дефолти переходів Mantine під кри
 ## Завдання 8: Фундамент View Transitions + якір хедера
 
 **Files:**
+
 - Modify: `src/app/globals.css`
 - Modify: `src/app/LayoutWrapper.tsx`
 
@@ -857,20 +883,20 @@ git commit -m "feat(v2): дефолти переходів Mantine під кри
 У `src/app/LayoutWrapper.tsx` заміни блок повернення для не-Telegram сторінок:
 
 ```tsx
-  return (
-    <>
-      {/* viewTransitionName вилучає хедер зі знімка сторінки, щоб він не їхав
+return (
+  <>
+    {/* viewTransitionName вилучає хедер зі знімка сторінки, щоб він не їхав
           разом із контентом. Правило анімації — в globals.css. */}
-      <div style={{ viewTransitionName: 'site-header' }}>
-        <Header />
-      </div>
-      <EmailVerificationBanner />
-      <main>{children}</main>
-      <div style={{ viewTransitionName: 'site-footer' }}>
-        <Footer />
-      </div>
-    </>
-  );
+    <div style={{ viewTransitionName: 'site-header' }}>
+      <Header />
+    </div>
+    <EmailVerificationBanner />
+    <main>{children}</main>
+    <div style={{ viewTransitionName: 'site-footer' }}>
+      <Footer />
+    </div>
+  </>
+);
 ```
 
 > Inline-стиль тут відповідає варіанту C правил стилізації проєкту: `viewTransitionName` — унікальний ідентифікатор ділянки, а не оформлення, і в SCSS-модулі він жив би під згенерованим імʼям класу, до якого CSS-псевдоелемент не достукається.
@@ -886,6 +912,7 @@ npm run build && npm run lint
 ```bash
 grep -c "view-transition" src/app/globals.css
 ```
+
 Очікувано: ≥ 10.
 
 Візуального ефекту поки **немає** — його вмикає завдання 9. Це очікувано.
@@ -902,6 +929,7 @@ git commit -m "feat(v2): CSS-фундамент переходів сторін�
 ## Завдання 9: `<Page>` як носій переходу
 
 **Files:**
+
 - Modify: `src/shared/components/Page/Page.tsx`
 
 **Consumes:** класи `nav-forward` / `nav-back` із завдання 8.
@@ -950,6 +978,7 @@ export const Page = ({ children, className, width = 'default', as: Tag = 'div' }
 ```bash
 npm run build && npm run lint
 ```
+
 Очікувано: PASS. Якщо помилка типів на `ViewTransition` — завдання 1 не завершене.
 
 - [ ] **Крок 3: Візуальний критерій**
@@ -968,6 +997,7 @@ git commit -m "feat(v2): <ViewTransition> у <Page> — одна точка дл
 ## Завдання 10: `<AppLink>` і розмітка напрямків
 
 **Files:**
+
 - Create: `src/shared/components/AppLink/AppLink.tsx`, `src/shared/components/AppLink/index.ts`
 - Modify: `src/features/catalog/components/ProductCard/ProductCard.tsx`
 - Modify: `src/shared/components/ListGroup/ListGroup.tsx`
@@ -1005,6 +1035,7 @@ export { AppLink } from './AppLink';
 ```bash
 npm run build
 ```
+
 Очікувано: PASS. Якщо TypeScript каже, що `transitionTypes` немає в пропсах `Link`, — версія Next нижча за потрібну; повернись до завдання 1.
 
 - [ ] **Крок 3: Перевести картку товару**
@@ -1038,6 +1069,7 @@ npm run build && npm run lint
 - [ ] **Крок 6: Візуальний критерій — тут зʼявляється головний ефект**
 
 Chrome, `npm run dev`, каталог → клік по картці товару:
+
 - контент сторінки їде **вліво** й гасне;
 - сторінка товару заїжджає **справа**;
 - **хедер і футер стоять нерухомо**;
@@ -1061,6 +1093,7 @@ git commit -m "feat(v2): напрямлені переходи сторінок 
 П'ять сторінок не загорнуті в `<Page>`, тому переходу не отримують — і заразом порушують власне правило `DESIGN_SYSTEM.md`.
 
 **Files:**
+
 - Modify: `src/app/login/Login.tsx`, `src/app/orders/**`, `src/app/verify-email/VerifyEmail.tsx`, `src/app/forgot-password/**`, `src/app/resend-verification/**`
 
 - [ ] **Крок 1: Знайти точний перелік**
@@ -1078,7 +1111,7 @@ import { Page } from '@/shared/components/Page/Page';
 
 // було: <Container size="sm"> ... </Container>
 // стало:
-<Page width="narrow"> ... </Page>
+<Page width="narrow"> ... </Page>;
 ```
 
 Якщо в сторінки був власний `max-width` або `padding` по горизонталі в SCSS-модулі — **прибери його**: поля тепер задає `<Page>`, інакше поле буде подвійним (`DESIGN_SYSTEM.md`).
@@ -1088,6 +1121,7 @@ import { Page } from '@/shared/components/Page/Page';
 ```bash
 grep -rLn "shared/components/Page" src/app/login src/app/orders src/app/verify-email src/app/forgot-password src/app/resend-verification --include=*.tsx
 ```
+
 Очікувано: **порожньо**.
 
 - [ ] **Крок 4: Білд і лінт**
@@ -1112,6 +1146,7 @@ git commit -m "fix(v2): пʼять сторінок переведено на <P
 ## Завдання 12: Shared element — фото картки в фото товару
 
 **Files:**
+
 - Modify: `src/features/catalog/components/ProductCard/ProductCard.tsx`
 - Modify: `src/app/catalog/[slug]/ProductDetailsClient.tsx`
 
@@ -1138,6 +1173,7 @@ import { ViewTransition } from 'react';
 ```bash
 grep -n "product-\${" src/features/catalog/components/ProductCard/ProductCard.tsx src/app/catalog/\[slug\]/ProductDetailsClient.tsx
 ```
+
 Очікувано: по одному збігу в кожному файлі, з **однаковим** шаблоном імені.
 
 - [ ] **Крок 3: Додати CSS морфінгу в `globals.css`**
@@ -1186,6 +1222,7 @@ git commit -m "feat(v2): фото картки перетікає у фото с
 Найризикованіше завдання. Стоїть останнім серед структурних саме тому: якщо не злітає, решта системи не страждає.
 
 **Files:**
+
 - Create: `src/shared/components/Sheet/useSheetDrag.ts`, `Sheet.tsx`, `Sheet.module.scss`, `index.ts`
 - Modify: `src/features/catalog/components/MobileFilterModal/MobileFilterModal.tsx`
 
@@ -1208,6 +1245,10 @@ const DISTANCE_RATIO = 0.35;
 
 export function useSheetDrag(onClose: () => void) {
   const [offset, setOffset] = useState(0);
+  // isDragging — саме стан, а не читання ref: ref не викликає перерендер,
+  // тому data-dragging (який вимикає transition) вішався б із запізненням
+  // на кадр, і перший рух пальця йшов би через 300-мілісекундну анімацію.
+  const [isDragging, setIsDragging] = useState(false);
   const startY = useRef(0);
   const startTime = useRef(0);
   const pointerId = useRef<number | null>(null);
@@ -1220,6 +1261,7 @@ export function useSheetDrag(onClose: () => void) {
     pointerId.current = e.pointerId;
     startY.current = e.clientY;
     startTime.current = e.timeStamp;
+    setIsDragging(true);
     // Захоплюємо вказівник, щоб перетягування не обірвалось,
     // коли палець вийде за межі ручки.
     e.currentTarget.setPointerCapture(e.pointerId);
@@ -1243,6 +1285,7 @@ export function useSheetDrag(onClose: () => void) {
     const height = e.currentTarget.closest('[data-sheet-content]')?.clientHeight ?? 0;
 
     pointerId.current = null;
+    setIsDragging(false);
     setOffset(0);
 
     if (velocity > VELOCITY_THRESHOLD || delta > height * DISTANCE_RATIO) {
@@ -1250,7 +1293,7 @@ export function useSheetDrag(onClose: () => void) {
     }
   };
 
-  return { offset, isDragging: pointerId.current !== null, onPointerDown, onPointerMove, onPointerUp };
+  return { offset, isDragging, onPointerDown, onPointerMove, onPointerUp };
 }
 ```
 
@@ -1403,6 +1446,7 @@ git commit -m "feat(v2): <Sheet> — шторка з ручкою та закр�
 ## Завдання 14: Каскад списку й скелетон
 
 **Files:**
+
 - Modify: `src/features/catalog/components/ProductCard/ProductCard.tsx` (проп індексу)
 - Modify: `src/app/catalog/CatalogClient.tsx` (передача індексу)
 - Modify: `src/features/catalog/components/ProductCard/ProductCard.module.scss`
@@ -1416,9 +1460,9 @@ git commit -m "feat(v2): <Sheet> — шторка з ручкою та закр�
 У `CatalogClient.tsx` знайди `.map()` по товарах і додай індекс:
 
 ```tsx
-{products.map((product, index) => (
-  <ProductCard key={product.id} product={product} index={index} />
-))}
+{
+  products.map((product, index) => <ProductCard key={product.id} product={product} index={index} />);
+}
 ```
 
 - [ ] **Крок 2: Прийняти індекс у картці**
@@ -1462,7 +1506,7 @@ grep -rn "skeletonPulse" src/
 Для кожного знайденого правила заміни `animation: skeletonPulse ...` на псевдоелемент. Шаблон (назву класу бери з файлу, який правиш):
 
 ```scss
-.<той-самий-клас> {
+.<той-самий-клас > {
   position: relative;
   background: var(--background-secondary);
   overflow: hidden;
@@ -1487,6 +1531,7 @@ grep -rn "skeletonPulse" src/
 ```bash
 grep -rn "skeletonPulse\|blurFadeIn" src/
 ```
+
 Очікувано: **порожньо**. Якщо є збіги — це живі споживачі; переведи їх на `skeletonShimmer` або прибери клас.
 
 - [ ] **Крок 6: Білд і лінт**
@@ -1515,6 +1560,7 @@ git commit -m "feat(v2): каскад карток каталогу, shimmer-с�
 Рідкісний екран — єдине місце в плані, де тривалість може перевищити 300 мс.
 
 **Files:**
+
 - Modify: `src/shared/components/StatusPage/StatusPage.module.scss`
 
 - [ ] **Крок 1: Додати малювання контуру**
@@ -1568,6 +1614,7 @@ git commit -m "feat(v2): іконка StatusPage промальовується 
 ## Завдання 16: Мікро-стани — нижня навігація й лічильник кошика
 
 **Files:**
+
 - Modify: `src/widgets/TelegramBottomNav/TelegramBottomNav.module.scss`
 - Modify: `src/widgets/Header/header.module.scss`
 
@@ -1578,10 +1625,10 @@ git commit -m "feat(v2): іконка StatusPage промальовується 
 У `.navItem` заміни `transition: var(--transition-fast);` на:
 
 ```scss
-  transition:
-    background var(--dur-hover) var(--ease-out),
-    color var(--dur-hover) var(--ease-out),
-    transform var(--dur-press) var(--ease-out);
+transition:
+  background var(--dur-hover) var(--ease-out),
+  color var(--dur-hover) var(--ease-out),
+  transform var(--dur-press) var(--ease-out);
 ```
 
 Наявний `&:active { transform: scale(0.95); }` заміни на `@include motion.press;` — щоб масштаб натискання був один на весь проєкт. Наявний `&:hover` загороди в `motion.hoverable`.
@@ -1715,6 +1762,7 @@ git commit -m "feat(v2): press у нижній навігації, pop лічи�
 ## Завдання 17: Прибирання й документація
 
 **Files:**
+
 - Modify: `package.json`
 - Modify: `DESIGN_SYSTEM.md`
 
@@ -1724,6 +1772,7 @@ git commit -m "feat(v2): press у нижній навігації, pop лічи�
 grep -rn "react-hot-toast" src/
 grep -rn "framer-motion" src/
 ```
+
 Очікувано: **порожньо в обох**. Якщо `framer-motion` десь зʼявився — залиш його й прибери тільки `react-hot-toast`.
 
 - [ ] **Крок 2: Прибрати**
@@ -1732,6 +1781,7 @@ grep -rn "framer-motion" src/
 npm uninstall react-hot-toast framer-motion
 npm run build
 ```
+
 Очікувано: PASS.
 
 - [ ] **Крок 2б: Прибрати мертвий скелетон каталогу**
@@ -1741,12 +1791,14 @@ npm run build
 ```bash
 grep -rn "LoadingSkeleton" src/ --include=*.tsx | grep -v "Skeleton/catalog"
 ```
+
 Очікувано: **порожньо**. Якщо є споживач — **зупинись і доповідай**: тоді це не мертвий код, а зламаний, і його треба лагодити, а не видаляти.
 
 ```bash
 git rm -r src/shared/components/Skeleton/catalog
 npm run build
 ```
+
 Очікувано: PASS.
 
 - [ ] **Крок 3: Дописати розділ у `DESIGN_SYSTEM.md`**
@@ -1798,13 +1850,13 @@ npm run build
 `src/shared/styles/_motion.scss`. SCSS-аліасів `@/` у проєкті немає — імпорт
 відносний: `@use '../../styles/motion' as motion;`
 
-| Міксин | Для чого |
-| --- | --- |
-| `press($scale)` | правило `:active` |
-| `pressable-transition` | готовий `transition` для натискного контролу |
-| `hoverable` | обгортка `@media`, приймає `@content` |
-| `enter-rise($duration)` | вхід через `@starting-style` |
-| `stagger-child` | каскад через `--i` |
+| Міксин                  | Для чого                                     |
+| ----------------------- | -------------------------------------------- |
+| `press($scale)`         | правило `:active`                            |
+| `pressable-transition`  | готовий `transition` для натискного контролу |
+| `hoverable`             | обгортка `@media`, приймає `@content`        |
+| `enter-rise($duration)` | вхід через `@starting-style`                 |
+| `stagger-child`         | каскад через `--i`                           |
 
 ### Переходи сторінок
 
@@ -1852,16 +1904,16 @@ git commit -m "docs(v2): розділ «Рух» у дизайн-системі;
 
 Пройти після завдання 17. Кожен пункт — одне з восьми, що замовлялось.
 
-| # | Патерн | Де перевіряти | Критерій |
-| --- | --- | --- | --- |
-| 1 | Push-перехід сторінок | каталог → товар, Chrome | старий екран їде вліво, новий заїжджає справа, хедер нерухомий |
-| 2 | Press-фідбек | будь-яка кнопка, картка, рядок списку | стискається до 97% під пальцем |
-| 3 | Bottom sheet | фільтри каталогу, **реальний телефон** | тягнеться пальцем, закривається кидком, вгору йде з опором |
-| 4 | Каскад списків | каталог із холодного завантаження | картки проявляються по черзі, каскад стає на 9-й |
-| 5 | Статус-екрани | `/not-found` | іконка промальовується контуром |
-| 6 | Табки й чіпи | нижня навігація `/telegram` | пігулка переїжджає одним рухом, не блимає |
-| 7 | Скелетони | каталог під час завантаження | shimmer іде зліва направо, без розмиття |
-| 8 | Мікро-стани | додати товар у кошик | лічильник у хедері смикається |
+| #   | Патерн                | Де перевіряти                          | Критерій                                                       |
+| --- | --------------------- | -------------------------------------- | -------------------------------------------------------------- |
+| 1   | Push-перехід сторінок | каталог → товар, Chrome                | старий екран їде вліво, новий заїжджає справа, хедер нерухомий |
+| 2   | Press-фідбек          | будь-яка кнопка, картка, рядок списку  | стискається до 97% під пальцем                                 |
+| 3   | Bottom sheet          | фільтри каталогу, **реальний телефон** | тягнеться пальцем, закривається кидком, вгору йде з опором     |
+| 4   | Каскад списків        | каталог із холодного завантаження      | картки проявляються по черзі, каскад стає на 9-й               |
+| 5   | Статус-екрани         | `/not-found`                           | іконка промальовується контуром                                |
+| 6   | Табки й чіпи          | нижня навігація `/telegram`            | пігулка переїжджає одним рухом, не блимає                      |
+| 7   | Скелетони             | каталог під час завантаження           | shimmer іде зліва направо, без розмиття                        |
+| 8   | Мікро-стани           | додати товар у кошик                   | лічильник у хедері смикається                                  |
 
 **Наскрізні:**
 
