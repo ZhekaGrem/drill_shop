@@ -1679,6 +1679,33 @@ git commit -m "feat(v2): final Diia cleanup - static pages, shared components, z
 
 ---
 
+### Task 14: Точна візуальна копія diia.gov.ua — хедер/футер/фільтри/кольори + домен ye-dril.com
+
+Користувач 2026-08-09: «зробити точну копію, але магазин — берем дизайн повністю і просто свій товар продаємо; візуальна копія, але не логічна по наповненню». Обмеження: НЕ використовувати логотип «Дія», тризуб і держсимволіку — тільки дизайн-мову (вона офіційно у відкритому доступі для комерційного використання).
+
+**Files:**
+
+- Modify: `src/widgets/Header/Header.tsx` + `header.module.scss` — структура як на diia.gov.ua: лого зліва (ворд-марка з Task 15, тимчасово текстова), пункти меню тонким текстом, пошук — біла pill-кнопка/поле radius 100px як у Дії, кнопка акаунта — чорна pill «Кабінет». Точні значення з бандла Дії: кнопки padding 16px 25px radius 40px min-width 230px (для CTA), search pill padding 12px 50px 12px 25px weight 300 колір #606060, letter-spacing -0.02em.
+- Modify: `src/widgets/Footer/Footer.tsx` + `footer.module.scss` — структура футера diia.gov.ua: жирна 2px чорна лінія зверху, колонки лінків weight 300, соцмережі круглими іконками, нижній рядок копірайту дрібним сірим.
+- Modify: `src/features/catalog/components/CatalogFilters/*`, `TopFilters/*` — фільтри як фільтри послуг на Дії: білі pill-чипи weight 300, активний чорний, розділювачі-групи 2px чорні лінії.
+- Modify: `src/shared/config/site.ts`, `src/app/seo.ts`, `src/app/sitemap.ts`, `src/widgets/Footer/Footer.tsx` (копірайт) — домен `shchilnuidrill.com` → **`ye-dril.com`**, назва бренду за site.ts.
+
+- [ ] Прохід, build green, commit: `feat(v2.2): diia.gov.ua exact-copy header/footer/filters + ye-dril.com domain`
+
+---
+
+### Task 15: Новий логотип + іконки/картинки через RunningHub
+
+**Files:**
+
+- Create: `public/assets/logo/ye-dril-logo.svg` (+ favicon набір) — ворд-марка в стилі лого Дії: чорний текст e-UkraineHead «Є Дріл» (або латиницею ye-dril за site.ts), можливо з крапкою-акцентом; SVG рукою (текст → outline не обовʼязково, шрифт уже self-hosted), НЕ генерувати растр AI для лого.
+- Create: відсутні картинки через RunningHub (скрипт-патерн Task 12, ключ з `F:\Progect\2026\smm-factory\.env`): hero-візуал для статичних сторінок якщо потрібен, about-ілюстрація. Тільки те, чого реально бракує після Task 14 — спершу інвентаризація.
+- Modify: `src/shared/config/site.ts` (`logo`), `src/shared/config/assets.ts`, Header/Footer — новий логотип; `src/app/layout.tsx`/`seo.ts` — favicon.
+
+- [ ] Інвентаризація відсутніх зображень → генерація → вайринг → build green → commit: `feat(v2.2): ye-dril wordmark logo + generated imagery`
+
+---
+
 ## Self-Review (виконано при написанні)
 
 - **Spec coverage:** токени/типографіка → Task 2; шрифти+ліцензія (CC BY 4.0 підтверджена, атрибуція → Task 4 Step 4) → Task 1; Button/Badge/інпути/checkbox/modal → Task 3; Header/Footer + фікси №3,7,9,11,13 → Task 4; каталог + №1,4,5,6,15a → Task 5; товар + №10 → Task 6; кошик/чекаут + №8,12,14,15b → Task 7; головна + №2 → Task 8; статика/чистка → Task 9. Фікси №4a/4b у Task 5. Всі 15 фіксів покриті.
