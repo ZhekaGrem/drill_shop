@@ -240,6 +240,13 @@ p {
   --background-dark: #000000;
   --foreground: #000000;
 
+  /* Diia app-style gradient backdrop (v2.1) */
+  --gradient-brand: linear-gradient(35.8deg, #c3aab2 -4.77%, #99eecc 46.72%, #80c0c8 90.23%, #4b8bfa 134.46%);
+  --gradient-page:
+    linear-gradient(rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.82)),
+    linear-gradient(35.8deg, #c3aab2 -4.77%, #99eecc 46.72%, #80c0c8 90.23%, #4b8bfa 134.46%);
+  --surface-card: #ffffff;
+
   /* Основні кольори */
   --primary: #000000; /* чорні pill-кнопки */
   --secondary: #ffffff;
@@ -340,7 +347,7 @@ body {
   height: 100%;
   overflow-x: hidden;
   font-family: var(--font-body);
-  background-color: var(--background);
+  background: var(--gradient-page) fixed;
   color: var(--text-primary);
   line-height: 1.6;
   font-size: var(--text-base);
@@ -351,7 +358,17 @@ body {
 main {
   font-family: var(--font-body);
   min-height: 100vh;
-  background-color: var(--background);
+  background: var(--gradient-page) fixed;
+}
+
+/* iOS Safari repaints `background-attachment: fixed` on every scroll frame,
+   which janks mobile scrolling — fall back to normal scroll attachment below 768px. */
+@media (max-width: 768px) {
+  html,
+  body,
+  main {
+    background-attachment: scroll;
+  }
 }
 
 /* === ТИПОГРАФІКА === */
