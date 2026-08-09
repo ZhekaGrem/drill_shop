@@ -114,7 +114,9 @@
 // Одна картка з внутрішніми роздільниками — не три окремі плитки.
 .trust {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  // auto-fit, а не repeat(3): кількість колонок не має бути прив'язана
+  // до того, скільки зараз пунктів у content.ts
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   margin-top: var(--space-3);
   background: var(--surface-card);
   border-radius: var(--radius-card);

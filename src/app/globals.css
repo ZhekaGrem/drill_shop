@@ -580,12 +580,8 @@ hr {
   border: 0;
 }
 
-.container {
-  width: 100%;
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: 0 1rem;
-}
+/* Глобальний .container видалено: його не викликала жодна сторінка, а роль
+   контейнера тепер виконує компонент <Page> (--page-max-width + поля). */
 
 /* Utility класи для кнопок */
 .btn-text {

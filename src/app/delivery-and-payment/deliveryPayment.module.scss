@@ -1,79 +1,21 @@
-.container {
-  padding: var(--spacing-y) var(--spacing-x);
-}
+// src/app/delivery-and-payment/deliveryPayment.module.scss
+// Поля й ширину задає <Page>. Раніше сторінка була двоколонковою сіткою
+// «текст | картинка» з абзацами — факти доставки читаються краще списком.
 
-.pageTitle {
-  font-family: var(--font-heading);
-  font-weight: 400;
-  line-height: 1;
-  text-align: left;
-  font-size: var(--text-4xl);
-
-  @media (max-width: 768px) {
-    font-size: var(--text-2xl);
-  }
-}
-
-// Біла картка-«документ» з умовами доставки та оплати
-.contentGrid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  margin: 0 var(--spacing-x) var(--spacing-xl);
-  background: var(--surface-card);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-
-  @media (max-width: 992px) {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    margin: 0 var(--spacing-md) var(--spacing-lg);
-  }
-}
-
-.textContent {
-  min-height: 100vh;
-  @media (max-width: 992px) {
-    order: 2;
-    min-height: auto;
-  }
-}
-
-.sectionTitle {
-  font-family: var(--font-heading);
-  font-weight: 400;
-  font-size: 40px;
-  color: var(--text-primary);
-  line-height: 1.2;
-
-  @media (max-width: 768px) {
-    font-size: 32px;
-  }
-}
-
-.description {
-  font-size: 18px;
-  line-height: 1.6;
-  color: var(--text-secondary);
-
-  @media (max-width: 768px) {
-    font-size: 16px;
-  }
-}
-
-.imageContent {
+.hero {
   position: relative;
+  height: 32vh;
+  min-height: 240px;
+  border-radius: var(--radius-card);
   overflow: hidden;
 
-  @media (max-width: 992px) {
-    min-height: 400px;
-    order: 1;
+  @media (max-width: 768px) {
+    height: 24vh;
+    min-height: 180px;
   }
 }
 
-.sideImage {
-  width: max(600px, 33vw);
-  height: max(600px, 33vw);
+.heroImage {
   object-fit: cover;
   object-position: center;
 }

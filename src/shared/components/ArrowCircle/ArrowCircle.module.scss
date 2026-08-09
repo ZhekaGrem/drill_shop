@@ -4,6 +4,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  background: var(--btn-primary);
+  color: var(--text-inverse);
   border-radius: var(--radius-pill);
   transition: var(--transition-fast);
 
@@ -15,15 +17,5 @@
   &--sm {
     width: 32px;
     height: 32px;
-  }
-
-  &--dark {
-    background: var(--btn-primary);
-    color: var(--text-inverse);
-  }
-
-  &--light {
-    background: var(--surface-card);
-    color: var(--text-primary);
   }
 }

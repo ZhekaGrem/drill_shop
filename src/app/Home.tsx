@@ -4,22 +4,13 @@
 import { useRouter } from 'next/navigation';
 import { Suspense, lazy, useState } from 'react';
 import Image from 'next/image';
-import {
-  IconArrowBackUp,
-  IconAward,
-  IconCashBanknote,
-  IconCircleCheck,
-  IconCreditCard,
-  IconMail,
-  IconMapPin,
-  IconMessageCircle,
-  IconTruck,
-} from '@tabler/icons-react';
+import { IconAward, IconCircleCheck, IconMail, IconMapPin, IconMessageCircle } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { ArrowRight, IconInstagram, IconTelegram } from '@/shared/components/Svg';
 import { Page } from '@/shared/components/Page/Page';
 import { Section } from '@/shared/components/Section/Section';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
+import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
 import { PopularProductsSlider } from '@/widgets/PopularProductsSlider/PopularProductsSlider';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import { CategoriesInitializer } from '@/shared/components/CategoriesInitializer/CategoriesInitializer';
@@ -36,15 +27,6 @@ const KNOWN_ILLUSTRATIONS = new Set(['t-shirts', 'hoodies', 'caps', 'accessories
 
 const getCategoryIllustration = (slug: string) =>
   `/assets/img/categories/${KNOWN_ILLUSTRATIONS.has(slug) ? slug : 'category-generic'}.webp`;
-
-// Іконка прив'язана до id послуги, а не до порядку в масиві —
-// інакше перестановка в content.ts мовчки переплутала б іконки.
-const SERVICE_ICONS: Record<string, React.ReactNode> = {
-  delivery: <IconTruck stroke={1.5} />,
-  card: <IconCreditCard stroke={1.5} />,
-  cod: <IconCashBanknote stroke={1.5} />,
-  returns: <IconArrowBackUp stroke={1.5} />,
-};
 
 const REASONS = [
   { ...content.home.sections.freshness, icon: <IconCircleCheck stroke={1.5} /> },
@@ -148,17 +130,7 @@ const Home = () => {
       </Section>
 
       <Section title="Доставка й оплата" action={{ href: '/delivery-and-payment', label: 'Деталі' }}>
-        <ListGroup>
-          {content.home.services.map((service) => (
-            <ListRow
-              key={service.id}
-              href={service.href}
-              media={SERVICE_ICONS[service.id]}
-              title={service.title}
-              hint={service.hint}
-            />
-          ))}
-        </ListGroup>
+        <ServicesGroup />
       </Section>
 
       <Section title="Часті питання" action={{ href: '/faq', label: 'Усі питання' }}>

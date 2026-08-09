@@ -74,7 +74,7 @@ ${itemsList}
             fontWeight: 'bold',
             fontSize: '16px',
           }}>
-          Замовити через Viber
+          Замовити через Viber!
         </button>
 
         <button

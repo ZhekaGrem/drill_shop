@@ -8,13 +8,13 @@ import { Product, ProductWithRelations } from '@/shared/types';
 import { useAuthStore } from '@/shared/stores/auth';
 import Link from 'next/link';
 import { Select } from '@mantine/core';
-import { IconArrowBackUp, IconCashBanknote, IconCreditCard, IconRuler, IconTruck } from '@tabler/icons-react';
+import { IconRuler } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { Page } from '@/shared/components/Page/Page';
 import { Section } from '@/shared/components/Section/Section';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
+import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
 import { ArrowLeft, ArrowRight } from '@/shared/components/Svg';
-import { content } from '@/shared/config/content';
 import { useCart } from '@/features/cart/hooks/useCart';
 import styles from './productDetails.module.scss';
 import { getImageUrl } from '@/shared/utils/image';
@@ -43,13 +43,6 @@ const OPTION_LABELS: Record<string, string> = {
   brand: 'Бренд',
   taste: 'Смак',
   origin: 'Походження',
-};
-
-const SERVICE_ICONS: Record<string, React.ReactNode> = {
-  delivery: <IconTruck stroke={1.5} />,
-  card: <IconCreditCard stroke={1.5} />,
-  cod: <IconCashBanknote stroke={1.5} />,
-  returns: <IconArrowBackUp stroke={1.5} />,
 };
 
 // Показуємо залишок тільки коли він справді малий — інакше це не терміновість,
@@ -667,7 +660,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                       style={{ marginTop: '8px' }}
                     />
                   )}
-
                 </div>
               )}
 
@@ -726,40 +718,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                 )}
               </div>
 
-              {/* Те, що людина шукає ПЕРЕД покупкою: склад, розмір, доставка, повернення.
-                  Раніше цього на сторінці не було взагалі — після кнопки одразу йшов опис. */}
-              <div className={styles.productInfoGroups}>
-                {specRows.length > 0 && (
-                  <ListGroup>
-                    {specRows.map((spec) => (
-                      <ListRow key={spec.label} title={spec.label} value={spec.value} />
-                    ))}
-                  </ListGroup>
-                )}
-
-                {hasSizeGuide && (
-                  <ListGroup>
-                    <ListRow
-                      onClick={() => setSizeGuideOpened(true)}
-                      media={<IconRuler stroke={1.5} />}
-                      title="Розмірна сітка"
-                      hint="Заміри та посадка для цієї категорії"
-                    />
-                  </ListGroup>
-                )}
-
-                <ListGroup>
-                  {content.home.services.map((service) => (
-                    <ListRow
-                      key={service.id}
-                      href={service.href}
-                      media={SERVICE_ICONS[service.id]}
-                      title={service.title}
-                      hint={service.hint}
-                    />
-                  ))}
-                </ListGroup>
-              </div>
             </div>
             {product.description && (
               <div className={styles.productDescription}>
@@ -773,7 +731,32 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           </div>
         </div>
 
-        {/* Description */}
+        {/* Те, що людина шукає ПЕРЕД покупкою: склад, розмір, доставка, повернення.
+            Раніше цього на сторінці не було взагалі — після кнопки одразу йшов опис.
+            Групи лежать НА фоні сторінки, а не всередині білої інфо-картки:
+            біле на білому не читається як окремий блок. */}
+        <div className={styles.productInfoGroups}>
+          {specRows.length > 0 && (
+            <ListGroup>
+              {specRows.map((spec) => (
+                <ListRow key={spec.label} title={spec.label} value={spec.value} />
+              ))}
+            </ListGroup>
+          )}
+
+          {hasSizeGuide && (
+            <ListGroup>
+              <ListRow
+                onClick={() => setSizeGuideOpened(true)}
+                media={<IconRuler stroke={1.5} />}
+                title="Розмірна сітка"
+                hint="Заміри та посадка для цієї категорії"
+              />
+            </ListGroup>
+          )}
+
+          <ServicesGroup />
+        </div>
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (

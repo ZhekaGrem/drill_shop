@@ -1,17 +1,20 @@
 // src/app/public-offer/PublicOffer.tsx
 
 import { Box } from '@mantine/core';
-import styles from './publicOffer.module.scss';
+import { Page } from '@/shared/components/Page/Page';
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
+import styles from '@/shared/styles/legalPage.module.scss';
 import { siteConfig } from '@/shared/config/site';
 
 const PublicOffer = () => {
   return (
-    <div className={styles.page}>
-      <div>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Договір публічної оферти</h1>
-        </div>
+    <Page width="narrow">
+      <PageHeader
+        title="Договір публічної оферти"
+        description="Офіційна пропозиція укласти договір купівлі-продажу дистанційним способом."
+      />
 
+      <div>
         <div className={styles.content}>
           <section className={styles.section}>
             <p className={styles.textBlock}>
@@ -546,7 +549,7 @@ const PublicOffer = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   );
 };
 

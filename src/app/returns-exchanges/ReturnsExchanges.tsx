@@ -1,20 +1,19 @@
 // src/app/returns-exchanges/ReturnsExchanges.tsx
 
-import { Container, Box } from '@mantine/core';
-import styles from './returnsExchanges.module.scss';
+import { Page } from '@/shared/components/Page/Page';
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
+import styles from '@/shared/styles/legalPage.module.scss';
 import { siteConfig } from '@/shared/config/site';
 
 const ReturnsExchanges = () => {
   return (
-    <div className={styles.page}>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Повернення та обмін товару</h1>
-          <p className={styles.subtitle}>
-            Умови повернення та обміну мерчу (одягу та аксесуарів) відповідно до законодавства України
-          </p>
-        </div>
+    <Page width="narrow">
+      <PageHeader
+        title="Повернення та обмін товару"
+        description="Умови повернення та обміну мерчу (одягу та аксесуарів) відповідно до законодавства України"
+      />
 
+      <div>
         <div className={styles.content}>
           <div className={styles.blueAlert}>
             <strong className={styles.boldText}>КОРОТКО:</strong> Відповідно до ст. 13 Закону України «Про
@@ -298,7 +297,7 @@ const ReturnsExchanges = () => {
             <p className={styles.textBlock}>Для повернення та обміну товару зв&apos;яжіться з нами:</p>
 
             <div className={styles.infoBox}>
-              <Box component="ul" className={styles.list} mb={0}>
+              <ul className={`${styles.list} ${styles.listFlush}`}>
                 <li>
                   <strong>Телефон:</strong> {siteConfig.contacts.phone}
                 </li>
@@ -316,12 +315,10 @@ const ReturnsExchanges = () => {
                 <li>
                   <strong>Графік роботи:</strong> {siteConfig.workingHours}
                 </li>
-              </Box>
+              </ul>
             </div>
 
-            <Box component="p" className={styles.textBlock} mt="md">
-              Ми завжди готові допомогти вирішити будь-які питання!
-            </Box>
+            <p className={styles.textBlock}>Ми завжди готові допомогти вирішити будь-які питання!</p>
           </section>
 
           <div className={styles.blueAlert}>
@@ -331,7 +328,7 @@ const ReturnsExchanges = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   );
 };
 

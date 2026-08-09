@@ -6,11 +6,15 @@ import { showNotification } from '@/shared/utils/notifications';
 import { useForm } from '@mantine/form';
 import { sendContactMessage } from '@/shared/api/contact';
 import { IconTelegram, IconInstagram, IconPhone } from '@/shared/components/Svg';
+import { IconClock, IconMail } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
+import { Page } from '@/shared/components/Page/Page';
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
+import { Section } from '@/shared/components/Section/Section';
+import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import styles from './contact.module.scss';
 import { siteConfig } from '@/shared/config/site';
 import Image from 'next/image';
-import { Container } from '@mantine/core';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -84,15 +88,14 @@ const Contact = () => {
   };
 
   return (
-    <>
-      {/* Заголовок */}
-      <div className={styles.container}>
-        <h1 className={styles.pageTitle}>Зворотній зв'язок</h1>
-      </div>
+    <Page>
+      <PageHeader
+        title="Зворотний зв'язок"
+        description="Напишіть нам про замовлення, наявність або розміри — відповідаємо в робочі години."
+      />
 
-      {/* Секція: верх - картинка + форма, низ - 3 значки */}
+      {/* Картинка і форма — дві білі поверхні поруч, без внутрішніх меж */}
       <section className={styles.mainSection}>
-        {/* Картинка */}
         <div className={styles.imageContainer}>
           <Image
             src="/assets/img/bg/contact.png"
@@ -103,7 +106,6 @@ const Contact = () => {
           />
         </div>
 
-        {/* Форма */}
         <div className={styles.formContainer}>
           {isSubmitted ? (
             <div className={styles.success}>
@@ -145,32 +147,41 @@ const Contact = () => {
             </form>
           )}
         </div>
-
-        {/* Значки внизу */}
-        <a
-          href={siteConfig.socials.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.contactCard}>
-          <IconInstagram size={25} />
-          <span>Instagram</span>
-        </a>
-
-        <a
-          href={siteConfig.socials.telegram}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.contactCard}>
-          <IconTelegram size={25} />
-          <span>Telegram</span>
-        </a>
-
-        <a href={`tel:${siteConfig.contacts.phone.replace(/\s/g, '')}`} className={styles.contactCard}>
-          <IconPhone size={25} />
-          <span>{siteConfig.contacts.phone}</span>
-        </a>
       </section>
-    </>
+
+      {/* Канали звʼязку — список Дії замість сітки з nth-child і !important */}
+      <Section title="Інші канали">
+        <ListGroup>
+          <ListRow
+            external
+            href={siteConfig.socials.instagram}
+            media={<IconInstagram />}
+            title="Instagram"
+            hint="Нові дропи, бекстейдж і анонси"
+          />
+          <ListRow
+            external
+            href={siteConfig.socials.telegram}
+            media={<IconTelegram />}
+            title="Telegram"
+            hint="Найшвидша відповідь щодо замовлення"
+          />
+          <ListRow
+            href={`tel:${siteConfig.contacts.phone.replace(/\s/g, '')}`}
+            media={<IconPhone />}
+            title="Телефон"
+            hint={siteConfig.contacts.phone}
+          />
+          <ListRow
+            href={`mailto:${siteConfig.contacts.email}`}
+            media={<IconMail stroke={1.5} />}
+            title="Пошта"
+            hint={siteConfig.contacts.email}
+          />
+          <ListRow media={<IconClock stroke={1.5} />} title="Графік" hint={siteConfig.workingHours} />
+        </ListGroup>
+      </Section>
+    </Page>
   );
 };
 

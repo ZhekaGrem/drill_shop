@@ -1,0 +1,194 @@
+// src/shared/styles/legalPage.module.scss
+// Один стиль для всіх документних сторінок: публічна оферта, політика
+// конфіденційності, повернення та обмін. До цього кожна з трьох мала власну
+// копію одного й того самого файлу (~480 рядків на три майже однакові набори),
+// і будь-яка правка мусила робитись тричі.
+//
+// Ширину й поля задає <Page width="narrow">, заголовок — <PageHeader>.
+
+// Біла картка-«документ» на градієнті сторінки
+.content {
+  padding: var(--space-8);
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+
+  @media (max-width: 768px) {
+    padding: var(--card-padding);
+  }
+}
+
+.section {
+  margin-bottom: var(--space-10);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Було `border-bottom: 2px solid var(--accent)` під кожним заголовком — синя
+// лінія через увесь документ кричить голосніше за сам текст. Ієрархію тримають
+// розмір і вага, роздільник — тихий hairline.
+.sectionTitle {
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.subsectionTitle {
+  margin: var(--space-6) 0 var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+}
+
+.textBlock {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-base);
+  font-weight: var(--fw-light);
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.list {
+  margin: var(--space-4) 0;
+  padding-left: var(--space-6);
+  list-style: disc;
+
+  li {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-base);
+    font-weight: var(--fw-light);
+    line-height: 1.7;
+    color: var(--text-primary);
+
+    &::marker {
+      color: var(--text-tertiary);
+    }
+  }
+}
+
+.boldText {
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+}
+
+.dimmedText {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.divider {
+  margin: var(--space-10) 0;
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+}
+
+// ============ Виноски ============
+// Мʼяка підкладка без контурної межі — рамка навколо кожної виноски робила
+// документ схожим на набір попереджень, а не на текст із акцентами.
+.alert {
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  border-radius: var(--border-radius-md);
+  border-left: 3px solid;
+  font-size: var(--text-sm);
+  font-weight: var(--fw-light);
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.infoBox {
+  @extend .alert;
+
+  background: color-mix(in srgb, var(--accent) 7%, white);
+  border-left-color: var(--accent);
+}
+
+.blueAlert {
+  @extend .alert;
+
+  background: color-mix(in srgb, var(--info) 7%, white);
+  border-left-color: var(--info);
+}
+
+.orangeAlert {
+  @extend .alert;
+
+  background: color-mix(in srgb, var(--warning) 12%, white);
+  border-left-color: var(--warning);
+}
+
+.redAlert {
+  @extend .alert;
+
+  background: color-mix(in srgb, var(--error) 7%, white);
+  border-left-color: var(--error);
+}
+
+.greenAlert {
+  @extend .alert;
+
+  background: color-mix(in srgb, var(--success) 9%, white);
+  border-left-color: var(--success);
+}
+
+// Абзац усередині виноски: успадковує її розмір, лише відбивається зверху
+.alertText {
+  margin-top: var(--space-2);
+}
+
+// Список, що закінчує блок — без нижнього відступу, щоб не роздувати виноску
+.listFlush {
+  margin-bottom: 0;
+}
+
+// ============ Кроки процедури ============
+.stepCard {
+  margin-bottom: var(--card-gap);
+  padding: var(--card-padding);
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-md);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.stepNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-right: var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  color: var(--text-inverse);
+  background: var(--text-primary);
+  border-radius: var(--radius-pill);
+}
+
+.stepTitle {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.stepText {
+  font-size: var(--text-base);
+  font-weight: var(--fw-light);
+  line-height: 1.6;
+  color: var(--text-primary);
+}

@@ -10,15 +10,11 @@ import styles from './ArrowCircle.module.scss';
 interface ArrowCircleProps {
   /** md — 44px (висота контролу за дизайн-системою), sm — 32px для щільних рядків */
   size?: 'sm' | 'md';
-  /** light — біле коло з чорною стрілкою, для темних поверхонь і фото */
-  tone?: 'dark' | 'light';
   className?: string;
 }
 
-export const ArrowCircle = ({ size = 'md', tone = 'dark', className }: ArrowCircleProps) => (
-  <span
-    aria-hidden="true"
-    className={clsx(styles.circle, styles[`circle--${size}`], styles[`circle--${tone}`], className)}>
+export const ArrowCircle = ({ size = 'md', className }: ArrowCircleProps) => (
+  <span aria-hidden="true" className={clsx(styles.circle, styles[`circle--${size}`], className)}>
     <ArrowRight size={size === 'sm' ? 16 : 20} />
   </span>
 );

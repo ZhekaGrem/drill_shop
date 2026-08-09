@@ -1,12 +1,16 @@
 // src/app/faq/FAQ.tsx
 'use client';
 
-import Image from 'next/image';
 import { useMemo, useState } from 'react';
+import { IconMail, IconSearch, IconX } from '@tabler/icons-react';
+import { Page } from '@/shared/components/Page/Page';
+import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
+import { Section } from '@/shared/components/Section/Section';
+import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
+import { IconTelegram } from '@/shared/components/Svg';
+import { siteConfig } from '@/shared/config/site';
 import { faqData } from './faq-data';
 import styles from './faq.module.scss';
-
-const TICKER_ITEMS = ['FAQ', 'відповіді', 'merch', 'щільний Drill', 'підтримка', 'zine vol.01'];
 
 const FAQ = () => {
   const [query, setQuery] = useState('');
@@ -30,177 +34,82 @@ const FAQ = () => {
   );
 
   return (
-    <div className={styles.page}>
-      <div className={styles.marquee} aria-hidden="true">
-        <div className={styles.marqueeTrack}>
-          {Array.from({ length: 3 }).flatMap((_, loop) =>
-            TICKER_ITEMS.map((label, i) => (
-              <span key={`${loop}-${i}`}>
-                <i>✦</i>
-                {label}
-              </span>
-            ))
-          )}
-        </div>
-      </div>
+    <Page>
+      <PageHeader
+        title="Часті питання"
+        description={`Замовлення, доставка, оплата, розміри та мерч — ${totalQuestions} відповідей у ${faqData.length} розділах.`}
+      />
 
-      <header className={styles.hero}>
-        <div className={styles.heroInner}>
-          <div className={styles.heroMeta}>
-            <span>№ 001</span>
-            <span>VOL. DRILL</span>
-            <span>LVIV / UA</span>
-            <span>{new Date().getFullYear()}</span>
-          </div>
-
-          <h1 className={styles.heroTitle}>
-            <span className={styles.heroTitleLine}>часті</span>
-            <span className={styles.heroTitleLine}>
-              питання<em className={styles.heroMark}>?</em>
-            </span>
-          </h1>
-
-          <p className={styles.heroSub}>
-            Тут усе, що треба знати про замовлення, доставку, оплату, розміри й мерч <b>Щільного Drill</b>. Не
-            знайшов відповіді — писни нам напряму, ми на зв&apos;язку.
-          </p>
-
-          <div className={styles.heroStats}>
-            <div>
-              <span className={styles.statNum}>{totalQuestions}</span>
-              <span className={styles.statLabel}>відповідей</span>
-            </div>
-            <div>
-              <span className={styles.statNum}>{faqData.length}</span>
-              <span className={styles.statLabel}>розділів</span>
-            </div>
-            <div>
-              <span className={styles.statNum}>24/7</span>
-              <span className={styles.statLabel}>архів</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className={styles.toolbar}>
-        <label className={styles.search}>
-          <span className={styles.searchLabel}>Пошук /</span>
-          <input
-            type="text"
-            placeholder="введи ключове слово — розмір, оплата, доставка..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            aria-label="Пошук по питаннях"
-          />
-          {query && (
-            <button
-              type="button"
-              className={styles.searchClear}
-              onClick={() => setQuery('')}
-              aria-label="Очистити пошук">
-              ×
-            </button>
-          )}
-        </label>
-      </div>
-
-      <main className={styles.content}>
-        {filtered.length > 0 ? (
-          filtered.map((category, categoryIndex) => (
-            <section key={category.category} className={styles.category}>
-              <header className={styles.categoryHead}>
-                <span className={styles.categoryIndex}>{String(categoryIndex + 1).padStart(2, '0')}</span>
-                <h2 className={styles.categoryTitle}>{category.category}</h2>
-                <span className={styles.categoryCount}>
-                  [{String(category.questions.length).padStart(2, '0')} Q]
-                </span>
-              </header>
-
-              <ul className={styles.qList}>
-                {category.questions.map((item, index) => (
-                  <li key={item.question}>
-                    <details className={styles.qItem}>
-                      <summary className={styles.qTrigger}>
-                        <span className={styles.qNum}>Q.{String(index + 1).padStart(2, '0')}</span>
-                        <span className={styles.qText}>{item.question}</span>
-                        <span className={styles.qToggle} aria-hidden="true">
-                          <span className={styles.qToggleBar} />
-                          <span className={styles.qToggleBar} />
-                        </span>
-                      </summary>
-                      <div className={styles.qAnswer}>
-                        <span className={styles.qAnswerTag}>A —</span>
-                        <p>{item.answer}</p>
-                      </div>
-                    </details>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))
-        ) : (
-          <div className={styles.empty}>
-            <div className={styles.emptySticker}>
-              <Image
-                src="/assets/img/rage.png"
-                alt=""
-                width={160}
-                height={160}
-                className={styles.emptyStickerImg}
-              />
-            </div>
-            <span className={styles.emptyStamp}>немає збігів</span>
-            <p>
-              За запитом &laquo;{query}&raquo; нічого не знайдено.
-              <br />
-              Спробуй інше ключове слово або обнули пошук.
-            </p>
-            <button type="button" className={styles.emptyReset} onClick={() => setQuery('')}>
-              скинути пошук →
-            </button>
-          </div>
+      {/* Поле пошуку — біла pill-плашка, як «Пошук» у розділі «Сервіси» Дії */}
+      <div className={styles.search}>
+        <IconSearch size={20} stroke={1.5} className={styles.searchIcon} />
+        <input
+          type="search"
+          className={styles.searchInput}
+          placeholder="Розмір, оплата, доставка…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          aria-label="Пошук по питаннях"
+        />
+        {query && (
+          <button
+            type="button"
+            className={styles.searchClear}
+            onClick={() => setQuery('')}
+            aria-label="Очистити пошук">
+            <IconX size={18} stroke={1.5} />
+          </button>
         )}
-      </main>
+      </div>
 
-      <footer className={styles.cta}>
-        <div className={styles.ctaSticker}>
-          <span className={styles.ctaStickerLabel}>питай нас</span>
-          <Image
-            src="/assets/img/smile.png"
-            alt=""
-            width={220}
-            height={220}
-            className={styles.ctaStickerImg}
+      {filtered.length > 0 ? (
+        filtered.map((category) => (
+          <Section
+            key={category.category}
+            title={category.category}
+            description={`${category.questions.length} ${category.questions.length === 1 ? 'питання' : 'питань'}`}>
+            <ListGroup>
+              {category.questions.map((item) => (
+                <details key={item.question} className={styles.item}>
+                  <summary className={styles.trigger}>
+                    <span className={styles.question}>{item.question}</span>
+                    <span className={styles.chevron} aria-hidden="true" />
+                  </summary>
+                  <p className={styles.answer}>{item.answer}</p>
+                </details>
+              ))}
+            </ListGroup>
+          </Section>
+        ))
+      ) : (
+        <div className={styles.empty}>
+          <p className={styles.emptyText}>
+            За запитом «{query}» нічого не знайдено. Спробуйте інше ключове слово.
+          </p>
+          <button type="button" className={styles.emptyReset} onClick={() => setQuery('')}>
+            Скинути пошук
+          </button>
+        </div>
+      )}
+
+      <Section title="Не знайшли відповідь?" description="Напишіть напряму — відповідаємо в робочі години.">
+        <ListGroup>
+          <ListRow
+            external
+            href={siteConfig.socials.telegram}
+            media={<IconTelegram />}
+            title="Telegram"
+            hint="Найшвидший спосіб отримати відповідь"
           />
-        </div>
-
-        <div className={styles.ctaBody}>
-          <span className={styles.ctaTag}>підтримка / пиши нам</span>
-          <h3 className={styles.ctaTitle}>
-            не знайшов відповідь?
-            <br />
-            <span>пиши напряму.</span>
-          </h3>
-
-          <ul className={styles.ctaLinks}>
-            <li>
-              <a href="https://t.me/makaron_gang" target="_blank" rel="noopener noreferrer">
-                <span>telegram</span>
-                <b>@makaron_gang</b>
-                <i aria-hidden="true">→</i>
-              </a>
-            </li>
-            <li>
-              <a href="mailto:team@ye-dril.com">
-                <span>email</span>
-                <b>team@ye-dril.com</b>
-                <i aria-hidden="true">→</i>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </footer>
-    </div>
+          <ListRow
+            href={`mailto:${siteConfig.contacts.email}`}
+            media={<IconMail stroke={1.5} />}
+            title="Пошта"
+            hint={siteConfig.contacts.email}
+          />
+        </ListGroup>
+      </Section>
+    </Page>
   );
 };
 

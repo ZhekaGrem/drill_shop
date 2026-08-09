@@ -1,0 +1,46 @@
+// src/shared/components/PageHeader/PageHeader.module.scss
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+
+  @media (max-width: 768px) {
+    margin-bottom: var(--space-6);
+  }
+}
+
+.text {
+  min-width: 0;
+}
+
+// Великий, легкий, притиснутий вліво — як «Меню» / «Сервіси» в Дії
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-5xl);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-3xl);
+  }
+}
+
+.description {
+  max-width: 640px;
+  margin-top: var(--space-3);
+  font-size: var(--text-base);
+  font-weight: var(--fw-light);
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.aside {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: var(--space-2);
+}

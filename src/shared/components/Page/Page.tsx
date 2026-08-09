@@ -10,7 +10,7 @@ interface PageProps {
   children: ReactNode;
   className?: string;
   /** narrow — читабельна колонка для тексту (юридичні сторінки, форми) */
-  width?: 'default' | 'narrow' | 'wide';
+  width?: 'default' | 'narrow';
   as?: ElementType;
 }
 

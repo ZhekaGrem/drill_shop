@@ -111,34 +111,37 @@ export const content = {
       accessories: 'Постери, стікери, сумки та дрібниці',
     } as Record<string, string>,
 
-    // Доставка й оплата — факти дублюють сторінку /delivery-and-payment
-    services: [
-      {
-        id: 'delivery',
-        title: 'Нова Пошта',
-        hint: 'Відділення або поштомат. Вартість рахується при оформленні замовлення.',
-        href: '/delivery-and-payment',
-      },
-      {
-        id: 'card',
-        title: 'Оплата карткою',
-        hint: 'Visa та Mastercard через Plata by Mono.',
-        href: '/delivery-and-payment',
-      },
-      {
-        id: 'cod',
-        title: 'Накладений платіж',
-        hint: 'Розрахунок при отриманні. Комісія за накладений платіж не стягується.',
-        href: '/delivery-and-payment',
-      },
-      {
-        id: 'returns',
-        title: 'Повернення та обмін',
-        hint: '14 днів на непоношений мерч — ст. 9 Закону «Про захист прав споживачів».',
-        href: '/returns-exchanges',
-      },
-    ],
   },
+
+  // ===== ДОСТАВКА / ОПЛАТА / ПОВЕРНЕННЯ =====
+  // Не всередині `home`: цим користуються і головна, і сторінка товару.
+  // Факти дублюють /delivery-and-payment та /returns-exchanges.
+  services: [
+    {
+      id: 'delivery',
+      title: 'Нова Пошта',
+      hint: 'Відділення або поштомат. Вартість рахується при оформленні замовлення.',
+      href: '/delivery-and-payment',
+    },
+    {
+      id: 'card',
+      title: 'Оплата карткою',
+      hint: 'Visa та Mastercard через Plata by Mono.',
+      href: '/delivery-and-payment',
+    },
+    {
+      id: 'cod',
+      title: 'Накладений платіж',
+      hint: 'Розрахунок при отриманні. Комісія за накладений платіж не стягується.',
+      href: '/delivery-and-payment',
+    },
+    {
+      id: 'returns',
+      title: 'Повернення та обмін',
+      hint: '14 днів на непоношений мерч — ст. 9 Закону «Про захист прав споживачів».',
+      href: '/returns-exchanges',
+    },
+  ],
 
   // ===== СТОРІНКА "ПРО НАС" =====
   about: {
