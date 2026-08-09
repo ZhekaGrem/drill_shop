@@ -9,11 +9,12 @@
 
 .card {
   width: 370px; // Фіксована ширина карточки
-  background: var(--background);
-  border-radius: var(--border-radius-md);
+  // Passport-картка Дії: повносилий бренд-градієнт, фото у білій рамці-«вставці»
+  background: var(--gradient-brand);
+  border-radius: 24px;
   overflow: hidden;
   transition: var(--transition-normal);
-  box-shadow: var(--shadow-xs);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -40,8 +41,9 @@
 
 .productCardImageContainer {
   position: relative;
-  width: 100%;
+  width: calc(100% - 24px); // 12px відступ з обох боків — «вставка» фото в паспорт-картці
   height: 450px; // Висота картинки 450px
+  margin: 12px 12px 0;
   overflow: visible;
 
   @media (max-width: 1200px) {
@@ -51,6 +53,8 @@
   // Мобільна висота картинки
   @media (max-width: 768px) {
     height: 180px; // Висота картинки для мобільних (2 колонки)
+    width: calc(100% - 16px);
+    margin: 8px 8px 0;
   }
 
   &__ImageWrapper {
@@ -58,7 +62,9 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: var(--background-light); // Світлий бежевий фон
+    background: var(--surface-card); // Біла рамка навколо фото, як фото в документі
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-xs);
   }
 }
 
@@ -78,6 +84,12 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  // «Документне поле» — біла напівпрозора підкладка тримає контраст тексту
+  // незалежно від того, яка ділянка var(--gradient-brand) опиняється під ним.
+  margin: var(--spacing-sm) 12px 0;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  border-radius: var(--border-radius-md);
 }
 .hasDiscount {
   display: flex;
@@ -92,7 +104,7 @@
   padding: var(--spacing-sm) var(--spacing-md);
   font-family: var(--font-body);
   font-size: var(--text-base);
-  font-weight: var(--fw-normal);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
   margin: 0;
   line-height: 1.4;
@@ -174,7 +186,7 @@
   font-size: var(--text-sm);
   font-weight: var(--fw-medium);
   color: var(--text-primary);
-  background: transparent;
+  background: var(--surface-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
   cursor: pointer;
@@ -221,13 +233,13 @@
 }
 
 .finalPrice {
-  font-size: var(--text-xl);
+  font-size: var(--text-2xl);
   font-weight: var(--fw-medium);
   color: var(--accent-red);
 }
 
 .price {
-  font-size: var(--text-xl);
+  font-size: var(--text-2xl);
   font-weight: var(--fw-medium);
   color: var(--text-primary);
 }
@@ -242,6 +254,7 @@
 .actions {
   display: flex;
   gap: var(--spacing-xs);
+  margin: var(--spacing-sm) 12px 12px;
   margin-top: auto;
 
   button {

@@ -9,6 +9,7 @@ const CheckoutPage = () => {
   return (
     <div className={styles.checkoutPage}>
       <Container size={1200}>
+        <h1 className={styles.pageTitle}>Оформлення замовлення</h1>
         <CheckoutForm />
       </Container>
     </div>

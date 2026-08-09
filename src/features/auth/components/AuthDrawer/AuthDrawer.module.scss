@@ -1,14 +1,14 @@
 // src/features/auth/components/AuthDrawer/AuthDrawer.module.scss
-// Pixel art Auth Drawer з Figma "Щільний дріл"
+// Diia-style Auth Drawer: біла картка-«документ», що виїжджає справа
 
 .drawer {
   :global(.mantine-Drawer-content) {
-    border-radius: 0 !important;
-    background: var(--background) !important;
+    border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg) !important;
+    background: var(--surface-card) !important;
   }
 
   :global(.mantine-Drawer-header) {
-    background: var(--background);
+    background: var(--surface-card);
     padding: var(--spacing-md) !important;
   }
 
@@ -18,7 +18,7 @@
 
   :global(.mantine-Drawer-body) {
     padding: var(--spacing-md) !important;
-    background: var(--background);
+    background: var(--surface-card);
     height: 100%;
   }
 
@@ -41,8 +41,8 @@
 
 .tabs {
   :global(.mantine-Tabs-list) {
-    border-bottom: var(--border-width) solid var(--text-tertiary) !important;
-    background: var(--background) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+    background: var(--surface-card) !important;
     padding: 0 !important;
     gap: 0 !important;
   }

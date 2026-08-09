@@ -79,68 +79,67 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
       ) : (
         /* Заповнений кошик */
         <div className={styles.cart}>
-          {/* Список товарів */}
-          <Stack flex={1} gap={0}>
+          {/* Список товарів — біла картка-«документ» */}
+          <Stack className={styles.itemsList} gap={0}>
             {items.map((item, index) => (
               <CartItem key={item.id} item={item} compact={false} isFirst={index === 0} />
             ))}
           </Stack>
 
-          {/* Зелена вертикальна лінія */}
-          <div className={styles.divider} />
-
-          {/* Підсумок замовлення */}
+          {/* Підсумок замовлення — «документ»: градієнтна картка з білим бланком даних */}
           <Stack className={styles.summary}>
-            <Title order={3}>Всього</Title>
+            <Stack className={styles.summaryInner}>
+              <Title order={3}>Всього</Title>
 
-            <Stack gap="xs">
-              <Group justify="space-between">
-                <Text>Товари {calculations.itemsCount} на суму</Text>{' '}
-                <Text>{formatPrice(calculations.subtotal)}</Text>
+              <Stack gap="xs">
+                <Group justify="space-between">
+                  <Text>Товари {calculations.itemsCount} на суму</Text>{' '}
+                  <Text>{formatPrice(calculations.subtotal)}</Text>
+                </Group>
+              </Stack>
+
+              <Divider />
+
+              <Group justify="space-between" className={styles.totalSection}>
+                <Text fw={700} size="lg">
+                  Загалом:
+                </Text>
+                <Text fw={900} className={styles.totalSection__price}>
+                  {formatPrice(calculations.totalAmount)}
+                </Text>
               </Group>
-            </Stack>
+              <Group justify="space-between">
+                <Text size="sm" c="dimmed">
+                  Доставка:
+                </Text>
+                <Text size="sm" c="dimmed">
+                  За тарифами служби доставки
+                </Text>
+              </Group>
+              <Stack gap="sm" mt="md">
+                <Link href={`${basePath}/checkout`}>
+                  <Button variant="primary" size="lg" fullWidth>
+                    <span className={styles.checkoutButtonText}>
+                      <span className={styles.desktopText}>Перейти до оформлення</span>
+                      <span className={styles.mobileText}>Оформити</span>
+                    </span>
+                  </Button>
+                </Link>
+              </Stack>
 
-            <Divider />
+              {/* Інформація про доставку */}
+              <Stack gap="xs" mt="lg">
+                <Text size="sm" fw={500} c="dimmed">
+                  Інформація:
+                </Text>
 
-            <Group justify="space-between" className={styles.totalSection}>
-              <Text fw={700} size="lg">
-                Загалом:
-              </Text>
-              <Text fw={900} className={styles.totalSection__price}>
-                {formatPrice(calculations.totalAmount)}
-              </Text>
-            </Group>
-            <Group justify="space-between">
-              <Text size="sm" c="dimmed">
-                Доставка:
-              </Text>
-              <Text size="sm" c="dimmed">
-                За тарифами служби доставки
-              </Text>
-            </Group>
-            <Stack gap="sm" mt="md">
-              <Link href={`${basePath}/checkout`}>
-                <Button variant="primary" size="lg" fullWidth>
-                  <span className={styles.checkoutButtonText}>
-                    <span className={styles.desktopText}>Перейти до оформлення</span>
-                    <span className={styles.mobileText}>Оформити</span>
-                  </span>
-                </Button>
-              </Link>
-            </Stack>
-
-            {/* Інформація про доставку */}
-            <Stack gap="xs" mt="lg">
-              <Text size="sm" fw={500} c="dimmed">
-                Інформація:
-              </Text>
-
-              <Text size="xs" c="dimmed">
-                • Доставка протягом 1-2 днів
-              </Text>
-              <Text size="xs" c="dimmed">
-                • Можливість оплати при отриманні
-              </Text>
+                <Text size="xs" c="dimmed">
+                  • Доставка протягом 1-2 днів
+                </Text>
+                <Text size="xs" c="dimmed">
+                  • Можливість оплати при отриманні
+                </Text>
+              </Stack>
             </Stack>
           </Stack>
         </div>

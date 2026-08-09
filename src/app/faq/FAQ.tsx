@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react';
 import { faqData } from './faq-data';
 import styles from './faq.module.scss';
 
-const TICKER_ITEMS = ['FAQ', 'ВІДПОВІДІ', 'MERCH', 'ЩІЛЬНИЙ DRILL', 'SUPPORT', 'ZINE VOL.01'];
+const TICKER_ITEMS = ['FAQ', 'відповіді', 'merch', 'щільний Drill', 'підтримка', 'zine vol.01'];
 
 const FAQ = () => {
   const [query, setQuery] = useState('');
@@ -84,7 +84,7 @@ const FAQ = () => {
 
       <div className={styles.toolbar}>
         <label className={styles.search}>
-          <span className={styles.searchLabel}>SEARCH /</span>
+          <span className={styles.searchLabel}>Пошук /</span>
           <input
             type="text"
             placeholder="введи ключове слово — розмір, оплата, доставка..."
@@ -149,7 +149,7 @@ const FAQ = () => {
                 className={styles.emptyStickerImg}
               />
             </div>
-            <span className={styles.emptyStamp}>NO MATCH</span>
+            <span className={styles.emptyStamp}>немає збігів</span>
             <p>
               За запитом &laquo;{query}&raquo; нічого не знайдено.
               <br />
@@ -164,7 +164,7 @@ const FAQ = () => {
 
       <footer className={styles.cta}>
         <div className={styles.ctaSticker}>
-          <span className={styles.ctaStickerLabel}>ASK US</span>
+          <span className={styles.ctaStickerLabel}>питай нас</span>
           <Image
             src="/assets/img/smile.png"
             alt=""
@@ -175,7 +175,7 @@ const FAQ = () => {
         </div>
 
         <div className={styles.ctaBody}>
-          <span className={styles.ctaTag}>SUPPORT / ПИШИ НАМ</span>
+          <span className={styles.ctaTag}>підтримка / пиши нам</span>
           <h3 className={styles.ctaTitle}>
             не знайшов відповідь?
             <br />

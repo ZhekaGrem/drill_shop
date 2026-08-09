@@ -9,7 +9,7 @@ const About = () => {
     <>
       <div className={styles.container}>
         <Title order={1} className={styles.pageTitle}>
-          ПРО НАС
+          Про нас
         </Title>
       </div>
 

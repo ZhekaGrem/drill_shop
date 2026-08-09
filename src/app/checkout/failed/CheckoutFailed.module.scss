@@ -1,14 +1,13 @@
 .failedPage {
   min-height: 100vh;
   padding: 20px 0;
-  background-image: url('/assets/img/bg/page.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
 }
 .wrapper {
-  background-color: var(--background);
+  background-color: var(--surface-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-xl);
 }
 .bth {
   min-width: 300px;

@@ -1,6 +1,7 @@
 // src/widgets/PopularProductsSlider/PopularProductsSlider.module.scss
 .section {
-  background-color: var(--background-secondary);
+  // Прозорий фон — крізь секцію видно var(--gradient-page) сторінки,
+  // самі картки товарів тепер мають повносилий var(--gradient-brand).
 }
 
 .container {

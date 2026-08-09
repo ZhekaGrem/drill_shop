@@ -9,8 +9,9 @@
   cursor: pointer;
   transition: var(--transition-fast);
   overflow: hidden;
-  border-radius: var(--border-radius-md);
-  background: var(--background);
+  border-radius: 24px;
+  // Passport-картка Дії: повносилий бренд-градієнт, фото у білій рамці-«вставці»
+  background: var(--gradient-brand);
   box-shadow: var(--shadow-sm);
 
   &:hover {
@@ -29,9 +30,13 @@
 
 .productCardImageContainer {
   position: relative;
-  width: 100%;
+  width: calc(100% - 24px);
   height: 200px;
+  margin: 12px 12px 0;
   overflow: hidden;
+  background: var(--surface-card); // Біла рамка навколо фото, як фото в документі
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-xs);
 }
 
 .productImage {
@@ -89,17 +94,23 @@
 }
 
 .content {
-  padding-top: 16px;
   display: flex;
   flex-direction: column;
   flex: 1;
+  margin: 8px 12px 12px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  // «Документне поле» — біла напівпрозора підкладка тримає контраст тексту
+  // незалежно від того, яка ділянка var(--gradient-brand) опиняється під ним.
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  border-radius: var(--border-radius-md);
 }
 
 .title {
   font-size: var(--text-lg);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
-  margin: 0 0 8px 0;
+  margin: 0;
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -115,9 +126,9 @@
 
 .title2 {
   font-size: var(--text-lg);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   color: var(--text-primary);
-  margin: 0 0 8px 0;
+  margin: 0;
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;

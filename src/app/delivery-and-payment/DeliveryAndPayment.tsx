@@ -9,7 +9,7 @@ const DeliveryAndPayment = () => {
     <>
       <div className={styles.container}>
         <Title order={1} className={styles.pageTitle}>
-          ДОСТАВКА ТА ОПЛАТА
+          Доставка та оплата
         </Title>
       </div>
 
@@ -17,7 +17,7 @@ const DeliveryAndPayment = () => {
         <Box className={styles.textContent}>
           <div className={styles.container}>
             <Title className={styles.sectionTitle} mb="xl">
-              ДОСТАВКА
+              Доставка
             </Title>
             <Text className={styles.description} mb="lg">
               Ми доставляємо наш мерч по всій Україні через Нову Пошту. Відправка здійснюється протягом 1-2
@@ -32,7 +32,7 @@ const DeliveryAndPayment = () => {
             </Text> */}
 
             <Title className={styles.sectionTitle} mb="xl">
-              ОПЛАТА
+              Оплата
             </Title>
             <Text className={styles.description} mb="lg">
               Ви можете оплатити ваше замовлення одним із наступних способів:

@@ -85,11 +85,8 @@ const Contact = () => {
     <>
       {/* Заголовок */}
       <div className={styles.container}>
-        <h1 className={styles.pageTitle}>ЗВОРОТНІЙ ЗВ'ЯЗОК</h1>
+        <h1 className={styles.pageTitle}>Зворотній зв'язок</h1>
       </div>
-
-      {/* Зелена полоска */}
-      <div className={styles.greenDivider} />
 
       {/* Секція: верх - картинка + форма, низ - 3 значки */}
       <section className={styles.mainSection}>
@@ -141,7 +138,7 @@ const Contact = () => {
               </div>
 
               <Button type="submit" disabled={isSubmitting} fullWidth>
-                {isSubmitting ? 'Надсилання...' : 'ВІДПРАВити'}
+                {isSubmitting ? 'Надсилання...' : 'Відправити'}
               </Button>
             </form>
           )}

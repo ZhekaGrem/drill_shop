@@ -4,7 +4,7 @@
 .productPage {
   padding: var(--spacing-lg) 0;
   min-height: 100vh;
-  background: var(--background);
+  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
 
   .container {
     max-width: 1200px;
@@ -72,8 +72,7 @@
       font-family: var(--font-mono);
       background: var(--background-secondary);
       padding: 4px 8px;
-      border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
+      border-radius: var(--border-radius-sm);
     }
 
     &__price {
@@ -120,8 +119,7 @@
       margin-bottom: var(--spacing-lg);
       padding: var(--spacing-md);
       background: var(--background-secondary);
-      border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
+      border-radius: var(--border-radius-sm);
     }
 
     &__variants {
@@ -287,9 +285,21 @@
       flex-direction: column;
       gap: var(--spacing-md);
     }
+    // Дві окремі білі картки-«документи»: галерея (&__images) та інфо-колонка (&__info)
     &__images {
       height: 100%;
       width: 100%;
+      background: var(--surface-card);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--spacing-lg);
+    }
+    &__info {
+      background: var(--surface-card);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--spacing-lg);
+      overflow: hidden;
     }
   }
 
@@ -298,7 +308,6 @@
     display: flex;
     width: 100%;
     height: 100%;
-    border-right: var(--border-width) solid var(--border-color);
 
     &__thumbnailsWrapper {
       display: flex;
@@ -372,8 +381,8 @@
     &__main {
       position: relative;
       flex: 1;
-      background: var(--background);
-      border-radius: 0;
+      background: var(--surface-card);
+      border-radius: var(--border-radius-md);
       overflow: hidden;
     }
 
@@ -569,10 +578,8 @@
 
   // ============ DESCRIPTION ============
   .productDescription {
-    border-top: var(--border-width) solid var(--border-color);
-    border-bottom: var(--border-width) solid var(--border-color);
-
-    border-radius: 0;
+    border-top: 1px solid var(--border-subtle);
+    padding: var(--spacing-lg) 0;
 
     &__title {
       font-size: var(--text-3xl);

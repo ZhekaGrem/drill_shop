@@ -2,15 +2,11 @@
 
 .catalogPage {
   min-height: 100vh;
-  background-image: url('/assets/img/bg/page.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
 }
 
 .filtersButton {
-  background-color: var(--background);
+  background-color: var(--surface-card);
   display: none;
   border: none;
   color: var(--text-secondary);
@@ -44,10 +40,7 @@
 }
 
 .modalContent {
-  background-image: url('/assets/img/bg/page.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: var(--surface-card);
 }
 
 .modalTitle {
@@ -89,7 +82,7 @@
 .products {
   display: grid;
   grid-template-columns: repeat(3, 370px); // 3 колонки по 370px
-  gap: 0;
+  gap: var(--spacing-lg); // Розрив між картками-«паспортами» — вони мають власний градієнтний фон
   justify-content: center; // По центру екрану
   &--loading {
     opacity: 0.7;
@@ -104,7 +97,7 @@
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
     justify-content: center;
-    gap: 0;
+    gap: var(--spacing-sm);
   }
 }
 
@@ -112,8 +105,9 @@
 .empty {
   text-align: center;
   padding: 60px 20px;
-  background: var(--background);
-  border: 1px solid #e5e5e5;
+  background: var(--surface-card);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
 
   h3 {
     font-size: var(--text-xl);
@@ -135,8 +129,8 @@
 
 /* Product Skeleton */
 .productSkeleton {
-  background: var(--background);
-  border-radius: 8px;
+  background: var(--surface-card);
+  border-radius: var(--border-radius-md);
   overflow: hidden;
   animation: skeletonPulse 1.5s ease-in-out infinite;
 

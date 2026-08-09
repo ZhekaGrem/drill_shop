@@ -3,7 +3,7 @@
 
 .productPage {
   min-height: 100vh;
-  background: var(--background);
+  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
 
   // ============ BREADCRUMBS ============
   .breadcrumbs {
@@ -14,7 +14,6 @@
 
     font-size: var(--text-sm);
     font-weight: var(--fw-medium);
-    border-bottom: var(--border-width) solid var(--border-color);
 
     &__link {
       color: var(--text-primary);
@@ -41,6 +40,7 @@
   .productDetails {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
     margin-bottom: var(--spacing-2xl);
 
     &__container {
@@ -67,7 +67,7 @@
       font-family: var(--font-mono);
       background: var(--background-secondary);
       padding: var(--spacing-xs) var(--spacing-sm);
-      border: var(--border-width) solid var(--border-color);
+      border-radius: var(--border-radius-sm);
     }
 
     &__price {
@@ -112,7 +112,7 @@
       margin-bottom: var(--spacing-lg);
       padding: var(--spacing-md);
       background: var(--background-secondary);
-      border: var(--border-width) solid var(--border-color);
+      border-radius: var(--border-radius-sm);
     }
 
     &__variants {
@@ -224,7 +224,7 @@
   }
 
   .productDetails {
-    padding-left: var(--spacing-x);
+    padding: 0 var(--spacing-x);
     &__availability {
       display: inline-block;
       font-size: var(--text-sm);
@@ -241,9 +241,20 @@
       flex-direction: column;
       gap: var(--spacing-md);
     }
+    // Дві окремі білі картки-«документи»: галерея (&__images) та інфо-колонка (&__info)
     &__images {
       height: 100%;
       width: 100%;
+      background: var(--surface-card);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--spacing-lg);
+    }
+    &__info {
+      background: var(--surface-card);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
     }
   }
 
@@ -253,7 +264,6 @@
     justify-content: end;
     width: 100%;
     height: 100%;
-    border-right: var(--border-width) solid var(--border-color);
 
     &__thumbnailsWrapper {
       display: flex;
@@ -326,14 +336,14 @@
     &__main {
       position: relative;
       flex: 1;
-      background: var(--background);
+      background: var(--surface-card);
+      border-radius: var(--border-radius-md);
       overflow: hidden;
       width: max(280px, 36.67vw);
       height: max(433px, 56.67vw);
     }
 
     &__mainImageWrapper {
-      border-left: var(--border-width) solid var(--border-color);
       position: relative;
       overflow: hidden;
       cursor: pointer;
@@ -545,7 +555,7 @@
 
   // ============ DESCRIPTION ============
   .productDescription {
-    border-top: var(--border-width) solid var(--border-color);
+    border-top: 1px solid var(--border-subtle);
     padding: var(--spacing-y) var(--spacing-x);
     &__title {
       font-size: var(--text-3xl);
@@ -586,24 +596,22 @@
 
   // ============ RELATED PRODUCTS ============
   .relatedProducts {
-    border-top: var(--border-width) solid var(--border-color);
     padding-bottom: var(--spacing-x);
     &__title {
       padding: var(--spacing-y) var(--spacing-x);
       padding-top: 20px;
+      font-family: var(--font-heading);
       font-size: var(--text-3xl);
-      font-weight: var(--fw-black);
+      font-weight: 400;
       color: var(--text-primary);
-      border-bottom: var(--border-width) solid var(--border-color);
     }
 
     &__grid {
       display: grid;
 
       grid-template-columns: repeat(3, 370px);
-      gap: 0;
+      gap: var(--spacing-lg);
       justify-content: center;
-      border-bottom: var(--border-width) solid var(--border-color);
       @media (max-width: 1200px) {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       }

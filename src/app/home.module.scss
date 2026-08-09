@@ -1,6 +1,6 @@
 // src/app/home.module.scss
 .page {
-  background: var(--background);
+  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
 }
 
 .hero {
@@ -8,11 +8,12 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-xl);
-  background: var(--background-secondary);
+  background: var(--gradient-brand);
   border-radius: var(--border-radius-lg);
   margin: var(--spacing-lg) var(--spacing-x);
   padding: var(--spacing-2xl) var(--spacing-xl);
   min-height: 520px;
+  box-shadow: var(--shadow-md);
 
   @media (max-width: 768px) {
     flex-direction: column-reverse;
@@ -27,6 +28,12 @@
   flex-direction: column;
   gap: var(--spacing-md);
   max-width: 480px;
+  // Легка біла "скляна" підкладка під текстом — тримає контраст незалежно
+  // від того, яка ділянка градієнта (--gradient-brand) опиняється під нею.
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(8px);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
 }
 
 .heroTitle {
@@ -91,10 +98,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--background);
-  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
   transition: var(--transition-normal);
 
   &:hover {
@@ -119,9 +126,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
-  background: var(--background-secondary);
+  background: var(--surface-card);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .advantageTitle {

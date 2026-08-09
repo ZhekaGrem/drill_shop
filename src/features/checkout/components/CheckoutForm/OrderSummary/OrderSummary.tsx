@@ -37,53 +37,57 @@ export const OrderSummary = ({
   onDoNotCallChange,
 }: OrderSummaryProps) => {
   return (
+    // Підсумок-«документ»: зовнішня картка на повносиловому градієнті,
+    // всередині — біла картка даних (як паспорт з вкладеним бланком).
     <div className={styles.orderSummary}>
-      <h3 className={styles.summaryTitle}>ВАШЕ ЗАМОВЛЕННЯ</h3>
+      <div className={styles.orderSummaryInner}>
+        <h3 className={styles.summaryTitle}>Ваше замовлення</h3>
 
-      <CartItemsList items={items} />
+        <CartItemsList items={items} />
 
-      <div className={styles.promoSection}>
-        <PromoCodeInput
-          orderAmount={totalAmount}
-          onApply={onApplyDiscount}
-          onRemove={onRemoveDiscount}
-          appliedCode={appliedDiscount?.code}
-          disabled={isSubmitting}
+        <div className={styles.promoSection}>
+          <PromoCodeInput
+            orderAmount={totalAmount}
+            onApply={onApplyDiscount}
+            onRemove={onRemoveDiscount}
+            appliedCode={appliedDiscount?.code}
+            disabled={isSubmitting}
+          />
+        </div>
+
+        <OrderTotals subtotal={totalAmount} discount={appliedDiscount} />
+
+        <Checkbox
+          label="Не дзвонити для уточнення"
+          checked={doNotCall}
+          onChange={(e) => onDoNotCallChange(e.currentTarget.checked)}
+          className={styles.btnConfirmPhone}
         />
-      </div>
 
-      <OrderTotals subtotal={totalAmount} discount={appliedDiscount} />
+        <Button
+          type="submit"
+          size="sm"
+          variant="primary"
+          fullWidth
+          className={styles.btnConfirmPhone}
+          loading={isSubmitting}
+          disabled={isCartLoading || items.length === 0}>
+          {isSubmitting ? 'Створення замовлення...' : 'Підтвердити замовлення'}
+        </Button>
 
-      <Checkbox
-        label="Не дзвонити для уточнення"
-        checked={doNotCall}
-        onChange={(e) => onDoNotCallChange(e.currentTarget.checked)}
-        className={styles.btnConfirmPhone}
-      />
-
-      <Button
-        type="submit"
-        size="sm"
-        variant="primary"
-        fullWidth
-        className={styles.btnConfirmPhone}
-        loading={isSubmitting}
-        disabled={isCartLoading || items.length === 0}>
-        {isSubmitting ? 'Створення замовлення...' : 'Підтвердити замовлення'}
-      </Button>
-
-      <div className={styles.agreementNoticePhone}>
-        <p className={styles.agreementText}>
-          Натискаючи "Підтвердити замовлення", ви погоджуєтесь з умовами{' '}
-          <Link href="/public-offer" className={styles.agreementLink}>
-            публічної оферти
-          </Link>{' '}
-          та{' '}
-          <Link href="/privacy-policy" className={styles.agreementLink}>
-            політики конфіденційності
-          </Link>
-          .
-        </p>
+        <div className={styles.agreementNoticePhone}>
+          <p className={styles.agreementText}>
+            Натискаючи "Підтвердити замовлення", ви погоджуєтесь з умовами{' '}
+            <Link href="/public-offer" className={styles.agreementLink}>
+              публічної оферти
+            </Link>{' '}
+            та{' '}
+            <Link href="/privacy-policy" className={styles.agreementLink}>
+              політики конфіденційності
+            </Link>
+            .
+          </p>
+        </div>
       </div>
     </div>
   );

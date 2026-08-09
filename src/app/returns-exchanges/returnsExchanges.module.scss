@@ -1,7 +1,7 @@
 // src/app/returns-exchanges/returnsExchanges.module.scss
 .page {
   min-height: 100vh;
-  background: var(--background);
+  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
 }
 
 .container {
@@ -14,11 +14,11 @@
 }
 
 .title {
-  font-family: var(--font-price);
-  font-weight: var(--fw-black);
+  font-family: var(--font-heading);
+  font-weight: 400;
   color: var(--text-primary);
-  text-transform: uppercase;
   margin-bottom: var(--spacing-md);
+  font-size: var(--text-5xl);
 }
 
 .subtitle {
@@ -27,8 +27,16 @@
   margin: 0 auto;
 }
 
+// Біла картка-«документ» з юридичним текстом
 .content {
-  background: var(--background);
+  background: var(--surface-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-2xl);
+
+  @media (max-width: 768px) {
+    padding: var(--spacing-lg);
+  }
 }
 
 .section {
@@ -40,14 +48,13 @@
 }
 
 .sectionTitle {
-  font-family: var(--font-price);
+  font-family: var(--font-heading);
   font-size: var(--text-2xl);
-  font-weight: var(--fw-black);
+  font-weight: 400;
   color: var(--text-primary);
-  text-transform: uppercase;
   margin-bottom: var(--spacing-lg);
   padding-bottom: var(--spacing-sm);
-  border-bottom: 3px solid var(--primary);
+  border-bottom: 2px solid var(--accent);
 }
 
 .subsectionTitle {
@@ -94,13 +101,14 @@
 
 .divider {
   border: none;
-  border-top: 3px dotted var(--primary);
+  border-top: 1px solid var(--border-subtle);
   margin: var(--spacing-2xl) 0;
 }
 
 .alert {
   padding: var(--spacing-md);
-  border: 2px solid;
+  border: 1px solid;
+  border-radius: var(--border-radius-sm);
   margin-top: var(--spacing-lg);
   font-size: var(--text-sm);
   line-height: 1.6;
@@ -108,42 +116,42 @@
 
 .infoBox {
   @extend .alert;
-  background: rgba(251, 184, 0, 0.1);
-  border-color: var(--primary);
+  background: color-mix(in srgb, var(--accent) 8%, white);
+  border-color: var(--accent);
   color: var(--text-primary);
 }
 
 .orangeAlert {
   @extend .alert;
-  background: rgba(255, 140, 0, 0.1);
-  border-color: #ff8c00;
+  background: color-mix(in srgb, var(--warning) 12%, white);
+  border-color: var(--warning);
   color: var(--text-primary);
 }
 
 .redAlert {
   @extend .alert;
-  background: rgba(220, 38, 38, 0.1);
-  border-color: #dc2626;
+  background: color-mix(in srgb, var(--error) 8%, white);
+  border-color: var(--error);
   color: var(--text-primary);
 }
 
 .blueAlert {
   @extend .alert;
-  background: rgba(37, 99, 235, 0.1);
-  border-color: #2563eb;
+  background: color-mix(in srgb, var(--info) 8%, white);
+  border-color: var(--info);
   color: var(--text-primary);
 }
 
 .greenAlert {
   @extend .alert;
-  background: rgba(34, 197, 94, 0.1);
-  border-color: #22c55e;
+  background: color-mix(in srgb, var(--success) 10%, white);
+  border-color: var(--success);
   color: var(--text-primary);
 }
 
 .stepCard {
   background: var(--background-secondary);
-  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius-sm);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-md);
 
@@ -156,20 +164,21 @@
   display: inline-block;
   width: 32px;
   height: 32px;
-  background: var(--primary);
-  color: var(--text-primary);
-  font-family: var(--font-price);
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  font-family: var(--font-heading);
   font-size: var(--text-lg);
-  font-weight: var(--fw-black);
+  font-weight: 400;
   text-align: center;
+  border-radius: 50%;
   line-height: 32px;
   margin-right: var(--spacing-sm);
 }
 
 .stepTitle {
-  font-family: var(--font-price);
+  font-family: var(--font-heading);
   font-size: var(--text-lg);
-  font-weight: var(--fw-bold);
+  font-weight: 400;
   color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
 }

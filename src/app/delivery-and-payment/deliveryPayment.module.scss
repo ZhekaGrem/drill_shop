@@ -3,45 +3,47 @@
 }
 
 .pageTitle {
-  font-family: var(--font-price);
-  font-weight: var(--fw-bold);
-
-  text-transform: uppercase;
+  font-family: var(--font-heading);
+  font-weight: 400;
   line-height: 1;
-  letter-spacing: 0.02em;
   text-align: left;
+  font-size: var(--text-4xl);
 
   @media (max-width: 768px) {
-    font-size: 20px;
+    font-size: var(--text-2xl);
   }
 }
 
+// Біла картка-«документ» з умовами доставки та оплати
 .contentGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  border-top: var(--border-width) solid var(--border-color);
+  margin: 0 var(--spacing-x) var(--spacing-xl);
+  background: var(--surface-card);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
     min-height: auto;
-    padding-bottom: 80px;
+    margin: 0 var(--spacing-md) var(--spacing-lg);
   }
 }
 
 .textContent {
-  border-right: var(--border-width) solid var(--border-color);
   min-height: 100vh;
   @media (max-width: 992px) {
-    border-right: none;
     order: 2;
+    min-height: auto;
   }
 }
 
 .sectionTitle {
-  font-family: var(--font-price);
+  font-family: var(--font-heading);
+  font-weight: 400;
   font-size: 40px;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
+  color: var(--text-primary);
   line-height: 1.2;
 
   @media (max-width: 768px) {
