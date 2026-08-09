@@ -1,0 +1,40 @@
+// Повторювані патерни руху. Значень тут немає — вони в globals.css (:root).
+
+// Натискання. Дає миттєвий фідбек, що інтерфейс почув палець.
+// scale() масштабує і дітей — іконка з текстом стискаються разом із кнопкою,
+// як на контролах Дії.
+//
+// Міксин НЕ оголошує transition: інакше на одному селекторі виникло б два
+// конкурентні оголошення. Викликач додає transform у свій transition сам —
+// або через pressable-transition нижче.
+@mixin press($scale: var(--motion-press-scale)) {
+  &:active:not(:disabled) {
+    transform: scale($scale);
+  }
+}
+
+// Стандартний набір властивостей для натискного контролу.
+// Натискання швидше за наведення: система має відповідати миттєво.
+@mixin pressable-transition {
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    transform var(--dur-press) var(--ease-out);
+}
+
+// Hover тільки там, де є справжній курсор. На тачі :hover спрацьовує на тап
+// і залипає — картка лишається піднятою, поки користувач не тапне деінде.
+@mixin hoverable {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+// Каскад появи списку. --i (індекс елемента) ставиться інлайном із TSX і вже
+// обрізаний там до 8: далі затримка робить низ довгого списку відчутно
+// повільним, а каскад із декоративного стає перешкодою.
+@mixin stagger-child {
+  animation: motion-rise-in var(--dur-pop) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger-step));
+}

@@ -1,3 +1,5 @@
+@use '../../styles/motion' as motion;
+
 // Diia-style buttons: pill, чорний primary, спокійні переходи
 .button {
   font-family: var(--font-body);
