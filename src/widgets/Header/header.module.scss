@@ -20,6 +20,27 @@
   gap: var(--spacing-lg);
 }
 
+// Left group: burger + logo + nav
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  min-width: 0;
+}
+
+// Right group: search + cart + account
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .desktopNav {
   display: none;
   align-items: center;
@@ -27,13 +48,12 @@
 
   @media (min-width: 1024px) {
     display: flex;
-    flex: 1;
-    justify-content: center;
   }
 }
 
 .navLink {
   font-size: var(--text-base);
+  font-weight: var(--fw-light);
   color: var(--text-primary);
   padding: var(--spacing-sm) 0;
   text-decoration: none;
@@ -77,26 +97,12 @@
   margin: 0;
 }
 
-// Left section (Menu, Search)
-.leftSection {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-// Logo (center)
+// Logo
 .logo {
   height: 50px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
-}
-
-// Right section (Cart, User)
-.rightSection {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
 }
 
 // Icon buttons
@@ -120,6 +126,65 @@
   svg {
     width: 24px;
     height: 24px;
+  }
+}
+
+// Burger — mobile only, desktop shows nav links instead
+.burgerButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  color: var(--text-primary);
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--background-secondary);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+// Account pill — diia.gov.ua CTA values (radius/padding/typography verbatim,
+// min-/max-width dropped: those are sized for full-size hero CTAs, not a header button)
+.accountPill {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 40px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.02em;
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--btn-primary-hover);
+  }
+
+  svg {
+    width: 18px;
+    height: 20px;
+    flex-shrink: 0;
   }
 }
 
@@ -161,7 +226,7 @@
   color: var(--text-inverse);
 }
 
-// Search trigger button
+// Search trigger button — icon only, mobile (< 1024px)
 .searchTrigger {
   display: flex;
   align-items: center;
@@ -183,12 +248,59 @@
     width: 20px;
     height: 20px;
   }
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
 }
 
 .searchPlaceholder {
   font-size: var(--text-base);
   color: var(--text-primary);
   transition: var(--transition-fast);
+}
+
+// Search pill — visible search field, desktop only (>= 1024px)
+// Exact diia.gov.ua search-pill values
+.searchPill {
+  display: none;
+  position: relative;
+  align-items: center;
+  min-width: 240px;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 50px 12px 25px;
+  font-weight: var(--fw-light);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: var(--text-secondary);
+  background: var(--background);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-align: left;
+
+  &:hover {
+    background: var(--background-secondary);
+  }
+
+  @media (min-width: 1024px) {
+    display: flex;
+  }
+}
+
+.searchPillText {
+  flex: 1;
+}
+
+.searchPillIcon {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--text-secondary);
 }
 
 // Expanded search bar (appears below header)
@@ -404,6 +516,7 @@
   }
 
   .iconButton,
+  .burgerButton,
   .cartButton,
   .searchTrigger {
     width: 40px;
@@ -415,9 +528,22 @@
     }
   }
 
-  .leftSection,
-  .rightSection {
+  .headerLeft,
+  .headerRight {
     gap: var(--spacing-sm);
+  }
+
+  // Collapse to icon-only circle — avoid crowding burger + logo + search + cart
+  .accountPill {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+    gap: 0;
+
+    span {
+      display: none;
+    }
   }
 
   .link {

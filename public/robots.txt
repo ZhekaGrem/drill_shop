@@ -77,4 +77,4 @@ Disallow: /cart
 Disallow: /checkout/
 Disallow: /api/
 
-Sitemap: https://www.shchilnuidrill.com/sitemap.xml
+Sitemap: https://www.ye-dril.com/sitemap.xml

@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: 'Політика конфіденційності',
   description: 'Політика конфіденційності та обробки персональних даних Drill shop.',
   alternates: {
-    canonical: 'https://www.shchilnuidrill.com/privacy-policy',
+    canonical: 'https://www.ye-dril.com/privacy-policy',
   },
 };
 

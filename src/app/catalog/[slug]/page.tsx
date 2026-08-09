@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     // ✅ Використовуємо кешований запит (дедуплікація з page component)
     const product = await getProduct(slug);
 
-    const productUrl = `https://www.shchilnuidrill.com/catalog/${product.slug}`;
+    const productUrl = `https://www.ye-dril.com/catalog/${product.slug}`;
     const image = product.images?.[0];
 
     const shortDesc = product.shortDescription?.trim();
@@ -158,12 +158,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const breadcrumbItems = productData.breadcrumbs?.length
     ? productData.breadcrumbs.map((crumb) => ({
         name: crumb.name,
-        url: `https://www.shchilnuidrill.com${crumb.url}`,
+        url: `https://www.ye-dril.com${crumb.url}`,
       }))
     : [
-        { name: 'Головна', url: 'https://www.shchilnuidrill.com' },
-        { name: 'Каталог', url: 'https://www.shchilnuidrill.com/catalog' },
-        { name: productData.name, url: `https://www.shchilnuidrill.com/catalog/${productData.slug}` },
+        { name: 'Головна', url: 'https://www.ye-dril.com' },
+        { name: 'Каталог', url: 'https://www.ye-dril.com/catalog' },
+        { name: productData.name, url: `https://www.ye-dril.com/catalog/${productData.slug}` },
       ];
 
   const breadcrumbData = structuredData.breadcrumb(breadcrumbItems);

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Часті питання',
   description: 'Відповіді на питання про замовлення, доставку, оплату, повернення та обмін в Drill shop.',
   alternates: {
-    canonical: 'https://www.shchilnuidrill.com/faq',
+    canonical: 'https://www.ye-dril.com/faq',
   },
 };
 

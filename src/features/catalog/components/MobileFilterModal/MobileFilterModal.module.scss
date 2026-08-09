@@ -10,7 +10,7 @@
   }
 
   :global(.mantine-Drawer-header) {
-    background: var(--background-secondary) !important;
+    background: var(--background) !important;
     border-bottom: var(--border-width) solid var(--border-color) !important;
     padding: var(--spacing-md) !important;
     color: var(--text-primary);
@@ -41,7 +41,7 @@
 }
 
 .drawerHeader {
-  background: var(--background-secondary);
+  background: var(--background);
   border-bottom: var(--border-width) solid var(--border-color);
 }
 

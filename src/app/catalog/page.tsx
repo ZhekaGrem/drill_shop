@@ -13,7 +13,7 @@ export async function generateMetadata() {
     description:
       'Великий вибір мерчу онлайн — футболки, худі, аксесуари. Доставка по Україні від офіційного магазину Drill shop.',
     alternates: {
-      canonical: 'https://www.shchilnuidrill.com/catalog',
+      canonical: 'https://www.ye-dril.com/catalog',
     },
   };
 }

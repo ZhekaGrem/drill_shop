@@ -2,20 +2,20 @@
 
 > Офіційний магазин мерчу українських drill-артистів (Щільний Drill, Слава КЕДР, Ніжна Оксана, R4zyob, Проклятий Хуй, Антон Хендрікс, BSB Studio / BSB Production). Футболки, худі, постери, касети, пін та інші аксесуари. Виробництво та доставка з Львова по всій Україні.
 
-Контакти: team@shchilnuidrill.com, +380930465811
+Контакти: team@ye-dril.com, +380930465811
 Мова сайту: українська (uk_UA)
 Валюта: гривня (UAH)
 
 ## Основні розділи
 
-- [Каталог](https://www.shchilnuidrill.com/catalog): усі товари магазину
-- [Про нас](https://www.shchilnuidrill.com/about): історія бренду та команди
-- [Доставка і оплата](https://www.shchilnuidrill.com/delivery-and-payment): способи доставки (Нова Пошта, Укрпошта, кур'єр, самовивіз) та оплати (Visa/MasterCard, LiqPay, MonoPay, готівка)
-- [Обмін і повернення](https://www.shchilnuidrill.com/returns-exchanges): умови повернення та обміну товару
-- [Часті питання (FAQ)](https://www.shchilnuidrill.com/faq): відповіді на типові питання покупців
-- [Контакти](https://www.shchilnuidrill.com/contact): адреса, телефон, email, соцмережі
-- [Публічна оферта](https://www.shchilnuidrill.com/public-offer)
-- [Політика конфіденційності](https://www.shchilnuidrill.com/privacy-policy)
+- [Каталог](https://www.ye-dril.com/catalog): усі товари магазину
+- [Про нас](https://www.ye-dril.com/about): історія бренду та команди
+- [Доставка і оплата](https://www.ye-dril.com/delivery-and-payment): способи доставки (Нова Пошта, Укрпошта, кур'єр, самовивіз) та оплати (Visa/MasterCard, LiqPay, MonoPay, готівка)
+- [Обмін і повернення](https://www.ye-dril.com/returns-exchanges): умови повернення та обміну товару
+- [Часті питання (FAQ)](https://www.ye-dril.com/faq): відповіді на типові питання покупців
+- [Контакти](https://www.ye-dril.com/contact): адреса, телефон, email, соцмережі
+- [Публічна оферта](https://www.ye-dril.com/public-offer)
+- [Політика конфіденційності](https://www.ye-dril.com/privacy-policy)
 
 ## Артисти, мерч яких ми продаємо
 
@@ -34,7 +34,7 @@
 
 ## Sitemap
 
-- [XML sitemap](https://www.shchilnuidrill.com/sitemap.xml)
+- [XML sitemap](https://www.ye-dril.com/sitemap.xml)
 
 ## Соцмережі
 

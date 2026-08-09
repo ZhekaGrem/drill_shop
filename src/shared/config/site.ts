@@ -5,11 +5,11 @@ export const siteConfig = {
   name: 'shchilnui Drill',
   fullName: 'Магазин мерчу топових музиків shchilnui Drill',
   description: 'Офіційний магазин мерчу. Футболки, худі та аксесуари з доставкою по Україні.',
-  url: 'https://www.shchilnuidrill.com',
+  url: 'https://www.ye-dril.com',
   contacts: {
     phone: '+38 (093) 000000000',
     phone2: '+380 (093) 0000000',
-    email: 'team@shchilnuidrill.com',
+    email: 'team@ye-dril.com',
     address: 'вул. Дрілл, 123, м. Львів, 79000',
     city: 'Львів',
     country: 'Україна',

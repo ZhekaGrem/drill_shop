@@ -10,7 +10,7 @@ const contactLinks = {
   telegram: 'https://t.me/shchilnuidrill?direct',
   instagram: 'https://www.instagram.com/r4zyob',
   phone: '+380000000000',
-  email: 'team@shchilnuidrill.com',
+  email: 'team@ye-dril.com',
 };
 
 export function ChatWidget() {

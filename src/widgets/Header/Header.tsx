@@ -73,8 +73,9 @@ const AuthControl = React.memo(
             divider: styles.menuDivider,
           }}>
           <Menu.Target>
-            <button className={styles.iconButton}>
+            <button className={styles.accountPill}>
               <IconUser />
+              <span>Кабінет</span>
             </button>
           </Menu.Target>
           <Menu.Dropdown>
@@ -113,8 +114,9 @@ const AuthControl = React.memo(
       }
     };
     return (
-      <button className={styles.iconButton} onClick={handleAuthToggle}>
+      <button className={styles.accountPill} onClick={handleAuthToggle}>
         {isAuthDrawerOpen ? <IconX /> : <IconUser />}
+        <span>Кабінет</span>
       </button>
     );
   }
@@ -199,11 +201,43 @@ export function Header() {
   return (
     <Box className={styles.wrapper}>
       <header className={styles.header}>
-        {/* Left section: Menu + Search */}
-        <div className={styles.leftSection}>
-          <button className={styles.iconButton} onClick={toggleDrawer}>
+        {/* Left group: Burger (mobile) + Logo + Nav */}
+        <div className={styles.headerLeft}>
+          <button
+            className={styles.burgerButton}
+            onClick={toggleDrawer}
+            aria-label={drawerOpened ? 'Закрити меню' : 'Відкрити меню'}>
             {drawerOpened ? <IconX /> : <MenuIcon />}
           </button>
+
+          {/* Logo (Left) */}
+          <Link href="/" className={styles.logoLink}>
+            <Image src={siteConfig.logo} alt={siteConfig.name} className={styles.logo} />
+          </Link>
+
+          {/* Desktop navigation */}
+          <nav className={styles.desktopNav} aria-label="Основна навігація">
+            {NAV_ITEMS.map((item) => (
+              <Link key={item.href} href={item.href} className={styles.navLink}>
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        {/* Right group: Search + Cart + Account */}
+        <div className={styles.headerRight}>
+          {/* Search pill (desktop) */}
+          <button
+            type="button"
+            className={styles.searchPill}
+            onClick={handleSearchFocus}
+            aria-label="Відкрити пошук">
+            <span className={styles.searchPillText}>Пошук</span>
+            <IconSearch className={styles.searchPillIcon} />
+          </button>
+
+          {/* Search icon (mobile) */}
           <button
             type="button"
             className={styles.searchTrigger}
@@ -211,25 +245,8 @@ export function Header() {
             aria-label="Відкрити пошук">
             <IconSearch className={styles.searchPlaceholder} />
           </button>
-        </div>
 
-        {/* Logo (Center) */}
-        <Link href="/">
-          <Image src={siteConfig.logo} alt={siteConfig.name} className={styles.logo} />
-        </Link>
-
-        {/* Desktop navigation */}
-        <nav className={styles.desktopNav} aria-label="Основна навігація">
-          {NAV_ITEMS.map((item) => (
-            <Link key={item.href} href={item.href} className={styles.navLink}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Right section: Cart + User */}
-        <div className={styles.rightSection}>
-          <button className={styles.cartButton} onClick={toggleCartDrawer}>
+          <button className={styles.cartButton} onClick={toggleCartDrawer} aria-label="Кошик">
             <IconCart />
             {calculations && calculations.itemsCount > 0 && (
               <Badge size="sm" circle color="red" className={styles.cartIconBadge}>

@@ -1,12 +1,13 @@
 // src/features/catalog/components/TopFilters/TopFilters.module.scss
+// Diia-style filters: white pills, weight 300, active = solid black
 
 .topFilters {
   display: flex;
   align-items: center;
   gap: var(--spacing-xl);
   padding: var(--spacing-lg) var(--spacing-xl);
-  background: var(--surface);
-  border-radius: var(--radius-md);
+  background: var(--background);
+  border-radius: 0;
   margin-bottom: var(--spacing-xl);
   flex-wrap: wrap;
 }
@@ -15,11 +16,17 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+
+  // Group separator — diia.gov.ua 2px black divider between filter groups
+  &:not(:last-child) {
+    padding-right: var(--spacing-xl);
+    border-right: var(--border-width) solid var(--text-primary);
+  }
 }
 
 .label {
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: var(--fw-light);
   color: var(--text-secondary);
   white-space: nowrap;
 }
@@ -35,20 +42,20 @@
   gap: var(--spacing-xs);
   padding: var(--spacing-sm) var(--spacing-md);
   background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: var(--fw-light);
   color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-fast);
   white-space: nowrap;
   min-width: 200px;
   justify-content: space-between;
 
   &:hover {
-    border-color: var(--primary);
-    background: var(--surface-hover);
+    border-color: var(--text-primary);
+    background: var(--background-secondary);
   }
 
   span {
@@ -59,7 +66,7 @@
 
 .chevron {
   flex-shrink: 0;
-  transition: transform 0.2s ease;
+  transition: var(--transition-fast);
 }
 
 .dropdownMenu {
@@ -68,8 +75,8 @@
   left: 0;
   right: 0;
   background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-lg);
   z-index: 100;
   overflow: hidden;
@@ -78,26 +85,27 @@
 .dropdownItem {
   width: 100%;
   padding: var(--spacing-sm) var(--spacing-md);
-  background: none;
+  background: var(--background);
   border: none;
   text-align: left;
   font-size: var(--text-sm);
+  font-weight: var(--fw-light);
   color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-fast);
 
   &:hover {
-    background: var(--surface-hover);
+    background: var(--background-secondary);
   }
 
   &.active {
-    background: var(--primary-light);
-    color: var(--primary);
-    font-weight: 600;
+    background: var(--text-primary);
+    color: var(--text-inverse);
+    font-weight: var(--fw-normal);
   }
 }
 
-// Кнопки розмірів
+// Кнопки розмірів — pill chips, active = solid black
 .sizeButtons {
   display: flex;
   gap: var(--spacing-xs);
@@ -108,26 +116,26 @@
   height: 44px;
   padding: var(--spacing-xs) var(--spacing-sm);
   background: var(--background);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
   font-size: var(--text-base);
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-weight: var(--fw-light);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
 
   &:hover {
-    border-color: var(--primary);
-    color: var(--text-primary);
+    border-color: var(--text-primary);
   }
 
   &.active {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: white;
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+    color: var(--text-inverse);
+    font-weight: var(--fw-normal);
   }
 }
 
@@ -146,7 +154,7 @@
 
 .priceLabel {
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: var(--fw-light);
   color: var(--text-secondary);
   white-space: nowrap;
 }
@@ -155,16 +163,15 @@
   width: 100px;
   padding: var(--spacing-sm) var(--spacing-md);
   background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
   font-size: var(--text-sm);
   color: var(--text-primary);
-  transition: all 0.2s ease;
+  transition: var(--transition-fast);
 
   &:focus {
     outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px var(--primary-light);
+    border-color: var(--accent);
   }
 
   &::placeholder {
@@ -210,6 +217,13 @@
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-xs);
+    padding-bottom: var(--spacing-md);
+
+    &:not(:last-child) {
+      padding-right: 0;
+      border-right: none;
+      border-bottom: var(--border-width) solid var(--text-primary);
+    }
   }
 
   .label {

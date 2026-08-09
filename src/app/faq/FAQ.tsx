@@ -191,9 +191,9 @@ const FAQ = () => {
               </a>
             </li>
             <li>
-              <a href="mailto:team@shchilnuidrill.com">
+              <a href="mailto:team@ye-dril.com">
                 <span>email</span>
-                <b>team@shchilnuidrill.com</b>
+                <b>team@ye-dril.com</b>
                 <i aria-hidden="true">→</i>
               </a>
             </li>

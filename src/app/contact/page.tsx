@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Контакти',
   description: 'Контакти Drill shop. Телефон, email, адреса та графік роботи магазину.',
   alternates: {
-    canonical: 'https://www.shchilnuidrill.com/contact',
+    canonical: 'https://www.ye-dril.com/contact',
   },
 };
 

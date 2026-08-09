@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Про нас',
   description: 'Офіційний магазин мерчу Drill shop. Щільний мерч для справжніх фанатів.',
   alternates: {
-    canonical: 'https://www.shchilnuidrill.com/about',
+    canonical: 'https://www.ye-dril.com/about',
   },
 };
 

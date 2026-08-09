@@ -9,7 +9,7 @@ export const siteViewport: Viewport = {
 
 // Базова SEO конфігурація
 export const baseMetadata: Metadata = {
-  metadataBase: new URL('https://www.shchilnuidrill.com'),
+  metadataBase: new URL('https://www.ye-dril.com'),
 
   title: {
     default: 'Drill shop | Щільний Drill для вас',
@@ -22,13 +22,13 @@ export const baseMetadata: Metadata = {
   openGraph: {
     title: 'Drill shop — офіційний магазин мерчу',
     description: 'Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
-    url: 'https://www.shchilnuidrill.com',
+    url: 'https://www.ye-dril.com',
     siteName: 'Drill shop',
     locale: 'uk_UA',
     type: 'website',
     images: [
       {
-        url: 'https://www.shchilnuidrill.com/logo/logo.jpg',
+        url: 'https://www.ye-dril.com/logo/logo.jpg',
         width: 1200,
         height: 630,
         alt: 'Drill shop — офіційний магазин мерчу',
@@ -39,7 +39,7 @@ export const baseMetadata: Metadata = {
     card: 'summary_large_image',
     title: 'Drill shop — офіційний магазин мерчу',
     description: 'Якісний одяг, футболки, худі та аксесуари з доставкою по Україні.',
-    images: ['https://www.shchilnuidrill.com/logo/logo.jpg'],
+    images: ['https://www.ye-dril.com/logo/logo.jpg'],
   },
   robots: {
     index: true,
@@ -49,7 +49,7 @@ export const baseMetadata: Metadata = {
   icons: {
     icon: [
       { url: '/assets/favicon/android-chrome-192x192.png', type: 'image/png', sizes: '192x192' },
-      { url: 'https://www.shchilnuidrill.com/assets/favicon/favicon.ico' },
+      { url: 'https://www.ye-dril.com/assets/favicon/favicon.ico' },
       { url: '/assets/favicon/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
       { url: '/assets/favicon/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
       { url: '/assets/favicon/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
@@ -59,7 +59,7 @@ export const baseMetadata: Metadata = {
     other: [
       {
         rel: 'mask-icon',
-        url: 'https://www.shchilnuidrill.com/assets/favicon/favicon.ico',
+        url: 'https://www.ye-dril.com/assets/favicon/favicon.ico',
       },
     ],
   },
@@ -67,7 +67,7 @@ export const baseMetadata: Metadata = {
   manifest: '/manifest.json',
 
   alternates: {
-    canonical: 'https://www.shchilnuidrill.com',
+    canonical: 'https://www.ye-dril.com',
   },
 };
 
@@ -78,7 +78,7 @@ export const pageMetadata = {
     description:
       'Замовити мерч онлайн. Футболки, худі та аксесуари від офіційного магазину з доставкою по Україні.',
     alternates: {
-      canonical: 'https://www.shchilnuidrill.com',
+      canonical: 'https://www.ye-dril.com',
     },
   }),
 
@@ -86,7 +86,7 @@ export const pageMetadata = {
     title: 'Каталог',
     description: 'Великий вибір мерчу онлайн.  Щільний мерч з доставкою по Україні від офіційного магазину.',
     alternates: {
-      canonical: 'https://www.shchilnuidrill.com/catalog',
+      canonical: 'https://www.ye-dril.com/catalog',
     },
   }),
 
@@ -95,7 +95,7 @@ export const pageMetadata = {
     description:
       product.description || `Купити ${product.name}. Ціна від ${product.price} грн. Доставка по Україні.`,
     alternates: {
-      canonical: `https://www.shchilnuidrill.com/catalog/${product.slug}`,
+      canonical: `https://www.ye-dril.com/catalog/${product.slug}`,
     },
   }),
 
@@ -103,7 +103,7 @@ export const pageMetadata = {
     title: 'Про нас',
     description: 'Офіційний магазин мерчу Drill shop.  Щільний мерч для справжніх фанатів.',
     alternates: {
-      canonical: 'https://www.shchilnuidrill.com/about',
+      canonical: 'https://www.ye-dril.com/about',
     },
   }),
 
@@ -111,7 +111,7 @@ export const pageMetadata = {
     title: 'Контакти',
     description: 'Контакти Drill shop. Телефони, адреса, графік роботи.',
     alternates: {
-      canonical: 'https://www.shchilnuidrill.com/contact',
+      canonical: 'https://www.ye-dril.com/contact',
     },
   }),
 
@@ -132,16 +132,16 @@ export const structuredData = {
   organization: () => ({
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    '@id': 'https://www.shchilnuidrill.com/#organization',
+    '@id': 'https://www.ye-dril.com/#organization',
     name: 'Drill shop',
-    url: 'https://www.shchilnuidrill.com',
+    url: 'https://www.ye-dril.com',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://www.shchilnuidrill.com/logo/logo.png',
+      url: 'https://www.ye-dril.com/logo/logo.png',
     },
-    image: 'https://www.shchilnuidrill.com/logo/logo.png',
+    image: 'https://www.ye-dril.com/logo/logo.png',
     description: 'Офіційний магазин мерчу. Футболки, худі та аксесуари з доставкою по Україні',
-    email: 'team@shchilnuidrill.com',
+    email: 'team@ye-dril.com',
     telephone: '+380930465811',
     contactPoint: {
       '@type': 'ContactPoint',
@@ -170,18 +170,18 @@ export const structuredData = {
   website: () => ({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    '@id': 'https://www.shchilnuidrill.com/#website',
+    '@id': 'https://www.ye-dril.com/#website',
     name: 'Drill shop',
-    url: 'https://www.shchilnuidrill.com',
+    url: 'https://www.ye-dril.com',
     inLanguage: 'uk',
     publisher: {
-      '@id': 'https://www.shchilnuidrill.com/#organization',
+      '@id': 'https://www.ye-dril.com/#organization',
     },
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://www.shchilnuidrill.com/catalog?search={search_term_string}',
+        urlTemplate: 'https://www.ye-dril.com/catalog?search={search_term_string}',
       },
       'query-input': 'required name=search_term_string',
     },
@@ -218,7 +218,7 @@ export const structuredData = {
     category: product.category?.name,
     offers: {
       '@type': 'Offer',
-      url: `https://www.shchilnuidrill.com/catalog/${product.slug}`,
+      url: `https://www.ye-dril.com/catalog/${product.slug}`,
       priceCurrency: 'UAH',
       price: product.price,
       priceValidUntil: new Date(new Date().getFullYear() + 1, 0, 1).toISOString().split('T')[0],
@@ -290,7 +290,7 @@ export const structuredData = {
     itemListElement: products.map((p, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      url: `https://www.shchilnuidrill.com/catalog/${p.slug}`,
+      url: `https://www.ye-dril.com/catalog/${p.slug}`,
       name: p.name,
       ...(p.image ? { image: p.image } : {}),
     })),

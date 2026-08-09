@@ -119,43 +119,27 @@
   flex-wrap: wrap;
 }
 
+// Round icon buttons — diia.gov.ua footer pattern
 .socialLink {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px var(--spacing-md);
-  font-size: var(--text-base);
-  font-weight: var(--fw-bold);
+  justify-content: center;
+  width: 44px;
+  height: 44px;
   color: var(--text-primary);
   text-decoration: none;
-  background: transparent;
+  background: var(--background);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
   transition: var(--transition-fast);
 
   &:hover {
-    background: var(--background);
+    background: var(--background-secondary);
   }
 
   svg {
     width: 20px;
     height: 20px;
-  }
-}
-
-.socialIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: var(--background);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-  transition: var(--transition-fast);
-
-  &:hover {
-    background: var(--background-secondary);
   }
 }
 
@@ -183,8 +167,8 @@
 
 .copyright {
   font-size: var(--text-sm);
-  font-weight: var(--fw-medium);
-  color: var(--text-primary);
+  font-weight: var(--fw-normal);
+  color: var(--text-secondary);
 }
 
 .legalLinks {
@@ -282,7 +266,7 @@
   }
 
   .socialLink {
-    font-size: var(--text-sm);
-    padding: 6px var(--spacing-sm);
+    width: 40px;
+    height: 40px;
   }
 }

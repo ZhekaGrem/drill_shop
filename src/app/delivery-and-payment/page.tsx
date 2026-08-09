@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     'Умови доставки Новою Поштою та способи оплати в Drill shop. Доставка 1-2 робочі дні по Україні.',
   alternates: {
-    canonical: 'https://www.shchilnuidrill.com/delivery-and-payment',
+    canonical: 'https://www.ye-dril.com/delivery-and-payment',
   },
 };
 

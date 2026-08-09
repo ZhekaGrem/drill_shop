@@ -44,24 +44,26 @@ export function Footer() {
               </a>
             </div>
 
-            <Stack gap="sm" mt="md">
+            <div className={styles.socialIcons}>
               <a
                 href={siteConfig.socials.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Instagram"
                 className={styles.socialLink}>
                 <IconInstagram />
-                <span>Instagram</span>
+                <span className="sr-only">Instagram</span>
               </a>
               <a
                 href={siteConfig.socials.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Telegram"
                 className={styles.socialLink}>
                 <IconTelegram />
-                <span>Telegram</span>
+                <span className="sr-only">Telegram</span>
               </a>
-            </Stack>
+            </div>
           </div>
         </div>
       </div>
@@ -69,7 +71,7 @@ export function Footer() {
       {/* Bottom section */}
       <div className={styles.container}>
         <div className={styles.bottomSection}>
-          <Text className={styles.copyright}>© {currentYear} shchilnuidrill.com</Text>
+          <Text className={styles.copyright}>© {currentYear} ye-dril.com</Text>
 
           <div className={styles.designerSection}>
             <span>Developed</span>
