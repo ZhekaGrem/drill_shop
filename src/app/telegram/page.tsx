@@ -21,9 +21,7 @@ export default function TelegramHomePage() {
           <h1 className={styles.heroTitle}>
             {userProfile?.firstName ? `Привіт, ${userProfile.firstName}!` : 'Офіційний мерч shchilnui Drill'}
           </h1>
-          <p className={styles.heroSubtitle}>
-            Футболки, худі та аксесуари з дропів гурту — прямо в Telegram
-          </p>
+          <p className={styles.heroSubtitle}>Футболки, худі та аксесуари з дропів гурту — прямо в Telegram</p>
           <Button size="lg" variant="primary" onClick={handleGoToShop}>
             До каталогу <ArrowRight />
           </Button>
