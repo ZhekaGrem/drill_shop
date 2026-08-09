@@ -1,0 +1,310 @@
+# Motion-система в мові Дії
+
+**Дата:** 2026-08-09
+**Гілка:** `v2`
+**Статус:** спека затверджена, план не написаний
+
+---
+
+## Задача
+
+Редизайн v2 **виглядає** як Дія, але не **відчувається** як Дія. Впізнаваність Дії
+тримається не на статичній картинці, а на моториці: як екран заїжджає, як карточка
+проминається під пальцем, як тягнеться шторка, як зʼявляється галочка успіху.
+
+Мета — **єдина система руху**: токени в `globals.css`, перевизначені дефолти Mantine
+і обмежений набір фірмових патернів на спільних примітивах, які автоматично покривають
+усі сторінки вітрини. Не розсип `transition` по 46 файлах.
+
+---
+
+## Діагноз наявного стану
+
+Виміряно на коміті `d988b55`.
+
+| Факт | Значення |
+| --- | --- |
+| Оголошень `transition:` у `src/` | 103 у 46 файлах |
+| З них `transition: all` або `var(--transition-*)` | **76** |
+| Кривих у проєкті | одна — `ease-in-out`, у всіх трьох токенах |
+| Файлів із `:active` press-фідбеком | 5 із 46 |
+| Файлів із `@media (hover: hover)` | **0** |
+| Файлів із `prefers-reduced-motion` | 1 (`HeroVisual`) |
+| `template.tsx` / переходи сторінок | немає |
+| Файлів із Mantine `Modal`/`Drawer` | 22 |
+
+Три токени в `globals.css:363-365`:
+
+```css
+--transition-fast: 0.15s ease-in-out;
+--transition-normal: 0.2s ease-in-out;
+--transition-slow: 0.3s ease-in-out;
+```
+
+Оскільки в них немає property, кожен розкривається в `transition: all`. Тобто весь сайт
+анімується однією кривою й анімує кожну властивість одночасно, включно з `box-shadow`,
+`border-color` і `background`.
+
+**Чому це головна причина «не схоже на Дію»:** `ease-in-out` стартує повільно. Дія стартує
+миттєво й гальмує в кінці. При однаковій тривалості `ease-out` **відчувається** швидшим за
+`ease-in-out`, бо рух видно саме в той момент, коли користувач дивиться найуважніше.
+
+### Побічні знахідки
+
+- `blurFadeIn` визначено двічі з **різними** значеннями — `shared/styles/_animations.scss:21`
+  і `ProductCard.module.scss:368`. Перший файл прямо каже «import this instead of duplicating».
+- `react-hot-toast` у `package.json` — нуль імпортів у `src/`, `<Toaster/>` ніде не змонтований.
+  Мертва залежність. Тости йдуть через `@mantine/notifications`.
+- `framer-motion@12.18.2` — нуль імпортів. Цією спекою отримує єдине законне застосування (`<Sheet>`).
+
+---
+
+## Ухвалені рішення
+
+| # | Рішення | Альтернативи, які відхилено |
+| --- | --- | --- |
+| 1 | **CSS-first**: рух у CSS, framer-motion лише на жест шторки | framer-motion всюди — +35 kB, усе на main thread, кожен анімований компонент стає `'use client'`, що бʼє по RSC-правилу проєкту |
+| 2 | **Оновити Next 16.0.7 → 16.3.x** | лишитись на 16.0.7 з `experimental.viewTransition` — продакшн-магазин на експериментальній збірці React |
+| 3 | **Власний `<Sheet>`** на Mantine `Drawer.Root` + framer-motion | `vaul` — якісніший жест, але друга модальна система поряд з Mantine |
+| 4 | **Обсяг — тільки вітрина**, `/admin` не чіпаємо | адмінка — внутрішній інструмент; часті повторювані дії анімувати шкідливо |
+| 5 | **Старі токени лишаються** як застарілі аліаси з новою кривою | видалення — переписування 76 місць одним комітом |
+| 6 | **Shared element** фото картки → фото товару | без нього губиться найпомітніший момент «це застосунок» |
+
+Рішення 5 повторює прецедент, уже закріплений у `DESIGN_SYSTEM.md` для `--spacing-x/y`
+і `--border-width`: старе лишається аліасом, нове пишеться поруч, міграція йде поступово.
+
+---
+
+## Архітектура
+
+### Шар 0 — токени (`src/app/globals.css`)
+
+```css
+/* Криві — розділені за призначенням */
+--ease-out:    cubic-bezier(0.23, 1, 0.32, 1);     /* входи, появи, відпускання пальця */
+--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);    /* рух і морфінг на екрані */
+--ease-sheet:  cubic-bezier(0.32, 0.72, 0, 1);     /* шторки — крива з iOS */
+
+/* Тривалості */
+--dur-press: 120ms;   /* натискання */
+--dur-hover: 160ms;   /* колір, фон, межа */
+--dur-pop:   180ms;   /* dropdown, tooltip, popover, бейдж */
+--dur-modal: 220ms;   /* модалка */
+--dur-sheet: 300ms;   /* шторка */
+--dur-exit:  150ms;   /* вихід — завжди швидший за вхід */
+
+/* Дистанції */
+--motion-rise: 8px;             /* вхід елемента знизу */
+--motion-slide: 60px;           /* зсув екрана при переході */
+--motion-press-scale: 0.97;     /* натискання */
+
+/* Каскад */
+--stagger-step: 40ms;
+--stagger-max: 8;               /* далі не затримуємо */
+```
+
+Ретаргет застарілих:
+
+```css
+--transition-fast:   150ms var(--ease-out);   /* @deprecated — property-scoped запис */
+--transition-normal: 200ms var(--ease-out);   /* @deprecated */
+--transition-slow:   300ms var(--ease-out);   /* @deprecated */
+```
+
+**Правило:** тривалість руху в UI не перевищує 300 мс. Виняток — тільки перехід сторінки
+і `StatusPage`.
+
+### Шар 1 — міксини (`src/shared/styles/_motion.scss`, новий)
+
+```scss
+@mixin press($scale: var(--motion-press-scale));   // :active + transition
+@mixin hoverable;                                   // @media (hover: hover) and (pointer: fine)
+@mixin enter-rise;                                  // @starting-style: opacity 0 + translateY
+@mixin stagger-child;                               // animation-delay через --i
+```
+
+Потрібні, щоб шість файлів ядра не дублювали одні й ті самі три рядки.
+
+### Шар 2 — переходи сторінок
+
+**Передумова:** Next оновлено до 16.3.x. `<ViewTransition>` імпортується з `react`,
+працює в RSC, прапорців у `next.config.ts` не потребує.
+
+**`shared/components/Page/Page.tsx`** — одна правка на всі 16 сторінок:
+
+```tsx
+<ViewTransition
+  enter={{ 'nav-forward': 'nav-forward', 'nav-back': 'nav-back', default: 'none' }}
+  exit={{  'nav-forward': 'nav-forward', 'nav-back': 'nav-back', default: 'none' }}
+  default="none">
+  <Tag className={...}>{children}</Tag>
+</ViewTransition>
+```
+
+`<ViewTransition>` **не можна** класти в `layout.tsx` — лейаути переживають навігацію,
+тому `enter`/`exit` там ніколи не спрацюють. `<Page>` рендериться з `page.tsx` і
+розмонтовується при навігації — саме те, що потрібно.
+
+**`shared/components/AppLink`** (новий) — обгортка над `next/link`:
+`transitionTypes={['nav-forward']}` за замовчуванням, проп `direction="back"` для повернень.
+Тип переходу автоматично не визначається; зворотних лінків мало — хлібні крихти
+й кнопки `StatusPage`.
+
+**Якір хедера й футера.** `viewTransitionName: 'site-header'` / `'site-footer'` +
+`::view-transition-group(...) { animation: none; z-index: 100 }` і
+`::view-transition-old(...) { display: none }`. Без цього з екраном їде вся шапка
+й губиться просторова опора — у Дії такого не буває ніколи.
+
+**Shared element.** Фото в `ProductCard` і головне фото в `ProductDetailsClient`
+загортаються у `<ViewTransition>` з однаковим `name` виду `product-{id}`. Обидва
+отримують `share="morph"` + `default="none"` — інакше кожне назване фото
+крос-фейдиться на будь-якому незвʼязаному переході.
+
+**`::view-transition { pointer-events: none }`** — інакше оверлей переходу зʼїдає кліки.
+
+CSS напрямків — за рецептом з документації Next: вихід 150 мс, вхід 210 мс із затримкою
+на час виходу, зсув 400 мс, дистанція 60px. Асиметрія навмисна: старе має піти швидко,
+нове — прийти мʼякше. Значення — стартові; тюнимо після першого перегляду в браузері,
+Дія помітно швидша за типові приклади.
+
+### Шар 3 — press / hover / focus у ядрі
+
+| Файл | Зміна |
+| --- | --- |
+| `shared/components/Button/button.module.scss` | `:active` → `scale(0.97)`; `transition: all` → `background, border-color, transform` |
+| `shared/components/ListGroup/ListGroup.module.scss` | press на `.rowInteractive`; стрілка зсувається на 2px |
+| `shared/components/ArrowCircle/ArrowCircle.module.scss` | press; hover під `hoverable()` |
+| `shared/components/Card/Card.module.scss` | press замість hover-підйому на тач |
+| `features/catalog/.../ProductCard.module.scss` | press; hover-підйом під `hoverable()`; прибрати дубль `blurFadeIn` |
+| `shared/components/Input`, `Select`, `SearchInput` | фокус — `border-color` + `box-shadow`, без `all` |
+
+**Усі hover-ефекти йдуть під `@media (hover: hover) and (pointer: fine)`.** Зараз такої
+огорожі немає ніде — на тачі hover залипає після тапу, і картка лишається піднятою.
+
+### Шар 4 — `<Sheet>` (`src/shared/components/Sheet/`, новий)
+
+Розподіл відповідальності:
+
+- **Mantine `Drawer.Root`** — портал, focus trap, блокування скролу, `aria`, overlay, Escape.
+  Власний перехід вимкнено: `transitionProps={{ duration: 0 }}`.
+- **framer-motion** — рух і жест: `drag="y"`, `dragConstraints`, damping на верхній межі,
+  `onDragEnd` з порогом швидкості `0.11` (швидкий кидок закриває незалежно від дистанції).
+
+Крайні випадки, які треба закрити явно:
+
+- pointer capture — щоб drag не обривався при виході пальця за межі елемента;
+- ігнорування другого дотику після початку drag — інакше шторка стрибає;
+- drag не починається, якщо вміст шторки проскролений не до верху.
+
+Споживачі: `MobileFilterModal`, `CartDrawer` (мобільний), `AuthDrawer`.
+Жест — тільки `position="bottom"` і тільки на тач.
+
+**Ризик.** Два трансформи на одному елементі — найтендітніше місце спеки. Якщо розʼїдеться,
+відкат: ручка + крива `--ease-sheet` без жесту. Решта системи від цього не залежить,
+тому `<Sheet>` іде останнім.
+
+### Шар 5 — дрібне
+
+| Патерн | Реалізація |
+| --- | --- |
+| Каскад списків | `animation-delay: calc(var(--i) * var(--stagger-step))`, `--i` інлайном; обріз на 8-му |
+| Скелетони | shimmer через `transform` на псевдоелементі замість `filter: blur` (дорого) |
+| `StatusPage` | іконка малюється через `stroke-dashoffset` — рідкісний екран, тут можна delight |
+| Табки й чіпи фільтрів | `clip-path` для переїзду активного стану, не транзишн кольору |
+| Лічильник кошика | pop `scale(1) → 1.15 → 1` при зміні |
+| Тости | `@mantine/notifications` через `transitionProps` у темі |
+
+**`shared/config/mantine-theme.ts`** — `transitionProps` для `Modal`, `Drawer`, `Menu`,
+`Popover`, `Tooltip`, `Select`. Одне місце перекриває всі 22 файли з модалками.
+
+Обмеження Mantine 8 без `@mantine/emotion` (уже задокументоване в `DESIGN_SYSTEM.md`):
+`styles` застосовуються як inline, псевдоселектори мовчки ігноруються. Тому в темі —
+тільки `transitionProps`; стани лишаються в `globals.css` і SCSS-модулях.
+
+### Шар 6 — доступність
+
+Глобальний блок у `globals.css`, що покриває і звичайні анімації, і `::view-transition-*`:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*), ::view-transition-new(*), ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+```
+
+Рух прибираємо, `opacity` лишаємо: reduced motion означає **менше руху, а не нуль анімацій**.
+
+---
+
+## Обсяг
+
+**Входить:** головна, каталог, категорія, товар, кошик, чекаут, профіль, реєстрація,
+статус-екрани, юридичні сторінки, хедер, футер, `TelegramBottomNav`.
+
+**Не входить:** `/admin` (успадкує лише те, що прилетить через ретаргет токенів і тему Mantine).
+
+**Пробіл, який закриваємо в межах цієї роботи:** `login`, `orders`, `verify-email`,
+`forgot-password`, `resend-verification` **не загорнуті** в `<Page>`, тому переходу
+не отримали б. Переводимо їх на `<Page>` на кроці 5. Це дешево і заодно закриває
+порушення власного правила `DESIGN_SYSTEM.md` («кожна сторінка загорнута в `<Page>`»).
+
+`/telegram/*` лишається поза обсягом свідомо: у нього окремий layout без хедера
+й футера, і всередині Telegram WebView навігація має власну моторику.
+
+---
+
+## Що НЕ робимо (YAGNI)
+
+- анімації на дії з клавіатури — вони повторюються сотні разів на день;
+- bounce-пружини — Дія пружна, але без відскоку;
+- `layoutId` shared-transitions від framer-motion — це робота View Transitions;
+- будь-яка анімація довша за 300 мс поза переходом сторінки й `StatusPage`;
+- окрема анімація для кожної сторінки — рух належить примітивам, не сторінкам.
+
+---
+
+## Порядок робіт
+
+1. Апгрейд Next 16.0.7 → 16.3.x, `npm run build` — гейт перед усім іншим
+2. Токени + `_motion.scss` + reduced-motion
+3. Ядро: press / hover / focus у шести файлах
+4. Тема Mantine — `transitionProps`
+5. `<Page>` + `<ViewTransition>` + `AppLink` + якір хедера; переведення на `<Page>`
+   сторінок `login`, `orders`, `verify-email`, `forgot-password`, `resend-verification`
+6. Shared element картка → товар
+7. `<Sheet>`
+8. Дрібне: каскад, скелетони, `StatusPage`, чіпи, лічильник
+
+Кроки 2–4 дають більшу частину відчуття і майже не несуть ризику. Крок 7 — останній,
+бо єдиний, що може не злетіти.
+
+---
+
+## Верифікація
+
+У проєкті **немає** тестів, Playwright і скрипта `verify` — у `package.json` тільки
+`dev`, `build`, `start`, `lint`, `format`. Тому гейт такий:
+
+- `npm run build` — типи й ESLint увімкнені в `next.config.ts`
+  (`ignoreBuildErrors: false`), тож білд і є головною перевіркою;
+- `npm run lint`;
+- ручний прохід по восьми патернах на Chrome, Safari, Firefox;
+- мобільний — на **реальному пристрої**: жест шторки в емуляторі чесно не перевіряється.
+
+Критерій приймання по кожному патерну — окремим рядком у плані реалізації.
+
+**Окремо:** проєкт не має Feedback Loop (`Verification` у `CLAUDE.md` + `Stop`-хук).
+Варто налаштувати через `/feedback-loop` — поза межами цієї спеки.
+
+---
+
+## Відкриті ризики
+
+| Ризик | Ймовірність | Мітигація |
+| --- | --- | --- |
+| Апгрейд Next ламає білд | низька (мінор у межах 16) | крок 1, до будь-яких змін коду |
+| Два трансформи бʼються в `<Sheet>` | середня | останній крок; відкат на варіант без жесту |
+| Значення переходу сторінки з доків завеликі для Дії | висока | тюнимо після першого перегляду, стартові значення не догма |
+| Переведення 5 сторінок на `<Page>` зачепить їхню верстку | середня | крок 5, кожна сторінка перевіряється окремо; правка чисто структурна |
