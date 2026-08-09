@@ -385,10 +385,36 @@ p {
   --spacing-y: var(--page-padding-y);
   --spacing-y-m: var(--space-3);
 
-  /* Transitions */
-  --transition-fast: 0.15s ease-in-out;
-  --transition-normal: 0.2s ease-in-out;
-  --transition-slow: 0.3s ease-in-out;
+  /* ============ Рух ============
+     Криві розділені за призначенням. Раніше все анімувалось однією
+     ease-in-out, яка стартує повільно — саме тому інтерфейс читався
+     повільнішим за Дію при тих самих тривалостях. ease-out стартує
+     миттєво й гальмує в кінці: рух видно рівно тоді, коли користувач
+     дивиться найуважніше. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --dur-press: 120ms;
+  --dur-hover: 160ms;
+  --dur-pop: 180ms;
+  --dur-modal: 220ms;
+  --dur-sheet: 300ms;
+  --dur-exit: 150ms;
+
+  --motion-rise: 8px;
+  --motion-slide: 60px;
+  --motion-press-scale: 0.97;
+  --stagger-step: 40ms;
+
+  /* @deprecated. Не мають property, тому розкриваються в `transition: all`
+     і анімують заразом box-shadow, border-color та все інше.
+     У новому коді пиши явно: `transition: background var(--dur-hover) var(--ease-out)`.
+     Лишені з новою кривою, щоб полагодити моторику в 76 наявних місцях,
+     не переписуючи 46 файлів одним комітом. */
+  --transition-fast: 150ms var(--ease-out);
+  --transition-normal: 200ms var(--ease-out);
+  --transition-slow: 300ms var(--ease-out);
 
   /* Layout — без змін */
   --container-max-width: 1200px;
@@ -713,4 +739,36 @@ hr {
 
 .mantine-Notification-closeButton:hover {
   background: var(--background-secondary);
+}
+
+@keyframes motion-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-rise));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion — менше руху, а не нуль анімацій.
+   Обнуляємо дистанції: рух зникає, а прозорість і колір лишаються, бо саме
+   вони пояснюють користувачу, що елемент зʼявився або зник. Глухий
+   `transition: none !important` прибрав би й це. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-rise: 0px;
+    --motion-slide: 0px;
+    --motion-press-scale: 1;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
