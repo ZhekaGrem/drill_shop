@@ -2,12 +2,13 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { Modal, Loader, Center, Text, Container, Title, Stack } from '@mantine/core';
+import { Loader, Center, Text, Container, Title, Stack } from '@mantine/core';
 import { IconFilter, IconChevronDown } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
 import { CatalogFilters } from '@/features/catalog/components/CatalogFilters/CatalogFilters';
-import { useCatalogFilters } from '@/features/catalog/hooks/useCatalogFilters';
+import { MobileFilterModal } from '@/features/catalog/components/MobileFilterModal/MobileFilterModal';
+import { useCatalogFilters, countActiveFilters } from '@/features/catalog/hooks/useCatalogFilters';
 import { useCatalogProducts } from '@/features/catalog/hooks/useCatalogProducts';
 import { ProductsResponse } from '@/features/catalog/api/products';
 import styles from './catalog.module.scss';
@@ -38,6 +39,7 @@ export default function CatalogClient({ initialData, initialCategories, basePath
   // Об'єднуємо всі сторінки в один масив
   const products = data?.pages.flatMap((page) => page.data) || [];
   const totalCount = data?.pages[0]?.meta.total || 0;
+  const activeFilterCount = countActiveFilters(filters);
 
   useEffect(() => {
     setFromUrlParams(searchParams);
@@ -83,7 +85,7 @@ export default function CatalogClient({ initialData, initialCategories, basePath
 
   return (
     <div className={styles.catalogPage}>
-      {/* Кнопка фільтрів для мобільних */}
+      {/* Кнопка фільтрів для мобільних — з лічильником активних */}
       <Button
         variant="outline"
         className={styles.filtersButton}
@@ -92,29 +94,28 @@ export default function CatalogClient({ initialData, initialCategories, basePath
         <div>
           <IconFilter size={16} />
           Фільтри
+          {activeFilterCount > 0 && <span className={styles.filtersBadge}>{activeFilterCount}</span>}
         </div>
         <IconChevronDown size={16} />
       </Button>
 
       {/* Фільтри для десктопу */}
       <div className={styles.desktopFilters}>
-        <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
+        <CatalogFilters
+          onFiltersChange={handleFiltersChange}
+          initialCategories={initialCategories}
+          resultsCount={totalCount}
+        />
       </div>
 
-      {/* Модал з фільтрами для мобільних */}
-      <Modal
+      {/* Мобільний bottom sheet з фільтрами */}
+      <MobileFilterModal
         opened={filtersModalOpened}
         onClose={() => setFiltersModalOpened(false)}
-        title="Фільтри"
-        size="100%"
-        classNames={{
-          body: styles.modalBody,
-          content: styles.modalContent,
-          title: styles.modalTitle,
-          header: styles.modalHeader,
-        }}>
-        <CatalogFilters onFiltersChange={handleFiltersChange} initialCategories={initialCategories} />
-      </Modal>
+        onFiltersChange={handleFiltersChange}
+        initialCategories={initialCategories}
+        resultsCount={totalCount}
+      />
       <Container size={1300} px={{ base: 20, sm: 40 }} pb={50}>
         {error && (
           <div className={styles.error}>

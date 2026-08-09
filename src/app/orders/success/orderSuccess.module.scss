@@ -1,5 +1,5 @@
 .title {
-  font-family: var(--font-price);
+  font-family: var(--font-body);
   font-weight: var(--fw-bold);
   color: var(--text-primary);
   text-transform: uppercase;
@@ -46,7 +46,7 @@
 }
 
 .cardTitle {
-  font-family: var(--font-price);
+  font-family: var(--font-body);
   text-transform: uppercase;
   color: var(--text-tertiary);
   letter-spacing: 0.02em;
@@ -54,7 +54,7 @@
 
 .detailRow {
   padding: 8px 0;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-subtle);
 
   &:last-child {
     border-bottom: none;
@@ -63,12 +63,12 @@
 
 .amount {
   color: var(--btn-primary);
-  font-family: var(--font-price);
+  font-family: var(--font-body);
   font-size: 20px;
 }
 
 .button {
-  border: var(--border-width) solid var(--border-color);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
 
   &:hover {
@@ -79,7 +79,7 @@
 .primaryButton {
   background-color: var(--bg-yellow);
   color: var(--text-primary);
-  border: var(--border-width) solid var(--border-color);
+  border: 1px solid var(--border-subtle);
   width: 340px;
   &:hover {
     background-color: var(--btn-primary-hover);

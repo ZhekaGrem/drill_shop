@@ -76,7 +76,7 @@
   }
 
   &__thumbnailActive {
-    border-color: var(--mantine-color-yellow-6) !important;
+    border-color: var(--text-primary);
   }
 }
 
@@ -253,7 +253,7 @@
   }
 
   &__success {
-    background-color: #10b981 !important;
+    background-color: var(--success-green);
   }
 }
 

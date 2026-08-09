@@ -18,7 +18,7 @@
     align-items: center;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-xl);
-    font-family: var(--font-condensed);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
     font-weight: var(--fw-medium);
 
@@ -51,7 +51,7 @@
     margin-bottom: var(--spacing-2xl);
 
     &__title {
-      font-family: var(--font-price);
+      font-family: var(--font-body);
       font-weight: var(--fw-black);
       color: var(--text-primary);
       margin: 0 0 var(--spacing-md) 0;
@@ -63,7 +63,7 @@
       display: flex;
       gap: var(--spacing-md);
       margin-bottom: var(--spacing-md);
-      font-family: var(--font-condensed);
+      font-family: var(--font-body);
       font-size: var(--text-sm);
       color: var(--text-secondary);
     }
@@ -85,7 +85,7 @@
     }
 
     &__originalPrice {
-      font-family: var(--font-price);
+      font-family: var(--font-body);
       font-size: var(--text-2xl);
       font-weight: var(--fw-light);
       color: var(--text-secondary);
@@ -93,7 +93,7 @@
     }
 
     &__currentPrice {
-      font-family: var(--font-price);
+      font-family: var(--font-body);
       font-size: var(--text-3xl);
       font-weight: var(--fw-medium);
       color: var(--btn-primary);
@@ -105,7 +105,7 @@
     }
 
     &__pricePerKg {
-      font-family: var(--font-condensed);
+      font-family: var(--font-body);
       font-size: var(--text-lg);
       color: var(--text-secondary);
       font-weight: var(--fw-medium);
@@ -127,10 +127,10 @@
 
       &__select {
         :global(.mantine-Select-input) {
-          font-family: var(--font-condensed);
+          font-family: var(--font-body);
           background: var(--background-light);
-          border: var(--border-width) solid var(--border-color);
-          border-radius: 0;
+          border: 1px solid var(--border-subtle);
+          border-radius: var(--border-radius-sm);
           box-shadow: var(--shadow-sm);
           font-weight: var(--fw-medium);
           transition: all var(--transition-fast);
@@ -149,14 +149,14 @@
 
         :global(.mantine-Select-dropdown) {
           background: var(--background-light);
-          border: var(--border-width) solid var(--border-color);
-          border-radius: 0;
+          border: 1px solid var(--border-subtle);
+          border-radius: var(--border-radius-sm);
           box-shadow: var(--shadow-lg);
         }
 
         :global(.mantine-Select-option) {
-          font-family: var(--font-condensed);
-          border-radius: 0;
+          font-family: var(--font-body);
+          border-radius: var(--border-radius-sm);
 
           &[data-selected] {
             background: var(--btn-primary);
@@ -173,7 +173,7 @@
 
   // ✅ Стилі для checkbox варіантів (size/color)
   .variantLabel {
-    font-family: var(--font-condensed);
+    font-family: var(--font-body);
     font-size: var(--text-base);
     font-weight: var(--fw-bold);
     color: var(--text-primary);
@@ -217,7 +217,7 @@
     min-height: 32px;
     min-width: 44px;
     padding: 4px 12px;
-    font-family: var(--font-condensed);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
     font-weight: var(--fw-medium);
     color: var(--text-primary);
@@ -243,7 +243,7 @@
   // Variant dropdown menu styles
   .variantDropdown {
     background: var(--background);
-    border: var(--border-width) solid var(--border-color);
+    border: 1px solid var(--border-subtle);
     padding: 0;
   }
 
@@ -252,14 +252,14 @@
     font-weight: var(--fw-medium);
     padding: 10px var(--spacing-md);
     background: var(--background);
-    border-bottom: var(--border-width) solid var(--border-color);
+    border-bottom: 1px solid var(--border-subtle);
 
     &:last-child {
       border-bottom: none;
     }
 
     &:first-child {
-      border: var(--border-width) solid var(--border-color);
+      border: 1px solid var(--border-subtle);
     }
 
     &:hover {
@@ -270,7 +270,7 @@
   .productDetails {
     &__availability {
       display: inline-block;
-      font-family: var(--font-condensed);
+      font-family: var(--font-body);
       font-size: var(--text-sm);
       font-weight: var(--fw-medium);
       color: var(--success-green);
@@ -321,7 +321,7 @@
       padding: 0;
       background: transparent;
       border: none;
-      border-radius: 0;
+      border-radius: var(--border-radius-sm);
       font-size: 16px;
       color: var(--text-secondary);
       cursor: pointer;
@@ -408,7 +408,7 @@
       padding: 0;
       background: transparent;
       border: none;
-      font-family: var(--font-condensed);
+      font-family: var(--font-body);
       font-size: 32px;
       font-weight: var(--fw-black);
       color: var(--text-primary);
@@ -458,8 +458,8 @@
       gap: var(--spacing-sm);
       padding: var(--spacing-sm);
       background: rgba(0, 0, 0, 0.5);
-      border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--border-radius-sm);
     }
 
     &__dot {
@@ -467,8 +467,8 @@
       height: 12px;
       padding: 0;
       background: var(--background-light);
-      border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--border-radius-sm);
       cursor: pointer;
       transition: all var(--transition-fast);
 
@@ -514,7 +514,7 @@
       background: transparent;
       border: none;
       box-shadow: none;
-      font-family: var(--font-condensed);
+      font-family: var(--font-body);
       font-size: var(--text-2xl);
       font-weight: var(--fw-medium);
       color: var(--text-primary);
@@ -540,7 +540,7 @@
       border: none;
       border-left: 1px solid var(--border-subtle);
       border-right: 1px solid var(--border-subtle);
-      font-family: var(--font-condensed);
+      font-family: var(--font-body);
       font-size: var(--text-xl);
       font-weight: var(--fw-medium);
       color: var(--text-primary);
@@ -662,8 +662,8 @@
     &__description,
     &__actions {
       background: var(--background-secondary);
-      border: var(--border-width) solid var(--border-color);
-      border-radius: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--border-radius-md);
     }
 
     &__title {

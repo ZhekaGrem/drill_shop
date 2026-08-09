@@ -1,10 +1,10 @@
 // CheckoutCard - компактна read-only картка товару для checkout
 .wrapper {
-  border-radius: 0;
+  border-radius: var(--border-radius-md);
   transition: var(--transition-fast);
   position: relative;
   background: var(--background);
-  border: 2px solid var(--border-color);
+  border: 1px solid var(--border-subtle);
 
   &:not(:first-child) {
     border-top-width: 1px;
@@ -19,10 +19,10 @@
 .image {
   width: 120px;
   height: 120px;
-  border-radius: 0;
+  border-radius: var(--border-radius-sm);
   object-fit: cover;
   flex-shrink: 0;
-  border-right: var(--border-width) solid var(--border-color);
+  border-right: 1px solid var(--border-subtle);
 }
 
 // ============ INFO ============
@@ -50,7 +50,7 @@
 }
 
 .currentPrice {
-  font-family: var(--font-price);
+  font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: var(--fw-black);
   color: var(--text-primary);
@@ -58,7 +58,7 @@
 }
 
 .oldPrice {
-  font-family: var(--font-price);
+  font-family: var(--font-body);
   font-size: var(--text-xs);
   color: var(--text-secondary);
   text-decoration: line-through;
@@ -72,8 +72,8 @@
   font-weight: var(--fw-medium);
   color: var(--text-secondary);
   padding: 2px 6px;
-  border: 1px solid var(--border-color);
-  border-radius: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
 
   span {
     font-weight: var(--fw-bold);

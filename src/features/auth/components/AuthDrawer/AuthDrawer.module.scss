@@ -1,15 +1,17 @@
 // src/features/auth/components/AuthDrawer/AuthDrawer.module.scss
-// Diia-style Auth Drawer: біла картка-«документ», що виїжджає справа
+// Diia-style Auth Drawer: біла картка-«документ», що виїжджає справа.
+// `.drawer .mantine-*` дає специфічність (0,2,0) проти (0,1,0) у Mantine —
+// тому !important тут не потрібен.
 
 .drawer {
   :global(.mantine-Drawer-content) {
-    border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg) !important;
-    background: var(--surface-card) !important;
+    border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
+    background: var(--surface-card);
   }
 
   :global(.mantine-Drawer-header) {
     background: var(--surface-card);
-    padding: var(--spacing-md) !important;
+    padding: var(--spacing-md);
   }
 
   :global(.mantine-Drawer-title) {
@@ -17,78 +19,52 @@
   }
 
   :global(.mantine-Drawer-body) {
-    padding: var(--spacing-md) !important;
+    padding: var(--spacing-md);
     background: var(--surface-card);
     height: 100%;
   }
 
+  // Закриття — нейтральна дія, не деструктивна: сірий hover, не червоний
   :global(.mantine-Drawer-close) {
+    border-radius: var(--radius-pill);
+
     &:hover {
-      background: var(--btn-danger);
+      background: var(--background-secondary);
     }
   }
 }
 
-// .header {
-//   display: flex;
-//   align-items: center;
-//   gap: var(--spacing-sm);
-//   font-family: var(--font-condensed);
-//   font-size: var(--text-xl);
-//   font-weight: var(--fw-bold);
-//   color: var(--text-primary);
-// }
-
 .tabs {
   :global(.mantine-Tabs-list) {
-    border-bottom: 1px solid var(--border-subtle) !important;
-    background: var(--surface-card) !important;
-    padding: 0 !important;
-    gap: 0 !important;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--surface-card);
+    padding: 0;
+    gap: 0;
   }
 
   :global(.mantine-Tabs-tab) {
-    font-size: var(--text-base) !important;
-    font-weight: var(--fw-bold) !important;
-    color: var(--text-secondary) !important;
-    border: none !important;
-    border-radius: 0 !important;
-    padding: var(--spacing-md) !important;
-    transition: var(--transition-fast) !important;
+    font-size: var(--text-base);
+    font-weight: var(--fw-normal);
+    color: var(--text-secondary);
+    border: none;
+    border-radius: 0;
+    padding: var(--spacing-md);
+    transition: var(--transition-fast);
 
     &:hover {
-      background: var(--background-secondary) !important;
-      color: var(--text-inverse) !important;
+      background: var(--background-secondary);
+      color: var(--text-primary);
     }
 
+    // Активна вкладка — чорний текст + акцентне підкреслення (патерн Дії)
     &[data-active='true'] {
-      color: var(--text-inverse);
-      border-bottom: var(--border-width) solid var(--border-color) !important;
-      font-weight: var(--fw-black) !important;
+      color: var(--text-primary);
+      font-weight: var(--fw-medium);
+      box-shadow: inset 0 -2px 0 0 var(--text-primary);
     }
   }
 
   :global(.mantine-Tabs-panel) {
-    padding-top: var(--spacing-lg) !important;
-  }
-}
-
-.tabsList {
-  border-bottom: var(--border-width) solid var(--border-color);
-}
-
-.tab {
-  font-size: var(--text-base);
-  font-weight: var(--fw-bold);
-  color: var(--text-secondary);
-  transition: var(--transition-fast);
-
-  &:hover {
-    background: var(--background-secondary);
-    color: var(--text-primary);
-  }
-
-  &[data-active='true'] {
-    color: var(--text-secondary);
+    padding-top: var(--spacing-lg);
   }
 }

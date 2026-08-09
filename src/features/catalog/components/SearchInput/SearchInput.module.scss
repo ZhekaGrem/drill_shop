@@ -15,7 +15,7 @@
   left: 0;
   right: 0;
   background: white;
-  border: 1px solid var(--mantine-color-gray-3);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--mantine-radius-md);
   box-shadow: var(--mantine-shadow-md);
   max-height: 400px;
@@ -51,11 +51,11 @@
   width: 100%;
 
   &:hover {
-    background-color: var(--mantine-color-gray-0);
+    background-color: var(--background-secondary);
   }
 
   &:not(:last-child) {
-    border-bottom: 1px solid var(--mantine-color-gray-2);
+    border-bottom: 1px solid var(--border-subtle);
   }
 }
 

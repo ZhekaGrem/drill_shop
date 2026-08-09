@@ -1,47 +1,15 @@
-// Стилі для компонентів доставки в стилі фільтрів каталогу
+// Стилі списку підказок доставки.
+// Самі поля (TextInput/Select) НЕ перевизначаються тут — їх стилізує
+// mantine-theme.ts. Дублікат тільки створює другу мову в одній формі.
+
 .citySelect,
 .warehouseSelect {
-  :global(.mantine-TextInput-input),
-  :global(.mantine-Select-input) {
-    background: var(--background);
-    border: none;
-    border-bottom: 2px solid var(--border-color);
-    border-radius: 0;
-    font-size: var(--text-base);
-    color: var(--text-primary);
-    transition: var(--transition-fast);
-
-    &::placeholder {
-      color: var(--text-tertiary);
-    }
-
-    &:focus {
-      border-bottom-color: var(--text-primary);
-      background: var(--background-secondary);
-    }
-  }
-
-  :global(.mantine-TextInput-label),
-  :global(.mantine-Select-label) {
-    font-size: var(--text-sm);
-    font-weight: var(--fw-medium);
-    color: var(--text-primary);
-    margin-bottom: var(--spacing-xs);
-  }
-
-  :global(.mantine-TextInput-error),
-  :global(.mantine-Select-error) {
-    font-size: var(--text-xs);
-    font-weight: var(--fw-medium);
-    color: #dc2626;
-  }
-
   :global(.mantine-Paper-root) {
     background: var(--background);
-    border: none;
-    border-bottom: 2px solid var(--text-primary);
-    border-radius: 0;
-    box-shadow: none;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
   }
 }
 
@@ -52,7 +20,7 @@
   color: var(--text-primary);
   cursor: pointer;
   transition: var(--transition-fast);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-subtle);
 
   &:hover {
     background: var(--background-secondary);
@@ -69,7 +37,7 @@
   font-weight: var(--fw-medium);
   color: var(--text-secondary);
   background: var(--background-secondary);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .loadingText {
@@ -79,8 +47,10 @@
 }
 
 .dropdown {
-  border: var(--border-width) solid var(--border-color);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--border-radius-sm);
 }
+
 .selectAdress {
   background-color: var(--background);
 }

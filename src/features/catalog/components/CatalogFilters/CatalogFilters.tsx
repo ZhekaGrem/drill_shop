@@ -1,6 +1,6 @@
 // src/features/catalog/components/CatalogFilters/CatalogFilters.tsx
 import React, { useState, useEffect, useRef } from 'react';
-import { useCatalogFilters } from '@/features/catalog/hooks/useCatalogFilters';
+import { useCatalogFilters, countActiveFilters } from '@/features/catalog/hooks/useCatalogFilters';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import styles from './CatalogFilters.module.scss';
 
@@ -8,6 +8,18 @@ interface CatalogFiltersProps {
   onFiltersChange?: () => void;
   className?: string;
   initialCategories?: any[];
+  /** Скільки товарів зараз у видачі — показуємо в рядку стану */
+  resultsCount?: number;
+}
+
+/** «12 товарів» / «1 товар» / «24 товари» */
+function formatProducts(count: number): string {
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+
+  if (mod10 === 1 && mod100 !== 11) return `${count} товар`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${count} товари`;
+  return `${count} товарів`;
 }
 
 const SORT_OPTIONS = [
@@ -22,6 +34,7 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
   onFiltersChange,
   className = '',
   initialCategories,
+  resultsCount,
 }) => {
   const { filters, setFilter, clearFilters } = useCatalogFilters();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -122,6 +135,9 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
   // Групові категорії (батько + діти)
   const groupedCategories = getGroupedCategories();
 
+  const activeCount = countActiveFilters(filters);
+  const showSummary = activeCount > 0 || resultsCount !== undefined;
+
   return (
     <div className={`${styles.filters} ${className}`}>
       {/* Сортування */}
@@ -197,6 +213,20 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
           </div>
         </div>
       ))}
+
+      {/* Рядок стану: що дала фільтрація і як з неї вийти */}
+      {showSummary && (
+        <div className={styles.summary}>
+          {resultsCount !== undefined && (
+            <span className={styles.resultsCount}>Знайдено {formatProducts(resultsCount)}</span>
+          )}
+          {activeCount > 0 && (
+            <button type="button" className={styles.resetButton} onClick={handleClearFilters}>
+              Скинути ({activeCount})
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

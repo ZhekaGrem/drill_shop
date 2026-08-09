@@ -1,6 +1,6 @@
 .productReviews {
   padding-top: var(--spacing-xl);
-  border-top: var(--border-width) solid var(--border-color);
+  border-top: 1px solid var(--border-subtle);
   margin-top: -2px;
 }
 .header {
@@ -39,7 +39,7 @@
   background: #f8f9fa;
   padding: 0.5rem 1rem;
 
-  border: var(--border-width) solid var(--border-color);
+  border: 1px solid var(--border-subtle);
 }
 
 .loginPrompt {

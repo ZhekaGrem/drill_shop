@@ -273,6 +273,10 @@ p {
   --btn-primary-hover: #333333;
   --btn-danger: #a63c48;
 
+  /* Шрифти. --font-body / --font-heading приходять з next/font (layout.tsx).
+     --font-mono визначаємо тут: окремий моно-шрифт не вантажимо. */
+  --font-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', 'Liberation Mono', menlo, consolas, monospace;
+
   /* Вага шрифту (Дія — легша) */
   --fw-light: 300;
   --fw-normal: 400;
@@ -300,16 +304,23 @@ p {
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
   --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.12);
 
-  /* Border */
-  --border-width: 2px; /* лише роздільники-акценти 2px solid #000 */
-  --border-color: #000000;
+  /* Border — єдиний спосіб малювати межі: 1px + --border-subtle.
+     Акцентний роздільник (2px solid var(--text-primary)) ставиться вручну
+     і тільки там, де він несе сенс: верх футера, верх модалки. */
   --border-subtle: #d6dde4; /* тонкі межі інпутів/карток */
+  --border-strong: #b9c4cf; /* межа на кольоровому фоні / hover */
+
+  /* DEPRECATED (pixel-art). Лишені як аліаси, щоб пропущене місце
+     виглядало правильно, а не як 2px чорна рамка. Не використовуй у новому коді. */
+  --border-width: 1px;
+  --border-color: var(--border-subtle);
 
   /* Радіуси */
   --border-radius-sm: 8px;
   --border-radius-md: 16px;
   --border-radius-lg: 32px;
   --radius-pill: 100px;
+  --radius-sheet: 24px; /* верх bottom sheet */
 
   /* Spacing — без змін */
   --spacing-xs: 4px;
@@ -341,11 +352,19 @@ body {
   padding: 0;
 }
 
+/* Горизонтальне переповнення ріжемо ТІЛЬКИ на html — і без height: 100%.
+   Чому: `overflow-x: hidden` робить елемент скрол-контейнером, і тоді
+   `overflow-y: visible` обчислюється в `auto` (CSS Overflow §3). Коли це
+   стояло і на html, і на body, обидва ставали скролерами, а `height: 100%`
+   обрізав їх до висоти вікна при вищому вмісті — звідси ДВА скролбари.
+   Тепер скролер один, документний. */
+html {
+  overflow-x: hidden;
+}
+
 html,
 body {
   max-width: 100vw;
-  height: 100%;
-  overflow-x: hidden;
   font-family: var(--font-body);
   background: var(--gradient-page) fixed;
   color: var(--text-primary);
@@ -492,13 +511,13 @@ a:hover {
   color: var(--text-primary);
 }
 
-/* Code blocks (pixel art стиль) */
+/* Code blocks */
 code,
 pre {
   font-family: var(--font-mono);
-  background: var(--background-dark);
-  color: var(--text-white);
-  border-radius: 0;
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-sm);
 }
 
 code {

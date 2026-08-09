@@ -9,7 +9,7 @@ import {
 import styles from './Input.module.scss';
 import { forwardRef } from 'react';
 import clsx from 'clsx';
-export type InputVariant = 'default' | 'underline' | 'minimal' | 'textarea';
+export type InputVariant = 'default' | 'minimal' | 'textarea';
 
 // Пропси для звичайного інпута
 interface CustomInputProps extends Omit<TextInputProps, 'variant'> {
@@ -17,8 +17,8 @@ interface CustomInputProps extends Omit<TextInputProps, 'variant'> {
 }
 
 export const Input = forwardRef<HTMLInputElement, CustomInputProps>(
-  ({ variant = 'underline', className, classNames, leftSection, rightSection, ...props }, ref) => {
-    const variantClass = styles[variant] || styles.underline;
+  ({ variant = 'default', className, classNames, leftSection, rightSection, ...props }, ref) => {
+    const variantClass = styles[variant] || styles.default;
 
     // Додаємо padding для input якщо є leftSection або rightSection
     const inputStyles: React.CSSProperties = {};
@@ -53,8 +53,8 @@ interface CustomPasswordInputProps extends Omit<PasswordInputProps, 'variant'> {
 }
 
 export const PasswordField = forwardRef<HTMLInputElement, CustomPasswordInputProps>(
-  ({ variant = 'underline', className, classNames, leftSection, rightSection, ...props }, ref) => {
-    const variantClass = styles[variant] || styles.underline;
+  ({ variant = 'default', className, classNames, leftSection, rightSection, ...props }, ref) => {
+    const variantClass = styles[variant] || styles.default;
 
     // Додаємо padding для input якщо є leftSection
     const inputStyles: React.CSSProperties = {};
@@ -101,12 +101,6 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, CustomTextareaProps
           label: styles.label,
           error: styles.error,
           ...classNames,
-        }}
-        styles={{
-          input: {
-            border: 'var(--border-width) solid var(--border-color)',
-            borderRadius: 0,
-          },
         }}
         {...props}
       />

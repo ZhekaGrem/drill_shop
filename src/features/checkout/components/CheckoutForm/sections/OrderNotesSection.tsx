@@ -33,7 +33,7 @@ export const OrderNotesSection = ({
         radius={0}
         styles={{
           root: { padding: 'var(--spacing-sm) var(--spacing-md)' },
-          label: { fontFamily: 'var(--font-condensed)', fontSize: 'var(--text-sm)' },
+          label: { fontFamily: 'var(--font-body)', fontSize: 'var(--text-sm)' },
         }}
       />
     </>

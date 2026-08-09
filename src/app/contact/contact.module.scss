@@ -92,12 +92,11 @@
   input,
   textarea {
     width: 100%;
-    padding: 14px 0;
-    border: none;
-    border-bottom: 2px solid var(--border-subtle);
-    border-radius: 0;
+    padding: 14px var(--spacing-md);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius-sm);
     font-size: var(--text-base);
-    background: transparent;
+    background: var(--background);
     transition: all 0.2s;
 
     &::placeholder {
@@ -114,7 +113,7 @@
   textarea {
     resize: vertical;
     max-height: 150px;
-    border: 2px solid var(--border-subtle);
+    border: 1px solid var(--border-subtle);
   }
 }
 

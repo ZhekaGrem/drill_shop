@@ -1,79 +1,101 @@
-// src/features/catalog/components/MobileFilterModal/MobileFilterModal.module.scss
-// Pixel art стиль з Figma
+// Bottom sheet фільтрів. Патерн Дії: скруглений верх, «ручка»,
+// закріплена кнопка підтвердження внизу.
+// `.drawer .mantine-*` = специфічність (0,2,0) проти (0,1,0) у Mantine —
+// !important не потрібен.
 
 .drawer {
   :global(.mantine-Drawer-content) {
-    border-radius: 0 !important;
-    border: var(--border-width) solid var(--border-color) !important;
-    border-bottom: none !important;
-    background: var(--background) !important;
+    display: flex;
+    flex-direction: column;
+    // height: auto — Mantine для нижнього drawer тягне контент на всю задану
+    // висоту; без цього sheet стоїть на 88vh навіть коли фільтрів на пів екрана.
+    // max-height лишається стелею для довгого списку категорій.
+    height: auto;
+    max-height: 88vh;
+    background: var(--surface-card);
+    border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
   }
 
   :global(.mantine-Drawer-header) {
-    background: var(--background) !important;
-    border-bottom: var(--border-width) solid var(--border-color) !important;
-    padding: var(--spacing-md) !important;
+    position: relative;
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+    background: var(--surface-card);
+    border-bottom: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+
+    // «Ручка» sheet — сигнал, що панель тягнеться/закривається
+    &::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      width: 36px;
+      height: 4px;
+      background: var(--border-subtle);
+      border-radius: var(--radius-pill);
+      transform: translateX(-50%);
+    }
+  }
+
+  :global(.mantine-Drawer-title) {
+    font-family: var(--font-heading);
+    font-size: var(--text-xl);
+    font-weight: var(--fw-medium);
     color: var(--text-primary);
   }
 
-  :global(.mantine-Drawer-body) {
-    background: var(--background) !important;
-    padding: var(--spacing-md) !important;
-    max-height: 70vh;
-    overflow-y: auto;
-  }
-
   :global(.mantine-Drawer-close) {
-    svg {
-      width: 34px;
-      height: 34px;
-      stroke-width: 2px;
-    }
+    color: var(--text-primary);
+    border-radius: var(--radius-pill);
 
     &:hover {
-      background: var(--btn-danger);
+      background: var(--background-secondary);
     }
   }
-}
 
-.drawerContent {
-  border-radius: 0 !important;
-}
-
-.drawerHeader {
-  background: var(--background);
-  border-bottom: var(--border-width) solid var(--border-color);
-}
-
-.drawerTitle {
-  width: 100%;
-}
-
-.drawerClose {
-  svg {
-    width: 24px;
-    height: 24px;
-    stroke-width: 2px;
-  }
-
-  &:hover {
-    background: var(--btn-primary) !important;
+  // flex: 0 1 auto — body стискається під довгий вміст, але НЕ розтягується
+  // під короткий. min-height: 0 потрібен, щоб overflow у flex-колонці працював.
+  :global(.mantine-Drawer-body) {
+    flex: 0 1 auto;
+    min-height: 0;
+    padding: var(--spacing-md) var(--spacing-md) 0;
+    overflow-y: auto;
+    background: var(--surface-card);
   }
 }
 
-.drawerBody {
-  background: var(--background);
+// Закріплена кнопка підтвердження — головна дія sheet завжди під великим пальцем.
+// sticky, а не absolute: футер живе всередині скрольного body, і тільки sticky
+// надійно тримається його нижнього краю. Негативні поля — щоб лягти на всю ширину.
+.footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin: var(--spacing-md) calc(-1 * var(--spacing-md)) 0;
+  padding: var(--spacing-md);
+  padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom, 0px));
+  background: var(--surface-card);
+  border-top: 1px solid var(--border-subtle);
 }
 
-.header {
+.applyButton {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  font-size: var(--text-xl);
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
-}
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--fw-medium);
+  color: var(--text-inverse);
+  letter-spacing: -0.02em;
+  background: var(--btn-primary);
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: var(--transition-normal);
 
-.icon {
-  color: var(--text-primary);
+  &:hover {
+    background: var(--btn-primary-hover);
+  }
 }

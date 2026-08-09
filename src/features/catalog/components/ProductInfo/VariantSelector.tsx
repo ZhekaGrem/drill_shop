@@ -89,7 +89,7 @@ export const VariantSelector = ({
                 fullWidth
                 styles={{
                   root: {
-                    border: 'var(--border-width) solid var(--border-color)',
+                    border: '1px solid var(--border-subtle)',
                     background: 'var(--background)',
                     color: 'var(--text-primary)',
                     fontWeight: 'var(--fw-medium)',

@@ -1,252 +1,143 @@
-# Pixel Art Design System - "Щільний дріл"
+# Дизайн-система — ye-dril.com
 
-## 🎨 Кольорова Палітра
+Мова інтерфейсу перенесена з застосунку **Дія**: світла поверхня, легка вага шрифту,
+скруглення й pill-контроли, скупий колір, мʼякі тіні. Це **візуальна** копія дизайн-мови —
+логотип «Дія», назву та державну символіку ми не використовуємо.
 
-### Основні кольори
+> **Джерело правди — `src/app/globals.css` (блок `:root`).**
+> `src/shared/config/design-tokens.ts` — дзеркало для TS-коду.
+> Міняєш у CSS — міняй у дзеркалі.
 
-- **Primary (Yellow):** `#E6DB1B` - основні кнопки, акценти
-- **Secondary (Beige):** `#E0DDCA` - фон карток, світлі елементи
-- **Background:** `#D5D3B5` - основний фон сторінок
-- **Text:** `#2B2B27` - основний текст
+---
 
-### Кнопки
+## 🎨 Колір
 
-- **Primary Button:** `#E6DB1B` (жовта)
-- **Green Button:** `#33603B` (зелена для CTA)
-- **Red Button:** `#A63C48` (червона для акцій)
-- **Beige Button:** `#E0DDCA` (бежева для меню)
+| Роль                            | Токен                             | Значення  |
+| ------------------------------- | --------------------------------- | --------- |
+| Основний текст / чорні контроли | `--text-primary`, `--btn-primary` | `#000000` |
+| Вторинний текст                 | `--text-secondary`                | `#606060` |
+| Третинний текст, плейсхолдери   | `--text-tertiary`                 | `#8a8a8a` |
+| Фон сторінки                    | `--background`                    | `#ffffff` |
+| Фон секцій, hover               | `--background-secondary`          | `#e7eef3` |
+| Поверхня картки                 | `--surface-card`                  | `#ffffff` |
+| Акцент — лінки, фокус           | `--accent`                        | `#0073e6` |
+| **Тільки** знижки/промо         | `--accent-red`                    | `#a63c48` |
 
-### Статуси
-
-- **Success:** `#56DA64`
-- **Error:** `#9C0C3D`
-- **Warning:** `#E6DB1B`
-- **Info:** `#0088FF`
+**Бренд-градієнт** `--gradient-brand` — для героїв і секцій, **не** для фону карток з текстом.
+Картка — щільна біла поверхня, що лежить _на_ градієнті. Якщо текст усе ж лягає на градієнт,
+під ним має бути підкладка `rgba(255,255,255,0.82)`: при меншій непрозорості сірий текст над
+синім кінцем градієнта провалює WCAG 1.4.3 (2.93:1 при 0.35 проти потрібних 4.5:1).
 
 ---
 
 ## 📝 Типографіка
 
-### Шрифти
+Шрифти **e-Ukraine** / **e-Ukraine Head** (CC BY 4.0), локально в `public/fonts/e-ukraine`,
+підключені через `next/font/local` у `app/layout.tsx`.
 
-```tsx
---font-body: 'IBM Plex Sans'           // Основний текст
---font-condensed: 'IBM Plex Sans Condensed'  // UI елементи
---font-price: 'Rubik Glitch'         // Заголовки (pixel art)
---font-price: 'Rubik'                  // Ціни (weight 900)
---font-mono: 'IBM Plex Mono'           // Код
+```
+--font-body      e-Ukraine        основний текст, UI
+--font-heading   e-Ukraine Head   h1–h4
+--font-mono      системний моно   код
 ```
 
-### Розміри
+Ваги навмисно зведені до трьох — Дія візуально легша за типовий e-commerce:
 
-- **h1:** 40px (Rubik Glitch)
-- **h2:** 36px (Rubik Glitch)
-- **h3:** 32px (Rubik Glitch)
-- **h4:** 27px (Rubik Glitch)
-- **h5:** 24px (IBM Plex Sans Bold)
-- **h6:** 20px (IBM Plex Sans Bold)
-- **Body:** 16px (IBM Plex Sans)
-- **Small:** 14px
-- **XSmall:** 12px
+```
+--fw-light: 300   --fw-normal: 400   --fw-medium: 500
+```
+
+`--fw-semibold`, `--fw-bold`, `--fw-black` — аліаси на `500`, лишені для сумісності.
+**Не додавай 600/700** — це одразу вибиває сторінку з мови.
+
+Заголовки: `letter-spacing: -0.02em`, `line-height: 1.2`, вага 400.
+Розміри — `--text-xs` (12px) … `--text-6xl` (40px).
 
 ---
 
-## 🔲 Pixel Art Стиль
+## 🔲 Форма
 
-### Borders
-
-```css
-border:;
-border-radius: 0; /* Все квадратне! */
+```
+--border-radius-sm: 8px    поля, дропдауни, дрібні поверхні
+--border-radius-md: 16px   картки, модалки
+--border-radius-lg: 32px   великі секції, drawer
+--radius-pill: 100px       кнопки, чіпи, бейджі
+--radius-sheet: 24px       верх bottom sheet
 ```
 
-### Shadows (жорсткі, без blur)
+**Межі — один спосіб:** `1px solid var(--border-subtle)` (`#d6dde4`).
+`--border-strong` (`#b9c4cf`) — для hover і меж на кольоровому фоні.
+Акцентний роздільник `2px solid var(--text-primary)` ставиться **вручну** і тільки там, де
+несе сенс: верх футера, верхня межа модалки/сповіщення.
 
-```css
---shadow-xs: 2px 2px 0px rgba(43, 43, 39, 0.1);
---shadow-sm: 2px 2px 0px rgba(43, 43, 39, 0.2);
---shadow-md: 3px 3px 0px rgba(43, 43, 39, 0.3);
---shadow-lg: 4px 4px 0px rgba(43, 43, 39, 0.4);
-```
+> `--border-width` і `--border-color` — **застарілі** (pixel-art). Лишені як аліаси на 1px/subtle,
+> щоб пропущене місце не малювало 2px чорну рамку. У новому коді не використовуй.
 
-### Hover/Active Ефекти
-
-```scss
-// Hover - елемент "натискається"
-&:hover {
-  transform: translate(1px, 1px);
-  box-shadow: var(--shadow-sm);
-}
-
-// Active - елемент повністю натиснутий
-&:active {
-  transform: translate(2px, 2px);
-  box-shadow: var(--shadow-xs);
-}
-```
+**Тіні — мʼякі:** `--shadow-xs` … `--shadow-xl`. Жорстких `2px 2px 0` тіней більше немає.
 
 ---
 
-## 🎯 Компоненти
+## 📐 Розміри контролів
 
-### Button
+Одна висота на стику — сусідні контроли не мають розʼїжджатись:
 
-**Варіанти:**
+| Контекст                          | Висота              |
+| --------------------------------- | ------------------- |
+| Кнопка `sm` / `md` / `lg` / `xl`  | 40 / 48 / 56 / 60px |
+| Іконка-кнопка в хедері            | 44px (моб. 40px)    |
+| Чіп фільтра, чіп варіанта         | 44px (моб. 40px)    |
+| Поле фільтра, дропдаун сортування | 44px                |
+| Кнопка в картці товару            | 44px (моб. 40px)    |
+| Кнопка підтвердження в sheet      | 52px                |
 
-- `primary` - жовта
-- `secondary` - темна
-- `green` - зелена
-- `red` - червона
-- `beige` - бежева
-- `outline` - прозора з border
-- `ghost` - прозора без border
-
-**Розміри:**
-
-- `sm` - 40px
-- `md` - 48px (default)
-- `lg` - 52px
-- `xl` - 60px
-- `menu` - full width
-
-**Приклад:**
-
-```tsx
-<Button variant="primary" size="md">
-  В магазин
-</Button>
-```
-
-### Card
-
-**Стилі:**
-
-- Border: 2px solid
-- Shadow: жорстка тінь
-- Background: beige
-- Hover: translate ефект
-
-### Input/Textarea
-
-**Стилі:**
-
-- Border: 2px solid
-- Border-radius: 0
-- Font: IBM Plex Sans Condensed
-- Focus: жовтий border + glow
+Мінімум — **44×44px** (Apple HIG / WCAG 2.5.5). Нижче 40px не опускаємось ніде.
 
 ---
 
-## 🛠️ Utility Classes
+## 🧩 Компоненти
 
-```css
-.pixel-border      /* 2px solid border, no radius */
-.pixel-shadow      /* Medium shadow */
-.pixel-shadow-sm   /* Small shadow */
-.pixel-shadow-lg   /* Large shadow */
-```
+**Кнопка** (`shared/components/Button`) — pill, 4 варіанти:
+`primary` (чорна), `secondary` (біла з чорною межею), `outline`, `ghost`.
 
-**Приклад:**
+**Поле** (`shared/components/Input`) — біле, radius 8, `1px --border-subtle`, фокус — синя межа.
+Варіанти: `default`, `minimal`, `textarea`.
 
-```tsx
-<div className="pixel-border pixel-shadow">Pixel art контейнер</div>
-```
+> **Одне джерело правди.** Вигляд полів задають `shared/config/mantine-theme.ts` +
+> `Input.module.scss`. Не перевизначай `.mantine-TextInput-input` у файлах фіч — саме так
+> у проєкті колись зʼявилось дві різні мови в одній формі.
 
----
+**Бейдж** (`shared/components/Badge`) — pill 24px, колір скупо: червоний тільки промо/знижка.
 
-## 📐 Spacing
+**Картка товару** — біла поверхня, `1px --border-subtle`, radius 24 (моб. 16),
+фото «вставлене» з відступом 12px — деталь паспорт-картки Дії.
 
-```css
---spacing-xs: 4px --spacing-sm: 8px --spacing-md: 16px --spacing-lg: 24px --spacing-xl: 32px
-  --spacing-2xl: 48px;
-```
+**Bottom sheet** (мобільні фільтри) — скруглений верх `--radius-sheet`, «ручка» зверху,
+закріплена (`sticky`) кнопка підтвердження з живим лічильником результатів.
 
 ---
 
-## ⚡ Transitions
+## ⚠️ Mantine 8 — важлива пастка
 
-```css
---transition-fast: 0.15s ease /* Для hover ефектів */ --transition-normal: 0.2s ease
-  /* Для модалів, dropdown */ --transition-slow: 0.3s ease /* Для складних анімацій */;
-```
+Без `@mantine/emotion` проп `styles` застосовується як **inline-стилі**, тому ключі-псевдо-
+селектори (`&:hover`, `&:focus`, `&:checked`, `::placeholder`) там **мовчки ігноруються**.
 
----
+Стани живуть у:
 
-## 📱 Breakpoints
+- `globals.css` — за статичними класами Mantine (`.mantine-Checkbox-input:checked` тощо);
+- SCSS-модулі компонента — для власних класів.
 
-```css
---container-mobile: 320px --container-max-width: 1200px --container-wide: 1600px;
-```
-
-**Media queries:**
-
-```css
-@media (max-width: 768px) {
-  /* Mobile */
-}
-@media (min-width: 769px) and (max-width: 1199px) {
-  /* Tablet */
-}
-@media (min-width: 1200px) {
-  /* Desktop */
-}
-```
+У `mantine-theme.ts` лишай тільки статичні, завжди застосовані властивості.
 
 ---
 
-## 🎨 Приклади Використання
+## ✅ Чеклист нового компонента
 
-### Pixel Art Card
-
-```tsx
-<Card className="pixel-border pixel-shadow" bg="beige.3">
-  <Text c="dark.8" fw={700}>
-    Заголовок картки
-  </Text>
-</Card>
-```
-
-### Button Group
-
-```tsx
-<Group gap="md">
-  <Button variant="primary" size="lg">
-    Додати в кошик
-  </Button>
-  <Button variant="outline" size="lg">
-    Детальніше
-  </Button>
-</Group>
-```
-
-### Form Input
-
-```tsx
-<TextInput
-  label="Email"
-  placeholder="your@email.com"
-  styles={{
-    input: {
-      fontFamily: 'var(--font-condensed)',
-      border: '2px solid var(--border-color)',
-      borderRadius: 0,
-    },
-  }}
-/>
-```
-
----
-
-## ✅ Чеклист Імплементації
-
-Коли створюєш новий компонент:
-
-- [ ] Використовуєш pixel art стиль (border-radius: 0)
-- [ ] Додаєш жорсткі тіні
-- [ ] Використовуєш правильні кольори з палітри
-- [ ] Додаєш hover/active translate ефекти
-- [ ] Використовуєш правильні шрифти
-- [ ] Перевіряєш на мобільних пристроях
-- [ ] TypeScript без помилок
-
-**Pixel Art = Квадрати + Жорсткі тіні + Прості анімації** 🎮
+- [ ] Кольори, радіуси, відступи — з токенів, без хардкоду hex
+- [ ] Межі — `1px solid var(--border-subtle)`
+- [ ] Сусідні контроли мають однакову висоту й вирівняні по центру
+- [ ] Тап-таргети ≥ 44px (мін. 40px на мобільному)
+- [ ] Контраст тексту ≥ 4.5:1 (для великого ≥ 3:1) — перевірено, не «на око»
+- [ ] Є стани: hover, focus-visible, disabled, loading, empty, error
+- [ ] Фокус з клавіатури видно (особливо якщо справжній input прихований)
+- [ ] Поля не перевизначають тему Mantine
+- [ ] Немає `!important` заради перебиття Mantine — підніми специфічність

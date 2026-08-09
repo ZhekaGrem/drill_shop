@@ -14,7 +14,7 @@
   text-align: center;
 
   &__title {
-    font-family: var(--font-price);
+    font-family: var(--font-body);
     font-size: var(--text-3xl);
     font-weight: var(--fw-black);
     color: var(--text-primary);
@@ -129,14 +129,14 @@
   width: 2px;
 
   height: 50px;
-  background: var(--border-color);
+  background: var(--border-subtle);
   flex-shrink: 0;
 }
 
 .radioCircle {
   width: 20px;
   height: 20px;
-  border: 2px solid var(--text-secondary);
+  border: 1px solid var(--border-subtle);
   border-radius: 50%;
   position: relative;
   flex-shrink: 0;
@@ -251,7 +251,7 @@
 // ============ DIVIDER ============
 .divider {
   border-top: 3px dotted var(--primary);
-  height: var(--border-width);
+  height: 1px;
 
   margin: var(--spacing-sm) 0;
 }
@@ -300,7 +300,7 @@
 }
 
 .discountAmount {
-  font-family: var(--font-price);
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--fw-medium);
   color: var(--success-green);
@@ -317,14 +317,14 @@
 }
 
 .totalLabel {
-  font-family: var(--font-price);
+  font-family: var(--font-body);
   font-size: var(--text-2xl);
   font-weight: var(--fw-black);
   color: var(--text-primary);
 }
 
 .totalAmount {
-  font-family: var(--font-price);
+  font-family: var(--font-body);
   font-size: var(--text-2xl);
   font-weight: var(--fw-black);
   color: var(--btn-primary);

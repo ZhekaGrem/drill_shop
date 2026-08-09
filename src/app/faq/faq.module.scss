@@ -132,7 +132,7 @@
   display: inline-block;
   margin-left: 10px;
   color: var(--accent-red);
-  font-family: var(--font-price);
+  font-family: var(--font-body);
   font-weight: 900;
   font-style: normal;
   transform: translateY(0.08em) rotate(-10deg);
@@ -396,7 +396,7 @@
 }
 
 .qText {
-  font-family: var(--font-price);
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: clamp(1rem, 1.5vw, 1.18rem);
   line-height: 1.35;

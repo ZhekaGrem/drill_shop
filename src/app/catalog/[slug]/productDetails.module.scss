@@ -47,7 +47,7 @@
       padding: var(--spacing-y) var(--spacing-x);
     }
     &__title {
-      font-family: var(--font-price);
+      font-family: var(--font-body);
       font-weight: var(--fw-black);
       color: var(--text-primary);
       margin: 0 0 var(--spacing-md) 0;
@@ -80,7 +80,7 @@
     }
 
     &__originalPrice {
-      font-family: var(--font-price);
+      font-family: var(--font-body);
       font-size: var(--text-2xl);
       font-weight: var(--fw-light);
       color: var(--text-secondary);
@@ -88,7 +88,7 @@
     }
 
     &__currentPrice {
-      font-family: var(--font-price);
+      font-family: var(--font-body);
       font-size: var(--text-3xl);
       font-weight: var(--fw-medium);
       color: var(--btn-primary);
@@ -118,7 +118,7 @@
     &__variants {
       &__select {
         :global(.mantine-Select-input) {
-          border: var(--border-width) solid var(--border-color);
+          border: 1px solid var(--border-subtle);
           box-shadow: var(--shadow-sm);
           font-weight: var(--fw-medium);
           transition: all var(--transition-fast);
@@ -451,7 +451,7 @@
       height: 12px;
       padding: 0;
       background: var(--background-light);
-      border: var(--border-width) solid var(--background-dark);
+      border: 1px solid var(--border-subtle);
       cursor: pointer;
       transition: all var(--transition-fast);
 
@@ -638,7 +638,7 @@
     &__description,
     &__actions {
       background: var(--background-secondary);
-      border: var(--border-width) solid var(--border-color);
+      border: 1px solid var(--border-subtle);
     }
 
     &__title {

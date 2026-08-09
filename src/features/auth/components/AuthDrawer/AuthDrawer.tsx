@@ -46,7 +46,7 @@ export const AuthDrawer = ({ opened, onClose, onSuccess, defaultTab = 'login' }:
       }}
       styles={{
         header: {
-          borderBottom: '2px solid var(--border-color)',
+          borderBottom: '1px solid var(--border-subtle)',
         },
         body: {
           height: '100%',
@@ -63,13 +63,10 @@ export const AuthDrawer = ({ opened, onClose, onSuccess, defaultTab = 'login' }:
         onChange={handleTabChange}
         className={styles.tabs}
         style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <Tabs.List grow className={styles.tabsList}>
-          <Tabs.Tab value="login" className={styles.tab}>
-            Вхід
-          </Tabs.Tab>
-          <Tabs.Tab value="register" className={styles.tab}>
-            Реєстрація
-          </Tabs.Tab>
+        {/* Вигляд списку й вкладок задає .tabs у AuthDrawer.module.scss */}
+        <Tabs.List grow>
+          <Tabs.Tab value="login">Вхід</Tabs.Tab>
+          <Tabs.Tab value="register">Реєстрація</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel

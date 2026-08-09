@@ -15,7 +15,7 @@
     padding: var(--spacing-y-m) var(--spacing-x);
     justify-content: space-between;
     gap: 8px;
-    border-bottom: var(--border-width) solid (var(--border-color));
+    border-bottom: 1px solid var(--border-subtle);
 
     span {
       flex: 1;
@@ -35,22 +35,21 @@
   }
 }
 
-.modalBody {
-  padding: 0;
-}
-
-.modalContent {
-  background: var(--surface-card);
-}
-
-.modalTitle {
-  font-family: var(--font-price);
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
-}
-
-.modalHeader {
-  background-color: rgba(0, 0, 0, 0.05);
+// Лічильник активних фільтрів на мобільній кнопці
+.filtersBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: var(--spacing-xs);
+  padding: 0 6px;
+  font-size: var(--text-xs);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  color: var(--text-inverse);
+  background: var(--text-primary);
+  border-radius: var(--radius-pill);
 }
 
 .header {
@@ -82,7 +81,7 @@
 .products {
   display: grid;
   grid-template-columns: repeat(3, 370px); // 3 колонки по 370px
-  gap: var(--spacing-lg); // Розрив між картками-«паспортами» — вони мають власний градієнтний фон
+  gap: var(--spacing-lg);
   justify-content: center; // По центру екрану
   &--loading {
     opacity: 0.7;

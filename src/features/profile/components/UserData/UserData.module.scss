@@ -1,47 +1,7 @@
-// Стилі для UserData в стилі фільтрів каталогу
+// Форма профілю. Поля/лейбли/помилки стилізує mantine-theme.ts —
+// дублювати їх тут означає тримати другу мову в одній формі.
+
 .userDataForm {
-  :global(.mantine-TextInput-input),
-  :global(.mantine-PasswordInput-input) {
-    background: var(--background);
-    border: none;
-    border-bottom: 2px solid var(--border-color);
-    border-radius: 0;
-    color: var(--text-primary);
-    transition: var(--transition-fast);
-    padding: var(--spacing-sm) var(--spacing-md);
-
-    &::placeholder {
-      color: var(--text-tertiary);
-    }
-
-    &:hover {
-      background: var(--background-secondary);
-    }
-
-    &:focus {
-      border-bottom-color: var(--text-primary);
-      background: var(--background-secondary);
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-  }
-
-  :global(.mantine-TextInput-label),
-  :global(.mantine-PasswordInput-label) {
-    font-weight: var(--fw-medium);
-    color: var(--text-primary);
-    margin-bottom: var(--spacing-xs);
-  }
-
-  :global(.mantine-TextInput-error),
-  :global(.mantine-PasswordInput-error) {
-    font-weight: var(--fw-medium);
-    color: #dc2626;
-  }
-
   :global(.mantine-Stack-root) {
     gap: var(--spacing-lg);
   }
@@ -52,6 +12,6 @@
   }
 
   :global(.mantine-Divider-root) {
-    border-color: var(--border-color);
+    border-color: var(--border-subtle);
   }
 }

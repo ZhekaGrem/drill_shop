@@ -143,6 +143,22 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
   },
 }));
 
+/**
+ * Скільки фільтрів реально звужують видачу.
+ * Сортування не рахуємо — воно не прибирає товари, лише міняє порядок.
+ */
+export function countActiveFilters(filters: ProductFilters & { categoryIds?: string[] }): number {
+  let count = 0;
+
+  if (filters.categoryIds?.length) count += filters.categoryIds.length;
+  if (filters.priceMin !== undefined) count += 1;
+  if (filters.priceMax !== undefined) count += 1;
+  if (filters.hasPromo !== undefined) count += 1;
+  if (filters.search?.trim()) count += 1;
+
+  return count;
+}
+
 export function useCatalogAPI() {
   const { filters, getApiParams } = useCatalogFilters();
 

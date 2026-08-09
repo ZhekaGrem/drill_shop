@@ -4,7 +4,7 @@
 // Світло-зелений фон
 .wrapperMini {
   background-color: var(--background);
-  border: 2px solid var(--border-subtle);
+  border: 1px solid var(--border-subtle);
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -22,7 +22,7 @@
 
 .wrapper {
   background-color: var(--background);
-  border: 2px solid var(--border-subtle);
+  border: 1px solid var(--border-subtle);
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -41,7 +41,7 @@
 .image {
   object-fit: cover;
   flex-shrink: 0;
-  border-right: 2px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
   align-self: stretch;
   height: 100%;
 }
@@ -178,7 +178,7 @@
 @media (max-width: 768px) {
   .wrapper,
   .wrapperMini {
-    border-right: 2px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
     min-height: 180px;
 
     // Переконуємось що Group має align-items: stretch

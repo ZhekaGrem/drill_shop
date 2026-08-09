@@ -1,34 +1,75 @@
+// Фільтри каталогу. Мова Дії: біла поверхня, pill-чіпи, тонкі межі.
+// Групи розділяє відступ і легкий роздільник, а не 2px чорна лінія.
+
 .filters {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: var(--spacing-y) var(--spacing-x);
-  background: var(--background);
-  border-radius: 0;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-x);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--border-radius-md);
   flex-wrap: wrap;
-  border-bottom: var(--border-width) solid var(--text-primary);
 }
 
 .filterGroup {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--spacing-sm);
 
-  // Group separator — diia.gov.ua 2px black divider between filter groups
   &:not(:last-child) {
     padding-right: var(--spacing-lg);
-    border-right: var(--border-width) solid var(--text-primary);
+    border-right: 1px solid var(--border-subtle);
   }
 }
 
 .label {
-  font-size: 14px;
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-light);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
-// Dropdown
+// ============ Рядок стану: скільки знайдено + скидання ============
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.resultsCount {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-normal);
+  color: var(--text-secondary);
+}
+
+.resetButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  height: 32px;
+  padding: 0 var(--spacing-md);
+  margin-left: auto;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-normal);
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: var(--transition-fast);
+
+  &:hover {
+    background: var(--background-secondary);
+    border-color: var(--border-strong);
+  }
+}
+
+// ============ Сортування ============
 .dropdown {
   position: relative;
 }
@@ -36,21 +77,24 @@
 .dropdownButton {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--spacing-sm);
-  padding: 8px var(--spacing-md);
+  height: 44px;
   min-width: 220px;
-  font-size: 14px;
-  font-weight: var(--fw-medium);
+  padding: 0 var(--spacing-md);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-light);
   color: var(--text-primary);
   background: var(--background);
-  border: none;
-  border-bottom: 2px solid var(--text-primary);
-  border-radius: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
   cursor: pointer;
   transition: var(--transition-fast);
   text-align: left;
 
   &:hover {
+    border-color: var(--border-strong);
     background: var(--background-secondary);
   }
 
@@ -60,49 +104,48 @@
 }
 
 .chevron {
+  flex-shrink: 0;
   transition: var(--transition-fast);
 }
 
 .dropdownMenu {
   position: absolute;
-  top: calc(100%);
+  top: calc(100% + var(--spacing-xs));
   left: 0;
   right: 0;
   z-index: 100;
   background: var(--background);
-  border-radius: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
 
 .dropdownItem {
   width: 100%;
   padding: 10px var(--spacing-md);
-  font-size: 14px;
-  font-weight: var(--fw-medium);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-light);
   color: var(--text-primary);
   background: var(--background);
   border: none;
-  border-bottom: 2px solid var(--text-primary);
   text-align: left;
   cursor: pointer;
   transition: var(--transition-fast);
 
-  &:last-child {
-    border-bottom: 2px solid var(--text-primary);
-  }
-
   &:hover {
     background: var(--background-secondary);
-    color: var(--text-primary);
   }
 
   &.active {
-    font-weight: var(--fw-bold);
+    background: var(--text-primary);
+    color: var(--text-inverse);
+    font-weight: var(--fw-normal);
   }
 }
 
-// Price Inputs
+// ============ Ціна ============
 .priceInputs {
   display: flex;
   align-items: center;
@@ -112,38 +155,39 @@
 .priceField {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
 }
 
 .priceLabel {
-  font-size: 14px;
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-light);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
 .priceInput {
-  width: 80px;
-  padding: 6px 12px;
-  font-size: 14px;
+  width: 96px;
+  height: 44px;
+  padding: 0 var(--spacing-md);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
   color: var(--text-primary);
   background: var(--background);
-  border: none;
-  border-bottom: 2px solid var(--border-color);
-  border-radius: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
   transition: var(--transition-fast);
 
   &::placeholder {
     color: var(--text-tertiary);
   }
 
-  &:hover {
-    background: var(--background-secondary);
+  &:hover:not(:focus) {
+    border-color: var(--border-strong);
   }
 
   &:focus {
     outline: none;
-    border-bottom-color: var(--text-primary);
+    border-color: var(--accent);
   }
 
   &::-webkit-inner-spin-button,
@@ -157,11 +201,11 @@
   }
 }
 
-// Checkboxes
+// ============ Категорії — pill-чіпи ============
 .checkboxes {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
 }
 
 .checkbox {
@@ -173,17 +217,23 @@
     width: 0;
     height: 0;
   }
+
+  // Інпут прихований — фокус з клавіатури підсвічуємо на самому чіпі
+  input[type='checkbox']:focus-visible + .checkboxText {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
 }
 
-// White pill chip — diia.gov.ua filter pattern; selected = solid black
 .checkboxText {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 32px;
-  padding: 6px 12px;
-  min-width: 50px;
-  font-size: 14px;
+  min-height: 44px;
+  min-width: 56px;
+  padding: 0 var(--spacing-md);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
   font-weight: var(--fw-light);
   color: var(--text-primary);
   background: var(--background);
@@ -195,8 +245,8 @@
   user-select: none;
 
   &:hover {
+    border-color: var(--border-strong);
     background: var(--background-secondary);
-    color: var(--text-primary);
   }
 
   input[type='checkbox']:checked + & {
@@ -207,30 +257,34 @@
   }
 }
 
-// Mobile
+// ============ Мобільний: усередині sheet фільтри йдуть стовпчиком ============
 @media (max-width: 768px) {
   .filters {
     flex-direction: column;
     align-items: stretch;
-    gap: var(--spacing-md);
-    padding: 8px 12px;
+    gap: var(--spacing-lg);
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
   }
 
   .filterGroup {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-sm);
-    padding-bottom: var(--spacing-md);
 
     &:not(:last-child) {
       padding-right: 0;
+      padding-bottom: var(--spacing-lg);
       border-right: none;
-      border-bottom: var(--border-width) solid var(--text-primary);
+      border-bottom: 1px solid var(--border-subtle);
     }
   }
 
   .label {
-    font-size: 14px;
+    font-size: var(--text-sm);
+    color: var(--text-primary);
   }
 
   .dropdownButton {
@@ -238,22 +292,18 @@
   }
 
   .priceInputs {
-    flex-direction: column;
     gap: var(--spacing-sm);
   }
 
   .priceField {
-    width: 100%;
+    flex: 1;
   }
 
   .priceInput {
-    flex: 1;
-    width: auto;
+    width: 100%;
   }
 
-  .checkboxText {
-    min-width: 45px;
-    font-size: 13px;
-    padding: 5px 12px;
+  .summary {
+    padding-top: var(--spacing-md);
   }
 }

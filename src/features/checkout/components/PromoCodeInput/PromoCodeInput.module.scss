@@ -1,38 +1,14 @@
-// Стилі PromoCodeInput в стилі фільтрів каталогу
-.promoInput {
-  :global(.mantine-TextInput-input) {
-    background: var(--background);
-    border: none;
-    border-bottom: 2px solid var(--border-color);
-    border-radius: 0;
-    font-size: var(--text-base);
-    color: var(--text-primary);
-    transition: var(--transition-fast);
+// Поле промокоду. Саме поле стилізує mantine-theme.ts + Input.module.scss —
+// тут лишається тільки те, що специфічне для цього блоку.
 
-    &::placeholder {
-      color: var(--text-tertiary);
-    }
-
-    &:hover {
-      background: var(--background-secondary);
-    }
-
-    &:focus {
-      border-bottom-color: var(--text-primary);
-      background: var(--background-secondary);
-    }
-  }
-
-  :global(.mantine-TextInput-error) {
-    font-size: var(--text-xs);
-    font-weight: var(--fw-medium);
-    color: #dc2626;
-  }
-}
 .btn {
-  border: var(--border-width) solid var(--border-color);
-  color: var(--text-secondary);
-  &:hover {
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    background: var(--btn-primary);
+    border-color: var(--btn-primary);
     color: var(--text-inverse);
   }
 }
