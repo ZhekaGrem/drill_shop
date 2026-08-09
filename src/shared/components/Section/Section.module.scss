@@ -1,0 +1,51 @@
+// src/shared/components/Section/Section.module.scss
+.section {
+  margin-top: var(--section-gap);
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+// Заголовок і вторинна дія — на одній осі, вирівняні по базовій лінії тексту
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.headText {
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-medium);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.description {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-light);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+// Вторинна дія — тихіша за заголовок: менша, легша, без кольору-акценту до hover
+.action {
+  flex-shrink: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: var(--transition-fast);
+
+  &:hover {
+    color: var(--accent);
+  }
+}

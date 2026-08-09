@@ -11,13 +11,22 @@
   border-bottom: 1px solid var(--border-subtle);
 }
 
+// Ширина й поля збігаються з <Page> — інакше логотип у хедері та вміст
+// сторінки стоять на різних вертикалях.
+// Висоту тримає сам 44px-контрол: раніше тут було 24px вертикального падінгу,
+// і липкий хедер займав ~92px, у тому числі на мобільному.
 .header {
+  max-width: var(--page-max-width);
   margin: 0 auto;
-  padding: var(--spacing-y) var(--spacing-x);
+  padding: var(--space-3) var(--page-padding-x);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-lg);
+
+  @media (max-width: 768px) {
+    padding: var(--space-2) var(--page-padding-x);
+  }
 }
 
 // Left group: burger + logo + nav
@@ -157,9 +166,11 @@
   align-items: center;
   gap: var(--spacing-sm);
   border: none;
-  padding: 12px 20px;
-  border-radius: 40px;
-  font-size: 16px;
+  // 10px + 24px line-height + 10px = 44px — та сама висота, що й у сусідніх
+  // іконок-кнопок. Було 12px → 48px, і ряд контролів розʼїжджався на 4px.
+  padding: 10px var(--space-5);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-base);
   line-height: 24px;
   font-weight: var(--fw-medium);
   letter-spacing: -0.02em;

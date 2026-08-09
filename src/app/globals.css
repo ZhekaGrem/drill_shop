@@ -319,17 +319,45 @@ p {
   --border-radius-lg: 32px;
   --radius-pill: 100px;
   --radius-sheet: 24px; /* верх bottom sheet */
+  --radius-card: 20px; /* картка-група Дії: список рядків під одним скругленням */
 
-  /* Spacing — без змін */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-2xl: 48px;
-  --spacing-x: 40px;
-  --spacing-y: 24px;
-  --spacing-y-m: 12px;
+  /* === ВІДСТУПИ ===
+     Числова шкала — джерело правди. Крок 4px до 24px, далі 8px.
+     У новому коді бери --space-*; іменовані --spacing-* лишені аліасами,
+     щоб не переписувати весь проєкт одним комітом. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --spacing-xs: var(--space-1);
+  --spacing-sm: var(--space-2);
+  --spacing-md: var(--space-4);
+  --spacing-lg: var(--space-6);
+  --spacing-xl: var(--space-8);
+  --spacing-2xl: var(--space-12);
+
+  /* === LAYOUT ===
+     Семантичні токени: кажуть ЩО це, а не СКІЛЬКИ. Раніше --spacing-x/y були
+     одночасно і шкалою, і layout-ом — звідси плуталися осі (public-offer мав
+     `padding: var(--spacing-x) var(--spacing-y)`, тобто падінг сторінки навпаки). */
+  --page-max-width: 1200px;
+  --page-padding-x: var(--space-10); /* горизонтальні поля сторінки */
+  --page-padding-y: var(--space-6); /* верхній відступ сторінки */
+  --section-gap: var(--space-12); /* між секціями сторінки */
+  --card-padding: var(--space-5); /* внутрішній падінг картки/рядка */
+  --card-gap: var(--space-3); /* між картками в одній групі */
+
+  /* DEPRECATED: аліаси на layout-токени. У новому коді використовуй --page-*. */
+  --spacing-x: var(--page-padding-x);
+  --spacing-y: var(--page-padding-y);
+  --spacing-y-m: var(--space-3);
 
   /* Transitions */
   --transition-fast: 0.15s ease-in-out;
@@ -428,7 +456,12 @@ h6 {
 /* === РЕСПОНСИВ === */
 @media (max-width: 768px) {
   :root {
-    --spacing-x: 20px;
+    /* Layout стискається цілісно — не один --spacing-x, як було раніше.
+       Через це вертикальні відступи не змінювались на мобільному взагалі. */
+    --page-padding-x: var(--space-5); /* 20px */
+    --page-padding-y: var(--space-4); /* 16px */
+    --section-gap: var(--space-8); /* 32px */
+    --card-padding: var(--space-4); /* 16px */
   }
 
   h1 {

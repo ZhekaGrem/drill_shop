@@ -7,9 +7,12 @@
   margin-top: auto;
 }
 
+// Та сама колонка, що й <Page> та хедер — футер не має «розʼїжджатись»
+// ширше за вміст сторінки на великому екрані
 .container {
+  max-width: var(--page-max-width);
   margin: 0 auto;
-  padding: var(--spacing-y) var(--spacing-x);
+  padding: var(--space-8) var(--page-padding-x);
 }
 
 // Main footer grid (3 columns)

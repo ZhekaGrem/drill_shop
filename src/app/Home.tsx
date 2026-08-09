@@ -4,29 +4,56 @@
 import { useRouter } from 'next/navigation';
 import { Suspense, lazy, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import {
+  IconArrowBackUp,
+  IconAward,
+  IconCashBanknote,
+  IconCircleCheck,
+  IconCreditCard,
+  IconMail,
+  IconMapPin,
+  IconMessageCircle,
+  IconTruck,
+} from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
-import { ArrowRight } from '@/shared/components/Svg';
+import { ArrowRight, IconInstagram, IconTelegram } from '@/shared/components/Svg';
+import { Page } from '@/shared/components/Page/Page';
+import { Section } from '@/shared/components/Section/Section';
+import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { PopularProductsSlider } from '@/widgets/PopularProductsSlider/PopularProductsSlider';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import { CategoriesInitializer } from '@/shared/components/CategoriesInitializer/CategoriesInitializer';
+import { content } from '@/shared/config/content';
+import { siteConfig } from '@/shared/config/site';
+import { faqData } from './faq/faq-data';
 import styles from './home.module.scss';
 
-// Lazy load Spline компоненти для оптимізації
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
-const ADVANTAGES = [
-  { title: 'Доставка 1-2 дні', text: 'Нова пошта по всій Україні' },
-  { title: 'Оплата при отриманні', text: 'Або онлайн — як зручно' },
-  { title: 'Обмін і повернення', text: '14 днів без питань' },
-];
-
-// Slug'и, для яких згенеровано власну ілюстрацію (public/assets/img/categories/).
-// Категорії поза цим списком показують category-generic.webp — без runtime 404.
+// Slug'и з власною ілюстрацією (public/assets/img/categories/).
+// Решта показує category-generic.webp — без runtime 404.
 const KNOWN_ILLUSTRATIONS = new Set(['t-shirts', 'hoodies', 'caps', 'accessories']);
 
 const getCategoryIllustration = (slug: string) =>
   `/assets/img/categories/${KNOWN_ILLUSTRATIONS.has(slug) ? slug : 'category-generic'}.webp`;
+
+// Іконка прив'язана до id послуги, а не до порядку в масиві —
+// інакше перестановка в content.ts мовчки переплутала б іконки.
+const SERVICE_ICONS: Record<string, React.ReactNode> = {
+  delivery: <IconTruck stroke={1.5} />,
+  card: <IconCreditCard stroke={1.5} />,
+  cod: <IconCashBanknote stroke={1.5} />,
+  returns: <IconArrowBackUp stroke={1.5} />,
+};
+
+const REASONS = [
+  { ...content.home.sections.freshness, icon: <IconCircleCheck stroke={1.5} /> },
+  { ...content.home.sections.quality, icon: <IconAward stroke={1.5} /> },
+  { ...content.about.sections.service, icon: <IconMessageCircle stroke={1.5} /> },
+];
+
+// Перше питання з кожної з трьох перших категорій FAQ — джерело правди одне (faq-data)
+const FAQ_PREVIEW = faqData.slice(0, 3).map((category) => category.questions[0]);
 
 const Home = () => {
   const router = useRouter();
@@ -34,18 +61,22 @@ const Home = () => {
   const categories = useCategoriesStore((s) => s.categories);
 
   return (
-    <div className={styles.page}>
-      {/* Ініціалізує стор категорій, якщо він ще не завантажений (напр. при заході одразу на "/") */}
+    <Page>
       <CategoriesInitializer />
 
-      {/* Hero */}
       <section className={styles.hero}>
         <div className={styles.heroText}>
-          <h1 className={styles.heroTitle}>Офіційний мерч shchilnui Drill</h1>
-          <p className={styles.heroSubtitle}>Футболки, худі та аксесуари з дропів гурту</p>
-          <Button size="lg" variant="primary" onClick={() => router.push('/catalog')}>
-            До каталогу <ArrowRight />
-          </Button>
+          <span className={styles.heroBadge}>Офіційний магазин</span>
+          <h1 className={styles.heroTitle}>{content.home.hero.title}</h1>
+          <p className={styles.heroSubtitle}>{content.home.hero.description}</p>
+          <div className={styles.heroActions}>
+            <Button size="lg" variant="primary" onClick={() => router.push('/catalog')}>
+              До каталогу <ArrowRight size={20} />
+            </Button>
+            <Button size="lg" variant="secondary" onClick={() => router.push('/about')}>
+              Про бренд
+            </Button>
+          </div>
         </div>
         <div className={styles.heroVisual}>
           {!isSplineLoaded && (
@@ -71,46 +102,103 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Категорії */}
+      <ul className={styles.trust}>
+        {content.home.trust.map((item) => (
+          <li key={item.label} className={styles.trustItem}>
+            <span className={styles.trustLabel}>{item.label}</span>
+            <span className={styles.trustHint}>{item.hint}</span>
+          </li>
+        ))}
+      </ul>
+
       {categories && categories.length > 0 && (
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Категорії</h2>
-          <div className={styles.categoryGrid}>
+        <Section title="Категорії" action={{ href: '/catalog', label: 'Усі товари' }}>
+          <ListGroup>
             {categories.slice(0, 4).map((cat) => (
-              <Link key={cat.id} href={`/catalog/category/${cat.slug}`} className={styles.categoryCard}>
-                <Image
-                  src={getCategoryIllustration(cat.slug)}
-                  alt=""
-                  width={64}
-                  height={64}
-                  loading="lazy"
-                  className={styles.categoryIllustration}
-                />
-                <span className={styles.categoryName}>{cat.name}</span>
-                <ArrowRight />
-              </Link>
+              <ListRow
+                key={cat.id}
+                href={`/catalog/category/${cat.slug}`}
+                title={cat.name}
+                hint={cat.description || content.home.categoryHints[cat.slug]}
+                media={
+                  <Image
+                    src={getCategoryIllustration(cat.slug)}
+                    alt=""
+                    width={40}
+                    height={40}
+                    loading="lazy"
+                  />
+                }
+              />
             ))}
-          </div>
-        </section>
+          </ListGroup>
+        </Section>
       )}
 
-      {/* Популярне */}
-      <section className={styles.section}>
+      <Section title="Популярне" action={{ href: '/catalog', label: 'Весь каталог' }}>
         <PopularProductsSlider />
-      </section>
+      </Section>
 
-      {/* Переваги */}
-      <section className={styles.section}>
-        <div className={styles.advantages}>
-          {ADVANTAGES.map((a) => (
-            <div key={a.title} className={styles.advantageCard}>
-              <span className={styles.advantageTitle}>{a.title}</span>
-              <span className={styles.advantageText}>{a.text}</span>
-            </div>
+      <Section title="Чому Є.Дріл" description="Що стоїть за кожним замовленням">
+        <ListGroup>
+          {REASONS.map((reason) => (
+            <ListRow key={reason.title} media={reason.icon} title={reason.title} hint={reason.description} />
           ))}
-        </div>
-      </section>
-    </div>
+        </ListGroup>
+      </Section>
+
+      <Section title="Доставка й оплата" action={{ href: '/delivery-and-payment', label: 'Деталі' }}>
+        <ListGroup>
+          {content.home.services.map((service) => (
+            <ListRow
+              key={service.id}
+              href={service.href}
+              media={SERVICE_ICONS[service.id]}
+              title={service.title}
+              hint={service.hint}
+            />
+          ))}
+        </ListGroup>
+      </Section>
+
+      <Section title="Часті питання" action={{ href: '/faq', label: 'Усі питання' }}>
+        <ListGroup>
+          {FAQ_PREVIEW.map((item) => (
+            <ListRow key={item.question} href="/faq" title={item.question} hint={item.answer} />
+          ))}
+        </ListGroup>
+      </Section>
+
+      <Section title="Зв'язок">
+        <ListGroup>
+          <ListRow
+            external
+            href={siteConfig.socials.instagram}
+            media={<IconInstagram />}
+            title="Instagram"
+            hint="Нові дропи, бекстейдж і анонси"
+          />
+          <ListRow
+            external
+            href={siteConfig.socials.telegram}
+            media={<IconTelegram />}
+            title="Telegram"
+            hint="Питання про замовлення й наявність"
+          />
+          <ListRow
+            href={`mailto:${siteConfig.contacts.email}`}
+            media={<IconMail stroke={1.5} />}
+            title="Пошта"
+            hint={siteConfig.contacts.email}
+          />
+          <ListRow
+            media={<IconMapPin stroke={1.5} />}
+            title={siteConfig.contacts.city}
+            hint={siteConfig.workingHours}
+          />
+        </ListGroup>
+      </Section>
+    </Page>
   );
 };
 

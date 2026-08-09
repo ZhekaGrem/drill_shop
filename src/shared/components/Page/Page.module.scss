@@ -1,0 +1,19 @@
+// src/shared/components/Page/Page.module.scss
+.page {
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--page-padding-y) var(--page-padding-x) var(--section-gap);
+
+  &--default {
+    max-width: var(--page-max-width);
+  }
+
+  // Довгий текст: ~70 знаків у рядку — вище цього око губить початок наступного
+  &--narrow {
+    max-width: 720px;
+  }
+
+  &--wide {
+    max-width: var(--container-wide);
+  }
+}

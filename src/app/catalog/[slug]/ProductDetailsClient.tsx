@@ -7,8 +7,14 @@ import { productsApi, ProductResponse } from '@/features/catalog/api/products';
 import { Product, ProductWithRelations } from '@/shared/types';
 import { useAuthStore } from '@/shared/stores/auth';
 import Link from 'next/link';
-import { Select, Badge, Container } from '@mantine/core';
+import { Select } from '@mantine/core';
+import { IconArrowBackUp, IconCashBanknote, IconCreditCard, IconRuler, IconTruck } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
+import { Page } from '@/shared/components/Page/Page';
+import { Section } from '@/shared/components/Section/Section';
+import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
+import { ArrowLeft, ArrowRight } from '@/shared/components/Svg';
+import { content } from '@/shared/config/content';
 import { useCart } from '@/features/cart/hooks/useCart';
 import styles from './productDetails.module.scss';
 import { getImageUrl } from '@/shared/utils/image';
@@ -20,7 +26,6 @@ import { sanitizeHTML } from '@/shared/utils/sanitize';
 import { SizeGuideModal } from '@/shared/components/SizeGuideModal';
 import { IconCart3 } from '@/shared/components/Svg';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
-import Image from 'next/image';
 import { NotifyAvailabilityModal } from '@/features/notify-availability';
 import { ImageGalleryModal } from '@/shared/components/ImageGalleryModal';
 
@@ -28,6 +33,36 @@ interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
   basePath?: string;
 }
+
+// Людські назви для ключів options. Раніше цей словник був продубльований
+// двома копіями всередині JSX — по одній на варіант і на головний товар.
+const OPTION_LABELS: Record<string, string> = {
+  color: 'Колір',
+  size: 'Розмір',
+  material: 'Матеріал',
+  brand: 'Бренд',
+  taste: 'Смак',
+  origin: 'Походження',
+};
+
+const SERVICE_ICONS: Record<string, React.ReactNode> = {
+  delivery: <IconTruck stroke={1.5} />,
+  card: <IconCreditCard stroke={1.5} />,
+  cod: <IconCashBanknote stroke={1.5} />,
+  returns: <IconArrowBackUp stroke={1.5} />,
+};
+
+// Показуємо залишок тільки коли він справді малий — інакше це не терміновість,
+// а шум. Поріг збігається з тим, що менеджер вважає «закінчується».
+const LOW_STOCK_THRESHOLD = 5;
+
+const toSpecRows = (options?: Record<string, unknown> | null) =>
+  Object.entries(options || {})
+    .filter(([, value]) => value && String(value).trim())
+    .map(([key, value]) => ({
+      label: OPTION_LABELS[key] || key.charAt(0).toUpperCase() + key.slice(1),
+      value: String(value),
+    }));
 
 export default function ProductDetailsClient({ initialProduct, basePath = '' }: ProductDetailsProps) {
   const { addItem, isAddingItem } = useCart();
@@ -40,7 +75,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
   const [isClicked, setIsClicked] = useState(false);
-  const [isMainProduct, setIsMainProduct] = useState(true);
   const [sizeGuideOpened, setSizeGuideOpened] = useState(false);
   const [notifyModalOpened, setNotifyModalOpened] = useState(false);
   const [showScrollArrows, setShowScrollArrows] = useState(false);
@@ -61,10 +95,8 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   useEffect(() => {
     if (product?.hasVariants && product.variants && product.variants.length > 0) {
       setSelectedVariant(product.variants[0]);
-      setIsMainProduct(false);
     } else if (product && !product.hasVariants) {
       setSelectedVariant(null);
-      setIsMainProduct(true);
     }
   }, [product?.hasVariants, product?.variants]);
 
@@ -160,6 +192,12 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
     return sortVariantsBySize(product.variants);
   }, [product?.variants]);
 
+  // Характеристики: обраний варіант перекриває базові опції товару
+  const specRows = useMemo(
+    () => toSpecRows(selectedVariant?.options ?? product?.options),
+    [selectedVariant, product?.options]
+  );
+
   // ✅ Перевіряємо чи показувати чекбокси для варіантів (size/color)
   const showVariantCheckboxes = useMemo(() => {
     if (!sortedVariants || sortedVariants.length === 0) return false;
@@ -230,6 +268,14 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
 
   const { isInStock, availableQuantity } = getCurrentStock();
 
+  // Статус наявності словами, а не тільки кольором кнопки: людині перед покупкою
+  // важливо бачити, що саме її чекає — і чи варто поспішати
+  const stockLabel = !isInStock
+    ? 'Немає в наявності'
+    : availableQuantity <= LOW_STOCK_THRESHOLD
+      ? `Залишилось ${availableQuantity} шт`
+      : 'В наявності';
+
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity >= 1 && newQuantity <= availableQuantity) {
       setQuantity(newQuantity);
@@ -272,8 +318,8 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
 
   if (isLoading) {
     return (
-      <div className={styles.productPage}>
-        <div className={styles.productPage}>
+      <Page className={styles.productPage}>
+        <div>
           <div className={styles.productPage__loading}>
             <div className={styles.productSkeleton}>
               <div className={styles.productSkeleton__images}></div>
@@ -286,13 +332,13 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
             </div>
           </div>
         </div>
-      </div>
+      </Page>
     );
   }
 
   if (error || !product) {
     return (
-      <div className={styles.productPage}>
+      <Page className={styles.productPage}>
         <div className={styles.container}>
           <div className={styles.productPage__error}>
             <h1>Товар не знайдено</h1>
@@ -304,7 +350,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
             </Button>
           </div>
         </div>
-      </div>
+      </Page>
     );
   }
 
@@ -316,8 +362,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   });
   const primaryImage = sortedImages[0] || images[0];
   const hasVariants = product.variants && product.variants.length > 0;
-  const hasOptions =
-    product.options && typeof product.options === 'object' && Object.keys(product.options).length > 0;
 
   // Отримуємо всі категорії з size guide
   const categoriesWithGuide =
@@ -331,7 +375,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   const hasSizeGuide = categoriesWithGuide.length > 0;
 
   return (
-    <div className={styles.productPage}>
+    <Page className={styles.productPage}>
       <div>
         {/* Breadcrumbs */}
         <nav className={styles.breadcrumbs}>
@@ -438,12 +482,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                           handlePreviousImage();
                         }}
                         aria-label="Попереднє зображення">
-                        <Image
-                          src="/svg/pixelarticons_arrow-left-box.svg"
-                          alt="Попереднє"
-                          width={24}
-                          height={24}
-                        />
+                        <ArrowLeft size={20} />
                       </button>
                       <button
                         className={`${styles.productGallery__arrow} ${styles.productGallery__arrowRight}`}
@@ -452,12 +491,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                           handleNextImage();
                         }}
                         aria-label="Наступне зображення">
-                        <Image
-                          src="/svg/pixelarticons_arrow-right-box.svg"
-                          alt="Наступне"
-                          width={24}
-                          height={24}
-                        />
+                        <ArrowRight size={20} />
                       </button>
                     </>
                   )}
@@ -494,6 +528,20 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           <div className={styles.productDetails__info}>
             <div className={styles.productDetails__container}>
               <h1 className={styles.productDetails__title}>{product.name}</h1>
+
+              <div className={styles.productDetails__meta}>
+                <span className={styles.productDetails__sku}>Артикул: {product.sku}</span>
+                <span
+                  className={`${styles.productDetails__availability} ${
+                    isInStock ? '' : styles.productDetails__availability_out
+                  }`}>
+                  {stockLabel}
+                </span>
+              </div>
+
+              {product.shortDescription && (
+                <p className={styles.productDetails__shortDescription}>{product.shortDescription}</p>
+              )}
 
               <div className={styles.productDetails__price}>
                 {selectedVariant ? (
@@ -573,7 +621,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                                   e.stopPropagation();
                                   if (!isOutOfStock) {
                                     setSelectedVariant(variant);
-                                    setIsMainProduct(false);
                                     setQuantity(1);
                                   }
                                 }}
@@ -595,11 +642,9 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                       onChange={(value) => {
                         if (value === 'main') {
                           setSelectedVariant(null);
-                          setIsMainProduct(true);
                         } else {
                           const variant = sortedVariants.find((v) => v.id === value);
                           setSelectedVariant(variant);
-                          setIsMainProduct(false);
                         }
                         setQuantity(1);
                       }}
@@ -623,103 +668,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                     />
                   )}
 
-                  {/* Деталі обраного варіанта */}
-                  {selectedVariant && !isMainProduct && selectedVariant.options && (
-                    <div
-                      style={{
-                        marginTop: '16px',
-                        marginBottom: '16px',
-                      }}>
-                      <div style={{ display: 'grid', gap: '8px' }}>
-                        {Object.keys(selectedVariant.options).length > 0 && (
-                          <div>
-                            <strong>Характеристики:</strong>
-                            <div
-                              style={{
-                                marginTop: '8px',
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                gap: '6px',
-                              }}>
-                              {Object.entries(selectedVariant.options).map(([key, value]) => {
-                                if (!value || !String(value).trim()) return null;
-
-                                const optionLabels: Record<string, string> = {
-                                  color: 'Колір',
-                                  size: 'Розмір',
-                                  material: 'Матеріал',
-                                  brand: 'Бренд',
-                                  taste: 'Смак',
-                                  origin: 'Походження',
-                                };
-
-                                const label = optionLabels[key] || key.charAt(0).toUpperCase() + key.slice(1);
-
-                                return (
-                                  <Badge
-                                    key={key}
-                                    variant="outline"
-                                    color="red"
-                                    size="lg"
-                                    style={{ textTransform: 'none' }}>
-                                    {label}: {String(value)}
-                                  </Badge>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Деталі головного товару */}
-                </div>
-              )}
-              {hasOptions && !selectedVariant && (
-                <div
-                  style={{
-                    marginTop: hasVariants ? '0' : '16px',
-                    marginBottom: '16px',
-                  }}>
-                  <div style={{ display: 'grid', gap: '8px' }}>
-                    <div style={{ marginTop: '28px' }}>
-                      <strong>Характеристики:</strong>
-                      <div
-                        style={{
-                          marginTop: '8px',
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          gap: '6px',
-                        }}>
-                        {Object.entries(product.options as Record<string, any>).map(([key, value]) => {
-                          if (!value || !String(value).trim()) return null;
-
-                          const optionLabels: Record<string, string> = {
-                            color: 'Колір',
-                            size: 'Розмір',
-                            material: 'Матеріал',
-                            brand: 'Бренд',
-                            taste: 'Смак',
-                            origin: 'Походження',
-                          };
-
-                          const label = optionLabels[key] || key.charAt(0).toUpperCase() + key.slice(1);
-
-                          return (
-                            <Badge
-                              key={key}
-                              variant="outline"
-                              color="red"
-                              size="lg"
-                              style={{ textTransform: 'none' }}>
-                              {label}: {String(value)}
-                            </Badge>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
                 </div>
               )}
 
@@ -750,11 +698,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                           +
                         </button>
                       </div>
-                      {hasSizeGuide && (
-                        <Button variant="ghost" onClick={() => setSizeGuideOpened(true)} p={0}>
-                          <Image src="/assets/img/btnInfo.jpg" width={50} height={50} alt="btninfo" />
-                        </Button>
-                      )}
                     </div>
                     <Button
                       variant="secondary"
@@ -782,10 +725,45 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                   </div>
                 )}
               </div>
+
+              {/* Те, що людина шукає ПЕРЕД покупкою: склад, розмір, доставка, повернення.
+                  Раніше цього на сторінці не було взагалі — після кнопки одразу йшов опис. */}
+              <div className={styles.productInfoGroups}>
+                {specRows.length > 0 && (
+                  <ListGroup>
+                    {specRows.map((spec) => (
+                      <ListRow key={spec.label} title={spec.label} value={spec.value} />
+                    ))}
+                  </ListGroup>
+                )}
+
+                {hasSizeGuide && (
+                  <ListGroup>
+                    <ListRow
+                      onClick={() => setSizeGuideOpened(true)}
+                      media={<IconRuler stroke={1.5} />}
+                      title="Розмірна сітка"
+                      hint="Заміри та посадка для цієї категорії"
+                    />
+                  </ListGroup>
+                )}
+
+                <ListGroup>
+                  {content.home.services.map((service) => (
+                    <ListRow
+                      key={service.id}
+                      href={service.href}
+                      media={SERVICE_ICONS[service.id]}
+                      title={service.title}
+                      hint={service.hint}
+                    />
+                  ))}
+                </ListGroup>
+              </div>
             </div>
             {product.description && (
               <div className={styles.productDescription}>
-                <h2 className={styles.productDescription__title}>Опис </h2>
+                <h2 className={styles.productDescription__title}>Опис</h2>
                 <div
                   className={styles.productDescription__content}
                   dangerouslySetInnerHTML={{ __html: sanitizeHTML(product.description) }}
@@ -799,8 +777,10 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <section className={styles.relatedProducts}>
-            <h2 className={styles.relatedProducts__title}>ЩЕ ТОВАРИ</h2>
+          <Section
+            title="Схожі товари"
+            action={{ href: `${basePath}/catalog`, label: 'Весь каталог' }}
+            className={styles.relatedProducts}>
             <div className={styles.relatedProducts__grid}>
               {relatedProducts.slice(0, 4).map((relatedProduct, index) => (
                 <ProductCard
@@ -810,7 +790,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                 />
               ))}
             </div>
-          </section>
+          </Section>
         )}
 
         {/* Reviews Section */}
@@ -843,6 +823,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           productName={product.name}
         />
       </div>
-    </div>
+    </Page>
   );
 }

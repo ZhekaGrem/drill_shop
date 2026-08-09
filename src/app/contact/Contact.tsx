@@ -16,7 +16,9 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const form = useForm({
+  // Явний генерик: без нього Mantine не виводить тип полів і `value` у validate
+  // стає implicit any — це ламало `npm run build` (ignoreBuildErrors: false)
+  const form = useForm<{ name: string; phone: string; message: string }>({
     initialValues: {
       name: '',
       phone: '',

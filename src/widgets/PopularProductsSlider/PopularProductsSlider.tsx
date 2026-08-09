@@ -10,7 +10,7 @@ import { useKeenSlider } from 'keen-slider/react';
 import { useQuery } from '@tanstack/react-query';
 import { productsApi } from '@/features/catalog/api/products';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
-import { ArrowRight } from '@/shared/components/Svg';
+import { ArrowCircle } from '@/shared/components/ArrowCircle/ArrowCircle';
 import { formatPrice } from '@/shared/utils/format';
 import styles from './PopularProductsSlider.module.scss';
 import 'keen-slider/keen-slider.min.css';
@@ -59,7 +59,6 @@ export const PopularProductsSlider = () => {
   if (isLoading) {
     return (
       <div>
-        <h2 className={styles.title}>Популярні продукти</h2>
         <div className={styles.skeletonRow} aria-hidden="true">
           {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
             <div key={i} className={styles.skeletonSlide}>
@@ -78,7 +77,6 @@ export const PopularProductsSlider = () => {
   if (error) {
     return (
       <div>
-        <h2 className={styles.title}>Популярні продукти</h2>
         <div className={styles.errorCard}>
           <p className={styles.errorText}>Не вдалося завантажити товари. Перевірте з&apos;єднання.</p>
           <button type="button" className={styles.retryButton} onClick={() => refetch()}>
@@ -89,8 +87,17 @@ export const PopularProductsSlider = () => {
     );
   }
 
+  // Успішна відповідь без товарів. Раніше тут було `return null`, і на сторінці
+  // лишався заголовок секції з порожнечею під ним — типовий пропущений empty-стан.
   if (products.length === 0) {
-    return null; // Секції нема що показувати — успішна відповідь без товарів
+    return (
+      <div className={styles.errorCard}>
+        <p className={styles.errorText}>Поки що порожньо — нові дропи зʼявляться тут першими.</p>
+        <Link href="/catalog" className={styles.retryButton}>
+          Перейти до каталогу
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -99,8 +106,6 @@ export const PopularProductsSlider = () => {
       onMouseLeave={() => (isPausedRef.current = false)}
       onFocusCapture={() => (isPausedRef.current = true)}
       onBlurCapture={() => (isPausedRef.current = false)}>
-      <h2 className={styles.title}>Популярні продукти</h2>
-
       <div ref={sliderRef} className={`keen-slider ${styles.slider}`}>
         {products.map((product) => {
           const primaryImage = product.images?.find((img) => img.isPrimary) || product.images?.[0];
@@ -121,9 +126,7 @@ export const PopularProductsSlider = () => {
                     <span className={styles.slidePrice}>{formatPrice(Number(product.price))}</span>
                     <span className={styles.slideName}>{product.name}</span>
                   </div>
-                  <span className={styles.slideArrow} aria-hidden="true">
-                    <ArrowRight />
-                  </span>
+                  <ArrowCircle className={styles.slideArrow} />
                 </div>
               </Link>
             </div>

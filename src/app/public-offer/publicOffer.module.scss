@@ -2,7 +2,7 @@
 .page {
   min-height: 100vh;
   // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
-  padding: var(--spacing-x) var(--spacing-y);
+  padding: var(--page-padding-y) var(--page-padding-x);
 }
 
 .header {

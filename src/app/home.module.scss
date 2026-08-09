@@ -1,45 +1,53 @@
 // src/app/home.module.scss
-.page {
-  // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
-}
+// Зовнішні поля й максимальну ширину задає <Page>. Тут — тільки внутрішня
+// композиція блоків головної.
 
+// ============ HERO ============
+// Біла картка на градієнті сторінки. Раніше hero сам малював --gradient-brand
+// поверх --gradient-page і клав усередину білу плівку 0.82 — три шари одного
+// градієнта. У Дії градієнт це фон екрана, а картки на ньому просто білі.
 .hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-xl);
-  background: var(--gradient-brand);
-  border-radius: var(--border-radius-lg);
-  margin: var(--spacing-lg) var(--spacing-x);
-  // Висоту задає контент, а не фіксовані 520px — інакше під текстом
-  // лишалась порожня смуга градієнта на пів екрана
-  padding: var(--spacing-xl);
-  box-shadow: var(--shadow-md);
+  gap: var(--space-8);
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  padding: var(--space-10);
+  box-shadow: var(--shadow-sm);
 
   @media (max-width: 768px) {
     flex-direction: column-reverse;
-    margin: var(--spacing-md);
-    padding: var(--spacing-lg);
+    gap: var(--space-6);
+    padding: var(--card-padding);
   }
 }
 
 .heroText {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
-  max-width: 480px;
-  // Біла «скляна» підкладка під текстом. 0.82 — не на око: при 0.35 сірий
-  // --text-secondary над синім кінцем градієнта давав 2.93:1 (провал WCAG
-  // 1.4.3 AA, треба 4.5:1). При 0.82 виходить 5.12:1.
-  background: rgba(255, 255, 255, 0.82);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-lg);
+  align-items: flex-start;
+  gap: var(--space-4);
+  max-width: 520px;
+}
+
+// Дрібний pill-бейдж над заголовком — патерн статусу з Дії
+// («ОПИТУВАННЯ ЗАВЕРШЕНО»): капслок, розріджений трекінг, тиха підкладка
+.heroBadge {
+  padding: 6px var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: var(--background-secondary);
+  border-radius: var(--radius-pill);
 }
 
 .heroTitle {
   font-family: var(--font-heading);
   font-size: var(--text-6xl);
-  line-height: 1.15;
+  line-height: 1.1;
   letter-spacing: -0.02em;
 
   @media (max-width: 768px) {
@@ -50,7 +58,29 @@
 .heroSubtitle {
   font-size: var(--text-lg);
   font-weight: var(--fw-light);
+  line-height: 1.55;
   color: var(--text-secondary);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+  }
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+
+  @media (max-width: 768px) {
+    width: 100%;
+
+    // Обидві кнопки на всю ширину — на вузькому екрані вони інакше
+    // розповзаються на різну довжину і втрачають спільну вісь
+    button {
+      flex: 1 1 100%;
+    }
+  }
 }
 
 .heroVisual {
@@ -60,7 +90,8 @@
   flex-shrink: 0;
 
   @media (max-width: 768px) {
-    width: 280px;
+    width: 100%;
+    max-width: 280px;
     height: 280px;
   }
 }
@@ -68,6 +99,8 @@
 .placeholderImage {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -76,81 +109,51 @@
   inset: 0;
 }
 
-.section {
-  margin: var(--spacing-2xl) var(--spacing-x);
+// ============ РЯДОК ДОВІРИ ============
+// Три факти одразу під героєм: доставка, оплата, повернення.
+// Одна картка з внутрішніми роздільниками — не три окремі плитки.
+.trust {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: var(--space-3);
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 
   @media (max-width: 768px) {
-    margin: var(--spacing-xl) var(--spacing-md);
+    grid-template-columns: 1fr;
   }
 }
 
-// Секційні заголовки — як у Дії: зліва, один розмір, один відступ до контенту
-.sectionTitle {
-  font-size: var(--text-2xl);
-  text-align: left;
-  margin-bottom: var(--spacing-lg);
-}
-
-.categoryGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--spacing-md);
-}
-
-.categoryCard {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-normal);
-
-  &:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
-    color: var(--text-primary);
-  }
-}
-
-.categoryIllustration {
-  flex-shrink: 0;
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
-}
-
-.categoryName {
-  flex: 1;
-  font-size: var(--text-lg);
-  font-weight: var(--fw-medium);
-}
-
-.advantages {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--spacing-md);
-}
-
-.advantageCard {
+.trustItem {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-sm);
+  gap: 2px;
+  padding: var(--card-padding);
+
+  & + & {
+    border-left: 1px solid var(--border-subtle);
+  }
+
+  @media (max-width: 768px) {
+    & + & {
+      border-left: none;
+      border-top: 1px solid var(--border-subtle);
+    }
+  }
 }
 
-.advantageTitle {
+.trustLabel {
+  font-size: var(--text-base);
   font-weight: var(--fw-medium);
+  line-height: 1.35;
+  color: var(--text-primary);
 }
 
-.advantageText {
+.trustHint {
   font-size: var(--text-sm);
   font-weight: var(--fw-light);
+  line-height: 1.45;
   color: var(--text-secondary);
 }

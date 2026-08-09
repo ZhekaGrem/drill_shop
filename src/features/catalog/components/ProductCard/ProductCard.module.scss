@@ -17,6 +17,11 @@
 }
 
 .card {
+  // Один лівий край для всього вмісту картки. Раніше фото стояло на 12px,
+  // а назва й ціна — на 28px (12 margin + 16 padding), бо кожен блок додавав
+  // власний горизонтальний відступ. Тепер він тут один і в одному місці.
+  --card-inset: var(--space-3);
+
   display: flex;
   position: relative;
   z-index: 1;
@@ -41,6 +46,8 @@
   }
 
   @media (max-width: 768px) {
+    --card-inset: var(--space-2);
+
     width: 100%;
     height: auto;
     border-radius: var(--border-radius-md);
@@ -50,9 +57,9 @@
 // Фото «вставлене» в картку з відступом — деталь паспорт-картки Дії
 .productCardImageContainer {
   position: relative;
-  width: calc(100% - 24px);
+  width: calc(100% - var(--card-inset) * 2);
   height: 450px;
-  margin: 12px 12px 0;
+  margin: var(--card-inset) var(--card-inset) 0;
   overflow: visible;
 
   @media (max-width: 1200px) {
@@ -60,11 +67,9 @@
   }
 
   @media (max-width: 768px) {
-    width: calc(100% - 16px);
     // Картка тепер на всю ширину екрана (1 колонка) — фото вище, ближче
     // до пропорцій карток-документів Дії
     height: 260px;
-    margin: 8px 8px 0;
   }
 
   &__ImageWrapper {
@@ -94,7 +99,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin: var(--spacing-sm) 12px 0;
+  margin: var(--space-2) var(--card-inset) 0;
 }
 
 .hasDiscount {
@@ -102,16 +107,17 @@
   flex-direction: column;
 }
 
+// Горизонтальний відступ уже дав .content — тут тільки вертикальний ритм
 .contentPriceVariants {
   min-height: 70px;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--space-2) 0;
 }
 
 .title {
   display: -webkit-box;
   max-width: 100%;
   margin: 0;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--space-2) 0;
   font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
@@ -263,11 +269,12 @@
 }
 
 // ============ Дія ============
+// `margin-top: auto` тут стояв другим рядком і мовчки з'їдав заявлений верхній
+// відступ. Донизу блок і так притискає `justify-content: space-between` на .card.
 .actions {
   display: flex;
-  gap: var(--spacing-xs);
-  margin: var(--spacing-sm) 12px 12px;
-  margin-top: auto;
+  gap: var(--space-1);
+  margin: var(--space-2) var(--card-inset) var(--card-inset);
 }
 
 .addButton {
@@ -278,13 +285,9 @@
 
 // ============ Мобільний ============
 @media (max-width: 768px) {
-  .content {
-    padding: 8px;
-  }
-
   .title {
-    padding: 6px 8px;
-    font-size: 14px;
+    padding: 6px 0;
+    font-size: var(--text-sm);
     line-height: 1.4;
     -webkit-line-clamp: 1;
   }
@@ -342,7 +345,7 @@
 
   .contentPriceVariants {
     min-height: 50px;
-    padding: 6px 8px;
+    padding: 6px 0;
   }
 
   .priceSection {
