@@ -24,10 +24,12 @@
 ### Task 1: Шрифти e-Ukraine
 
 **Files:**
+
 - Create: `public/fonts/e-ukraine/` (woff-файли)
 - Modify: `src/app/layout.tsx`
 
 **Interfaces:**
+
 - Produces: CSS-змінні `--font-body`, `--font-heading` (e-Ukraine / e-UkraineHead) + аліаси `--font-condensed`, `--font-price`, `--font-mono` → усі вказують на e-Ukraine. Далі всі таски покладаються на ці змінні.
 
 - [ ] **Step 1: Завантажити шрифти**
@@ -99,10 +101,12 @@ git commit -m "feat(v2): e-Ukraine fonts via next/font/local"
 ### Task 2: Токени й глобальна типографіка
 
 **Files:**
+
 - Modify: `src/app/globals.css` (блок `:root` рядки 235–326, типографіка 356–426, інпути 428–452, фокус 454–461, лінки 465–474, скролбар 476–498)
 - Modify: `src/shared/config/design-tokens.ts` (повна заміна вмісту)
 
 **Interfaces:**
+
 - Produces: нові значення всіх `--*` токенів (див. Global Constraints) + нові токени `--accent-deep`, `--radius-pill`, `--error`. Всі наступні таски використовують ТІЛЬКИ ці токени.
 
 - [ ] **Step 1: Замінити блок :root у globals.css**
@@ -370,12 +374,14 @@ git commit -m "feat(v2): Diia design tokens + global typography"
 ### Task 3: Button, Badge, mantine-theme
 
 **Files:**
+
 - Modify: `src/shared/components/Button/button.module.scss` (повна заміна)
 - Modify: `src/shared/components/Badge/Badge.module.scss` (повна заміна)
 - Modify: `src/shared/config/mantine-theme.ts` (повна заміна)
 - Create: `public/svg/checkmark-white.svg`
 
 **Interfaces:**
+
 - Consumes: токени Task 2.
 - Produces: Button API незмінний (`variant: primary|secondary|yellow|red|beige|outline|ghost`, `size: sm|md|lg|xl|menu|fl|promo`) — `yellow/red/beige` тепер deprecated-аліаси. Badge API незмінний (`type: promo|featured|discount|new|outOfStock`).
 
@@ -755,12 +761,14 @@ git commit -m "feat(v2): Diia-style Button, Badge, Mantine theme"
 ### Task 4: Header + Footer
 
 **Files:**
+
 - Modify: `src/widgets/Header/Header.tsx` (навігація, дедуплікація leftSection, лічильник, підказки пошуку)
 - Modify: `src/widgets/Header/header.module.scss`
 - Modify: `src/widgets/Footer/Footer.tsx` (лінк /contact, privacy-policy, атрибуція шрифту)
 - Modify: `src/widgets/Footer/footer.module.scss`
 
 **Interfaces:**
+
 - Consumes: токени, Button/Badge з Tasks 2–3; `useCategoriesStore` з `@/shared/stores/categories` (вже існує).
 - Produces: localStorage-ключ `recent-searches` (JSON string[], max 5) — використовується тільки тут.
 
@@ -952,6 +960,7 @@ git commit -m "feat(v2): Diia header with nav + search suggestions, footer fixes
 ### Task 5: Каталог + ProductCard
 
 **Files:**
+
 - Modify: `src/features/catalog/components/ProductCard/ProductCard.module.scss`
 - Modify: `src/features/catalog/components/ProductCard/ProductCardInfo.tsx` (radio, назва без підміни)
 - Modify: `src/features/catalog/components/ProductCard/ProductCardImage.tsx` (видалити glitch-клас і закоментований Favorites)
@@ -959,6 +968,7 @@ git commit -m "feat(v2): Diia header with nav + search suggestions, footer fixes
 - Modify: `src/app/catalog/catalog.module.scss`, `src/features/catalog/components/CatalogFilters/CatalogFilters.module.scss`, `src/features/catalog/components/TopFilters/TopFilters.module.scss`, `src/features/catalog/components/MobileFilterModal/MobileFilterModal.module.scss` (токен-чистка)
 
 **Interfaces:**
+
 - Consumes: токени, Badge, Button.
 - Produces: `useCatalogFilters` має існуючий метод скидання — перевірити ім'я в `src/features/catalog/hooks/useCatalogFilters.ts` (очікується `resetFilters` або аналог) і використати його в empty-стані.
 
@@ -1036,22 +1046,24 @@ git commit -m "feat(v2): Diia header with nav + search suggestions, footer fixes
 2. Порожній результат (рядки ~164–170) замінити на (фікс №4b):
 
 ```tsx
-{!isLoading && !error && products.length === 0 && (
-  <Center py="xl">
-    <Stack align="center" gap="md" maw={400}>
-      <IconFilter size={64} color="var(--mantine-color-gray-5)" />
-      <Title order={3} ta="center">
-        Нічого не знайдено
-      </Title>
-      <Text ta="center" c="dimmed">
-        За обраними фільтрами товарів немає. Спробуйте змінити або скинути фільтри.
-      </Text>
-      <Button variant="secondary" onClick={handleResetFilters}>
-        Скинути фільтри
-      </Button>
-    </Stack>
-  </Center>
-)}
+{
+  !isLoading && !error && products.length === 0 && (
+    <Center py="xl">
+      <Stack align="center" gap="md" maw={400}>
+        <IconFilter size={64} color="var(--mantine-color-gray-5)" />
+        <Title order={3} ta="center">
+          Нічого не знайдено
+        </Title>
+        <Text ta="center" c="dimmed">
+          За обраними фільтрами товарів немає. Спробуйте змінити або скинути фільтри.
+        </Text>
+        <Button variant="secondary" onClick={handleResetFilters}>
+          Скинути фільтри
+        </Button>
+      </Stack>
+    </Center>
+  );
+}
 ```
 
 `handleResetFilters`: викликати метод скидання з `useCatalogFilters()` (звірити точне ім'я в хуку; якщо методу нема — редірект `window.location.href = '/catalog'`). Додати імпорти `Title`, `Stack` з `@mantine/core`.
@@ -1079,6 +1091,7 @@ git commit -m "feat(v2): Diia catalog + product cards, radio chips, empty states
 ### Task 6: Сторінка товару
 
 **Files:**
+
 - Modify: `src/shared/styles/productDetails.module.scss` (головний файл стилів сторінки, 17 font-посилань)
 - Modify: `src/app/catalog/[slug]/productDetails.module.scss`
 - Modify: `src/features/catalog/components/ProductInfo/ProductActions.tsx` (size-guide кнопка)
@@ -1086,6 +1099,7 @@ git commit -m "feat(v2): Diia catalog + product cards, radio chips, empty states
 - Modify: `src/features/catalog/components/ProductInfo/VariantSelector.tsx` (стилі чипів — той самий патерн, що Task 5 Step 3)
 
 **Interfaces:**
+
 - Consumes: токени, Button, патерн pill-чипів з Task 5.
 
 - [ ] **Step 1: ProductActions.tsx — size-guide (фікс №10)**
@@ -1179,6 +1193,7 @@ git commit -m "feat(v2): Diia product page, aligned action row, SVG size guide"
 ### Task 7: Кошик + Чекаут + Success/Failed
 
 **Files:**
+
 - Modify: `src/features/cart/components/CartItem/CartItem.tsx` (undo)
 - Modify: `src/features/cart/components/CartItem/CartItem.module.scss`
 - Modify: `src/app/cart/Cart.tsx` (чистка закоментованого)
@@ -1190,6 +1205,7 @@ git commit -m "feat(v2): Diia product page, aligned action row, SVG size guide"
 - Modify: `src/app/checkout/checkout.module.scss`
 
 **Interfaces:**
+
 - Consumes: токени, Button, Mantine Notification (стилізована в Task 3); `useCart()` з `@/features/cart/hooks/useCart` — методи `removeItem`, `addItem` (звірити сигнатуру `addItem` у хуку перед Step 1).
 
 - [ ] **Step 1: CartItem.tsx — undo видалення (фікс №8)**
@@ -1271,12 +1287,14 @@ git commit -m "feat(v2): Diia cart/checkout, undo remove, cleanup"
 ### Task 8: Головна сторінка
 
 **Files:**
+
 - Modify: `src/app/Home.tsx` (нова структура секцій)
 - Modify: `src/app/home.module.scss` (повна заміна)
 - Modify: `src/app/LayoutWrapper.tsx` (прибрати виняток для `/`)
 - Read before: `src/widgets/PopularProductsSlider/PopularProductsSlider.tsx`, `src/shared/stores/categories.ts` (сигнатури для секції категорій)
 
 **Interfaces:**
+
 - Consumes: Header/Footer (Task 4), ProductCard (Task 5), `useCategoriesStore` (звірити селектор списку категорій у файлі перед використанням).
 
 - [ ] **Step 1: LayoutWrapper.tsx — хедер на головній (фікс №2)**
@@ -1542,11 +1560,13 @@ git commit -m "feat(v2): Diia home page with header, hero, category and advantag
 ### Task 9: Статика, auth/profile, фінальна чистка
 
 **Files:**
+
 - Modify: усі SCSS з хардкодами старої палітри (список дає греп у Step 1)
 - Modify: `src/app/not-found.tsx` (variant yellow → primary)
 - Modify: `src/shared/components/Card/Card.module.scss`, `src/shared/components/Input/Input.module.scss`, `src/shared/components/Select/select.module.scss`, `src/shared/components/SearchInput/SearchInput.module.scss` (спільні компоненти, що лишилися)
 
 **Interfaces:**
+
 - Consumes: токени. Це фінальний прохід — після нього стара палітра не існує в коді.
 
 - [ ] **Step 1: Знайти всі залишки**
@@ -1573,6 +1593,73 @@ Expected: green. Dev — ручний прохід флоу: головна → 
 git add -A
 git commit -m "feat(v2): final Diia cleanup - static pages, shared components, zero legacy palette"
 ```
+
+---
+
+### Task 10: Градієнтний фон + карткова основа (шар застосунку)
+
+**Files:**
+
+- Modify: `src/app/globals.css` (нові токени градієнта, фон body)
+- Modify: `src/widgets/Header/header.module.scss` (напівпрозорий blur-хедер)
+- Modify: `src/shared/components/Card/Card.module.scss` (тінь картки на градієнті)
+
+**Interfaces:**
+
+- Produces: токени `--gradient-brand` (повносилий), `--gradient-page` (розбавлений), `--surface-card` (біла картка). Наступні таски кладуть контент на `--surface-card` поверх `--gradient-page`.
+
+- [ ] **Step 1: Токени градієнта в globals.css**
+
+Додати в `:root`:
+
+```css
+--gradient-brand: linear-gradient(35.8deg, #c3aab2 -4.77%, #99eecc 46.72%, #80c0c8 90.23%, #4b8bfa 134.46%);
+--gradient-page:
+  linear-gradient(rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.82)),
+  linear-gradient(35.8deg, #c3aab2 -4.77%, #99eecc 46.72%, #80c0c8 90.23%, #4b8bfa 134.46%);
+--surface-card: #ffffff;
+```
+
+`html, body` і `main`: `background: var(--gradient-page) fixed;` (замість білого). Перевірити, що `background-attachment: fixed` не ламає мобільний скрол (iOS fallback: без fixed на <768px).
+
+- [ ] **Step 2: Хедер — системний бар застосунку**
+
+`.wrapper` у header.module.scss: `background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);`.
+
+- [ ] **Step 3: Верифікація + Commit**
+
+`npm run build` green. Commit: `feat(v2.1): Diia app gradient background + translucent header`
+
+---
+
+### Task 11: Контент у картки-«документи» по всіх екранах
+
+**Files:**
+
+- Modify: `src/app/home.module.scss` (hero → повносилий `--gradient-brand`, білий текст або темний по контрасту — перевірити читабельність)
+- Modify: `src/app/catalog/catalog.module.scss` (фільтри вже в картці; сітка без змін — ProductCard вже білі картки)
+- Modify: `src/shared/styles/productDetails.module.scss` + `src/app/catalog/[slug]/productDetails.module.scss` (галерея і інфо-колонка — окремі білі картки)
+- Modify: `src/app/cart/Cart.module.scss`, `src/features/checkout/components/CheckoutForm/CheckoutForm.module.scss` (секції — білі картки; підсумок-«документ» → `--gradient-brand` фон з білою внутрішньою карткою даних, як картка документа в застосунку)
+- Modify: auth-форми (`AuthDrawer.module.scss`) і статичні сторінки (`about`, `faq`, `delivery-and-payment`, `public-offer`, `privacy-policy`, `returns-exchanges`, `contact` module.scss) — контент у білу картку radius 24px, великий e-UkraineHead заголовок ЗВЕРХУ поза карткою
+- Modify: `src/app/checkout/success/CheckoutSuccess.module.scss`, `failed` — картка поверх градієнта
+
+**Правила:** картка = `background: var(--surface-card); border-radius: var(--border-radius-md або -lg); box-shadow: var(--shadow-sm)`; заголовок екрана поза карткою `var(--font-heading)`; метадані в картках `var(--text-sm) var(--text-secondary) var(--fw-light)`. Контраст текст/фон на градієнті — перевіряти (WCAG 4.5:1).
+
+- [ ] Прохід по файлах за правилами, build green, commit: `feat(v2.1): document-card surfaces across all screens`
+
+---
+
+### Task 12: Ілюстрації категорій через RunningHub
+
+**Files:**
+
+- Create: `scripts/generate_category_illustrations.py` (за патерном `F:\Progect\2026\smm-factory\scripts\generate_emark_slug_illustrations.py`)
+- Create: `public/assets/img/categories/<slug>.webp` (згенеровані)
+- Modify: `src/app/Home.tsx` + `home.module.scss` (картка категорії з ілюстрацією + fallback)
+
+**Механіка:** RunningHub API (`https://www.runninghub.ai`), воркфлоу Flux.1-dev `1823665769094754305`, ключ з `F:\Progect\2026\smm-factory\.env` (`RUNNINGHUB_API_KEY`); override нод 43 (t5xxl/clip_l/guidance), 37 (розмір 1024), 17 (steps 40), 25 (seed), 57 (lora); полінг `/task/openapi/status` кожні 10с; `uvx transparent-background` cutout → Pillow crop-to-alpha → webp (Pillow, без ffmpeg). Промпти: чистий 3D-рендер мерчу (біла футболка/худі/кепка/аксесуар) на нейтральному фоні, без тексту й лого — стиль референс-скрипта v1/v2. Слаги взяти з реальних категорій (стор/АПІ; якщо бекенд офлайн — базовий набір t-shirts/hoodies/caps/accessories + generic fallback `category-generic.webp`).
+
+- [ ] Скрипт → smoke-тест 1 кадру → повний батч → вайринг у категорійні картки з fallback → build green → commit: `feat(v2.1): category illustrations via RunningHub`
 
 ---
 
