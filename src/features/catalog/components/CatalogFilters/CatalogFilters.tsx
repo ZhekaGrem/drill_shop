@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useCatalogFilters, countActiveFilters } from '@/features/catalog/hooks/useCatalogFilters';
 import { useCategoriesStore } from '@/shared/stores/categories';
+import { formatProducts } from '@/shared/utils/format';
 import styles from './CatalogFilters.module.scss';
 
 interface CatalogFiltersProps {
@@ -10,16 +11,6 @@ interface CatalogFiltersProps {
   initialCategories?: any[];
   /** Скільки товарів зараз у видачі — показуємо в рядку стану */
   resultsCount?: number;
-}
-
-/** «12 товарів» / «1 товар» / «24 товари» */
-function formatProducts(count: number): string {
-  const mod10 = count % 10;
-  const mod100 = count % 100;
-
-  if (mod10 === 1 && mod100 !== 11) return `${count} товар`;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${count} товари`;
-  return `${count} товарів`;
 }
 
 const SORT_OPTIONS = [

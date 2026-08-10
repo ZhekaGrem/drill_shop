@@ -7,6 +7,7 @@ import { ArrowLeft } from '@/shared/components/Svg';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { CartItem } from '@/features/cart/components/CartItem/CartItem';
 import { formatPrice } from '@/shared/utils/cart-calculations';
+import { formatProducts } from '@/shared/utils/format';
 import { Button } from '@/shared/components/Button/Button';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
@@ -37,7 +38,7 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
       <PageHeader
         title="Кошик"
         description={
-          items.length > 0 ? `${calculations.itemsCount} товарів у замовленні` : 'Поки що порожній'
+          items.length > 0 ? `${formatProducts(calculations.itemsCount)} у замовленні` : 'Поки що порожній'
         }
         aside={
           <Link href={`${basePath}/catalog`} className={styles.backLink}>
