@@ -278,6 +278,15 @@ p {
   --text-tertiary: #6e6e6e;
   --text-inverse: #ffffff;
   --text-white: #ffffff;
+  /* Текст на --background-dark (чорні поверхні на кшталт футера).
+     #9a9a9a на #000 = 7.37:1, #7a7a7a = 4.89:1 — обидва тримають WCAG AA. */
+  --text-inverse-secondary: #9a9a9a;
+  --text-inverse-tertiary: #7a7a7a;
+
+  /* Межі й hover-фони на --background-dark. Контраст тут декоративний
+     (не текст), тому нижче загального порогу 4.5:1 — це навмисно тиха лінія. */
+  --border-inverse-subtle: #262626;
+  --surface-inverse-hover: #1a1a1a;
 
   /* Кнопки */
   --btn-primary: #000000;
@@ -379,6 +388,10 @@ p {
   --section-gap: var(--space-12); /* між секціями сторінки */
   --card-padding: var(--space-5); /* внутрішній падінг картки/рядка */
   --card-gap: var(--space-3); /* між картками в одній групі */
+  /* Висота нижньої панелі навігації. Живе токеном, бо на неї спираються двоє:
+     нижній падінг сторінки (нижче в цьому файлі) і липка панель дії на сторінці
+     товару — вона має стояти РІВНО над таб-баром, а не під ним. */
+  --bottom-nav-height: 68px;
 
   /* DEPRECATED: аліаси на layout-токени. У новому коді використовуй --page-*. */
   --spacing-x: var(--page-padding-x);
@@ -465,6 +478,24 @@ main {
   body,
   main {
     background-attachment: scroll;
+  }
+}
+
+/* Нижня панель навігації (widgets/BottomNav) лежить `fixed` поверх контенту,
+   тому кінець сторінки треба звільнити — інакше панель накриває футер і
+   останню кнопку на екрані. Атрибут ставить сам компонент, а висота живе тут,
+   поруч із рештою layout-значень: 48px таб + 8px + 4px падінги списку.
+   `mobile` — веб-панель, яку від 1024px ховає CSS, тож там і падінг зайвий.
+   `always` — панель Telegram Mini App: вона видима на будь-якій ширині.
+   68px = 4px + 28px підкладка іконки + 2px + ~14px підпис + 4px (таб)
+          + 8px/4px падінги списку + 1px верхня межа. */
+body[data-bottom-nav='always'] {
+  padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 1023px) {
+  body[data-bottom-nav='mobile'] {
+    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
   }
 }
 

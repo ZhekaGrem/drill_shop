@@ -8,11 +8,14 @@ interface LogoProps {
   className?: string;
   /** 'md' — header (default), 'sm' — компактні місця типу footer */
   size?: 'md' | 'sm';
+  /** Для темних поверхонь (напр. футер) — світлий текст замість --text-primary */
+  inverse?: boolean;
 }
 
-export function Logo({ className, size = 'md' }: LogoProps) {
+export function Logo({ className, size = 'md', inverse = false }: LogoProps) {
   const sizeClass = size === 'sm' ? styles.sizeSm : '';
-  const classes = [styles.logo, sizeClass, className].filter(Boolean).join(' ');
+  const inverseClass = inverse ? styles.inverse : '';
+  const classes = [styles.logo, sizeClass, inverseClass, className].filter(Boolean).join(' ');
 
   return (
     <span className={classes}>

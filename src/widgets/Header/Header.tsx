@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { IconLogout, IconSettings } from '@tabler/icons-react';
-import { Box, Drawer, Menu, ScrollArea, Badge } from '@mantine/core';
+import { Box, Menu, Badge } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect } from 'react';
 import styles from './header.module.scss';
@@ -14,11 +14,12 @@ import { CartDrawer } from '@/features/cart/components/CartDrawer/CartDrawer';
 import { AuthDrawer } from '@/features/auth/components/AuthDrawer/AuthDrawer';
 import { content } from '@/shared/config/content';
 import { Logo } from '@/shared/components/Logo';
-import { IconX, MenuIcon, IconSearch, IconCart, IconUser } from '@/shared/components/Svg';
+import { IconX, IconSearch, IconCart, IconUser } from '@/shared/components/Svg';
 
+// Тільки десктопна навігація. На мобільному ці розділи живуть у таб-барі
+// (widgets/BottomNav) і на екрані «Кабінет» — бургер-шторки більше немає.
 const NAV_ITEMS = [
   { label: 'Каталог', href: '/catalog' },
-  { label: 'Розпродаж', href: '/catalog?promo=true' },
   { label: 'Про нас', href: '/about' },
   { label: 'Контакти', href: '/contact' },
 ];
@@ -130,69 +131,18 @@ const AuthControl = React.memo(
   }
 );
 
-// ✅ Mobile menu з іконками та chevron
-/** Порівнюємо ТІЛЬКИ pathname, свідомо.
- *
- *  Щоб відрізнити «Розпродаж» (`/catalog?promo=true`) від «Каталог»
- *  (`/catalog`), потрібен `useSearchParams()`, а він у Next вимагає Suspense
- *  і вибиває сторінку зі статичної генерації. Цей проєкт тримається на
- *  SSG/ISR (`revalidate`, `generateStaticParams`) — активний підкреслений
- *  пункт того не вартий. Тому пункти з query активними не стають. */
-const isNavItemActive = (href: string, pathname: string) => {
-  if (href.includes('?')) return false;
-  return pathname === href || pathname.startsWith(`${href}/`);
-};
-
-const MobileMenu = React.memo(
-  ({
-    opened,
-    onClose,
-    onNavigate,
-    pathname,
-  }: {
-    opened: boolean;
-    onClose: () => void;
-    onNavigate: () => void;
-    pathname: string;
-  }) => {
-    return (
-      <Drawer
-        closeButtonProps={{
-          icon: <IconX />,
-        }}
-        opened={opened}
-        onClose={onClose}
-        position="left"
-        size="480px"
-        className={styles.drawer}>
-        <ScrollArea h="calc(100vh - 80px)">
-          {NAV_ITEMS.map((item) => {
-            const active = isNavItemActive(item.href, pathname);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`${styles.menuLink} ${active ? styles.menuLinkActive : ''}`}
-                aria-current={active ? 'page' : undefined}
-                onClick={onNavigate}>
-                <div className={styles.menuIcon}>
-                  <span>{item.label}</span>
-                </div>
-              </Link>
-            );
-          })}
-        </ScrollArea>
-      </Drawer>
-    );
-  }
-);
+/** Порівнюємо ТІЛЬКИ pathname, свідомо: щоб врахувати query, потрібен
+ *  `useSearchParams()`, а він у Next вимагає Suspense і вибиває сторінку зі
+ *  статичної генерації. Проєкт тримається на SSG/ISR — підкреслений пункт
+ *  того не вартий. Наразі жоден пункт навігації query й не має. */
+const isNavItemActive = (href: string, pathname: string) =>
+  pathname === href || pathname.startsWith(`${href}/`);
 
 const RECENT_KEY = 'recent-searches';
 
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [authDrawerOpened, { open: openAuthDrawer, close: closeAuthDrawer }] = useDisclosure(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
@@ -248,15 +198,8 @@ export function Header() {
   return (
     <Box className={styles.wrapper}>
       <header className={styles.header}>
-        {/* Left group: Burger (mobile) + Logo + Nav */}
+        {/* Left group: Logo + Nav */}
         <div className={styles.headerLeft}>
-          <button
-            className={styles.burgerButton}
-            onClick={toggleDrawer}
-            aria-label={drawerOpened ? 'Закрити меню' : 'Відкрити меню'}>
-            {drawerOpened ? <IconX /> : <MenuIcon />}
-          </button>
-
           {/* Logo (Left) */}
           <Link href="/" className={styles.logoLink} aria-label="ye-dril — на головну">
             <Logo />
@@ -359,9 +302,6 @@ export function Header() {
           )}
         </div>
       )}
-
-      {/* Mobile Drawer Menu */}
-      <MobileMenu opened={drawerOpened} onClose={closeDrawer} onNavigate={closeDrawer} pathname={pathname} />
 
       {/* Cart Drawer */}
       <CartDrawer />

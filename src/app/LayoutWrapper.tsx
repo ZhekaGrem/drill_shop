@@ -4,6 +4,7 @@
 import { usePathname } from 'next/navigation';
 import { Header } from '@/widgets/Header/Header';
 import { Footer } from '@/widgets/Footer/Footer';
+import { SiteBottomNav } from '@/widgets/BottomNav';
 import { EmailVerificationBanner } from '@/shared/components/EmailVerificationBanner';
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -23,6 +24,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
       <EmailVerificationBanner />
       <main>{children}</main>
       <Footer />
+      <SiteBottomNav />
     </>
   );
 }

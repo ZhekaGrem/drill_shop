@@ -1,9 +1,10 @@
 // src/widgets/Footer/footer.module.scss
-// Diia-style Footer
+// Diia-style Footer — темна контрастна смуга внизу світлого сайту,
+// за зразком нижнього блоку diia.gov.ua (там теж чорний футер під білою
+// сторінкою, без окремої обводки — сам перепад кольору і є межею).
 
 .footer {
-  background: var(--background-secondary);
-  border-top: 2px solid var(--text-primary);
+  background: var(--background-dark);
   margin-top: auto;
 }
 
@@ -15,33 +16,38 @@
   padding: var(--space-8) var(--page-padding-x);
 }
 
-// Main footer grid (3 columns)
+// Main footer grid — лише навігація магазину (3 колонки), за зразком
+// diia.gov.ua: верхній ярус футера там теж тільки колонки посилань.
+// Сітка живе тільки від 1024px, тому одноколонкового мобільного варіанта
+// їй більше не треба — три колонки завжди мають місце.
 .footerGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-xl);
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-xl) var(--spacing-lg);
-  }
-
-  @media (max-width: 560px) {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
-  }
 }
 
 .line {
   width: 100%;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-inverse-subtle);
 }
 
-// Один клас заголовка колонки на всі колонки. Було два (.columnTitle і
-// .columnTitle__about), що відрізнялись лише margin-bottom — через це перші
-// рядки сусідніх колонок стояли на різній висоті.
+// Нижче 1024px верхній ярус футера ховається цілком: ті самі «Доставка»,
+// «Повернення», «FAQ», «Договір» лежать на екрані «Меню» (app/menu), до якого
+// веде нижня панель. Дублювати їх — це змусити гортати ~600px темного футера
+// заради того, що є за один тап (Occam's Razor; каскад «remove → hide»).
+// Ховаємо контейнер, а не саму сітку: інакше лишились би його падінги
+// (var(--space-8) зверху й знизу) як порожня чорна смуга.
+// Роздільник теж зайвий — під ним більше нічого не відділяти.
+// Брейкпоінт той самий, що й у .mobileOnly таб-бара.
+@media (max-width: 1023px) {
+  .gridContainer,
+  .line {
+    display: none;
+  }
+}
+
 .columnTitle {
-  color: var(--text-primary);
+  color: var(--text-inverse);
   margin-bottom: var(--space-4);
   font-family: var(--font-body);
   font-weight: var(--fw-medium);
@@ -56,12 +62,10 @@
   gap: var(--spacing-sm);
 }
 
-// 20px для рядка навігації у футері — це розмір заголовка, а не посилання:
-// колонка починала конкурувати з контентом сторінки. Базовий розмір достатній.
 .linksColumn a {
   font-size: var(--text-base);
   font-weight: var(--fw-light);
-  color: var(--text-primary);
+  color: var(--text-inverse-secondary);
   text-decoration: none;
   transition: var(--transition-fast);
   padding: var(--spacing-xs) 0;
@@ -72,130 +76,27 @@
   }
 }
 
-// Contact info
-.contactInfo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-// Клас висить на самому <a>, тому вкладеного `a { … }` тут бути не може:
-// той селектор ніколи не матчився, і hover на пошті просто не працював.
-.contactItem {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-size: var(--text-base);
-  font-weight: var(--fw-normal);
-  color: var(--text-primary);
-  text-decoration: none;
-  transition: var(--transition-fast);
-
-  &:hover {
-    color: var(--accent);
-  }
-}
-
-.phoneNumber {
-  font-size: var(--text-lg);
-  font-weight: var(--fw-medium);
-  color: var(--text-primary);
-}
-
-// Social section
-.socialSection {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-
-  // Заголовок колонки має той самий відступ, що й у сусідніх колонок,
-  // інакше контакти «висять» вище за списки поруч
-  .columnTitle {
-    margin-bottom: 0;
-  }
-}
-
-// Було .socialDescription — клас соцмереж, накинутий на графік роботи.
-// Іменування, що бреше про призначення, тягне за собою і дрейф стилю.
 .workingHours {
   font-size: var(--text-base);
   font-weight: var(--fw-normal);
-  color: var(--text-primary);
+  color: var(--text-inverse-secondary);
   white-space: pre-line;
 }
 
-.socialIcons {
-  display: flex;
-  gap: var(--spacing-sm);
-  flex-wrap: wrap;
-}
-
-// Round icon buttons — diia.gov.ua footer pattern
-.socialLink {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  color: var(--text-primary);
-  text-decoration: none;
-  background: var(--background);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  transition: var(--transition-fast);
-
-  &:hover {
-    background: var(--background-secondary);
-  }
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-// Bottom section
+// Bottom section — три групи в один тихий рядок: бренд, контакти+кредити,
+// соцмережі. Мова нижнього меню diia.gov.ua: легальні посилання й
+// «Слідкуй за нами тут:» стоять поруч під роздільником, не в основній сітці.
 .bottomSection {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding-top: var(--spacing-lg);
   flex-wrap: wrap;
-  gap: var(--spacing-md);
+  gap: var(--spacing-lg);
 
   @media (max-width: 768px) {
     flex-direction: column;
-    text-align: start;
-    align-items: start;
-  }
-}
-
-.copyright {
-  font-size: var(--text-sm);
-  font-weight: var(--fw-normal);
-  color: var(--text-secondary);
-}
-
-// Кредити — третинний шар. Було 20px/medium, тобто важче за навігацію
-// магазину; тепер тихіше за копірайт-рядок і не конкурує ні з чим.
-.credits {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-  font-weight: var(--fw-light);
-  color: var(--text-secondary);
-
-  a {
-    color: var(--text-secondary);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    transition: var(--transition-fast);
-
-    &:hover {
-      color: var(--text-primary);
-    }
+    align-items: flex-start;
   }
 }
 
@@ -205,10 +106,111 @@
   gap: var(--spacing-md);
 }
 
-// Logo in footer (bottom row, next to copyright)
 .footerLogo {
   display: flex;
   align-items: center;
+}
+
+.copyright {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-normal);
+  color: var(--text-inverse-tertiary);
+}
+
+.bottomMeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.contactInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--spacing-md);
+}
+
+.contactItem {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-normal);
+  color: var(--text-inverse-secondary);
+  text-decoration: none;
+  transition: var(--transition-fast);
+
+  &:hover {
+    color: var(--text-inverse);
+  }
+}
+
+// Кредити — третинний шар, тихіше за контакти й копірайт.
+.credits {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-light);
+  color: var(--text-inverse-tertiary);
+
+  a {
+    color: var(--text-inverse-tertiary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: var(--transition-fast);
+
+    &:hover {
+      color: var(--text-inverse);
+    }
+  }
+}
+
+// Social section
+.socialSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-sm);
+
+  @media (max-width: 768px) {
+    align-items: flex-start;
+  }
+}
+
+.socialLabel {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-normal);
+  color: var(--text-inverse-tertiary);
+}
+
+.socialIcons {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+// Round icon buttons — diia.gov.ua footer pattern, перефарбовано під темну
+// поверхню: контур і hover-фон беруть inverse-токени замість світлих.
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--text-inverse);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--text-inverse-secondary);
+  border-radius: var(--radius-pill);
+  transition: var(--transition-fast);
+
+  &:hover {
+    background: var(--surface-inverse-hover);
+    border-color: var(--text-inverse);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 // Mobile styles
@@ -217,10 +219,6 @@
   // подвійні. Вертикальний ритм задає один контейнер.
   .container {
     padding: var(--space-6) var(--page-padding-x);
-  }
-
-  .footerGrid {
-    margin-bottom: var(--spacing-lg);
   }
 
   .socialIcons {

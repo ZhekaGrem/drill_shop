@@ -1,7 +1,7 @@
 // src/widgets/Footer/Footer.tsx
 'use client';
 
-import { Container, Stack, Text } from '@mantine/core';
+import { Stack, Text } from '@mantine/core';
 import { IconTelegram, IconInstagram } from '@/shared/components/Svg';
 import Link from 'next/link';
 import styles from './footer.module.scss';
@@ -13,28 +13,28 @@ const currentYear = new Date().getFullYear();
 export function Footer() {
   return (
     <footer className={`${styles.footer} `} data-footer role="contentinfo" aria-label="Інформація про сайт">
-      <div className={styles.container}>
-        {/* Main footer grid */}
-        {/* Чотири колонки, і в КОЖНОЇ є заголовок одного класу. Раніше третя
-            (контакти) заголовка не мала взагалі, а перші дві мали два різні
-            класи — .columnTitle і .columnTitle__about, — які відрізнялись лише
-            відсутнім margin-bottom, тож їхні перші рядки стояли на різній висоті. */}
+      <div className={`${styles.container} ${styles.gridContainer}`}>
+        {/* Головна сітка — тільки навігація магазину, за зразком diia.gov.ua:
+            там верхній ярус футера це виключно колонки посилань, а контакти
+            й соцмережі живуть окремо, у нижній службовій смузі.
+
+            Нижче 1024px цей ярус ховається (див. .gridContainer): рівно ті самі
+            посилання вже лежать на екрані «Меню» під нижньою панеллю, і
+            показувати їх двічі — це змусити гортати довгий футер до того, що
+            є за один тап (Occam's Razor). Брейкпоінт той самий, що й у
+            SiteBottomNav, тому дубля немає на жодній ширині. */}
         <div className={styles.footerGrid}>
-          {/* Column 1: Магазин — у футері не було посилань на те, заради чого
-              сайт існує: каталог і розпродаж */}
           <div className={styles.linksColumn}>
             <Text component="h2" className={styles.columnTitle}>
               Магазин
             </Text>
             <Stack gap="xs">
               <Link href="/catalog">Каталог</Link>
-              <Link href="/catalog?promo=true">Розпродаж</Link>
               <Link href="/about">Про нас</Link>
               <Link href="/orders/track">Відстежити замовлення</Link>
             </Stack>
           </div>
 
-          {/* Column 2: Покупцю */}
           <div className={styles.linksColumn}>
             <Text component="h2" className={styles.columnTitle}>
               Покупцю
@@ -49,28 +49,64 @@ export function Footer() {
             </Stack>
           </div>
 
-          {/* Column 3: Час роботи */}
           <div className={styles.linksColumn}>
             <Text component="h2" className={styles.columnTitle}>
               Час роботи
             </Text>
             <Text className={styles.workingHours}>Понеділок — Неділя{'\n'}з 8:00 до 23:00</Text>
           </div>
+        </div>
+      </div>
+      <div className={styles.line} />
+      {/* Нижня службова смуга — бренд, контакти, кредити та соцмережі поруч,
+          як у нижньому меню diia.gov.ua: там теж легальні посилання й
+          «Слідкуй за нами тут:» стоять в одному тихому рядку під роздільником. */}
+      <div className={styles.container}>
+        <div className={styles.bottomSection}>
+          <div className={styles.bottomBrand}>
+            <div className={styles.footerLogo}>
+              <Logo size="sm" inverse />
+            </div>
+            <Text className={styles.copyright}>© {currentYear} ye-dril.com</Text>
+          </div>
 
-          {/* Column 4: Контакти + Соцмережі */}
-          <div className={styles.socialSection}>
-            <Text component="h2" className={styles.columnTitle}>
-              Контакти
-            </Text>
+          <div className={styles.bottomMeta}>
             <div className={styles.contactInfo}>
               <a href={`mailto:${siteConfig.contacts.email}`} className={styles.contactItem}>
                 {siteConfig.contacts.email}
               </a>
-              <a href={`tel:${siteConfig.contacts.phone.replace(/\s/g, '')}`} className={styles.phoneNumber}>
+              <a href={`tel:${siteConfig.contacts.phone.replace(/\s/g, '')}`} className={styles.contactItem}>
                 {siteConfig.contacts.phone}
               </a>
             </div>
 
+            <div className={styles.credits}>
+              <span>
+                Розробка{' '}
+                <a href="https://galychyna.online/" target="_blank" rel="noopener noreferrer">
+                  Galychyna
+                </a>
+              </span>
+              <span aria-hidden="true">·</span>
+              <span>
+                Дизайн{' '}
+                <a href="https://d-okuniev.framer.website/" target="_blank" rel="noopener noreferrer">
+                  Danil Okuniev
+                </a>
+              </span>
+              <span aria-hidden="true">·</span>
+              <span>
+                Шрифт{' '}
+                <a href="https://thedigital.gov.ua/fonts" target="_blank" rel="noopener noreferrer">
+                  e-Ukraine
+                </a>{' '}
+                © Мінцифра, CC BY 4.0
+              </span>
+            </div>
+          </div>
+
+          <div className={styles.socialSection}>
+            <Text className={styles.socialLabel}>Стежте за нами:</Text>
             <div className={styles.socialIcons}>
               <a
                 href={siteConfig.socials.instagram}
@@ -91,46 +127,6 @@ export function Footer() {
                 <span className="sr-only">Telegram</span>
               </a>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className={styles.line} />
-      {/* Bottom section */}
-      <div className={styles.container}>
-        {/* Кредити були набрані 20px medium — тобто більшими й важчими за
-            навігацію магазину (16px light) і за копірайт (14px). У футері
-            магазину найпомітнішим виявлялось те, що потрібне найменше.
-            Тепер це один тихий рядок 14px поруч з копірайтом. */}
-        <div className={styles.bottomSection}>
-          <div className={styles.bottomBrand}>
-            <div className={styles.footerLogo}>
-              <Logo size="sm" />
-            </div>
-            <Text className={styles.copyright}>© {currentYear} ye-dril.com</Text>
-          </div>
-
-          <div className={styles.credits}>
-            <span>
-              Розробка{' '}
-              <a href="https://galychyna.online/" target="_blank" rel="noopener noreferrer">
-                Galychyna
-              </a>
-            </span>
-            <span aria-hidden="true">·</span>
-            <span>
-              Дизайн{' '}
-              <a href="https://d-okuniev.framer.website/" target="_blank" rel="noopener noreferrer">
-                Danil Okuniev
-              </a>
-            </span>
-            <span aria-hidden="true">·</span>
-            <span>
-              Шрифт{' '}
-              <a href="https://thedigital.gov.ua/fonts" target="_blank" rel="noopener noreferrer">
-                e-Ukraine
-              </a>{' '}
-              © Мінцифра, CC BY 4.0
-            </span>
           </div>
         </div>
       </div>

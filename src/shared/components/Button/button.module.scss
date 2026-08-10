@@ -16,12 +16,33 @@
   gap: var(--spacing-sm);
   border: none;
 
+  // Diia-style "живий" hover: сама кнопка завжди тримає --gradient-brand
+  // (той самий градієнт, що й фон сторінки — рухається безперервно, тихо,
+  // під суцільно чорною маскою). На hover маска ховається — і оскільки
+  // анімація увесь час іде фоном, кожне наведення показує інший кадр,
+  // тому градієнт щоразу виглядає «іншим», а насправді це один плавний цикл.
   &--primary {
-    background: var(--btn-primary);
+    position: relative;
+    isolation: isolate;
+    background-image: var(--gradient-brand);
+    background-size: 200% 200%;
     color: var(--text-inverse);
+    animation: buttonGradientDrift 12s ease infinite;
 
-    &:hover:not(:disabled) {
-      background: var(--btn-primary-hover);
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background: var(--btn-primary);
+      opacity: 1;
+      transition: opacity 0.25s ease-in-out;
+    }
+
+    &:hover:not(:disabled)::before,
+    &:focus-visible::before {
+      opacity: 0;
     }
   }
 
@@ -101,5 +122,21 @@
   &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+}
+
+@keyframes buttonGradientDrift {
+  0%,
+  100% {
+    background-position: 0% 25%;
+  }
+  50% {
+    background-position: 100% 75%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button--primary {
+    animation: none;
   }
 }

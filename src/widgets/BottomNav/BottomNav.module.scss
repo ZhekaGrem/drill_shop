@@ -1,0 +1,144 @@
+// src/widgets/BottomNav/BottomNav.module.scss
+// Таб-бар Дії: щільна біла поверхня знизу, активний таб — pill-підсвітка.
+
+.bar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  // Нижче за оверлеї Mantine (шторка, модалка, bottom sheet ідуть від 200):
+  // панель навігації не має накривати діалог, який користувач щойно відкрив.
+  // У Telegram-версії тут стояло 999 — і панель лізла поверх власних шторок.
+  z-index: 100;
+  // Не rgba+blur: `backdrop-filter` у нас компілюється тільки в -webkit- формі,
+  // якої Chrome не розуміє, тож напівпрозорість дала б просто брудну плівку
+  // з текстом сторінки, що просвічує крізь таби. Поверхня щільна.
+  background: var(--surface-card);
+  border-top: 1px solid var(--border-subtle);
+  // iOS: домашній індикатор з'їдає ~34px внизу
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.list {
+  display: flex;
+  align-items: stretch;
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-2) var(--space-1);
+}
+
+.item {
+  flex: 1;
+  min-width: 0;
+}
+
+// Ціль натискання на всю ширину колонки й ≥48px висоти (WCAG 2.5.5 / Apple HIG)
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-1) var(--space-2);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--dur-hover) var(--ease-out);
+
+  // :not(.tabActive) обов'язковий: `.tab:hover` специфічніший за `.tabActive`,
+  // тож без цього наведення на активний таб перефарбувало б білу іконку
+  // в чорну — на чорній підкладці вона б зникла.
+  &:hover:not(.tabActive) {
+    color: var(--text-primary);
+  }
+
+  &:active {
+    transform: scale(var(--motion-press-scale));
+  }
+}
+
+// Активний таб — підкладка під іконкою, як у таб-барах застосунків.
+//
+// Було: pill --background-secondary (#e7eef3) на --surface-card (#fff) = 1.17:1,
+// тобто нижче за 3:1 для нетекстових індикаторів стану (WCAG 1.4.11) — підкладка
+// фактично не читалась, і весь сигнал «де я» лишався на різниці #000/#606060
+// у 12px підписі. Тепер носіїв три й кожен однозначний: чорна підкладка (21:1
+// до іконки), інверсна іконка, важчий підпис.
+//
+// Чорне тло + інверсний текст — це той самий стан «вибрано», що вже діє
+// в фільтрах каталогу (CatalogFilters `.dropdownItem.active`), а не новий
+// винахід: --primary у дизайн-системі і є чорна pill-поверхня.
+.tabActive {
+  color: var(--text-primary);
+
+  .iconWrap {
+    background: var(--text-primary);
+    color: var(--text-inverse);
+  }
+
+  .label {
+    font-weight: var(--fw-medium);
+  }
+
+  // На чорній підкладці чорний кружок бейджа зникає — інвертуємо разом з нею
+  .badge {
+    border-color: var(--text-primary);
+    background: var(--text-inverse);
+    color: var(--text-primary);
+  }
+}
+
+.iconWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.label {
+  overflow: hidden;
+  max-width: 100%;
+  font-size: var(--text-xs);
+  font-weight: var(--fw-normal);
+  line-height: 1.2;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// Чорний кружок, як лічильник кошика в хедері. --accent-red за дизайн-системою
+// дозволений ТІЛЬКИ для знижок і промо, а кількість товарів — не знижка.
+// Координати рахуються від .iconWrap, а він тепер 48×28 (підкладка), не 24×24:
+// при старих -6/-10px бейдж відлітав за межі підкладки й висів у порожнечі.
+// Тепер він тримається правого верхнього кута самої підкладки.
+.badge {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border: 2px solid var(--surface-card);
+  border-radius: var(--radius-pill);
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  font-size: 11px;
+  font-weight: var(--fw-medium);
+  line-height: 16px;
+  text-align: center;
+}
+
+// Веб-варіант живе тільки на мобільному: на десктопі навігація в хедері.
+// Брейкпоінт той самий, що й у .desktopNav хедера — інакше буде діапазон
+// ширин, де навігації немає ніде або вона є двічі.
+.mobileOnly {
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}

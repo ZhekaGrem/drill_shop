@@ -134,35 +134,6 @@
   margin: 0;
 }
 
-// Burger — mobile only, desktop shows nav links instead
-.burgerButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  color: var(--text-primary);
-  flex-shrink: 0;
-
-  &:hover {
-    background: var(--background-secondary);
-  }
-
-  svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  @media (min-width: 1024px) {
-    display: none;
-  }
-}
-
 // Account pill — diia.gov.ua CTA values (radius/padding/typography verbatim,
 // min-/max-width dropped: those are sized for full-size hero CTAs, not a header button)
 .accountPill {
@@ -344,6 +315,31 @@
   display: flex;
   align-items: center;
   max-width: 100%;
+
+  // Diia-style фокус: замість суцільної синьої рамки — тонка --gradient-brand
+  // підкреслюючи лінія під полем (той самий прийом, що й на diia.gov.ua/news
+  // у полі пошуку). Ховається в спокої, зʼявляється й «дотягується» на фокусі.
+  &::after {
+    content: '';
+    position: absolute;
+    left: var(--spacing-lg);
+    right: var(--spacing-lg);
+    bottom: 0;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--gradient-brand);
+    opacity: 0;
+    transform: scaleX(0.7);
+    transform-origin: center;
+    transition:
+      opacity 0.25s ease,
+      transform 0.35s ease;
+  }
+
+  &:focus-within::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
 }
 
 .expandedSearchInput {
@@ -355,10 +351,11 @@
   font-weight: var(--fw-normal);
   color: var(--text-primary);
   background: var(--background);
+  transition: var(--transition-fast);
 
   &:focus {
     outline: none;
-    border-color: var(--accent);
+    border-color: transparent;
   }
 
   &::placeholder {
@@ -423,78 +420,6 @@
   }
 }
 
-// Mobile menu drawer
-.drawer {
-  :global(.mantine-Drawer-content) {
-    background: var(--background);
-  }
-
-  :global(.mantine-Drawer-header) {
-    background: var(--background);
-    padding: var(--spacing-md);
-  }
-
-  :global(.mantine-Drawer-title) {
-    font-size: var(--text-xl);
-    font-weight: var(--fw-medium);
-  }
-
-  :global(.mantine-Drawer-body) {
-    padding: var(--spacing-md);
-  }
-
-  :global(.mantine-Drawer-close) {
-    border-radius: var(--radius-pill);
-
-    &:hover {
-      background: var(--background-secondary);
-    }
-  }
-}
-
-.menuLinkActive {
-  font-weight: var(--fw-bold);
-  background: var(--background-secondary);
-}
-
-.menuLink {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--spacing-md);
-  font-size: var(--text-xl);
-  font-weight: var(--fw-medium);
-  color: var(--text-primary);
-  text-decoration: none;
-  border-bottom: 1px solid var(--border-subtle);
-  transition: var(--transition-fast);
-  line-height: 130%;
-
-  &:hover {
-    background: var(--background-secondary);
-  }
-
-  &:first-child {
-    border-top: 1px solid var(--border-subtle);
-  }
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-.menuIcon {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-
-  svg {
-    width: 24px;
-    height: 24px;
-  }
-}
-
 // Mobile styles
 @media (max-width: 768px) {
   // Тут стояло `padding: var(--spacing-y-m) var(--spacing-x)` одразу на .header
@@ -506,8 +431,6 @@
     padding: 0 var(--page-padding-x) var(--spacing-sm);
   }
 
-  .burgerButton,
-  .cartButton,
   .searchTrigger {
     width: 40px;
     height: 40px;
@@ -522,17 +445,15 @@
   .headerRight {
     gap: var(--spacing-sm);
   }
+}
 
-  // Collapse to icon-only circle — avoid crowding burger + logo + search + cart
+// Кошик і «Кабінет» переїхали в нижню панель (widgets/BottomNav) — у зоні
+// великого пальця, а не в найдальшому від нього куті екрана (Fitts).
+// Той самий брейкпоінт, що й у .desktopNav: інакше буде діапазон ширин,
+// де ці дії або зникають зовсім, або дублюються вгорі й унизу.
+@media (max-width: 1023px) {
+  .cartButton,
   .accountPill {
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    justify-content: center;
-    gap: 0;
-
-    span {
-      display: none;
-    }
+    display: none;
   }
 }
