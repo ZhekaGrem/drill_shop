@@ -285,7 +285,9 @@ app → widgets → features → shared
 - **Type checking:** Увімкнено (`ignoreBuildErrors: false`)
 - **ESLint:** Увімкнено (`ignoreDuringBuilds: false`)
 - **Image optimization:** Увімкнено з Cloudinary domains
-- **Output:** `standalone` для кращого деплою
+- **Output:** дефолтний. `output: 'standalone'` НЕ вмикати — проєкт деплоїться на
+  Vercel, який робить трасування файлів сам, а standalone ламає його білд
+  (`ENOENT .next/next-server.js.nft.json`). Standalone потрібен лише для self-host.
 - **Device Sizes:** Обмежено до 3-4 варіантів
 
 ### Mantine UI Theme

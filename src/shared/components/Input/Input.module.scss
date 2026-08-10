@@ -135,6 +135,18 @@ $lifted: '&:has(:is(input, textarea):is(:focus, :not(:placeholder-shown), :disab
   &:not(:has(> label)) .input::placeholder {
     opacity: 1;
   }
+
+  // globals.css малює фокус синьою рамкою 3px. На полі, у якого рамки немає
+  // взагалі, вона читається як чужа коробка навколо лінії. Індикатор фокуса
+  // тут інший і не слабший: градієнтна лінія + спливання лейбла + поява
+  // плейсхолдера — три одночасні сигнали замість одного.
+  .input:focus,
+  .input:focus-visible,
+  .input:focus-within,
+  .innerInput:focus,
+  .innerInput:focus-visible {
+    outline: none;
+  }
 }
 
 // ============ ПОМИЛКА ============

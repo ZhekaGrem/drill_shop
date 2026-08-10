@@ -20,7 +20,13 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },
   trailingSlash: false,
-  output: 'standalone',
+  // `output: 'standalone'` тут стояло помилково: проєкт їде на Vercel, а не
+  // self-host. У Next 16 standalone забирає трасування файлів у .next/standalone,
+  // і білдер Vercel падає на пошуку .next/next-server.js.nft.json:
+  //   Error: ENOENT: no such file or directory, open
+  //   '/vercel/path0/.next/next-server.js.nft.json'
+  // Vercel робить трасування сам — окремий standalone-вивід йому не потрібен.
+  // Повертати цей рядок можна тільки разом із переїздом на власний сервер/Docker.
   images: {
     // ✅ Enable Next.js image optimization (безкоштовно!)
     unoptimized: false,
