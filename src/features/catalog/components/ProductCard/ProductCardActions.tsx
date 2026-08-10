@@ -30,6 +30,7 @@ export const ProductCardActions: React.FC<ProductCardActionsProps> = ({
         type="button"
         fullWidth
         variant="secondary"
+        aria-label={buttonText}
         className={styles.addButton}>
         <Group gap={10}>
           <IconCart3 /> <p className={styles.buttonText}> {buttonText} </p>
