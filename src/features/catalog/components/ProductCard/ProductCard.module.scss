@@ -1,4 +1,6 @@
 // src/features/catalog/components/ProductCard/ProductCard.module.scss
+@use '../../../../shared/styles/motion' as motion;
+@use '../../../../shared/styles/animations';
 //
 // Картка-«документ» Дії: щільна БІЛА поверхня, що лежить на градієнтному фоні
 // сторінки (--gradient-page з globals.css). Раніше градієнт був фоном самої
@@ -38,7 +40,17 @@
   // Межа + тінь + translateY — мова шаблонного e-commerce.
   box-shadow: var(--shadow-card);
   overflow: hidden;
-  transition: var(--transition-normal);
+  transition: transform var(--dur-press) var(--ease-out);
+
+  @include motion.press;
+
+  // Підйому на hover немає свідомо (див. коментар вище) — реагує фото,
+  // як на картках-документах Дії і в спільній Card.
+  @include motion.hoverable {
+    &:hover .productImage {
+      transform: scale(1.02);
+    }
+  }
 
   @media (max-width: 768px) {
     --card-inset: var(--space-2);
@@ -80,7 +92,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: var(--transition-fast);
+  transition: transform var(--dur-hover) var(--ease-out);
 
   &.loading {
     animation: blurFadeIn 1.5s ease-in-out infinite;
@@ -127,12 +139,14 @@
   color: var(--text-primary);
   overflow-wrap: anywhere;
   overflow: hidden;
-  transition: var(--transition-fast);
+  transition: color var(--dur-hover) var(--ease-out);
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 
-  &:hover {
-    color: var(--accent);
+  @include motion.hoverable {
+    &:hover {
+      color: var(--accent);
+    }
   }
 }
 
@@ -230,11 +244,19 @@
   cursor: pointer;
   text-align: center;
   user-select: none;
-  transition: var(--transition-fast);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    transform var(--dur-press) var(--ease-out);
 
-  &:hover {
-    border-color: var(--border-strong);
-    background: var(--background-secondary);
+  @include motion.press;
+
+  @include motion.hoverable {
+    &:hover {
+      border-color: var(--border-strong);
+      background: var(--background-secondary);
+    }
   }
 }
 
@@ -365,19 +387,6 @@
 
   .unitValue {
     font-size: var(--text-xs);
-  }
-}
-
-@keyframes blurFadeIn {
-  0%,
-  100% {
-    opacity: 0.8;
-    filter: blur(4px);
-  }
-
-  50% {
-    opacity: 1;
-    filter: blur(2px);
   }
 }
 

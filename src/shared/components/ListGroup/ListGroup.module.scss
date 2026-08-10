@@ -1,4 +1,6 @@
 // src/shared/components/ListGroup/ListGroup.module.scss
+@use '../../styles/motion' as motion;
+
 // Одна біла поверхня на групу. Без межі — у Дії картка тримається на фоні
 // самим кольором і мʼякою тінню; межа + тінь разом дають зайву вагу.
 .group {
@@ -22,7 +24,9 @@
   text-align: left;
   font-family: inherit;
   font-size: var(--text-base);
-  transition: background var(--transition-fast);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    transform var(--dur-press) var(--ease-out);
 
   // Група ріже overflow (щоб hover не вилазив за скруглення), тому глобальний
   // outline з offset 2px тут обрізався б по краях картки — і фокус з клавіатури
@@ -47,13 +51,19 @@
 .rowInteractive {
   cursor: pointer;
 
-  &:hover {
-    background: var(--background-secondary);
-    color: var(--text-primary);
-  }
+  @include motion.press;
 
-  &:hover .arrow {
-    background: var(--btn-primary-hover);
+  @include motion.hoverable {
+    &:hover {
+      background: var(--background-secondary);
+      color: var(--text-primary);
+    }
+
+    // Стрілка зсувається до краю — мікро-обіцянка «тут буде перехід».
+    &:hover .arrow {
+      background: var(--btn-primary-hover);
+      transform: translateX(2px);
+    }
   }
 }
 
@@ -117,6 +127,11 @@
 
 .arrow {
   margin-left: auto;
+  // Клас лягає на сам ArrowCircle: перелічуємо і background, і transform,
+  // щоб не перебити його власний pressable-transition частковим списком.
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    transform var(--dur-hover) var(--ease-out);
 }
 
 @media (max-width: 768px) {

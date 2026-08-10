@@ -14,7 +14,9 @@
   background: var(--background);
   border: 1px solid var(--border-subtle);
   border-radius: var(--border-radius-sm);
-  transition: var(--transition-fast);
+  transition:
+    border-color var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
 
   &::placeholder {
     color: var(--text-secondary);

@@ -1,4 +1,6 @@
 // src/shared/components/ArrowCircle/ArrowCircle.module.scss
+@use '../../styles/motion' as motion;
+
 .circle {
   display: inline-flex;
   align-items: center;
@@ -7,7 +9,10 @@
   background: var(--btn-primary);
   color: var(--text-inverse);
   border-radius: var(--radius-pill);
-  transition: var(--transition-fast);
+
+  // Було `transition: var(--transition-fast)` — тобто `all`.
+  @include motion.pressable-transition;
+  @include motion.press;
 
   &--md {
     width: 44px;

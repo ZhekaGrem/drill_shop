@@ -35,6 +35,11 @@ export const mantineTheme = createTheme({
   },
   defaultRadius: 'md',
   components: {
+    // Візуально нічого не змінює: varsResolver Mantine і так підставляє
+    // `variant || 'filled'`. Але без явного значення атрибут data-variant у DOM
+    // просто відсутній, і градієнтне hover-правило в globals.css довелося б
+    // писати двома селекторами (`[data-variant='filled']` + `:not([data-variant])`).
+    Button: { defaultProps: { variant: 'filled' } },
     InputWrapper: Input.Wrapper.extend({
       styles: {
         error: { color: 'var(--error)', fontWeight: '500' },
@@ -99,11 +104,54 @@ export const mantineTheme = createTheme({
         },
       }),
     },
+    // Дефолти переходів. Значення дублюють --ease-out / --ease-sheet із globals.css:
+    // Mantine кладе timingFunction в inline-стиль порталу, тому тримати їх
+    // одним джерелом без окремого рантайм-читання CSS-змінної не виходить.
+    // Міняєш криву в globals.css — поміняй і тут.
     Modal: {
+      defaultProps: {
+        transitionProps: {
+          transition: 'pop',
+          duration: 220,
+          timingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
+        },
+      },
       styles: {
         content: {
           borderRadius: 'var(--border-radius-md)',
           borderTop: '2px solid var(--text-primary)',
+        },
+      },
+    },
+    Drawer: {
+      defaultProps: {
+        transitionProps: { duration: 300, timingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' },
+      },
+    },
+    Menu: {
+      defaultProps: {
+        transitionProps: {
+          transition: 'pop',
+          duration: 180,
+          timingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
+        },
+      },
+    },
+    Popover: {
+      defaultProps: {
+        transitionProps: {
+          transition: 'pop',
+          duration: 180,
+          timingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
+        },
+      },
+    },
+    Tooltip: {
+      defaultProps: {
+        transitionProps: {
+          transition: 'fade',
+          duration: 180,
+          timingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
         },
       },
     },
