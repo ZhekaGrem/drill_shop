@@ -9,6 +9,7 @@
   .productDetails {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: start;
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-2xl);
 
