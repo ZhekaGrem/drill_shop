@@ -26,7 +26,7 @@ export const ContactInfoSection = ({ form, showEmail = true }: ContactInfoSectio
       <div className={styles.formRow}>
         <Input
           label="Ім'я"
-          placeholder="Іван"
+          placeholder="Ваше ім'я"
           required
           error={firstNameError}
           {...register('shippingAddress.firstName')}
@@ -34,7 +34,7 @@ export const ContactInfoSection = ({ form, showEmail = true }: ContactInfoSectio
 
         <Input
           label="Прізвище"
-          placeholder="Петренко"
+          placeholder="Ваше прізвище"
           required
           error={lastNameError}
           {...register('shippingAddress.lastName')}
