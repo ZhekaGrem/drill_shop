@@ -3,10 +3,11 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { TextInput, Stack, Alert, Text, Anchor, ScrollArea } from '@mantine/core';
+import { Stack, Alert, Text, ScrollArea } from '@mantine/core';
 import { IconAlertCircle, IconMailCheck } from '@tabler/icons-react';
 import { useState } from 'react';
 import { Button } from '@/shared/components/Button/Button';
+import { Input } from '@/shared/components/Input';
 import { apiClient } from '@/shared/api/client';
 import { useRouter } from 'next/navigation';
 const resetSchema = z.object({
@@ -130,7 +131,7 @@ export const PasswordResetForm = ({ onSuccess, onBackToLogin }: PasswordResetFor
             </Alert>
           )}
 
-          <TextInput
+          <Input
             label="Email"
             placeholder="your@email.com"
             type="email"

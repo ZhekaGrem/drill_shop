@@ -18,7 +18,7 @@ import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import { Section } from '@/shared/components/Section/Section';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
-import { IconInstagram, IconMail, IconPhone, IconTelegram } from '@/shared/components/Svg';
+import { IconClock, IconInstagram, IconMail, IconPhone, IconTelegram } from '@/shared/components/Svg';
 import { useAuthStore } from '@/shared/stores/auth';
 import { siteConfig } from '@/shared/config/site';
 import styles from './menu.module.scss';
@@ -99,14 +99,18 @@ export default function MenuScreen() {
             media={<IconMail />}
             href="/contact"
           />
-          {/* Графік роботи доїхав сюди з футера: на мобільному колонок футера
-              більше немає, а знати години варто саме перед дзвінком. */}
           <ListRow
             title="Зателефонувати"
-            hint={`${siteConfig.contacts.phone} · щодня з 8:00 до 23:00`}
+            hint={siteConfig.contacts.phone}
             media={<IconPhone />}
             href={`tel:${siteConfig.contacts.phone.replace(/\s/g, '')}`}
           />
+          {/* Графік роботи доїхав сюди з футера: на мобільному колонок футера
+              більше немає, а знати години варто саме поруч із дзвінком.
+              Окремим рядком, а не приписом до телефону: у підказці рядок
+              «+38 … · Пн-Пт: 08:00 - 20:00 | Сб-Нд: 09:00 - 18:00» ламався б
+              на два рядки й губив і номер, і графік. */}
+          <ListRow title="Графік роботи" hint={siteConfig.workingHours} media={<IconClock />} arrow={false} />
           <ListRow
             title="Instagram"
             hint="Нові дропи, бекстейдж і анонси"

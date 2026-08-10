@@ -12,5 +12,6 @@ export { IconTrash } from './IconTrash';
 export { IconPhone } from './IconPhone';
 export { IconMail } from './IconMail';
 export { IconInfo } from './IconInfo';
+export { IconClock } from './IconClock';
 export { IconInstagram } from './IconInstagram';
 export { IconTelegram } from './IconTelegram';

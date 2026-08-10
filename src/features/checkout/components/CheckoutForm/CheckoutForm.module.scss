@@ -210,11 +210,9 @@
 // ============ ORDER SUMMARY ============
 // Підсумок-«документ»: зовнішня картка на повносиловому градієнті,
 // всередині — біла картка даних (як паспорт з вкладеним бланком).
+// Градієнтна рамка навколо підсумку прибрана: лишились тільки бічні відступи.
 .orderSummary {
-  padding: 12px;
-  background: var(--gradient-brand);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
+  padding: 0 12px;
 }
 
 .orderSummaryInner {

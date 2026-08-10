@@ -1,67 +1,166 @@
-// Поля вводу. Одна мова з mantine-theme.ts: біле поле, radius 8,
-// 1px --border-subtle, синій фокус.
-// Тут живуть ТІЛЬКИ стани (:hover/:focus/::placeholder) — Mantine 8 без
-// @mantine/emotion застосовує `styles` як inline і мовчки їх ігнорує.
+// Поле вводу в стилі plan2.diia.gov.ua (компонент .input-label).
+// Ані рамки, ані фону — тільки 2px лінія знизу; лейбл лежить НА рядку вводу
+// і спливає над ним, коли поле у фокусі, заповнене або заблоковане.
+//
+// Чому не в mantine-theme.ts: тема кладе рамку/фон/падінг інлайном на КОЖНЕ
+// поле проєкту, а це поле потрібне лише на вході, чекауті й контактах.
+// Скидання інлайну живе в Input.tsx (інлайн б'ється тільки інлайном),
+// тут — геометрія і стани.
 
-// ============ БАЗА ============
-%field {
-  width: 100%;
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-family: var(--font-body);
+// Рядок вводу і місце над ним під спливлий лейбл.
+$field-height: 40px;
+$label-space: 20px;
+$label-line: 24px;
+// Лейбл у стані «плейсхолдера» стоїть по центру рядка вводу.
+$label-rest: $label-space + ($field-height - $label-line) * 0.5;
+
+// Поле у фокусі / заповнене / заблоковане — лейбл угорі, плейсхолдер видно.
+$lifted: '&:has(:is(input, textarea):is(:focus, :not(:placeholder-shown), :disabled))';
+
+.root {
+  position: relative;
+  padding-top: $label-space;
+
+  // Поле без лейбла (промокод, інлайновий пошук) — місце над рядком не потрібне.
+  &:not(:has(> label)) {
+    padding-top: 0;
+  }
+}
+
+// ============ ЛЕЙБЛ ============
+// Колір і вагу лейбла задає Input.tsx: тема кладе їх інлайном, а інлайн
+// класом не перебити. Тут — тільки геометрія і сам перехід.
+.label {
+  position: absolute;
+  top: $label-rest;
+  left: 0;
+  margin: 0;
   font-size: var(--text-base);
-  font-weight: var(--fw-normal);
-  color: var(--text-primary);
-  background: var(--background);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--border-radius-sm);
+  line-height: $label-line;
+  pointer-events: none;
   transition:
-    border-color var(--dur-hover) var(--ease-out),
-    box-shadow var(--dur-hover) var(--ease-out);
+    top var(--dur-modal) var(--ease-out),
+    font-size var(--dur-modal) var(--ease-out),
+    line-height var(--dur-modal) var(--ease-out),
+    color var(--dur-modal) var(--ease-out);
+}
 
-  &::placeholder {
-    color: var(--text-secondary);
+.root {
+  #{$lifted} .label {
+    top: 0;
+    font-size: var(--text-xs);
+    line-height: 16px;
+  }
+}
+
+// ============ ЛІНІЯ ============
+// Два шари, а не один: градієнт не інтерполюється в transition, тому він
+// лежить окремо і просто проявляється по opacity.
+.wrapper {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    pointer-events: none;
+  }
+
+  &::before {
+    background: var(--text-primary);
+    transition: background var(--dur-hover) var(--ease-out);
+  }
+
+  &::after {
+    background: var(--gradient-underline);
+    opacity: 0;
+    transition: opacity var(--dur-hover) var(--ease-out);
+  }
+}
+
+.root:has(:is(input, textarea):focus) .wrapper::after {
+  opacity: 1;
+}
+
+// ============ РЯДОК ВВОДУ ============
+// Все вкладено в .root навмисно: globals.css уже задає
+// `.mantine-TextInput-input::placeholder { opacity: 1 }` тією ж вагою (0,1,1),
+// і без додаткового класу переможець залежав би від порядку підключення
+// стилів. .root .input дає 0,2,1 — результат перестає бути лотереєю.
+.root {
+  // PasswordInput тримає клас .input на обгортці, а реальний <input> —
+  // усередині як .innerInput, тому типографіка потрібна обом.
+  .input,
+  .innerInput {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
     font-weight: var(--fw-light);
+    line-height: $label-line;
+    color: var(--text-primary);
+
+    // Плейсхолдер мовчить, поки його місце займає лейбл, і проявляється
+    // рівно тоді, коли лейбл звільнив рядок.
+    &::placeholder {
+      font-weight: var(--fw-light);
+      color: var(--text-tertiary);
+      opacity: 0;
+      transition: opacity var(--dur-hover) var(--ease-out);
+    }
+
+    &:focus::placeholder,
+    &:disabled::placeholder {
+      opacity: 1;
+    }
+
+    &:disabled {
+      color: var(--text-tertiary);
+      cursor: not-allowed;
+    }
+
+    // Автозаповнення Chrome заливає поле жовтим — на полі без фону це
+    // читається як зламана верстка. Перебиваємо кольором поверхні під полем.
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-text-fill-color: var(--text-primary);
+      box-shadow: 0 0 0 40px var(--surface-card) inset;
+    }
+  }
+
+  // Поле без лейбла показує плейсхолдер завжди — інакше воно порожнє й німе.
+  &:not(:has(> label)) .input::placeholder {
     opacity: 1;
   }
-
-  &:hover:not(:disabled):not(:focus) {
-    border-color: var(--border-strong);
-  }
-
-  &:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
 }
 
-// ============ LABEL / DESCRIPTION / ERROR ============
-.label {
-  font-size: var(--text-sm);
-  font-weight: var(--fw-normal);
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-xs);
-}
-
-.description {
-  font-size: var(--text-xs);
-  font-weight: var(--fw-light);
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-xs);
+// ============ ПОМИЛКА ============
+// data-error Mantine ставить на поле (у PasswordInput — на обгортку).
+// Червоний лейбл — в Input.tsx, поруч із рештою інлайнових перебивань.
+.root:has([data-error]) .wrapper::before {
+  background: var(--error);
 }
 
 .error {
-  font-size: var(--text-xs);
-  font-weight: var(--fw-medium);
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-normal);
   color: var(--error);
-  margin-top: var(--spacing-xs);
+}
+
+.description {
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-light);
+  color: var(--text-secondary);
 }
 
 // ============ SECTIONS (leftSection / rightSection) ============
+// Правило глобальне навмисно: воно існувало до Diia-полів і тримає іконки
+// в полях по всьому проєкту. Звужувати його тут — означає зачепити чужі форми.
 :global(.mantine-TextInput-section),
 :global(.mantine-PasswordInput-section),
 :global(.mantine-Textarea-section) {
@@ -74,35 +173,6 @@
   }
 }
 
-// ============ ВАРІАНТИ ============
-// default — стандартне поле форми
-.default {
-  @extend %field;
-}
-
-// minimal — без рамки, для інлайнових/пошукових контекстів
-.minimal {
-  @extend %field;
-
-  background: transparent;
-  border-color: transparent;
-
-  &:hover:not(:disabled):not(:focus) {
-    background: var(--background-secondary);
-    border-color: transparent;
-  }
-
-  &:focus {
-    background: var(--background);
-    border-color: var(--accent);
-  }
-}
-
-// textarea — те саме поле, тільки вище й тягнеться
-.textarea {
-  @extend %field;
-
-  min-height: 96px;
-  line-height: 1.5;
-  resize: vertical;
+.section {
+  color: var(--text-tertiary);
 }

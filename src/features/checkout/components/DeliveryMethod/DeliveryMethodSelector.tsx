@@ -42,14 +42,19 @@ export function DeliveryMethodSelector({
       <div>
         <label className={styles.label}>Метод доставки</label>
         <Group gap="sm">
+          {/* mod="plain" → data-plain: це перемикач вибору, а не CTA. filled тут
+              означає «обрано», і градієнтний hover з globals.css читався б як
+              головна кнопка дії. */}
           <Button
             variant={deliveryMethod === 'nova_poshta' ? 'filled' : 'outline'}
+            mod="plain"
             onClick={() => onDeliveryMethodChange('nova_poshta')}
             fullWidth>
             Нова Пошта
           </Button>
           <Button
             variant={deliveryMethod === 'other' ? 'filled' : 'outline'}
+            mod="plain"
             onClick={() => onDeliveryMethodChange('other')}
             fullWidth>
             Інше

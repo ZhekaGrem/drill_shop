@@ -1,111 +1,154 @@
+// Поля вводу в стилі plan2.diia.gov.ua: без рамки й фону, 2px лінія знизу,
+// лейбл спливає з рядка вводу. Стани — в Input.module.scss.
+//
+// Тема (mantine-theme.ts) роздає рамку/фон/падінг ІНЛАЙНОМ кожному полю
+// проєкту, а інлайн б'ється лише інлайном. Тому кожен компонент тут починає
+// зі скидання цих значень — інакше Diia-поле лишилось би в рамці.
 import {
-  TextInput,
-  TextInputProps,
   PasswordInput,
   PasswordInputProps,
+  Select,
+  SelectProps,
+  TextInput,
+  TextInputProps,
   Textarea,
   TextareaProps,
 } from '@mantine/core';
+import { ReactNode, forwardRef } from 'react';
 import styles from './Input.module.scss';
-import { forwardRef } from 'react';
-import clsx from 'clsx';
-export type InputVariant = 'default' | 'minimal' | 'textarea';
 
-// Пропси для звичайного інпута
-interface CustomInputProps extends Omit<TextInputProps, 'variant'> {
-  variant?: InputVariant;
-}
+const FIELD_HEIGHT = 40;
 
-export const Input = forwardRef<HTMLInputElement, CustomInputProps>(
-  ({ variant = 'default', className, classNames, leftSection, rightSection, ...props }, ref) => {
-    const variantClass = styles[variant] || styles.default;
+// Колір лейбла теж приходить із теми інлайном, тому клас його не перебиває —
+// а він має червоніти разом із лінією. Звідси єдине місце в цьому файлі, де
+// стан поля читається в JS, а не селектором.
+const label = (error?: ReactNode) => ({
+  color: error ? 'var(--error)' : 'var(--text-tertiary)',
+  fontWeight: 300,
+  marginBottom: 0,
+});
 
-    // Додаємо padding для input якщо є leftSection або rightSection
-    const inputStyles: React.CSSProperties = {};
-    if (leftSection) inputStyles.paddingLeft = '40px';
-    if (rightSection) inputStyles.paddingRight = '40px';
+const RESET = {
+  height: FIELD_HEIGHT,
+  padding: 0,
+  border: 'none',
+  borderRadius: 0,
+  backgroundColor: 'transparent',
+} as const;
 
-    return (
-      <TextInput
-        ref={ref}
-        leftSection={leftSection}
-        rightSection={rightSection}
-        classNames={{
-          input: variantClass,
-          label: styles.label,
-          error: styles.error,
-          ...classNames,
-        }}
-        styles={{
-          input: inputStyles,
-        }}
-        {...props}
-      />
-    );
-  }
+const TEXTAREA_RESET = {
+  ...RESET,
+  height: 'auto',
+  minHeight: 72,
+  padding: '8px 0',
+  resize: 'vertical',
+} as const;
+
+// Опис має стояти ПІД полем: місце над полем зайняте лейблом, який туди спливає.
+const ORDER: TextInputProps['inputWrapperOrder'] = ['label', 'input', 'description', 'error'];
+
+const WRAPPER_CLASSES = {
+  root: styles.root,
+  wrapper: styles.wrapper,
+  label: styles.label,
+  description: styles.description,
+  error: styles.error,
+  section: styles.section,
+};
+
+// Лейбл спливає за ознакою «плейсхолдер більше не показується». Поле без
+// плейсхолдера не дає такої ознаки взагалі — лейбл завис би вгорі назавжди.
+const withPlaceholder = (placeholder?: string) => placeholder ?? ' ';
+
+// Секції накладаються на рядок вводу, тому під них треба звільнити місце
+// (ширина секції — 40px, задана в Input.module.scss).
+const sectionPadding = (left?: unknown, right?: unknown) => ({
+  paddingLeft: left ? 40 : 0,
+  paddingRight: right ? 40 : 0,
+});
+
+export const Input = forwardRef<HTMLInputElement, TextInputProps>(
+  ({ classNames, placeholder, leftSection, rightSection, error, ...props }, ref) => (
+    <TextInput
+      {...props}
+      ref={ref}
+      error={error}
+      leftSection={leftSection}
+      rightSection={rightSection}
+      placeholder={withPlaceholder(placeholder)}
+      inputWrapperOrder={ORDER}
+      classNames={{ ...WRAPPER_CLASSES, input: styles.input, ...classNames }}
+      styles={{
+        input: { ...RESET, ...sectionPadding(leftSection, rightSection) },
+        label: label(error),
+      }}
+    />
+  )
 );
 
 Input.displayName = 'Input';
 
-// Пропси для інпута пароля
-interface CustomPasswordInputProps extends Omit<PasswordInputProps, 'variant'> {
-  variant?: InputVariant;
-}
-
-export const PasswordField = forwardRef<HTMLInputElement, CustomPasswordInputProps>(
-  ({ variant = 'default', className, classNames, leftSection, rightSection, ...props }, ref) => {
-    const variantClass = styles[variant] || styles.default;
-
-    // Додаємо padding для input якщо є leftSection
-    const inputStyles: React.CSSProperties = {};
-    if (leftSection) inputStyles.paddingLeft = '40px';
-    // rightSection для PasswordInput зарезервовано для кнопки показу/приховування
-    if (rightSection) inputStyles.paddingRight = '40px';
-
-    return (
-      <PasswordInput
-        ref={ref}
-        leftSection={leftSection}
-        rightSection={rightSection}
-        classNames={{
-          input: variantClass,
-          label: styles.label,
-          error: styles.error,
-          ...classNames,
-        }}
-        styles={{
-          input: inputStyles,
-        }}
-        {...props}
-      />
-    );
-  }
+export const PasswordField = forwardRef<HTMLInputElement, PasswordInputProps>(
+  ({ classNames, placeholder, leftSection, error, ...props }, ref) => (
+    <PasswordInput
+      {...props}
+      ref={ref}
+      error={error}
+      leftSection={leftSection}
+      placeholder={withPlaceholder(placeholder)}
+      inputWrapperOrder={ORDER}
+      classNames={{
+        ...WRAPPER_CLASSES,
+        input: styles.input,
+        innerInput: styles.innerInput,
+        ...classNames,
+      }}
+      styles={{
+        // rightSection зайнята кнопкою «показати пароль» — місце під неї треба завжди.
+        input: { ...RESET, ...sectionPadding(leftSection, true) },
+        innerInput: { height: FIELD_HEIGHT, padding: 0, backgroundColor: 'transparent' },
+        label: label(error),
+      }}
+    />
+  )
 );
 
 PasswordField.displayName = 'PasswordField';
 
-// Пропси для textarea
-interface CustomTextareaProps extends Omit<TextareaProps, 'variant'> {
-  variant?: InputVariant;
-}
-
-export const TextareaField = forwardRef<HTMLTextAreaElement, CustomTextareaProps>(
-  ({ variant = 'textarea', className, classNames, ...props }, ref) => {
-    const variantClass = styles[variant] || styles.textarea;
-
-    return (
-      <Textarea
-        ref={ref}
-        classNames={{
-          input: clsx(variantClass),
-          label: styles.label,
-          error: styles.error,
-          ...classNames,
-        }}
-        {...props}
-      />
-    );
-  }
+export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>(
+  ({ classNames, placeholder, error, ...props }, ref) => (
+    <Textarea
+      {...props}
+      ref={ref}
+      error={error}
+      placeholder={withPlaceholder(placeholder)}
+      inputWrapperOrder={ORDER}
+      classNames={{ ...WRAPPER_CLASSES, input: styles.input, ...classNames }}
+      styles={{ input: TEXTAREA_RESET, label: label(error) }}
+    />
+  )
 );
 
 TextareaField.displayName = 'TextareaField';
+
+export const SelectField = forwardRef<HTMLInputElement, SelectProps>(
+  ({ classNames, placeholder, leftSection, rightSection, error, ...props }, ref) => (
+    <Select
+      {...props}
+      ref={ref}
+      error={error}
+      leftSection={leftSection}
+      rightSection={rightSection}
+      placeholder={withPlaceholder(placeholder)}
+      inputWrapperOrder={ORDER}
+      classNames={{ ...WRAPPER_CLASSES, input: styles.input, ...classNames }}
+      styles={{
+        // Select завжди має стрілку/хрестик у правій секції.
+        input: { ...RESET, ...sectionPadding(leftSection, true) },
+        label: label(error),
+      }}
+    />
+  )
+);
+
+SelectField.displayName = 'SelectField';

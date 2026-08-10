@@ -6,11 +6,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/shared/stores/auth';
 import { showNotification } from '@/shared/utils/notifications';
-import { TextInput, Group, Stack, Alert, PasswordInput, ScrollArea } from '@mantine/core';
+import { Group, Stack, Alert, ScrollArea } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { useRouter } from 'next/navigation';
-import { PhoneInput } from '@/shared/components/Input';
+import { Input, PasswordField, PhoneInput } from '@/shared/components/Input';
 const registerSchema = z.object({
   firstName: z.string().min(1, "Ім'я є обов'язковим").max(50, "Ім'я занадто довге"),
   lastName: z.string().min(1, "Прізвище є обов'язковим").max(50, 'Прізвище занадто довге'),
@@ -107,14 +107,14 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
           )}
 
           <Group grow>
-            <TextInput
+            <Input
               label="Ім'я"
               placeholder="Іван"
               required
               {...register('firstName')}
               error={errors.firstName?.message}
             />
-            <TextInput
+            <Input
               label="Прізвище"
               placeholder="Петренко"
               required
@@ -123,7 +123,7 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
             />
           </Group>
 
-          <TextInput
+          <Input
             label="Email"
             placeholder="ivan@example.com"
             type="email"
@@ -146,7 +146,7 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
             )}
           />
 
-          <PasswordInput
+          <PasswordField
             label="Пароль"
             placeholder="Ваш пароль"
             required

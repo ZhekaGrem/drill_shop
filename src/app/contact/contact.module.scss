@@ -56,55 +56,13 @@
   }
 }
 
-.field {
-  margin-bottom: var(--space-5);
-
-  label {
-    display: block;
-    margin-bottom: var(--space-2);
-    font-size: var(--text-sm);
-    font-weight: var(--fw-medium);
-    color: var(--text-primary);
-  }
-
-  input,
-  textarea {
-    width: 100%;
-    padding: 12px var(--space-4);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--border-radius-sm);
-    font-size: var(--text-base);
-    background: var(--background);
-    transition: var(--transition-fast);
-
-    &::placeholder {
-      color: var(--text-tertiary);
-    }
-
-    // Було `border-bottom-color` — підсвічувалась лише нижня межа, і поле
-    // виглядало напівзламаним. Фокус як у решті полів проєкту: синя межа.
-    &:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-  }
-
-  input {
-    height: 48px;
-  }
-
-  textarea {
-    min-height: 120px;
-    max-height: 200px;
-    resize: vertical;
-  }
-}
-
-.error {
-  display: block;
-  margin-top: var(--space-1);
-  font-size: var(--text-sm);
-  color: var(--error);
+// Поля — спільний компонент @/shared/components/Input (Diia-поле з підкресленням).
+// Тут лишається тільки ритм між ними: 24px + 20px місця над лейблом ≈ 45px,
+// як між полями на plan2.diia.gov.ua.
+.fields {
+  display: grid;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
 }
 
 // ============ Успіх ============

@@ -53,7 +53,11 @@ export function Footer() {
             <Text component="h2" className={styles.columnTitle}>
               Час роботи
             </Text>
-            <Text className={styles.workingHours}>Понеділок — Неділя{'\n'}з 8:00 до 23:00</Text>
+            {/* Було зашито в розмітці «Понеділок — Неділя з 8:00 до 23:00» —
+                і це суперечило siteConfig.workingHours. Два різні графіки в
+                одному репозиторії: джерело правди одне — конфіг. Розділювач
+                ' | ' розгортаємо в перенос рядка (.workingHours має pre-line). */}
+            <Text className={styles.workingHours}>{siteConfig.workingHours.split(' | ').join('\n')}</Text>
           </div>
         </div>
       </div>

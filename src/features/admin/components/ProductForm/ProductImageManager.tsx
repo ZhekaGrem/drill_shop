@@ -203,6 +203,10 @@ export const ProductImageManager = ({
                       size="xs"
                       variant={isPrimary ? 'filled' : 'light'}
                       color="yellow"
+                      // mod="plain" → data-plain: без нього filled-стан ловив би
+                      // градієнтний hover з globals.css і жовтий колір, яким
+                      // позначена головна картинка, зникав би при наведенні.
+                      mod="plain"
                       style={{
                         position: 'absolute',
                         bottom: 30,
@@ -219,6 +223,7 @@ export const ProductImageManager = ({
                       size="xs"
                       variant={isSecondary ? 'filled' : 'light'}
                       color="blue"
+                      mod="plain"
                       style={{
                         position: 'absolute',
                         bottom: 5,
@@ -306,6 +311,10 @@ export const ProductImageManager = ({
                       size="xs"
                       variant={isPrimary ? 'filled' : 'light'}
                       color="yellow"
+                      // mod="plain" → data-plain: без нього filled-стан ловив би
+                      // градієнтний hover з globals.css і жовтий колір, яким
+                      // позначена головна картинка, зникав би при наведенні.
+                      mod="plain"
                       style={{
                         position: 'absolute',
                         bottom: 30,
@@ -322,6 +331,7 @@ export const ProductImageManager = ({
                       size="xs"
                       variant={isSecondary ? 'filled' : 'light'}
                       color="blue"
+                      mod="plain"
                       style={{
                         position: 'absolute',
                         bottom: 5,

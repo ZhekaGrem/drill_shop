@@ -33,6 +33,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         leftSection={leftIcon}
         rightSection={rightIcon}
+        // mod → data-атрибути на DOM-вузлі (false просто не рендериться).
+        //
+        // data-ds-button: `unstyled` НЕ прибирає статичний клас
+        // .mantine-Button-root (він гейтиться withStaticClasses, не unstyled),
+        // тому без цього маркера наша кнопка ловила б ще й глобальне
+        // Mantine-правило з globals.css — і градієнт поїхав би на secondary,
+        // outline та ghost. Селектор там виключає [data-ds-button].
+        //
+        // data-gradient-btn: за нього чіпляється useRandomGradientPhase, який
+        // на кожне наведення перекидає градієнт у випадкову точку циклу.
+        mod={{ 'ds-button': true, 'gradient-btn': variant === 'primary' }}
         unstyled
         {...props}
       />

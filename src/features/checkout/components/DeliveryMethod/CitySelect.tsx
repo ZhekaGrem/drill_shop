@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { TextInput, Paper, Text, Stack, CloseButton, Group } from '@mantine/core';
+import { Paper, Stack, CloseButton } from '@mantine/core';
+import { Input } from '@/shared/components/Input';
 import { deliveryEndpoints } from '@/shared/api/endpoints';
 import { API_BASE } from '@/shared/api/client';
 import styles from './DeliveryMethod.module.scss';
@@ -166,7 +167,7 @@ export const CitySelect = ({ value, onChange, error, onBlur }: CitySelectProps) 
 
   return (
     <div style={{ position: 'relative' }} className={styles.citySelect}>
-      <TextInput
+      <Input
         label="Місто доставки"
         placeholder="Введіть назву міста"
         value={inputValue}

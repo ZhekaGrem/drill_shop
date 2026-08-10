@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { TextInput, Group, Alert, Text, Stack } from '@mantine/core';
+import { Group, Alert, Text, Stack } from '@mantine/core';
 import { IconTag, IconCheck, IconX } from '@tabler/icons-react';
 import { useValidatePromoCode } from '@/features/admin/hooks/discountHooks';
 import { formatPrice } from '@/shared/utils/format';
 import { Button } from '@/shared/components/Button/Button';
+import { Input } from '@/shared/components/Input';
 import styles from './PromoCodeInput.module.scss';
 interface PromoCodeInputProps {
   orderAmount: number;
@@ -111,7 +112,7 @@ export const PromoCodeInput = ({
     <Stack gap="xs">
       <Group wrap="nowrap" align="flex-start">
         <div className={styles.promoInput} style={{ flex: 1 }}>
-          <TextInput
+          <Input
             placeholder="Введіть промокод"
             value={code}
             onChange={(e) => setCode(e.target.value.toUpperCase())}
@@ -123,9 +124,6 @@ export const PromoCodeInput = ({
                 ? validationResult.errorMessage || validationResult.message || 'Промокод недійсний'
                 : undefined
             }
-            styles={{
-              input: { paddingLeft: '40px' }, // Залишаємо місце для leftSection
-            }}
           />
         </div>
         <Button

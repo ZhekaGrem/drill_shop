@@ -1,22 +1,30 @@
-<svg width="220" height="48" viewBox="0 0 220 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Є.Дріл">
+<svg width="236" height="48" viewBox="0 0 236 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Є.Дріл">
   <!--
-    ye-dril wordmark fallback — hand-authored SVG for contexts where the
+    ye-dril logo fallback — hand-authored SVG for contexts where the
     self-hosted e-UkraineHead webfont is unavailable (favicon rasterization,
     social/OG crawlers, email clients). The live UI uses the React <Logo>
     component (src/shared/components/Logo) which renders real text in the
     self-hosted font instead of this file.
 
-    No trident, no state symbols, no copy of the Diia lettermark — plain
-    black text wordmark with a single accent-colored separator dot,
-    mirroring diia.gov.ua's own "simple black text wordmark" identity
-    without reproducing it.
+    Composition mirrors the live component: black squircle mark with a white
+    "є." (accent-colored dot) — same identity as the favicon — followed by
+    the "Дріл" wordmark. No trident, no state symbols, no copy of the Diia
+    lettermark.
   -->
+  <rect x="0" y="2" width="44" height="44" rx="13" fill="#000000" />
   <text
-    x="0"
-    y="34"
+    x="12"
+    y="35"
+    font-family="'e-Ukraine Head', 'Arial', system-ui, sans-serif"
+    font-weight="500"
+    font-size="30"
+    fill="#ffffff">є<tspan fill="#0073e6">.</tspan></text>
+  <text
+    x="56"
+    y="35"
     font-family="'e-Ukraine Head', 'Arial', system-ui, sans-serif"
     font-weight="500"
     font-size="34"
     letter-spacing="-0.5"
-    fill="#000000">Є<tspan fill="#0073e6">.</tspan>Дріл</text>
+    fill="#000000">Дріл</text>
 </svg>

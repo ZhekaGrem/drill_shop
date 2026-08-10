@@ -1,6 +1,7 @@
 'use client';
 
-import { Select, Loader, Text, Group, Badge } from '@mantine/core';
+import { Loader, Text, Group, Badge } from '@mantine/core';
+import { SelectField } from '@/shared/components/Input';
 import { useState, useEffect } from 'react';
 import { IconBuilding, IconMailbox } from '@tabler/icons-react';
 import styles from './DeliveryMethod.module.scss';
@@ -195,7 +196,7 @@ export const WarehouseSelect = ({
   if (loading) {
     return (
       <div className={styles.warehouseSelect}>
-        <Select
+        <SelectField
           label="Відділення/Поштомат"
           placeholder="Завантаження відділень..."
           disabled
@@ -212,7 +213,7 @@ export const WarehouseSelect = ({
   if (!cityRef || !cityRef.trim()) {
     return (
       <div className={styles.warehouseSelect}>
-        <Select
+        <SelectField
           label="Відділення/Поштомат"
           placeholder="Спочатку оберіть місто"
           disabled
@@ -228,7 +229,7 @@ export const WarehouseSelect = ({
   if (apiError) {
     return (
       <div className={styles.warehouseSelect}>
-        <Select
+        <SelectField
           label="Відділення/Поштомат"
           placeholder="Помилка завантаження відділень"
           disabled
@@ -244,7 +245,7 @@ export const WarehouseSelect = ({
   if (warehouses.length === 0 && !loading) {
     return (
       <div className={styles.warehouseSelect}>
-        <Select
+        <SelectField
           label="Відділення/Поштомат"
           placeholder="Відділення не знайдено для цього міста"
           disabled
@@ -259,7 +260,7 @@ export const WarehouseSelect = ({
   // Main render with data
   return (
     <div className={styles.warehouseSelect}>
-      <Select
+      <SelectField
         label="Відділення/Поштомат"
         placeholder="Введіть номер або адресу відділення"
         data={selectData}

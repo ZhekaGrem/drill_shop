@@ -200,8 +200,16 @@ Mantine-кнопки `variant="filled"`, з ручним opt-out через `dat
 Специфічність `0,3,0` перекриває власне hover-правило Mantine (`0,2,0`),
 тому `background-color: var(--button-hover)` не заб'є градієнт.
 
-`shared/Button` рендериться з `unstyled`, тому класу `.mantine-Button-root`
-не отримує — два правила не конфліктують.
+**Виправлено під час реалізації.** Початкове припущення «`unstyled` прибирає
+статичний клас `.mantine-Button-root`» — **хибне**: у
+`get-class-name.mjs` статичні класи гейтяться прапорцем `withStaticClasses`,
+а не `unstyled`. Перевірено на відрендереному DOM — наш Button виходить із
+класами `mantine-Button-root mantine-UnstyledButton-root` і `data-variant="filled"`,
+тобто без захисту градієнт поїхав би на `secondary`, `outline` і `ghost`.
+
+Тому `shared/Button` проставляє `mod={{ 'ds-button': true }}` → `data-ds-button`,
+а Mantine-селектор виключає його:
+`:not([data-plain]):not([data-ds-button])`.
 
 ### Opt-out
 
@@ -281,12 +289,25 @@ export function useRandomGradientPhase() {
 | `src/app/LayoutWrapper.tsx`                       | виклик хука                                                           |
 | `src/app/admin/reviews/AdminReviews.tsx` та інші  | `data-plain` на деструктивних кнопках                                 |
 
-## Ризик, який перевіряється першим
+## Ризик, який перевірявся першим — підтвердився
 
-Чи не перейменує css-loader `animation: granimate` усередині CSS-модуля, якщо самі
-keyframes оголошені в `globals.css`. Очікування: імена, не визначені локально,
-проходять без змін. Якщо ефект не запуститься — продублювати `@keyframes` усередині
-модуля. Видно одразу після `npm run dev`.
+Питання було: чи перейменує css-loader `animation: granimate` усередині CSS-модуля,
+якщо самі keyframes оголошені лише в `globals.css`.
+
+**Так, перейменовує.** У зібраному CSS посилання стало
+`animation: button-module-scss-module__MCzWZG__granimate` — keyframe із таким
+іменем не існував, тож анімація тихо не запускалась, без жодної помилки в консолі.
+Імена keyframes скоупляться нарівні з класами.
+
+Обхід через `animation-name: :global(granimate)` не годиться: SCSS не парсить
+`:global()` у значенні властивості (`Expression expected`).
+
+Рішення: `@keyframes granimate` оголошено **двічі** — глобально в `globals.css`
+(на нього спирається правило для Mantine-кнопок) і всередині
+`button.module.scss` (там воно скоупиться разом із посиланням). Перевірено на
+зібраному CSS: присутні і `@keyframes granimate`, і
+`@keyframes button-module-scss-module__MCzWZG__granimate`, обидва з відповідними
+посиланнями.
 
 ## Перевірка
 

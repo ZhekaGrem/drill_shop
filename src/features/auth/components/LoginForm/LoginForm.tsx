@@ -6,9 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/shared/stores/auth';
 import { showNotification } from '@/shared/utils/notifications';
-import { TextInput, Checkbox, Group, Stack, Alert, Anchor, PasswordInput, ScrollArea } from '@mantine/core';
+import { Checkbox, Group, Stack, Alert, Anchor, ScrollArea } from '@mantine/core';
 import { IconAlertCircle, IconLoader } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
+import { Input, PasswordField } from '@/shared/components/Input';
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -128,7 +129,7 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
             </Alert>
           )}
 
-          <TextInput
+          <Input
             label="Email"
             placeholder="your@email.com"
             type="email"
@@ -138,7 +139,7 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
             error={errors.email?.message}
           />
 
-          <PasswordInput
+          <PasswordField
             label="Пароль"
             placeholder="Ваш пароль"
             required

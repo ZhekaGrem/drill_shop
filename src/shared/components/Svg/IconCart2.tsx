@@ -1,5 +1,6 @@
-// Іконка з Tabler Icons (outline, MIT) — єдина іконографіка в мові Дії.
-// Згенеровано з @tabler/icons/icons/outline/shopping-bag.svg
+// Сумка в геометрії таб-бара Дії: симетричне тіло з великими радіусами,
+// ручка-дуга закінчується на краю сумки, а не заходить усередину
+// (в іконках Дії деталі не перетинаються). Починалось із tabler/shopping-bag.
 import React from 'react';
 interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {
   size?: number;
@@ -19,8 +20,8 @@ export function IconCart({ className, size = 24, ...props }: IconProps) {
       strokeLinecap="round"
       strokeLinejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" />
-      <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
+      <path d="M6.2 8.5h11.6a1.6 1.6 0 0 1 1.59 1.8l-.9 7.2a3 3 0 0 1 -2.98 2.63h-7.02a3 3 0 0 1 -2.98 -2.63l-.9 -7.2a1.6 1.6 0 0 1 1.59 -1.8z" />
+      <path d="M8.8 8.5v-1.3a3.2 3.2 0 0 1 6.4 0v1.3" />
     </svg>
   );
 }

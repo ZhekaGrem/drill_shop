@@ -1,7 +1,6 @@
 {
   "permissions": {
     "allow": [
-      "F:\\Progect\\2025\\shop_sausages\\frontend\\**",
       "Bash(npm uninstall:*)",
       "Bash(npm install:*)",
       "Bash(dir:*)",

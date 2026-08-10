@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import MenuScreen from './MenuScreen';
 
 export const metadata: Metadata = {
-  title: 'Кабінет',
+  title: 'Меню',
   description: 'Профіль, замовлення, доставка, повернення та звʼязок з магазином Є.Дріл.',
   alternates: {
     canonical: 'https://www.ye-dril.com/menu',

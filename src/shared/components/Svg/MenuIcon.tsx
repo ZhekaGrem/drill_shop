@@ -1,5 +1,6 @@
-// Іконка з Tabler Icons (outline, MIT) — єдина іконографіка в мові Дії.
-// Згенеровано з @tabler/icons/icons/outline/menu-2.svg
+// Бургер таба «Меню» — та сама іконка, що в застосунку Дія на цьому табі:
+// три однакові лінії з круглими кінцями, трохи щільніше згруповані,
+// ніж у tabler/menu-2, звідки іконка починалась.
 import React from 'react';
 interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {
   size?: number;
@@ -19,9 +20,9 @@ export function MenuIcon({ className, size = 24, ...props }: IconProps) {
       strokeLinecap="round"
       strokeLinejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M4 6l16 0" />
-      <path d="M4 12l16 0" />
-      <path d="M4 18l16 0" />
+      <path d="M4.5 6.75l15 0" />
+      <path d="M4.5 12l15 0" />
+      <path d="M4.5 17.25l15 0" />
     </svg>
   );
 }

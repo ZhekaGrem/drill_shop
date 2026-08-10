@@ -7,8 +7,10 @@
   font-size: var(--text-base);
   line-height: 1.5;
   letter-spacing: -0.02em;
-  transition: var(--transition-normal);
   border-radius: var(--radius-pill);
+
+  @include motion.pressable-transition;
+  @include motion.press;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -16,33 +18,58 @@
   gap: var(--spacing-sm);
   border: none;
 
-  // Diia-style "живий" hover: сама кнопка завжди тримає --gradient-brand
-  // (той самий градієнт, що й фон сторінки — рухається безперервно, тихо,
-  // під суцільно чорною маскою). На hover маска ховається — і оскільки
-  // анімація увесь час іде фоном, кожне наведення показує інший кадр,
-  // тому градієнт щоразу виглядає «іншим», а насправді це один плавний цикл.
+  // Diia-style "живий" hover — механіка кнопки «Більше новин» на diia.gov.ua/news:
+  // під суцільно чорною маскою ::before безперервно крутиться ТРИШАРОВИЙ
+  // --gradient-btn. На hover маска ховається, і оскільки анімація ніколи не
+  // спиняється, кожне наведення відкриває інший кадр циклу.
+  //
+  // Було: один шар --gradient-brand зі зсувом background-position. Зсув по
+  // одному лінійному градієнту майже не міняє колір — «щоразу інше» не читалось.
+  //
+  // Додатково useRandomGradientPhase на mouseenter підставляє негативний
+  // animation-delay і перекидає цикл у випадкову точку: без цього два наведення
+  // підряд за секунду показували б практично однаковий кадр.
+  //
+  // @keyframes granimate лежить у globals.css — на нього спирається ще й
+  // правило для Mantine-кнопок.
   &--primary {
     position: relative;
     isolation: isolate;
-    background-image: var(--gradient-brand);
-    background-size: 200% 200%;
+    background: var(--btn-primary);
     color: var(--text-inverse);
-    animation: buttonGradientDrift 12s ease infinite;
 
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      border-radius: inherit;
-      background: var(--btn-primary);
-      opacity: 1;
-      transition: opacity 0.25s ease-in-out;
-    }
+    // Градієнт живе тільки там, де є справжній курсор. Тач лишається з чорною
+    // кнопкою: показати hover-стан йому нічим (Дія робить те саме, тільки через
+    // ширину екрана — (hover: hover) точніше, бо тач-планшет на 1024px теж має
+    // лишитись без градієнта).
+    @include motion.hoverable {
+      background-color: transparent;
+      background-image: var(--gradient-btn);
+      background-size: var(--gradient-btn-size);
+      animation: granimate var(--gradient-btn-cycle) infinite;
 
-    &:hover:not(:disabled)::before,
-    &:focus-visible::before {
-      opacity: 0;
+      &::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        z-index: -1;
+        border-radius: inherit;
+        background: var(--btn-primary);
+        opacity: 1;
+        transition: opacity var(--dur-modal) var(--ease-out);
+      }
+
+      // Фокус з клавіатури знімає маску нарівні з hover — клавіатурний
+      // користувач не має втрачати зворотний зв'язок.
+      &:hover:not(:disabled),
+      &:focus-visible {
+        color: var(--text-primary);
+      }
+
+      &:hover:not(:disabled)::before,
+      &:focus-visible::before {
+        opacity: 0;
+      }
     }
   }
 
@@ -51,8 +78,10 @@
     color: var(--text-primary);
     border: 1px solid var(--text-primary);
 
-    &:hover:not(:disabled) {
-      background: var(--background-secondary);
+    @include motion.hoverable {
+      &:hover:not(:disabled) {
+        background: var(--background-secondary);
+      }
     }
   }
 
@@ -61,8 +90,10 @@
     color: var(--text-primary);
     border: 1px solid var(--border-subtle);
 
-    &:hover:not(:disabled) {
-      border-color: var(--text-primary);
+    @include motion.hoverable {
+      &:hover:not(:disabled) {
+        border-color: var(--text-primary);
+      }
     }
   }
 
@@ -70,9 +101,11 @@
     background: transparent;
     color: var(--text-primary);
 
-    &:hover:not(:disabled) {
-      color: var(--accent);
-      background: transparent;
+    @include motion.hoverable {
+      &:hover:not(:disabled) {
+        color: var(--accent);
+        background: transparent;
+      }
     }
   }
 
@@ -125,18 +158,29 @@
   }
 }
 
-@keyframes buttonGradientDrift {
+// Копія @keyframes granimate з globals.css — і так, вона тут потрібна.
+// css-loader скоупить імена keyframes нарівні з класами: посилання
+// `animation: granimate` вище перетворюється на
+// `button-module-scss-module__hash__granimate`. Якщо оголошення лишити тільки
+// в globals.css, такого keyframe не існуватиме і анімація тихо не запуститься —
+// без жодної помилки в консолі. Обхід через `:global(granimate)` у значенні
+// властивості SCSS не парсить.
+// Глобальна копія потрібна окремо — на неї спирається правило для
+// Mantine-кнопок. Міняєш стопи тут — міняй і там.
+@keyframes granimate {
   0%,
   100% {
-    background-position: 0% 25%;
+    background-position: 0 25%;
+  }
+  25%,
+  75% {
+    background-position: 50% 50%;
   }
   50% {
-    background-position: 100% 75%;
+    background-position: 100% 100%;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .button--primary {
-    animation: none;
-  }
-}
+// prefers-reduced-motion не дублюємо: глобальне правило в globals.css уже
+// збиває animation-duration до 0.01ms з !important, тож градієнт застигає на
+// першому кадрі, а reveal на hover лишається.

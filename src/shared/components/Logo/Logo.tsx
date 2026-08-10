@@ -1,14 +1,16 @@
 // src/shared/components/Logo/Logo.tsx
-// Текстова ворд-марка ye-dril — рендериться живим текстом (self-hosted e-UkraineHead),
-// а не растровим/SVG зображенням, щоб лишатись чіткою на будь-якому масштабі
-// (той самий підхід, що й у ворд-марки diia.gov.ua).
+// Лого = сквіркл-марка «є.» (як app-іконка Дії і наш favicon) + словомарка
+// «Дріл». Усе рендериться живим текстом (self-hosted e-UkraineHead) і CSS —
+// без растру/SVG, щоб лишатись чітким на будь-якому масштабі (той самий
+// підхід, що й у ворд-марки diia.gov.ua). Концепт-референси згенеровано
+// через smm-factory (RunningHub Flux), фінал відтворено векторно.
 import styles from './Logo.module.scss';
 
 interface LogoProps {
   className?: string;
   /** 'md' — header (default), 'sm' — компактні місця типу footer */
   size?: 'md' | 'sm';
-  /** Для темних поверхонь (напр. футер) — світлий текст замість --text-primary */
+  /** Для темних поверхонь (напр. хедер/футер) — марка стає білою, текст світлим */
   inverse?: boolean;
 }
 
@@ -19,7 +21,10 @@ export function Logo({ className, size = 'md', inverse = false }: LogoProps) {
 
   return (
     <span className={classes}>
-      Є<span className={styles.dot}>.</span>Дріл
+      <span className={styles.mark}>
+        є<span className={styles.markDot}>.</span>
+      </span>
+      <span className={styles.word}>Дріл</span>
     </span>
   );
 }

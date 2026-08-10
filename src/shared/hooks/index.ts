@@ -2,3 +2,4 @@
 export { useDebounce } from './useDebounce';
 export { useTimeout } from './useTimeout';
 export { useOptimisticMutation } from './useOptimisticMutation';
+export { useRandomGradientPhase } from './useRandomGradientPhase';

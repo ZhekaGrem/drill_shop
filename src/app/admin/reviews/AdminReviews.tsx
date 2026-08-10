@@ -147,7 +147,10 @@ export default function AdminReviews() {
               leftSection={<IconTrash size={16} />}
               onClick={handleBulkDelete}
               loading={bulkDeleteMutation.isPending}
-              color="red">
+              color="red"
+              // mod="plain" → data-plain: виводить кнопку з-під градієнтного
+              // hover у globals.css. Деструктивна дія має лишатись червоною.
+              mod="plain">
               Видалити вибрані ({selectedReviews.length})
             </Button>
             <Button variant="light" onClick={() => setSelectedReviews([])}>
@@ -381,6 +384,7 @@ export default function AdminReviews() {
               </Button>
               <Button
                 color="red"
+                mod="plain"
                 onClick={() => {
                   close();
                   handleDeleteReview(viewingReview.id);

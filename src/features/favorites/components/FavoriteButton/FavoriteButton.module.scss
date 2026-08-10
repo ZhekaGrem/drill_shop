@@ -5,11 +5,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0);
+  background: transparent;
   border: none;
   cursor: pointer;
   border-radius: 50%;
-  color: #c1baba;
+  // Кольори з токенів, а не хардкодом (#c1baba / #595959 / rgba(204,33,40)):
+  // саме через них кнопка не змінювалась разом із рештою редизайну
+  color: var(--text-secondary);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 
@@ -53,7 +55,8 @@
 
   // Стан hover
   &:hover:not(:disabled) {
-    background: rgba(204, 33, 40, 0.08);
+    background: var(--background-secondary);
+    color: var(--text-primary);
 
     .icon {
       transform: scale(1.1);
@@ -69,7 +72,8 @@
     }
 
     &:hover:not(:disabled) {
-      background: rgba(204, 33, 40, 0.12);
+      background: var(--background-secondary);
+      color: var(--accent-red);
 
       .icon {
         transform: scale(1.15);
