@@ -1,6 +1,5 @@
 // src/features/catalog/components/ProductCard/ProductCard.module.scss
 @use '../../../../shared/styles/motion' as motion;
-@use '../../../../shared/styles/animations';
 //
 // Картка-«документ» Дії: щільна БІЛА поверхня, що лежить на градієнтному фоні
 // сторінки (--gradient-page з globals.css). Раніше градієнт був фоном самої
@@ -42,6 +41,8 @@
   overflow: hidden;
   transition: transform var(--dur-press) var(--ease-out);
 
+  // Каскад появи списку: затримка від --i, індекс ставить TSX (обрізаний до 8)
+  @include motion.stagger-child;
   @include motion.press;
 
   // Підйому на hover немає свідомо (див. коментар вище) — реагує фото,
@@ -93,10 +94,6 @@
   height: 100%;
   object-fit: cover;
   transition: transform var(--dur-hover) var(--ease-out);
-
-  &.loading {
-    animation: blurFadeIn 1.5s ease-in-out infinite;
-  }
 }
 
 .content {

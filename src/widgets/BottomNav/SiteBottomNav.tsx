@@ -8,7 +8,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { IconCart, IconCatalog, IconHome, IconUser } from '@/shared/components/Svg';
+import { IconCart, IconCatalog, IconHome, MenuIcon } from '@/shared/components/Svg';
 import { useCartCalculations } from '@/shared/stores/cart';
 import { BottomNav, type BottomNavItem } from './BottomNav';
 import styles from './BottomNav.module.scss';
@@ -31,8 +31,9 @@ export function SiteBottomNav() {
     // «Меню», а не «Кабінет»: за цим табом лежить довідка, доставка й правове,
     // а особистий кабінет — лише перша група всередині. Назва має відповідати
     // вмісту (Nielsen #2) і маршруту /menu, інакше незалогінений очікує вхід,
-    // а бачить FAQ.
-    { label: 'Меню', href: '/menu', icon: IconUser },
+    // а бачить FAQ. Іконка — бургер, як на табі «Меню» в Дії: силует людини
+    // обіцяв профіль, а не меню (та сама евристика відповідності).
+    { label: 'Меню', href: '/menu', icon: MenuIcon },
   ];
 
   return <BottomNav items={items} className={styles.mobileOnly} scope="mobile" ariaLabel="Нижня навігація" />;

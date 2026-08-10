@@ -1,5 +1,12 @@
 // src/app/catalog/[slug]/productDetails.module.scss
-// Pixel art product page matching Figma mockup
+@use '../../../shared/styles/animations';
+
+// Сторінка товару в мові Дії: дві білі картки-«документи» зверху (галерея +
+// купівля), під ними групи фактів, опис, схожі товари, відгуки.
+//
+// Одна шкала відступів на весь файл — примітиви --space-*. Раніше тут жили
+// одночасно --spacing-md і --space-4 (це аліаси одного значення), тож кожна
+// правка починалась із питання «а якою шкалою тут прийнято міряти».
 
 .productPage {
   min-height: 100vh;
@@ -9,9 +16,11 @@
   .productDetails {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: start;
-    gap: var(--spacing-xl);
-    margin-bottom: var(--spacing-2xl);
+    // stretch, а не start: дві картки поруч мають закінчуватись на одній лінії.
+    // При `start` нижні краї стояли на різній висоті й ряд виглядав рваним.
+    align-items: stretch;
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
 
     // Внутрішній падінг білої інфо-картки — один для всіх її дітей,
     // щоб заголовок, ціна, варіанти й кнопки стояли на спільному лівому краї
@@ -39,8 +48,8 @@
       }
     }
 
-    // Артикул і наявність — на одній осі, вирівняні по центру:
-    // це два pill-и різної висоти, і без align-items вони розʼїжджаються
+    // Артикул, рейтинг і наявність — на одній осі, вирівняні по центру:
+    // це pill-и різної висоти, і без align-items вони розʼїжджаються
     &__meta {
       display: flex;
       align-items: center;
@@ -51,13 +60,46 @@
       color: var(--text-secondary);
     }
 
-    &__sku {
+    // Спільна геометрія всіх плашок у рядку метаданих. Раніше кожна плашка
+    // описувала свої падінги окремо — і вони розходились на пів-пікселя.
+    &__sku,
+    &__availability,
+    &__rating {
       display: inline-flex;
       align-items: center;
-      font-family: var(--font-mono);
+      gap: var(--space-1);
+      min-height: 28px;
+      padding: 0 var(--space-3);
+      font-size: var(--text-sm);
       background: var(--background-secondary);
-      padding: 6px var(--spacing-md);
       border-radius: var(--radius-pill);
+    }
+
+    &__sku {
+      font-family: var(--font-mono);
+    }
+
+    // Рейтинг — посилання на секцію відгуків. Сторінка віддає aggregateRating
+    // у JSON-LD, тож ця цифра має бути й на екрані: розмітка не може описувати
+    // те, чого людина не бачить (Google rich results + просто довіра).
+    &__rating {
+      color: var(--text-primary);
+      font-weight: var(--fw-medium);
+      text-decoration: none;
+      transition: background var(--transition-fast);
+
+      &:hover {
+        background: var(--border-subtle);
+      }
+
+      svg {
+        color: var(--accent-red);
+      }
+    }
+
+    &__ratingCount {
+      color: var(--text-secondary);
+      font-weight: var(--fw-normal);
     }
 
     &__price {
@@ -65,7 +107,7 @@
       display: flex;
       align-items: baseline;
       color: var(--text-secondary);
-      gap: var(--spacing-sm);
+      gap: var(--space-2);
       flex-wrap: wrap;
     }
 
@@ -75,9 +117,6 @@
       font-weight: var(--fw-light);
       color: var(--text-secondary);
       text-decoration: line-through;
-      // Відступ був інлайном у JSX разом з кольором #999 — тепер вигляд
-      // цього елемента живе в одному місці
-      margin-right: var(--space-2);
     }
 
     &__currentPrice {
@@ -94,7 +133,11 @@
       }
     }
 
-    &__pricePerKg {
+    // Вага і одиниця виміру — один тихий хвіст біля ціни. Раніше `unitDisplay`
+    // виводився голим текстом одразу за стилізованою вагою, тож у рядку
+    // стояли поруч два різні рівні оздоблення.
+    &__pricePerKg,
+    &__unit {
       font-size: var(--text-lg);
       color: var(--text-secondary);
       font-weight: var(--fw-medium);
@@ -110,7 +153,12 @@
       color: var(--text-secondary);
     }
 
+    // Проміжок після блоку варіантів живе на самому блоці, а не на чіпах:
+    // інакше гілка з <Select> лишалась узагалі без нижнього відступу, а гілка
+    // з чіпами мала 24px — два різні ритми в одній колонці
     &__variants {
+      margin-bottom: var(--space-6);
+
       &__select {
         :global(.mantine-Select-input) {
           border: 1px solid var(--border-subtle);
@@ -148,9 +196,52 @@
         }
       }
     }
+
+    // Статус наявності — pill, як бейдж статусу в Дії. Колір НЕ єдиний сигнал:
+    // текст сам каже «В наявності» / «Залишилось N» / «Немає в наявності»
+    // (WCAG 1.4.1 — колір не може бути єдиним носієм змісту).
+    &__availability {
+      color: var(--success-green);
+      font-weight: var(--fw-medium);
+
+      &_out {
+        color: var(--accent-red);
+      }
+    }
+
+    &__actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    // Дві білі картки-«документи» поруч. Внутрішній падінг у них має бути ОДИН:
+    // було 24px у галереї проти 32px в інфо-колонці, і вміст двох сусідніх
+    // карток стояв на різних вертикалях.
+    &__images {
+      display: flex;
+      width: 100%;
+      padding: var(--space-8);
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+
+      @media (max-width: 768px) {
+        padding: var(--card-padding);
+      }
+    }
+
+    &__info {
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+      // БЕЗ overflow: hidden. Предок із overflow робиться scroll-контейнером
+      // для `position: sticky`, і мобільна панель дії переставала липнути —
+      // вона трималась рівно доти, доки на екрані була сама картка.
+    }
   }
 
-  // ✅ Стилі для checkbox варіантів (size/color)
+  // ============ ВАРІАНТИ ============
   // Підпис належить своєму контролу — 16px між ними читались як розрив
   .variantLabel {
     display: block;
@@ -164,8 +255,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin-bottom: var(--space-6);
-    z-index: 20;
   }
 
   .variantCheckbox {
@@ -229,98 +318,40 @@
     border-color: var(--text-primary);
   }
 
-  .productDetails {
-    // Статус наявності — pill, як бейдж статусу в Дії. Колір НЕ єдиний сигнал:
-    // текст сам каже «В наявності» / «Залишилось N» / «Немає в наявності»
-    // (WCAG 1.4.1 — колір не може бути єдиним носієм змісту).
-    &__availability {
-      display: inline-flex;
-      align-items: center;
-      font-size: var(--text-sm);
-      font-weight: var(--fw-medium);
-      color: var(--success-green);
-      background: var(--background-secondary);
-      padding: 6px var(--spacing-md);
-      border-radius: var(--radius-pill);
-
-      &_out {
-        color: var(--accent-red);
-      }
-    }
-
-    &__actions {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-md);
-    }
-    // Дві білі картки-«документи» поруч. Внутрішній падінг у них має бути ОДИН:
-    // було 24px у галереї проти 32px в інфо-колонці, і вміст двох сусідніх
-    // карток стояв на різних вертикалях.
-    &__images {
-      height: 100%;
-      width: 100%;
-      padding: var(--space-8);
-      background: var(--surface-card);
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-sm);
-
-      @media (max-width: 768px) {
-        padding: var(--card-padding);
-      }
-    }
-
-    &__info {
-      background: var(--surface-card);
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-    }
+  // Помилка вибору варіанта — рядок біля самих чіпів, а не нативний alert()
+  // посеред екрана (Nielsen #9: повідомлення стоїть там, де сталась проблема)
+  .variantError {
+    margin: calc(var(--space-4) * -1) 0 var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--accent-red);
   }
 
   // ============ PRODUCT GALLERY ============
+  // Висоту всієї галереї задає ОДИН елемент — фото-вставка з aspect-ratio.
+  // Раніше висот було три незалежні: контейнер `max(433px, 56.67vw)`, колонка
+  // мініатюр `max-height: 504px` і власна висота картинки. На 1440px це давало
+  // ~816 / ~504 / ~640px в одному ряду: біла порожнеча під фото, крапки
+  // приклеєні до низу картинки, а ліва колонка обривалась вище правої.
   .productGallery {
     display: flex;
-    justify-content: end;
+    align-items: stretch;
+    gap: var(--space-3);
     width: 100%;
-    height: 100%;
 
     &__thumbnailsWrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       position: relative;
+      flex-shrink: 0;
+      width: 88px;
     }
 
-    &__scrollArrow {
-      width: 80px;
-      padding: 0;
-      background: transparent;
-      border: none;
-      font-size: 16px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      &:hover {
-        background: var(--btn-primary);
-        color: var(--text-inverse);
-        box-shadow: var(--shadow-md);
-      }
-
-      &:active {
-        transform: scale(0.95);
-      }
-    }
-
+    // Список абсолютний — тоді його власна висота (8 мініатюр = 800px+) не
+    // роздуває ряд, а сам він розтягується рівно на висоту фото-вставки.
     &__thumbnails {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
-      flex-shrink: 0;
-      max-height: 504px;
+      gap: var(--space-2);
       overflow-y: auto;
       scrollbar-width: none;
       -ms-overflow-style: none;
@@ -331,52 +362,103 @@
     }
 
     &__thumbnail {
-      width: 140px;
-      height: 140px;
-      min-width: 140px;
-      min-height: 140px;
+      width: 88px;
+      height: 88px;
       flex-shrink: 0;
       padding: 0;
-      border: none;
+      background: var(--background-light);
+      border: 1px solid transparent;
+      border-radius: var(--border-radius-md);
       cursor: pointer;
       overflow: hidden;
+      transition: border-color var(--transition-fast);
 
-      &Active {
-        box-shadow: var(--shadow-md);
+      &:hover {
+        border-color: var(--border-subtle);
       }
 
+      &Active {
+        border-color: var(--text-primary);
+      }
+
+      // contain, а не cover: мініатюра має показувати той самий кадр, який
+      // відкриється у великому фото. З cover вона обрізала його по-своєму.
       img {
-        object-fit: cover;
+        object-fit: contain;
         width: 100%;
         height: 100%;
+      }
+    }
+
+    // Стрілки скролу мініатюр — той самий круглий 44px контрол, що й стрілки
+    // гортання фото. Раніше це були текстові гліфи ▲▼ висотою ~19px, які на
+    // hover заливались чорним на всі 80px ширини.
+    &__scrollArrow {
+      position: absolute;
+      left: 50%;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: var(--transition-fast);
+
+      &:hover {
+        background: var(--btn-primary);
+        color: var(--text-inverse);
+        border-color: var(--btn-primary);
+      }
+
+      &:active {
+        transform: translateX(-50%) scale(var(--motion-press-scale));
+      }
+
+      &Up {
+        top: 0;
+        transform: translateX(-50%);
+      }
+
+      &Down {
+        bottom: 0;
+        transform: translateX(-50%);
       }
     }
 
     &__main {
       position: relative;
       flex: 1;
-      background: var(--surface-card);
-      border-radius: var(--border-radius-md);
-      overflow: hidden;
-      width: max(280px, 36.67vw);
-      height: max(433px, 56.67vw);
+      min-width: 0;
     }
 
+    // Єдине джерело висоти галереї
     &__mainImageWrapper {
       position: relative;
+      aspect-ratio: 3 / 4;
+      width: 100%;
       overflow: hidden;
-      cursor: pointer;
+      background: var(--background-light);
+      border-radius: var(--border-radius-md);
+      cursor: zoom-in;
     }
 
     &__mainImage {
-      object-fit: contain;
       width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     &__zoomIcon {
       position: absolute;
-      bottom: var(--spacing-md);
-      left: var(--spacing-md);
+      bottom: var(--space-4);
+      left: var(--space-4);
       z-index: 3;
       pointer-events: none;
       opacity: 0.7;
@@ -420,62 +502,126 @@
       }
 
       &Left {
-        left: var(--spacing-md);
+        left: var(--space-4);
       }
 
       &Right {
-        right: var(--spacing-md);
+        right: var(--space-4);
       }
     }
 
+    // Крапки — навігація для екранів, де мініатюр не видно. На десктопі вони
+    // були четвертим способом гортати ту саму галерею (мініатюри + стрілки +
+    // крапки + клік-зум) — Hick's Law у чистому вигляді.
     &__dots {
+      display: none;
       position: absolute;
-      bottom: var(--spacing-md);
+      bottom: var(--space-2);
       left: 50%;
       transform: translateX(-50%);
-      display: flex;
-      gap: var(--spacing-sm);
-      padding: var(--spacing-sm);
+      gap: var(--space-1);
+      z-index: 5;
     }
 
+    // Ціль натискання 24px (WCAG 2.5.8), сама крапка всередині — 8px
     &__dot {
-      width: 12px;
-      height: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
       padding: 0;
-      background: var(--background-light);
-      border: 1px solid var(--border-subtle);
+      background: transparent;
+      border: none;
       cursor: pointer;
-      transition: all var(--transition-fast);
 
-      &Active {
-        background: var(--background-dark);
+      &::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: var(--surface-card);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-pill);
         box-shadow: var(--shadow-xs);
+        transition: var(--transition-fast);
+      }
+
+      &Active::before {
+        background: var(--background-dark);
+        border-color: var(--background-dark);
+        transform: scale(1.25);
       }
     }
+  }
+
+  // Верхній ряд оверлеїв над фото: бейджі зліва, обране справа — В ОДНОМУ
+  // ряду з вирівнюванням по центру. Раніше кожен елемент був приклеєний до
+  // свого кута окремо: бейдж 24px і кнопка 44px на спільному верхньому краї,
+  // тож їхні низи розходились на 20px.
+  .galleryOverlayTop {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    left: var(--space-3);
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    pointer-events: none;
+  }
+
+  // ProductBadges всередині ряду позиціонує себе сам — тут він звичайний
+  // елемент потоку, інакше він знову приклеївся б до кута
+  .galleryOverlayTop .galleryBadges {
+    position: static;
+    inset: auto;
+  }
+
+  // Підкладка для серця — та сама біла таблетка, що й у стрілок галереї.
+  // Без неї іконка висіла голою на фото й на темних знімках зникала.
+  .favoriteButtonWrapper {
+    display: inline-flex;
+    // Бейджів може не бути взагалі (ProductBadges тоді повертає null) —
+    // серце має лишатись праворуч і на самоті
+    margin-left: auto;
+    padding: 2px;
+    background: var(--surface-card);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sm);
+    pointer-events: auto;
   }
 
   // ============ ACTION BUTTONS ============
   .actionButtons {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: var(--space-4);
   }
 
   .secondaryAction {
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--space-2);
   }
 
   // Кількість — окремий рядок «підпис → контрол», а не безіменні − 5 +
   .quantityRow {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
+    gap: var(--space-4);
+    margin-bottom: var(--space-2);
   }
 
   .quantityLabel {
     font-size: var(--text-sm);
     font-weight: var(--fw-normal);
+    color: var(--text-secondary);
+  }
+
+  // Тихий рядок під лічильником — пояснює, чому число перестало рости.
+  // Раніше ввід поза діапазоном просто ігнорувався мовчки.
+  .quantityHint {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-sm);
     color: var(--text-secondary);
   }
 
@@ -542,18 +688,21 @@
 
   .addToCartButton {
     width: 100%;
+
+    // Підтвердження додавання не тільки словами в кнопці, а й кольором.
+    // Клас використовувався в JSX і раніше, але в модулі його не існувало —
+    // тобто «Додано в кошик» виглядало точно так само, як звичайний стан.
+    // Специфічність 0,2,0 (клас вкладений у .productPage) навмисно вища за
+    // 0,1,0 у Button.module.scss — інакше перемога залежала б від порядку файлів.
+    &__success {
+      background: var(--success-green);
+      border-color: var(--success-green);
+      color: var(--text-inverse);
+    }
   }
 
   .buyNowButton {
     width: 100%;
-  }
-
-  // ============ FAVORITE BUTTON ============
-  .favoriteButtonWrapper {
-    position: absolute;
-    top: var(--spacing-sm);
-    right: var(--spacing-sm);
-    z-index: 10;
   }
 
   // ============ ГРУПИ ФАКТІВ ПІД КНОПКОЮ ============
@@ -645,10 +794,12 @@
   .relatedProducts {
     &__grid {
       display: grid;
-
-      grid-template-columns: repeat(3, 370px);
-      gap: var(--spacing-lg);
+      // minmax, а не жорсткі 370px: три фіксовані колонки + проміжки не
+      // влазили в контентну ширину на вікнах 1200–1300px
+      grid-template-columns: repeat(3, minmax(0, 370px));
+      gap: var(--space-6);
       justify-content: center;
+
       @media (max-width: 1200px) {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       }
@@ -664,49 +815,128 @@
   }
 
   // ============ SKELETON LOADING ============
+  // Скелетон повторює фінальний каркас: крихти, дві картки з тим самим
+  // радіусом і падінгом, фото з тією ж пропорцією. Раніше це були сірі
+  // прямокутники без радіусів — підміна давала стрибок усього макета.
+  &__loading {
+    display: grid;
+    gap: var(--space-8);
+  }
+
   .productSkeleton {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-2xl);
-    animation: skeletonPulse 1.5s ease-in-out infinite;
+    align-items: stretch;
+    gap: var(--space-8);
 
+    // Shimmer на кожній картці окремо, а не на всій сітці: інакше світла
+    // смуга бігла б і по проміжку між картками, де видно фон сторінки.
     &__images,
+    &__content {
+      position: relative;
+      padding: var(--space-8);
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+        animation: skeletonShimmer 1.2s var(--ease-in-out) infinite;
+      }
+
+      @media (max-width: 768px) {
+        padding: var(--card-padding);
+      }
+    }
+
+    &__photo {
+      aspect-ratio: 3 / 4;
+      width: 100%;
+      background: var(--background-secondary);
+      border-radius: var(--border-radius-md);
+    }
+
+    &__crumbs,
     &__title,
+    &__meta,
     &__price,
     &__description,
     &__actions {
       background: var(--background-secondary);
-      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+    }
+
+    &__crumbs {
+      height: 16px;
+      width: 240px;
+      margin-bottom: var(--space-6);
     }
 
     &__title {
-      height: 48px;
-      margin-bottom: var(--spacing-md);
+      height: 32px;
+      margin-bottom: var(--space-3);
+    }
+
+    &__meta {
+      height: 28px;
+      width: 60%;
+      margin-bottom: var(--space-5);
     }
 
     &__price {
-      height: 64px;
-      width: 60%;
-      margin-bottom: var(--spacing-md);
+      height: 36px;
+      width: 40%;
+      margin-bottom: var(--space-6);
     }
 
     &__description {
-      height: 100px;
-      margin-bottom: var(--spacing-md);
+      height: 88px;
+      border-radius: var(--border-radius-md);
+      margin-bottom: var(--space-6);
     }
 
     &__actions {
-      height: 56px;
+      height: 48px;
     }
   }
 
-  @keyframes skeletonPulse {
-    0%,
-    100% {
-      opacity: 1;
+  // ============ ERROR STATE ============
+  // Раніше цей екран посилався на класи, яких у модулі не існувало
+  // (`.container`, `.btn`, `.btnPrimary`) — тобто рендерився зовсім без
+  // стилів, а на кнопку летів className="undefined undefined".
+  &__error {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-4);
+    max-width: 520px;
+    margin: 0 auto;
+    padding: var(--space-12) var(--space-8);
+    text-align: center;
+    background: var(--surface-card);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+
+    @media (max-width: 768px) {
+      padding: var(--space-8) var(--card-padding);
     }
-    50% {
-      opacity: 0.5;
+
+    h1 {
+      margin: 0;
+      font-size: var(--text-2xl);
+      font-weight: var(--fw-medium);
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    p {
+      margin: 0 0 var(--space-2);
+      font-size: var(--text-base);
+      font-weight: var(--fw-light);
+      color: var(--text-secondary);
     }
   }
 
@@ -714,130 +944,88 @@
   @media (max-width: 968px) {
     .productDetails {
       grid-template-columns: 1fr;
-      gap: var(--spacing-xl);
+      gap: var(--card-gap);
     }
 
     .productSkeleton {
       grid-template-columns: 1fr;
     }
+
+    // В одну колонку фото на всю ширину сторінки стало б висотою в екран
+    // з гаком (ширина × 4/3) — тримаємо галерею в читабельній колонці
+    .productGallery {
+      max-width: 520px;
+      margin: 0 auto;
+    }
   }
 
   @media (max-width: 768px) {
-    // Змінюємо порядок елементів на мобільних
+    // Фіксована панель дії не займає місця в потоці — звільняємо його самі,
+    // інакше вона накриває кінець сторінки (останні відгуки)
+    padding-bottom: 72px;
+
     .productDetails {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      padding-left: 0;
+      // Дві білі картки зі скругленням 24px і тінню, поставлені впритул
+      // (gap: 0), читались як одна поламана площина, а не як два документи
+      gap: var(--card-gap);
     }
 
-    // Порядок: 1. Gallery (головна картинка + thumbnails)
     .productDetails__images {
       order: 1;
     }
 
-    // Порядок: 2. Info (опис, ціна, кнопки)
     .productDetails__info {
       order: 2;
-      padding: var(--spacing-md) 0;
+      // Горизонтальний падінг дає `__container`; занулення тут клало текст
+      // на самий край скруглення картки
     }
 
     .productGallery {
-      flex-direction: column;
-      border-right: none;
-      border-left: none;
-      // Головна картинка зверху
-      &__main {
-        order: 1;
-        height: auto;
-        width: 100%;
-      }
-
-      &__mainImageWrapper {
-        height: auto;
-        border-left: none;
-      }
-
-      &__mainImage {
-        object-fit: contain !important;
-        height: auto !important;
-      }
-
-      // Приховуємо стрілочки скролу на мобільних
-      &__scrollArrow {
-        display: none;
-      }
-
+      // Мініатюр на мобільному немає — гортання беруть на себе стрілки й
+      // крапки, тож колонка мініатюр не потрібна взагалі
       &__thumbnailsWrapper {
-        order: 2;
         display: none;
       }
 
-      // Thumbnails знизу під головною картинкою
-      &__thumbnails {
-        flex-direction: row;
-        overflow-x: auto;
-        overflow-y: visible;
-        max-height: none;
-        margin-top: var(--spacing-sm);
-        padding-bottom: var(--spacing-xs);
-        padding-right: 0;
-        border: none;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-
-        &::-webkit-scrollbar {
-          display: none;
-        }
+      &__dots {
+        display: flex;
       }
 
-      &__thumbnail {
-        min-width: 60px;
-        width: 60px;
-        height: 60px;
-
-        img {
-          object-fit: cover;
-          width: 100%;
-          height: 100%;
-        }
-      }
-
-      // Стрілочки на мобільних. Нижче 40px не опускаємось — палець промахується
+      // Стрілки на мобільних. Нижче 40px не опускаємось — палець промахується
       &__arrow {
         width: 40px;
         height: 40px;
 
         &Left {
-          left: var(--spacing-sm);
+          left: var(--space-2);
         }
 
         &Right {
-          right: var(--spacing-sm);
+          right: var(--space-2);
         }
       }
     }
 
     .productDetails__title {
       line-height: 1.3;
-      margin-bottom: var(--spacing-sm);
+      margin-bottom: var(--space-2);
     }
 
     .productDetails__price {
-      margin-bottom: var(--spacing-md);
+      margin-bottom: var(--space-4);
     }
 
     .productDetails__currentPrice {
       font-size: var(--text-3xl);
     }
 
-    .productDetails__pricePerKg {
+    .productDetails__pricePerKg,
+    .productDetails__unit {
       font-size: var(--text-base);
     }
 
-    // Варіанти на мобільних
     .variantCheckboxes {
-      gap: var(--spacing-xs);
+      gap: var(--space-1);
     }
 
     .variantCheckboxText {
@@ -848,33 +1036,32 @@
       padding: 0 10px;
     }
 
-    // Липка панель тримає РІВНО ОДНУ дію. Раніше сюди потрапляли лічильник
-    // кількості (48px) і дві кнопки по 56px — ≈190px, приклеєних до низу
-    // назавжди, тобто чверть екрана телефона. Тепер ~88px.
-    // Плюс верхня межа: без неї контент заповзав під панель без розділення.
+    // Панель дії тримає РІВНО ОДНУ дію і стоїть НАД таб-баром.
+    // Раніше вона була `sticky` всередині інфо-картки з overflow: hidden —
+    // тобто не липла взагалі, а зникала разом із карткою. Тепер fixed:
+    // кнопка лишається на екрані і в описі, і у відгуках.
     .actionButtons {
-      position: sticky;
-      bottom: 0;
-      left: 0;
+      position: fixed;
       right: 0;
-      background: var(--background);
+      bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+      left: 0;
+      // Нижче за таб-бар (100) і сильно нижче за оверлеї Mantine (200+):
+      // панель не має накривати модалку розмірної сітки чи галерею
+      z-index: 90;
+      padding: var(--space-3) var(--card-padding);
+      background: var(--surface-card);
       border-top: 1px solid var(--border-subtle);
-      padding: var(--spacing-md);
-      margin: 0 calc(var(--spacing-md) * -1);
-      z-index: 100;
-      gap: var(--spacing-sm);
     }
 
     .buyNowButton,
     .addToCartButton {
       font-size: var(--text-base);
-      padding: var(--spacing-sm) var(--spacing-md);
       width: 100%;
     }
 
     .productDescription__title {
       font-size: var(--text-xl);
-      margin-bottom: var(--spacing-md);
+      margin-bottom: var(--space-4);
     }
 
     .relatedProducts__grid {
@@ -883,6 +1070,10 @@
   }
 
   @media (max-width: 480px) {
+    .quantitySelector {
+      height: 40px;
+    }
+
     .quantitySelector__button {
       width: 40px;
       height: 40px;
@@ -894,34 +1085,9 @@
       height: 40px;
       font-size: var(--text-lg);
     }
-
-    .productGallery__thumbnail {
-      min-width: 50px;
-      width: 50px;
-      height: 50px;
-
-      img {
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-      }
-    }
-
-    // На дуже малих екранах стрілки лишаються 40px — це нижня межа тап-таргета
-    .productGallery__arrow {
-      width: 40px;
-      height: 40px;
-
-      &Left {
-        left: var(--spacing-xs);
-      }
-
-      &Right {
-        right: var(--spacing-xs);
-      }
-    }
   }
 }
+
 .mobileOnly {
   @media (min-width: 769px) {
     display: none;

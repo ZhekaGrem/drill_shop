@@ -63,36 +63,51 @@ export function BottomNav({
     };
   }, [scope]);
 
+  const activeIndex = items.findIndex((item) => isItemActive(item.href, pathname));
+
   return (
     <nav className={clsx(styles.bar, className)} aria-label={ariaLabel}>
-      <ul className={styles.list}>
-        {items.map((item) => {
-          const Icon = item.icon;
-          const active = isItemActive(item.href, pathname);
-          const badge = item.badge && item.badge > 0 ? item.badge : null;
+      {/* Активна підкладка — ОДНА пігулка, що переїжджає між табами, а не
+          чотири, які згасають/загоряються (одне «тіло» читається як той самий
+          обʼєкт на новому місці, перефарбовування — як блимання).
+          Поки жоден таб не активний, пігулки немає — інакше вона приїжджала б
+          із нульової позиції при першому переході. */}
+      <div
+        className={styles.inner}
+        data-has-active={activeIndex >= 0 || undefined}
+        style={
+          { '--active-index': Math.max(activeIndex, 0), '--nav-count': items.length } as React.CSSProperties
+        }>
+        <span className={styles.pill} aria-hidden="true" />
+        <ul className={styles.list}>
+          {items.map((item) => {
+            const Icon = item.icon;
+            const active = isItemActive(item.href, pathname);
+            const badge = item.badge && item.badge > 0 ? item.badge : null;
 
-          return (
-            <li key={item.href} className={styles.item}>
-              <Link
-                href={item.href}
-                onClick={() => onNavigate?.(item.href)}
-                className={`${styles.tab} ${active ? styles.tabActive : ''}`}
-                aria-current={active ? 'page' : undefined}>
-                <span className={styles.iconWrap}>
-                  <Icon size={24} />
-                  {badge && (
-                    <span className={styles.badge} aria-hidden="true">
-                      {badge > 99 ? '99+' : badge}
-                    </span>
-                  )}
-                </span>
-                <span className={styles.label}>{item.label}</span>
-                {badge && <span className="sr-only">{`, у кошику: ${badge}`}</span>}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+            return (
+              <li key={item.href} className={styles.item}>
+                <Link
+                  href={item.href}
+                  onClick={() => onNavigate?.(item.href)}
+                  className={`${styles.tab} ${active ? styles.tabActive : ''}`}
+                  aria-current={active ? 'page' : undefined}>
+                  <span className={styles.iconWrap}>
+                    <Icon size={24} />
+                    {badge && (
+                      <span className={styles.badge} aria-hidden="true">
+                        {badge > 99 ? '99+' : badge}
+                      </span>
+                    )}
+                  </span>
+                  <span className={styles.label}>{item.label}</span>
+                  {badge && <span className="sr-only">{`, у кошику: ${badge}`}</span>}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </nav>
   );
 }

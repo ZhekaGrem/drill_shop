@@ -174,8 +174,8 @@ export default function CatalogClient({ initialData, initialCategories, basePath
         {!isLoading && !error && products.length > 0 && (
           <>
             <div className={styles.products}>
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} basePath={basePath} />
+              {products.map((product, index) => (
+                <ProductCard key={product.id} product={product} basePath={basePath} index={index} />
               ))}
             </div>
 

@@ -4,8 +4,8 @@
 // окремих карток з межею й тінню — це мова generic e-commerce, не Дії
 // (Gestalt Common Region: спільна область = група).
 import type { ReactNode } from 'react';
-import Link from 'next/link';
 import clsx from 'clsx';
+import { AppLink } from '@/shared/components/AppLink';
 import { ArrowCircle } from '@/shared/components/ArrowCircle/ArrowCircle';
 import styles from './ListGroup.module.scss';
 
@@ -69,9 +69,9 @@ export const ListRow = ({
         {body}
       </a>
     ) : (
-      <Link href={href} className={rowClass}>
+      <AppLink href={href} className={rowClass}>
         {body}
-      </Link>
+      </AppLink>
     );
   }
 

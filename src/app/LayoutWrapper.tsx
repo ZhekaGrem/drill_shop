@@ -6,9 +6,14 @@ import { Header } from '@/widgets/Header/Header';
 import { Footer } from '@/widgets/Footer/Footer';
 import { SiteBottomNav } from '@/widgets/BottomNav';
 import { EmailVerificationBanner } from '@/shared/components/EmailVerificationBanner';
+import { useRandomGradientPhase } from '@/shared/hooks';
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+
+  // До раннього return для /telegram: правила хуків + telegram-сторінки теж
+  // мають кнопки. Слухач один на весь документ.
+  useRandomGradientPhase();
 
   // Telegram сторінки - БЕЗ Header і Footer (свій окремий layout)
   const isTelegramPage = pathname?.startsWith('/telegram');
@@ -20,10 +25,18 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   // Всі інші сторінки - З Header і Footer
   return (
     <>
-      <Header />
+      {/* viewTransitionName вилучає хедер зі знімка сторінки, щоб він не їхав
+          разом із контентом. Правило анімації — в globals.css. Inline-стиль —
+          варіант C правил стилізації: це унікальний ідентифікатор ділянки,
+          а не оформлення; у SCSS-модулі імʼя захешувалось би. */}
+      <div style={{ viewTransitionName: 'site-header' }}>
+        <Header />
+      </div>
       <EmailVerificationBanner />
       <main>{children}</main>
-      <Footer />
+      <div style={{ viewTransitionName: 'site-footer' }}>
+        <Footer />
+      </div>
       <SiteBottomNav />
     </>
   );

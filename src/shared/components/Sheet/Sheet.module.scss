@@ -1,0 +1,60 @@
+// src/shared/components/Sheet/Sheet.module.scss
+.overlay {
+  opacity: 0;
+  transition: opacity var(--dur-sheet) var(--ease-sheet);
+
+  &[data-opened] {
+    opacity: 1;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  // height: auto — інакше Mantine тягне нижню шторку на всю задану висоту
+  // навіть коли вмісту на пів екрана; max-height — стеля для довгих списків.
+  height: auto;
+  max-height: 88vh;
+  background: var(--surface-card);
+  border-top-left-radius: var(--radius-sheet);
+  border-top-right-radius: var(--radius-sheet);
+  transition: transform var(--dur-sheet) var(--ease-sheet);
+
+  // Під час перетягування transform веде палець, а не анімація:
+  // інакше шторка тягнулась би із запізненням у 300 мс.
+  &[data-dragging] {
+    transition: none;
+  }
+}
+
+// Зона захоплення більша за саму ручку — 8px смужку пальцем не впіймати.
+.handleZone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 28px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.handle {
+  width: 36px;
+  height: 4px;
+  background: var(--border-strong);
+  border-radius: var(--radius-pill);
+}
+
+.title {
+  padding: 0 var(--card-padding) var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: var(--fw-medium);
+}
+
+// flex: 0 1 auto — body стискається під довгий вміст, але НЕ розтягується
+// під короткий. min-height: 0 потрібен, щоб overflow у flex-колонці працював.
+.body {
+  flex: 0 1 auto;
+  min-height: 0;
+  padding: 0 var(--card-padding);
+  overflow-y: auto;
+}

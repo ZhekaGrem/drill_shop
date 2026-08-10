@@ -155,13 +155,23 @@
 .productSkeleton {
   --card-inset: var(--space-3);
 
+  position: relative;
   display: flex;
   flex-direction: column;
   background: var(--surface-card);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
   overflow: hidden;
-  animation: skeletonPulse 1.5s ease-in-out infinite;
+
+  // Смуга йде transform-ом по композитному шару — без перемальовування,
+  // на відміну від старого skeletonPulse із filter: blur.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    animation: skeletonShimmer 1.2s var(--ease-in-out) infinite;
+  }
 
   @media (max-width: 768px) {
     --card-inset: var(--space-2);

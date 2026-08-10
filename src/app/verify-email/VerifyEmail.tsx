@@ -3,8 +3,9 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Container, Paper, Title, Text, Button, Loader, ThemeIcon, Stack, Center } from '@mantine/core';
+import { Paper, Title, Text, Button, Loader, ThemeIcon, Stack, Center } from '@mantine/core';
 import { IconCheck, IconX, IconMail } from '@tabler/icons-react';
+import { Page } from '@/shared/components/Page/Page';
 import { apiClient } from '@/shared/api/client';
 import { endpoints } from '@/shared/api/endpoints';
 import styles from './verifyEmail.module.scss';
@@ -50,7 +51,7 @@ const VerifyEmailContent = () => {
   // Display message from registration success
   if (message) {
     return (
-      <Container size="xs" py="xl" className={styles.container}>
+      <Page width="narrow" className={styles.container}>
         <Paper radius="md" p="xl" withBorder className={styles.paper}>
           <Stack align="center" gap="md">
             <ThemeIcon size={60} radius="xl" color="green" variant="light">
@@ -65,14 +66,14 @@ const VerifyEmailContent = () => {
             </Button>
           </Stack>
         </Paper>
-      </Container>
+      </Page>
     );
   }
 
   // No token provided
   if (!token) {
     return (
-      <Container size="xs" py="xl" className={styles.container}>
+      <Page width="narrow" className={styles.container}>
         <Paper radius="md" p="xl" withBorder className={styles.paper}>
           <Stack align="center" gap="md">
             <ThemeIcon size={60} radius="xl" color="red" variant="light">
@@ -90,12 +91,12 @@ const VerifyEmailContent = () => {
             </Button>
           </Stack>
         </Paper>
-      </Container>
+      </Page>
     );
   }
 
   return (
-    <Container size="xs" py="xl" className={styles.container}>
+    <Page width="narrow" className={styles.container}>
       <Paper radius="md" p="xl" withBorder className={styles.paper}>
         {verificationStatus === 'pending' && (
           <Stack align="center" gap="md">
@@ -138,7 +139,7 @@ const VerifyEmailContent = () => {
           </Stack>
         )}
       </Paper>
-    </Container>
+    </Page>
   );
 };
 
@@ -146,13 +147,13 @@ const VerifyEmail = () => {
   return (
     <Suspense
       fallback={
-        <Container size="xs" py="xl">
+        <Page width="narrow">
           <Paper radius="md" p="xl" withBorder>
             <Center>
               <Loader size="lg" />
             </Center>
           </Paper>
-        </Container>
+        </Page>
       }>
       <VerifyEmailContent />
     </Suspense>

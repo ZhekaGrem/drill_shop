@@ -1,5 +1,5 @@
 // src/features/catalog/hooks/useProductCardActions.ts
-import { useState, useCallback } from 'react';
+import { useState, useCallback, startTransition, addTransitionType } from 'react';
 import { useRouter } from 'next/navigation';
 import { Product } from '@/shared/types';
 import { useCart } from '@/features/cart/hooks/useCart';
@@ -42,6 +42,19 @@ export const useProductCardActions = ({
   const { addItem } = useCart();
   const { setTimeoutSafe } = useTimeout();
   const [isClicked, setIsClicked] = useState(false);
+
+  // Тіло картки — div з onClick, а не <Link> (всередині живуть радіо-чіпи
+  // варіантів, які всередині <a> зривали б навігацію). Тому напрямок переходу
+  // додаємо тим самим механізмом, що й <AppLink>, тільки програмно.
+  const pushForward = useCallback(
+    (href: string) => {
+      startTransition(() => {
+        addTransitionType('nav-forward');
+        router.push(href);
+      });
+    },
+    [router]
+  );
 
   const isInStock = product.hasVariants
     ? product.variants?.some((v) => (v.quantity || 0) > 0) || (product.availableQuantity || 0) > 0
@@ -98,7 +111,7 @@ export const useProductCardActions = ({
         if (enableQuickView && onQuickViewOpen) {
           onQuickViewOpen();
         } else {
-          router.push(`${basePath}/catalog/${product.slug}`);
+          pushForward(`${basePath}/catalog/${product.slug}`);
         }
         return;
       }
@@ -140,7 +153,7 @@ export const useProductCardActions = ({
       setTimeoutSafe,
       enableQuickView,
       onQuickViewOpen,
-      router,
+      pushForward,
       basePath,
     ]
   );
@@ -150,7 +163,7 @@ export const useProductCardActions = ({
       // Quick View disabled for now
       // onQuickViewOpen();
     } else {
-      router.push(`${basePath}/catalog/${product.slug}`);
+      pushForward(`${basePath}/catalog/${product.slug}`);
     }
   };
 

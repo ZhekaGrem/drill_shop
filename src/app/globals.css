@@ -293,6 +293,25 @@ p {
   --btn-primary-hover: #333333;
   --btn-danger: #a63c48;
 
+  /* Градієнт hover-стану кнопок (механіка diia.gov.ua/news, кнопка «Більше новин»).
+     ТРИ накладені шари, а не один: кожен в'їжджає під своїм кутом і згасає до
+     прозорого на 70.71%, тому в кожній точці циклу суміш кольорів інша. Один шар
+     (як було з --gradient-brand) дає лише зсув позиції — на око майже без різниці.
+     Кольори — брендові з --gradient-brand, а не чисті RGB як у Дії.
+     Кути й точка згасання збережені з референсу. */
+  --gradient-btn:
+    linear-gradient(217deg, rgba(75, 139, 250, 0.85), rgba(75, 139, 250, 0) 70.71%),
+    linear-gradient(127deg, rgba(153, 238, 204, 0.85), rgba(153, 238, 204, 0) 70.71%),
+    linear-gradient(336deg, rgba(195, 170, 178, 0.85), rgba(195, 170, 178, 0) 70.71%);
+  --gradient-btn-size: 200% 300%;
+  --gradient-btn-cycle: 10s;
+
+  /* Підкреслення поля вводу у фокусі (механіка .input-underline з plan2.diia.gov.ua).
+     Окремий 90deg-варіант, а не --gradient-brand: на смузі висотою 2px кут 35.8°
+     вироджується в одну пляму — переходу між кольорами просто не видно.
+     Стопи взяті з референсу як є. */
+  --gradient-underline: linear-gradient(90deg, #c3aab2 0%, #99eecc 57.66%, #80c0c8 76.7%, #4b8bfa 100%);
+
   /* Шрифти. --font-body / --font-heading приходять з next/font (layout.tsx).
      --font-mono визначаємо тут: окремий моно-шрифт не вантажимо. */
   --font-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', 'Liberation Mono', menlo, consolas, monospace;
@@ -701,6 +720,17 @@ hr {
   overflow: hidden;
 }
 
+/* === ІКОНОГРАФІКА (мова Дії) ===
+   Єдина товщина лінії для всіх Tabler-іконок сайту — 1.75, як у кастомному
+   сеті shared/components/Svg. Компоненти з @tabler/icons-react за
+   замовчуванням малюють stroke 2, а частина коду передає stroke={1.5};
+   CSS-властивість перекриває SVG-атрибут, тож це правило вирівнює всі
+   прямі імпорти без правок у 65 файлах. Filled-варіанти (fill, без stroke)
+   правило не зачіпає. */
+svg.tabler-icon {
+  stroke-width: 1.75;
+}
+
 /* === MANTINE STATE-DEPENDENT STYLES ===
    Mantine 8 (без @mantine/emotion) застосовує `styles` як inline-стилі —
    ключі-псевдоселектори там ('&:checked', '&:hover', ...) мовчки ігноруються.
@@ -801,5 +831,183 @@ hr {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Градієнтний hover кнопок — механіка Дії.
+   Анімація крутиться ЗАВЖДИ, під суцільно чорною маскою ::before. Hover просто
+   ховає маску, тому кожне наведення відкриває інший кадр циклу. Стопи keyframes —
+   як у `granimate` на diia.gov.ua.
+   Оголошено глобально (не в CSS-модулі), бо на це ім'я посилаються два місця:
+   button.module.scss і правило для Mantine нижче. */
+@keyframes granimate {
+  0%,
+  100% {
+    background-position: 0 25%;
+  }
+  25%,
+  75% {
+    background-position: 50% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+}
+
+/* Mantine-кнопки. Наш shared/Button рендериться з `unstyled` і класу
+   .mantine-Button-root не отримує — свою версію ефекту він тримає у власному
+   модулі, тож два правила не конфліктують.
+
+   `filled` тут завжди присутній у DOM завдяки defaultProps у mantine-theme.ts.
+   `variant="light"` (адмінська пагінація) під селектор не потрапляє.
+   [data-plain] — ручний opt-out для деструктивних кнопок: Mantine 8 не виводить
+   `color` в DOM-атрибут (тільки в inline --button-bg), тому відрізнити
+   color="red" селектором неможливо.
+
+   Специфічність 0,3,0 перекриває власне hover-правило Mantine (0,2,0) —
+   інакше background-color: var(--button-hover) забив би градієнт. */
+@media (hover: hover) and (pointer: fine) {
+  .mantine-Button-root[data-variant='filled']:not([data-plain]):not([data-ds-button]) {
+    position: relative;
+    isolation: isolate;
+    background-color: transparent;
+    background-image: var(--gradient-btn);
+    background-size: var(--gradient-btn-size);
+    animation: granimate var(--gradient-btn-cycle) infinite;
+    transition: color 0.2s ease-in-out;
+  }
+
+  .mantine-Button-root[data-variant='filled']:not([data-plain]):not([data-ds-button])::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--btn-primary);
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .mantine-Button-root[data-variant='filled']:not([data-plain]):not([data-ds-button]):hover:not(:disabled),
+  .mantine-Button-root[data-variant='filled']:not([data-plain]):not([data-ds-button]):focus-visible {
+    color: var(--text-primary);
+  }
+
+  .mantine-Button-root[data-variant='filled']:not([data-plain]):not([data-ds-button]):hover:not(
+      :disabled
+    )::before,
+  .mantine-Button-root[data-variant='filled']:not([data-plain]):not([data-ds-button]):focus-visible::before {
+    opacity: 0;
+  }
+}
+
+/* ============ Переходи сторінок ============
+   Асиметрія навмисна: старий екран має піти швидко, щоб не конкурувати за
+   увагу, новий — прийти мʼякше, щоб його встигли прочитати. Затримка на
+   входженні дорівнює тривалості виходу: контент проявляється вже після
+   того, як попередній зник.
+   Зсув 280ms, а не 400 із прикладів Next: Дія відчутно швидша. */
+
+::view-transition-old(.nav-forward) {
+  --slide-offset: -60px;
+
+  animation:
+    150ms ease-in both vt-fade reverse,
+    280ms var(--ease-in-out) both vt-slide reverse;
+}
+
+::view-transition-new(.nav-forward) {
+  --slide-offset: 60px;
+
+  animation:
+    210ms var(--ease-out) 150ms both vt-fade,
+    280ms var(--ease-in-out) both vt-slide;
+}
+
+::view-transition-old(.nav-back) {
+  --slide-offset: 60px;
+
+  animation:
+    150ms ease-in both vt-fade reverse,
+    280ms var(--ease-in-out) both vt-slide reverse;
+}
+
+::view-transition-new(.nav-back) {
+  --slide-offset: -60px;
+
+  animation:
+    210ms var(--ease-out) 150ms both vt-fade,
+    280ms var(--ease-in-out) both vt-slide;
+}
+
+@keyframes vt-fade {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes vt-slide {
+  from {
+    translate: var(--slide-offset);
+  }
+
+  to {
+    translate: 0;
+  }
+}
+
+/* Хедер і футер не їдуть разом із контентом. Без цього з екраном рухається
+   вся шапка, і користувач втрачає єдину нерухому точку опори — у Дії
+   навігація завжди лишається на місці. */
+::view-transition-group(site-header),
+::view-transition-group(site-footer) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(site-header),
+::view-transition-old(site-footer) {
+  display: none;
+}
+
+::view-transition-new(site-header),
+::view-transition-new(site-footer) {
+  animation: none;
+}
+
+/* Оверлей переходу перехоплює кліки — без цього тапи під час анімації
+   просто губляться. */
+::view-transition {
+  pointer-events: none;
+}
+
+/* Розмиття на середині морфінгу фото картки → фото товару ховає артефакти
+   інтерполяції пікселів: без нього видно, що це два різні зображення,
+   які підмінили одне одного. */
+::view-transition-group(.morph) {
+  animation-duration: 320ms;
+}
+
+::view-transition-image-pair(.morph) {
+  animation-name: vt-morph-blur;
+}
+
+@keyframes vt-morph-blur {
+  30% {
+    filter: blur(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }

@@ -1,6 +1,6 @@
 // src/features/catalog/components/ProductCard/ProductCardInfo.tsx
 import React from 'react';
-import Link from 'next/link';
+import { AppLink } from '@/shared/components/AppLink';
 import { Product } from '@/shared/types';
 import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/promo-calculator';
 import { Group, Divider } from '@mantine/core';
@@ -68,9 +68,9 @@ export const ProductCardInfo: React.FC<ProductCardInfoProps> = ({
 
   return (
     <div className={styles.content}>
-      <Link href={`${basePath}/catalog/${product.slug}`} onClick={(e) => e.stopPropagation()}>
+      <AppLink href={`${basePath}/catalog/${product.slug}`} onClick={(e) => e.stopPropagation()}>
         <h3 className={styles.title}>{product.name}</h3>
-      </Link>
+      </AppLink>
 
       {/* Наявність — та сама метадана, що й на сторінці товару. Крапка + текст,
           а не тільки колір: колір не може бути єдиним носієм сенсу (WCAG 1.4.1). */}

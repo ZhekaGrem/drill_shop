@@ -3,12 +3,13 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Container, Paper, Text, Alert, PasswordInput, Stack } from '@mantine/core';
+import { Paper, Text, Alert, PasswordInput, Stack } from '@mantine/core';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
+import { Page } from '@/shared/components/Page/Page';
 import { apiClient } from '@/shared/api/client';
 import { showNotification } from '@/shared/utils/notifications';
 
@@ -103,7 +104,7 @@ export default function ResetPassword() {
           padding: '1rem',
           backgroundColor: '#f5f5f5',
         }}>
-        <Container size="sm">
+        <Page width="narrow">
           <Paper p="xl" shadow="md" radius="md" style={{ textAlign: 'center' }}>
             <IconCheck size={64} color="green" style={{ margin: '0 auto 1rem' }} />
             <Text size="lg" mb="md" c="green" fw={600}>
@@ -113,7 +114,7 @@ export default function ResetPassword() {
               Перенаправляємо на сторінку входу...
             </Text>
           </Paper>
-        </Container>
+        </Page>
       </div>
     );
   }
@@ -128,7 +129,7 @@ export default function ResetPassword() {
         padding: '1rem',
         backgroundColor: '#f5f5f5',
       }}>
-      <Container size="sm">
+      <Page width="narrow">
         <Paper p="xl" shadow="md" radius="md">
           <Text size="xl" fw={700} mb="lg" ta="center">
             Скидання пароля
@@ -175,7 +176,7 @@ export default function ResetPassword() {
             </form>
           )}
         </Paper>
-      </Container>
+      </Page>
     </div>
   );
 }

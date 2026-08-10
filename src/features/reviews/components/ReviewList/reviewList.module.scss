@@ -13,10 +13,19 @@
 }
 
 .skeletonItem {
+  position: relative;
   background: #f8f9fa;
   border-radius: 8px;
   padding: 1.5rem;
-  animation: skeletonPulse 1.5s ease-in-out infinite;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    animation: skeletonShimmer 1.2s var(--ease-in-out) infinite;
+  }
 }
 
 .skeletonHeader {

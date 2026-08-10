@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef, ViewTransition } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
 import { ProductReviews } from '@/features/reviews/components/ProductReviews/ProductReviews';
@@ -7,7 +7,7 @@ import { productsApi, ProductResponse } from '@/features/catalog/api/products';
 import { Product, ProductWithRelations } from '@/shared/types';
 import { useAuthStore } from '@/shared/stores/auth';
 import { Select } from '@mantine/core';
-import { IconRuler } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronUp, IconRuler, IconStarFilled } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { Page } from '@/shared/components/Page/Page';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs';
@@ -32,6 +32,12 @@ import { ImageGalleryModal } from '@/shared/components/ImageGalleryModal';
 interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
   basePath?: string;
+  /**
+   * Підсумок відгуків із сервера. Сторінка вже тягне його для JSON-LD
+   * (aggregateRating), тож окремий клієнтський запит тут не потрібен —
+   * лишається тільки показати те, що розмітка й так обіцяє пошуковику.
+   */
+  reviewSummary?: { averageRating: number; totalReviews: number };
 }
 
 // Людські назви для ключів options. Раніше цей словник був продубльований
@@ -57,7 +63,11 @@ const toSpecRows = (options?: Record<string, unknown> | null) =>
       value: String(value),
     }));
 
-export default function ProductDetailsClient({ initialProduct, basePath = '' }: ProductDetailsProps) {
+export default function ProductDetailsClient({
+  initialProduct,
+  basePath = '',
+  reviewSummary,
+}: ProductDetailsProps) {
   const { addItem, isAddingItem } = useCart();
   const { isAuthenticated } = useAuthStore();
   const [product, setProduct] = useState<ProductWithRelations | null>(initialProduct || null);
@@ -72,6 +82,8 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   const [notifyModalOpened, setNotifyModalOpened] = useState(false);
   const [showScrollArrows, setShowScrollArrows] = useState(false);
   const [galleryOpened, setGalleryOpened] = useState(false);
+  const [variantError, setVariantError] = useState<string | null>(null);
+  const thumbnailsRef = useRef<HTMLDivElement>(null);
 
   const params = useParams();
   const router = useRouter();
@@ -93,13 +105,23 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
     }
   }, [product?.hasVariants, product?.variants]);
 
-  // Визначаємо чи показувати стрілочки скролу
+  // Стрілки скролу потрібні рівно тоді, коли список мініатюр справді не влазить
+  // у свою колонку. Раніше порогом було «більше 6 фото», хоча висота колонки
+  // вміщала 3–4: на 5 фото частина списку була невидима, скролбар прихований
+  // css-ом, стрілок немає — і жодного натяку, що там ще щось є.
   useEffect(() => {
-    if (product?.images && product.images.length > 6) {
-      setShowScrollArrows(true);
-    } else {
+    const list = thumbnailsRef.current;
+    if (!list) {
       setShowScrollArrows(false);
+      return;
     }
+
+    const update = () => setShowScrollArrows(list.scrollHeight > list.clientHeight + 1);
+    update();
+
+    const observer = new ResizeObserver(update);
+    observer.observe(list);
+    return () => observer.disconnect();
   }, [product?.images]);
 
   const fetchProduct = async () => {
@@ -121,11 +143,14 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   const handleAddToCart = () => {
     if (!product) return;
 
+    // Повідомлення стоїть біля самих чіпів варіантів, а не нативним alert()
+    // посеред екрана (Nielsen #9: помилку показуємо там, де вона сталась)
     if (product.hasVariants && !selectedVariant) {
-      alert('Оберіть варіант товару');
+      setVariantError('Оберіть варіант товару');
       return;
     }
 
+    setVariantError(null);
     setIsClicked(true);
     setTimeout(() => setIsClicked(false), 2000);
 
@@ -269,10 +294,13 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
       ? `Залишилось ${availableQuantity} шт`
       : 'В наявності';
 
+  // Ввід поза діапазоном не ігноруємо мовчки, а підрізаємо до межі: людина
+  // друкувала «20», поле не змінювалось, і причини не було ніде на екрані
+  // (Postel's Law — приймай ліберально, віддавай зрозуміло).
   const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity >= 1 && newQuantity <= availableQuantity) {
-      setQuantity(newQuantity);
-    }
+    if (!Number.isFinite(newQuantity)) return;
+    const max = Math.max(availableQuantity, 1);
+    setQuantity(Math.min(Math.max(Math.trunc(newQuantity), 1), max));
   };
 
   const handlePreviousImage = () => {
@@ -283,18 +311,10 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
     setSelectedImageIndex((prev) => (prev === sortedImages.length - 1 ? 0 : prev + 1));
   };
 
-  const handleScrollUp = () => {
-    const container = document.querySelector(`.${styles.productGallery__thumbnails}`);
-    if (container) {
-      container.scrollBy({ top: -88, behavior: 'smooth' });
-    }
-  };
-
-  const handleScrollDown = () => {
-    const container = document.querySelector(`.${styles.productGallery__thumbnails}`);
-    if (container) {
-      container.scrollBy({ top: 88, behavior: 'smooth' });
-    }
+  // Крок скролу = мініатюра (88px) + проміжок (8px), тобто рівно одна картка.
+  // Через ref, а не document.querySelector по згенерованому класу.
+  const scrollThumbnails = (direction: 1 | -1) => {
+    thumbnailsRef.current?.scrollBy({ top: direction * 96, behavior: 'smooth' });
   };
 
   const getCurrentWeight = () => {
@@ -309,19 +329,23 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
     return 'Додати в кошик';
   };
 
+  // Скелетон повторює фінальний каркас (крихти, дві картки, фото 3:4), щоб
+  // підміна не зсувала макет. Раніше це були сірі прямокутники іншої форми.
   if (isLoading) {
     return (
       <Page className={styles.productPage}>
-        <div>
-          <div className={styles.productPage__loading}>
-            <div className={styles.productSkeleton}>
-              <div className={styles.productSkeleton__images}></div>
-              <div className={styles.productSkeleton__content}>
-                <div className={styles.productSkeleton__title}></div>
-                <div className={styles.productSkeleton__price}></div>
-                <div className={styles.productSkeleton__description}></div>
-                <div className={styles.productSkeleton__actions}></div>
-              </div>
+        <div className={styles.productPage__loading} aria-busy="true" aria-label="Завантаження товару">
+          <div className={styles.productSkeleton__crumbs} />
+          <div className={styles.productSkeleton}>
+            <div className={styles.productSkeleton__images}>
+              <div className={styles.productSkeleton__photo} />
+            </div>
+            <div className={styles.productSkeleton__content}>
+              <div className={styles.productSkeleton__title} />
+              <div className={styles.productSkeleton__meta} />
+              <div className={styles.productSkeleton__price} />
+              <div className={styles.productSkeleton__description} />
+              <div className={styles.productSkeleton__actions} />
             </div>
           </div>
         </div>
@@ -332,16 +356,10 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   if (error || !product) {
     return (
       <Page className={styles.productPage}>
-        <div className={styles.container}>
-          <div className={styles.productPage__error}>
-            <h1>Товар не знайдено</h1>
-            <p>{error || 'Товар з таким адресом не існує'}</p>
-            <Button
-              className={`${styles.btn} ${styles.btnPrimary}`}
-              onClick={() => router.push(`${basePath}/catalog`)}>
-              Повернутися до каталогу
-            </Button>
-          </div>
+        <div className={styles.productPage__error}>
+          <h1>Товар не знайдено</h1>
+          <p>{error || 'Товар за цією адресою не існує'}</p>
+          <Button onClick={() => router.push(`${basePath}/catalog`)}>Повернутися до каталогу</Button>
         </div>
       </Page>
     );
@@ -388,42 +406,44 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
               {/* Thumbnails - тепер зліва */}
               {sortedImages.length > 1 && (
                 <div className={styles.productGallery__thumbnailsWrapper}>
-                  {/* Стрілочка вгору */}
-                  {showScrollArrows && (
-                    <button
-                      className={`${styles.productGallery__scrollArrow} ${styles.productGallery__scrollArrowUp}`}
-                      onClick={handleScrollUp}
-                      aria-label="Прокрутити вгору">
-                      ▲
-                    </button>
-                  )}
-
-                  <div className={styles.productGallery__thumbnails}>
+                  <div className={styles.productGallery__thumbnails} ref={thumbnailsRef}>
                     {sortedImages.map((image, index) => (
                       <button
                         key={image.id}
+                        type="button"
                         className={`${styles.productGallery__thumbnail} ${
                           index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
                         }`}
+                        aria-label={`Показати зображення ${index + 1}`}
+                        aria-current={index === selectedImageIndex}
                         onClick={() => setSelectedImageIndex(index)}>
                         <CloudinaryImage
                           src={getImageUrl(image.url || image.publicId)}
                           alt={image.altText || product.name}
-                          width={140}
-                          height={140}
+                          width={88}
+                          height={88}
                         />
                       </button>
                     ))}
                   </div>
 
-                  {/* Стрілочка вниз */}
                   {showScrollArrows && (
-                    <button
-                      className={`${styles.productGallery__scrollArrow} ${styles.productGallery__scrollArrowDown}`}
-                      onClick={handleScrollDown}
-                      aria-label="Прокрутити вниз">
-                      ▼
-                    </button>
+                    <>
+                      <button
+                        type="button"
+                        className={`${styles.productGallery__scrollArrow} ${styles.productGallery__scrollArrowUp}`}
+                        onClick={() => scrollThumbnails(-1)}
+                        aria-label="Прокрутити мініатюри вгору">
+                        <IconChevronUp size={20} stroke={1.5} />
+                      </button>
+                      <button
+                        type="button"
+                        className={`${styles.productGallery__scrollArrow} ${styles.productGallery__scrollArrowDown}`}
+                        onClick={() => scrollThumbnails(1)}
+                        aria-label="Прокрутити мініатюри вниз">
+                        <IconChevronDown size={20} stroke={1.5} />
+                      </button>
+                    </>
                   )}
                 </div>
               )}
@@ -432,19 +452,32 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
               <div className={styles.productGallery__main}>
                 <div
                   className={styles.productGallery__mainImageWrapper}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Відкрити фото на весь екран"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setGalleryOpened(true);
+                    }
+                  }}
                   onClick={() => setGalleryOpened(true)}>
-                  <CloudinaryImage
-                    src={getImageUrl(
-                      sortedImages[selectedImageIndex]?.url ||
-                        sortedImages[selectedImageIndex]?.publicId ||
-                        primaryImage?.url ||
-                        primaryImage?.publicId
-                    )}
-                    alt={product.name}
-                    className={styles.productGallery__mainImage}
-                    width={390}
-                    height={580}
-                  />
+                  {/* Пара до фото в ProductCard (однаковий name) — фото картки
+                      перетікає сюди при переході з каталогу. */}
+                  <ViewTransition name={`product-${product.id}`} share="morph" default="none">
+                    <CloudinaryImage
+                      src={getImageUrl(
+                        sortedImages[selectedImageIndex]?.url ||
+                          sortedImages[selectedImageIndex]?.publicId ||
+                          primaryImage?.url ||
+                          primaryImage?.publicId
+                      )}
+                      alt={product.name}
+                      className={styles.productGallery__mainImage}
+                      width={390}
+                      height={580}
+                    />
+                  </ViewTransition>
 
                   {/* Іконка збільшення */}
                   <div className={styles.productGallery__zoomIcon}>
@@ -485,12 +518,15 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                     </>
                   )}
 
-                  {/* Dots для навігації по зображеннях */}
+                  {/* Крапки — навігація для екранів, де мініатюр не видно.
+                      CSS показує їх тільки на мобільному: на десктопі вони були
+                      четвертим способом гортати ту саму галерею. */}
                   {sortedImages.length > 1 && (
                     <div className={styles.productGallery__dots}>
                       {sortedImages.map((_, index) => (
                         <button
                           key={index}
+                          type="button"
                           className={`${styles.productGallery__dot} ${
                             index === selectedImageIndex ? styles.productGallery__dotActive : ''
                           }`}
@@ -499,17 +535,25 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                             setSelectedImageIndex(index);
                           }}
                           aria-label={`Зображення ${index + 1}`}
+                          aria-current={index === selectedImageIndex}
                         />
                       ))}
                     </div>
                   )}
                 </div>
-                <ProductBadges product={product} selectedVariant={selectedVariant} />
 
-                {/* Було закоментовано, при тому що фіча, стор і сторінка
-                    /profile/favorites існують — обране не було як наповнити. */}
-                <div className={styles.favoriteButtonWrapper}>
-                  <FavoriteButton product={product} />
+                {/* Бейджі й обране — один ряд, вирівняний по центру. Кожен з
+                    них раніше був приклеєний до свого кута окремо, тож плашка
+                    24px і кнопка 44px розходились низами. */}
+                <div className={styles.galleryOverlayTop}>
+                  <ProductBadges
+                    product={product}
+                    selectedVariant={selectedVariant}
+                    className={styles.galleryBadges}
+                  />
+                  <div className={styles.favoriteButtonWrapper}>
+                    <FavoriteButton product={product} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -522,6 +566,15 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
 
               <div className={styles.productDetails__meta}>
                 <span className={styles.productDetails__sku}>Артикул: {product.sku}</span>
+                {reviewSummary && reviewSummary.totalReviews > 0 && (
+                  <a href="#reviews" className={styles.productDetails__rating}>
+                    <IconStarFilled size={14} />
+                    {reviewSummary.averageRating.toFixed(1)}
+                    <span className={styles.productDetails__ratingCount}>
+                      · {reviewSummary.totalReviews} відгуків
+                    </span>
+                  </a>
+                )}
                 <span
                   className={`${styles.productDetails__availability} ${
                     isInStock ? '' : styles.productDetails__availability_out
@@ -578,8 +631,10 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                 )}
                 {getCurrentWeight() && (
                   <span className={styles.productDetails__pricePerKg}> / {getCurrentWeight()}</span>
-                )}{' '}
-                {product.unitDisplay}
+                )}
+                {product.unitDisplay && (
+                  <span className={styles.productDetails__unit}>{product.unitDisplay}</span>
+                )}
               </div>
 
               {/* Variants Selector */}
@@ -615,6 +670,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                                   if (!isOutOfStock) {
                                     setSelectedVariant(variant);
                                     setQuantity(1);
+                                    setVariantError(null);
                                   }
                                 }}
                               />
@@ -640,6 +696,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                           setSelectedVariant(variant);
                         }
                         setQuantity(1);
+                        setVariantError(null);
                       }}
                       data={[
                         // Показуємо головний товар тільки якщо hasVariants = false
@@ -661,6 +718,12 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                     />
                   )}
                 </div>
+              )}
+
+              {variantError && (
+                <p className={styles.variantError} role="alert">
+                  {variantError}
+                </p>
               )}
 
               {/* Add to Cart Section */}
@@ -702,6 +765,12 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                         </button>
                       </div>
                     </div>
+
+                    {/* Пояснення з'являється рівно тоді, коли лічильник упер
+                        у стелю — інакше це просто зайвий рядок під контролом */}
+                    {quantity >= availableQuantity && (
+                      <p className={styles.quantityHint}>Це все, що залишилось: {availableQuantity} шт</p>
+                    )}
 
                     {/* Була назва «ЗАМОВИТИ В 1 КЛІК» — це не 1 клік: товар
                         клався в кошик і людина все одно заповнювала форму на
@@ -791,12 +860,11 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           </section>
         )}
 
-        {/* Related Products */}
+        {/* Схожі товари. Верхній відступ секції дає сам <Section>
+            (--section-gap) — власного класу тут не було в модулі взагалі,
+            тобто на компонент летіло className={undefined} */}
         {relatedProducts.length > 0 && (
-          <Section
-            title="Схожі товари"
-            action={{ href: `${basePath}/catalog`, label: 'Весь каталог' }}
-            className={styles.relatedProducts}>
+          <Section title="Схожі товари" action={{ href: `${basePath}/catalog`, label: 'Весь каталог' }}>
             <div className={styles.relatedProducts__grid}>
               {relatedProducts.slice(0, 4).map((relatedProduct, index) => (
                 <ProductCard
@@ -813,7 +881,11 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
             aggregateRating і review в JSON-LD (page.tsx → structuredData.product).
             Розмітка описувала контент, якого на сторінці не видно, — окрім
             втраченої довіри це ще й пряме порушення вимог до rich results. */}
-        <ProductReviews productId={product.id} canReview={isAuthenticated} />
+        {/* Якір для плашки рейтингу біля назви: цифра над згином має вести
+            до самих відгуків, а не лишатись декорацією */}
+        <div id="reviews">
+          <ProductReviews productId={product.id} canReview={isAuthenticated} />
+        </div>
 
         {/* Size Guide Modal */}
         {hasSizeGuide && (

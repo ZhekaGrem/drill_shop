@@ -1,5 +1,8 @@
 // src/widgets/BottomNav/BottomNav.module.scss
-// Таб-бар Дії: щільна біла поверхня знизу, активний таб — pill-підсвітка.
+// Таб-бар у мові застосунку Дія: щільна ЧОРНА поверхня знизу (рішення власника
+// 2026-08-11 — «в Дії навігація знизу чорна»), активний таб — біла підкладка,
+// яка ПЕРЕЇЖДЖАЄ між табами одним тілом.
+@use '../../shared/styles/motion' as motion;
 
 .bar {
   position: fixed;
@@ -13,17 +16,54 @@
   // Не rgba+blur: `backdrop-filter` у нас компілюється тільки в -webkit- формі,
   // якої Chrome не розуміє, тож напівпрозорість дала б просто брудну плівку
   // з текстом сторінки, що просвічує крізь таби. Поверхня щільна.
-  background: var(--surface-card);
-  border-top: 1px solid var(--border-subtle);
+  background: var(--background-dark);
+  border-top: 1px solid var(--border-inverse-subtle);
   // iOS: домашній індикатор з'їдає ~34px внизу
   padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+// Носій пігулки й система координат для неї. container-type дає cqw —
+// одиницю «ширина цього контейнера», з якої рахується крок пігулки.
+.inner {
+  position: relative;
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  container-type: inline-size;
+}
+
+// ОДНА біла пігулка, що ПЕРЕЇЖДЖАЄ між табами, а не чотири, які
+// згасають/загоряються: одне тіло читається як той самий обʼєкт на новому
+// місці, перефарбовування — як блимання.
+// Геометрія: колонка = (ширина списку − бічні падінги) / кількість табів;
+// пігулка 48×28 стоїть по центру першої колонки, зсув — тільки transform.
+.pill {
+  --col-w: calc((100cqw - var(--space-2) * 2) / var(--nav-count, 4));
+
+  position: absolute;
+  // = падінг списку зверху (8px) + падінг таба (4px) — верх iconWrap
+  top: calc(var(--space-2) + var(--space-1));
+  left: calc(var(--space-2) + (var(--col-w) - 48px) / 2);
+  width: 48px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  background: var(--text-inverse);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(calc(var(--active-index, 0) * var(--col-w)));
+  transition:
+    transform var(--dur-modal) var(--ease-in-out),
+    opacity var(--dur-hover) var(--ease-out);
+}
+
+// Поки жоден таб не активний, пігулки немає — інакше вона приїжджала б
+// із нульової позиції при першому ж переході.
+.inner[data-has-active] .pill {
+  opacity: 1;
 }
 
 .list {
   display: flex;
   align-items: stretch;
-  max-width: var(--page-max-width);
-  margin: 0 auto;
   padding: var(--space-2) var(--space-2) var(--space-1);
 }
 
@@ -42,50 +82,44 @@
   width: 100%;
   min-height: 48px;
   padding: var(--space-1) var(--space-2);
-  color: var(--text-secondary);
+  // #9a9a9a на чорному = 7.37:1; активний таб іде чистим білим (21:1).
+  color: var(--text-inverse-secondary);
   text-decoration: none;
-  transition: color var(--dur-hover) var(--ease-out);
+  transition:
+    color var(--dur-hover) var(--ease-out),
+    transform var(--dur-press) var(--ease-out);
+
+  @include motion.press;
 
   // :not(.tabActive) обов'язковий: `.tab:hover` специфічніший за `.tabActive`,
-  // тож без цього наведення на активний таб перефарбувало б білу іконку
-  // в чорну — на чорній підкладці вона б зникла.
-  &:hover:not(.tabActive) {
-    color: var(--text-primary);
-  }
-
-  &:active {
-    transform: scale(var(--motion-press-scale));
+  // тож без цього наведення на активний таб перефарбувало б чорну іконку
+  // в білу — на білій підкладці вона б зникла.
+  @include motion.hoverable {
+    &:hover:not(.tabActive) {
+      color: var(--text-inverse);
+    }
   }
 }
 
-// Активний таб — підкладка під іконкою, як у таб-барах застосунків.
-//
-// Було: pill --background-secondary (#e7eef3) на --surface-card (#fff) = 1.17:1,
-// тобто нижче за 3:1 для нетекстових індикаторів стану (WCAG 1.4.11) — підкладка
-// фактично не читалась, і весь сигнал «де я» лишався на різниці #000/#606060
-// у 12px підписі. Тепер носіїв три й кожен однозначний: чорна підкладка (21:1
-// до іконки), інверсна іконка, важчий підпис.
-//
-// Чорне тло + інверсний текст — це той самий стан «вибрано», що вже діє
-// в фільтрах каталогу (CatalogFilters `.dropdownItem.active`), а не новий
-// винахід: --primary у дизайн-системі і є чорна pill-поверхня.
+// Активний таб: білу підкладку малює пігулка (.pill), тут лишаються
+// інверсія іконки, вага підпису й бейдж.
 .tabActive {
-  color: var(--text-primary);
+  color: var(--text-inverse);
 
   .iconWrap {
-    background: var(--text-primary);
-    color: var(--text-inverse);
+    color: var(--text-primary);
   }
 
   .label {
     font-weight: var(--fw-medium);
   }
 
-  // На чорній підкладці чорний кружок бейджа зникає — інвертуємо разом з нею
+  // Бейдж стоїть уже не на чорній панелі, а на білій підкладці — інвертується
+  // назад разом з нею, інакше білий кружок зникає в білому
   .badge {
-    border-color: var(--text-primary);
-    background: var(--text-inverse);
-    color: var(--text-primary);
+    border-color: var(--text-inverse);
+    background: var(--text-primary);
+    color: var(--text-inverse);
   }
 }
 
@@ -97,9 +131,7 @@
   width: 48px;
   height: 28px;
   border-radius: var(--radius-pill);
-  transition:
-    background var(--dur-hover) var(--ease-out),
-    color var(--dur-hover) var(--ease-out);
+  transition: color var(--dur-hover) var(--ease-out);
 }
 
 .label {
@@ -112,11 +144,12 @@
   text-overflow: ellipsis;
 }
 
-// Чорний кружок, як лічильник кошика в хедері. --accent-red за дизайн-системою
-// дозволений ТІЛЬКИ для знижок і промо, а кількість товарів — не знижка.
-// Координати рахуються від .iconWrap, а він тепер 48×28 (підкладка), не 24×24:
-// при старих -6/-10px бейдж відлітав за межі підкладки й висів у порожнечі.
-// Тепер він тримається правого верхнього кута самої підкладки.
+// Одноколірний кружок, як лічильник кошика в хедері: на чорній панелі він
+// білий, на активній білій підкладці — чорний (див. .tabActive .badge).
+// --accent-red за дизайн-системою дозволений ТІЛЬКИ для знижок і промо,
+// а кількість товарів — не знижка.
+// Координати рахуються від .iconWrap (48×28): бейдж тримається його правого
+// верхнього кута.
 .badge {
   position: absolute;
   top: -4px;
@@ -124,14 +157,18 @@
   min-width: 20px;
   height: 20px;
   padding: 0 4px;
-  border: 2px solid var(--surface-card);
+  border: 2px solid var(--background-dark);
   border-radius: var(--radius-pill);
-  background: var(--text-primary);
-  color: var(--text-inverse);
+  background: var(--text-inverse);
+  color: var(--text-primary);
   font-size: 11px;
   font-weight: var(--fw-medium);
   line-height: 16px;
   text-align: center;
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out);
 }
 
 // Веб-варіант живе тільки на мобільному: на десктопі навігація в хедері.

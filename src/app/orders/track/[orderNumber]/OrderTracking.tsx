@@ -3,20 +3,9 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import {
-  Container,
-  Paper,
-  Title,
-  Text,
-  Group,
-  Stack,
-  Timeline,
-  Badge,
-  Loader,
-  Alert,
-  Center,
-} from '@mantine/core';
+import { Paper, Title, Text, Group, Stack, Timeline, Badge, Loader, Alert, Center } from '@mantine/core';
 import { IconPackage, IconTruck, IconCheck, IconClock, IconX, IconAlertCircle } from '@tabler/icons-react';
+import { Page } from '@/shared/components/Page/Page';
 import { apiClient } from '@/shared/api';
 import { OrderStatus, PaymentStatus } from '@/shared/types';
 import { formatPrice } from '@/shared/utils/format';
@@ -187,47 +176,47 @@ const OrderTrackingPage: React.FC = () => {
   // Validate order number
   if (!orderNumber) {
     return (
-      <Container size="sm" py="xl">
+      <Page width="narrow">
         <Alert icon={<IconAlertCircle size={16} />} color="red" title="Помилка">
           Невірний номер замовлення
         </Alert>
-      </Container>
+      </Page>
     );
   }
 
   // Loading state
   if (isLoading) {
     return (
-      <Container size="sm" py="xl">
+      <Page width="narrow">
         <Center>
           <Stack align="center" gap="md">
             <Loader size="lg" />
             <Text>Завантаження інформації про замовлення...</Text>
           </Stack>
         </Center>
-      </Container>
+      </Page>
     );
   }
 
   // Error state
   if (error) {
     return (
-      <Container size="sm" py="xl">
+      <Page width="narrow">
         <Alert icon={<IconAlertCircle size={16} />} color="red" title="Помилка">
           Замовлення з номером <strong>{orderNumber}</strong> не знайдено. Перевірте правильність номера.
         </Alert>
-      </Container>
+      </Page>
     );
   }
 
   // No data state
   if (!order) {
     return (
-      <Container size="sm" py="xl">
+      <Page width="narrow">
         <Alert icon={<IconAlertCircle size={16} />} color="orange" title="Не знайдено">
           Замовлення не знайдено
         </Alert>
-      </Container>
+      </Page>
     );
   }
 
@@ -235,7 +224,7 @@ const OrderTrackingPage: React.FC = () => {
   const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className={styles.conteiner}>
+    <Page width="narrow">
       <Stack gap="xl">
         <Title order={1} className={styles.pageTitle}>
           ЗАМОВЛЕННЯ {order.orderNumber}
@@ -431,7 +420,7 @@ const OrderTrackingPage: React.FC = () => {
           </Stack>
         </Paper>
       </Stack>
-    </div>
+    </Page>
   );
 };
 

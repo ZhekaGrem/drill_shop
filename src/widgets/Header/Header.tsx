@@ -201,8 +201,10 @@ export function Header() {
         {/* Left group: Logo + Nav */}
         <div className={styles.headerLeft}>
           {/* Logo (Left) */}
+          {/* inverse — хедер тепер чорний, як верхня панель Дії. Без цього
+              ворд-марка малюється --text-primary, тобто чорним по чорному. */}
           <Link href="/" className={styles.logoLink} aria-label="ye-dril — на головну">
-            <Logo />
+            <Logo inverse className={styles.headerLogo} />
           </Link>
 
           {/* Desktop navigation */}
@@ -246,7 +248,10 @@ export function Header() {
           <button className={styles.cartButton} onClick={toggleCartDrawer} aria-label="Кошик">
             <IconCart />
             {calculations && calculations.itemsCount > 0 && (
-              <Badge size="sm" circle className={styles.cartIconBadge}>
+              /* key змушує React перемонтувати бейдж на кожній зміні числа —
+                 pop-анімація програється знову, і додавання товару видно боковим
+                 зором навіть коли кошик далеко від кнопки «додати» */
+              <Badge size="sm" circle className={styles.cartIconBadge} key={calculations.itemsCount}>
                 {calculations.itemsCount > 99 ? '99+' : calculations.itemsCount}
               </Badge>
             )}

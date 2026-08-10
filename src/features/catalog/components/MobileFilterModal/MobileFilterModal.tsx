@@ -1,6 +1,6 @@
 // src/features/catalog/components/MobileFilterModal/MobileFilterModal.tsx
 import React from 'react';
-import { Drawer } from '@mantine/core';
+import { Sheet } from '@/shared/components/Sheet';
 import { Category } from '@/shared/types';
 import { CatalogFilters } from '../CatalogFilters/CatalogFilters';
 import { formatProducts } from '@/shared/utils/format';
@@ -23,13 +23,7 @@ export const MobileFilterModal: React.FC<MobileFilterModalProps> = ({
   resultsCount,
 }) => {
   return (
-    <Drawer
-      opened={opened}
-      onClose={onClose}
-      position="bottom"
-      size="auto"
-      title="Фільтри"
-      className={styles.drawer}>
+    <Sheet opened={opened} onClose={onClose} title="Фільтри">
       <CatalogFilters onFiltersChange={onFiltersChange} initialCategories={initialCategories} />
 
       {/* Кнопка звалась «Показати 24 товари», а її обробник — onClose.
@@ -47,6 +41,6 @@ export const MobileFilterModal: React.FC<MobileFilterModalProps> = ({
           Готово
         </button>
       </div>
-    </Drawer>
+    </Sheet>
   );
 };

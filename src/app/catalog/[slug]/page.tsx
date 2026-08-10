@@ -173,7 +173,19 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     <>
       <JsonLd data={productStructuredData} />
       <JsonLd data={breadcrumbData} />
-      <ProductDetailsClient initialProduct={productData} />
+      <ProductDetailsClient
+        initialProduct={productData}
+        // Підсумок відгуків уже завантажений вище для JSON-LD — передаємо його
+        // в UI, щоб рейтинг був не тільки в розмітці для пошуковика
+        reviewSummary={
+          reviewsPayload && reviewsPayload.stats.totalReviews > 0
+            ? {
+                averageRating: reviewsPayload.stats.averageRating,
+                totalReviews: reviewsPayload.stats.totalReviews,
+              }
+            : undefined
+        }
+      />
     </>
   );
 }

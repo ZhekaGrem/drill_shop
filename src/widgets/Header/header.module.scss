@@ -1,23 +1,49 @@
 // src/widgets/Header/header.module.scss
 // Diia-style Header
 
-// Хедер лежить НА градієнті, а не поверх нього білою плитою.
-// Було rgba(255,255,255,0.85) + суцільна межа: поки фон сторінки був майже
-// білий, шва не було видно. Щойно градієнт став насиченим, угорі зʼявилась
-// біла смуга з різким стиком — саме те, чого в Дії немає (там верхня панель
-// прозора й фон тече під нею).
+// Хедер — чорна щільна смуга, як верхня панель у застосунку Дія.
 //
-// 0.55 + блюр: підкладка ще читається під темним текстом при скролі,
-// але колір фону проходить крізь неї. Межа — напівпрозора, щоб не малювати
-// лінію поперек градієнта.
+// Було: напівпрозора біла плита (rgba(255,255,255,0.55)) з блюром, щоб
+// градієнт сторінки протікав крізь неї. Два «але». Перше: біла панель над
+// світлим градієнтом — це смуга, якої майже не видно, тобто хедер не читався
+// як окрема поверхня. Друге: `backdrop-filter` у цьому проєкті компілюється
+// тільки в -webkit- формі (та сама причина, через яку відмовились від блюру
+// в BottomNav), тож у Chrome блюру не було взагалі — лишалась просто бліда
+// плівка з текстом сторінки, що просвічує крізь навігацію.
+//
+// Мобільний хедер — чорна щільна смуга, як верхня панель у застосунку Дія
+// (та сама поверхня, що й нижній таб-бар). Від 1024px — рішення власника
+// 2026-08-11: хедер на компʼютері СВІТЛИЙ; кольори перемикаються тут одним
+// блоком локальних --hd-* токенів, решта правил файла їх лише споживає.
 .wrapper {
+  --hd-bg: var(--background-dark);
+  --hd-fg: var(--text-inverse);
+  --hd-fg-quiet: var(--text-inverse-secondary);
+  --hd-border: var(--border-inverse-subtle);
+  --hd-hover: var(--surface-inverse-hover);
+  --hd-pill-border: var(--text-inverse-secondary);
+  --hd-cta-bg: var(--text-inverse);
+  --hd-cta-fg: var(--text-primary);
+  --hd-cta-hover: var(--background-secondary);
+
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border-bottom: 1px solid rgba(214, 221, 228, 0.5);
+  background: var(--hd-bg);
+  border-bottom: 1px solid var(--hd-border);
+  color: var(--hd-fg);
+
+  @media (min-width: 1024px) {
+    --hd-bg: var(--background);
+    --hd-fg: var(--text-primary);
+    --hd-fg-quiet: var(--text-secondary);
+    --hd-border: var(--border-subtle);
+    --hd-hover: var(--background-secondary);
+    --hd-pill-border: var(--border-strong);
+    --hd-cta-bg: var(--btn-primary);
+    --hd-cta-fg: var(--text-inverse);
+    --hd-cta-hover: var(--btn-primary-hover);
+  }
 }
 
 // Ширина й поля збігаються з <Page> — інакше логотип у хедері та вміст
@@ -59,6 +85,21 @@
   flex-shrink: 0;
 }
 
+// Хедер від 1024px світлий (--hd-bg: var(--background)), а <Logo inverse />
+// тримає --text-inverse — ворд-марка «Дріл» ставала білою по білому.
+// Правимо тут, а не в Logo.module.scss: те саме inverse-лого стоїть у чорному
+// футері, і там біле — правильно.
+//
+// Клас продубльовано навмисно. Специфічність .inverse у модулі лого — 0,1,0,
+// рівно як у цього класу, а порядок двох різних CSS-чанків не гарантований.
+// Подвоєння дає 0,2,0 і робить перекриття детермінованим (альтернатива —
+// !important, що гірше).
+.headerLogo.headerLogo {
+  @media (min-width: 1024px) {
+    color: var(--text-primary);
+  }
+}
+
 .desktopNav {
   display: none;
   align-items: center;
@@ -72,22 +113,27 @@
 // «Де я» — базовий орієнтир, якого в хедері не було взагалі: активний пункт
 // нічим не відрізнявся від решти (Nielsen #1, видимість статусу системи).
 // Підкреслення, а не колір: колір не має бути єдиним носієм сенсу (WCAG 1.4.1).
+//
+// На чорному тлі неактивний пункт — --text-inverse-secondary (#9a9a9a, 7.37:1),
+// активний і наведений — чистий білий. Та сама логіка, що вже діє в футері.
+// --accent (#0073e6) на чорному дає лише ~3.0:1 і для тексту не годиться.
 .navLink {
   position: relative;
   font-size: var(--text-base);
   font-weight: var(--fw-normal);
-  color: var(--text-primary);
+  color: var(--hd-fg-quiet);
   padding: var(--spacing-sm) 0;
   text-decoration: none;
-  transition: var(--transition-fast);
+  transition: color var(--dur-hover) var(--ease-out);
 
   &:hover {
-    color: var(--accent);
+    color: var(--hd-fg);
   }
 }
 
 .navLinkActive {
   font-weight: var(--fw-medium);
+  color: var(--hd-fg);
 
   &::after {
     content: '';
@@ -97,7 +143,7 @@
     bottom: 0;
     height: 2px;
     border-radius: var(--radius-pill);
-    background: var(--text-primary);
+    background: var(--hd-fg);
   }
 }
 
@@ -149,14 +195,23 @@
   line-height: 24px;
   font-weight: var(--fw-medium);
   letter-spacing: -0.02em;
-  background: var(--text-primary);
-  color: var(--text-inverse);
+  // CTA-pill інвертується відносно фону смуги: на чорному хедері вона біла,
+  // на світлому десктопному — чорна (головна дія хедера, Von Restorff).
+  background: var(--hd-cta-bg);
+  color: var(--hd-cta-fg);
   cursor: pointer;
-  transition: var(--transition-normal);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    transform var(--dur-press) var(--ease-out);
   white-space: nowrap;
 
+  &:active:not(:disabled) {
+    transform: scale(var(--motion-press-scale));
+  }
+
   &:hover {
-    background: var(--btn-primary-hover);
+    background: var(--hd-cta-hover);
   }
 
   // Плейсхолдер до ініціалізації auth — виглядає як кнопка, але не реагує
@@ -164,7 +219,7 @@
     cursor: default;
 
     &:hover {
-      background: var(--text-primary);
+      background: var(--hd-cta-bg);
     }
   }
 
@@ -187,11 +242,13 @@
   border-radius: var(--radius-pill);
   background: transparent;
   cursor: pointer;
-  transition: var(--transition-fast);
-  color: var(--text-primary);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+  color: var(--hd-fg);
 
   &:hover {
-    background: var(--background-secondary);
+    background: var(--hd-hover);
   }
 
   svg {
@@ -216,9 +273,27 @@
   line-height: 20px;
   font-weight: var(--fw-medium);
   z-index: 10;
-  background: var(--text-primary);
-  color: var(--text-inverse);
-  border: 2px solid var(--background);
+  // Інверсія разом зі смугою хедера: кружок завжди контрастний до фону.
+  background: var(--hd-cta-bg);
+  color: var(--hd-cta-fg);
+  border: 2px solid var(--hd-bg);
+  // Лічильник смикається при зміні (перемонтування через key у Header.tsx) —
+  // інакше додавання товару з каталогу проходить непоміченим.
+  animation: badge-pop var(--dur-pop) var(--ease-out);
+}
+
+@keyframes badge-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 // Search trigger button — icon only, mobile (< 1024px)
@@ -232,11 +307,13 @@
   border-radius: var(--radius-pill);
   background: transparent;
   cursor: pointer;
-  transition: var(--transition-fast);
-  color: var(--text-primary);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+  color: var(--hd-fg);
 
   &:hover {
-    background: var(--background-secondary);
+    background: var(--hd-hover);
   }
 
   svg {
@@ -251,8 +328,8 @@
 
 .searchPlaceholder {
   font-size: var(--text-base);
-  color: var(--text-primary);
-  transition: var(--transition-fast);
+  color: var(--hd-fg);
+  transition: color var(--dur-hover) var(--ease-out);
 }
 
 // Search pill — visible search field, desktop only (>= 1024px)
@@ -263,7 +340,7 @@
   align-items: center;
   min-width: 240px;
   // Тонка межа відрізняє клікабельну пігулку від «голого» інпута (affordance)
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--hd-pill-border);
   border-radius: var(--radius-pill);
   // 44px рівно: 9 + 24 + 9 + 2px межі. Було 12/12 → 50px, тобто пошук стирчав
   // на 6px вище за сусідні іконки-кнопки й кнопку «Кабінет» — ряд контролів
@@ -274,14 +351,19 @@
   font-size: var(--text-base);
   line-height: 24px;
   letter-spacing: -0.01em;
-  color: var(--text-secondary);
-  background: var(--background);
+  // Пігулка пошуку не конкурує з «Кабінетом» за роль головної дії: прозора,
+  // з тихою межею — вторинний контрол на будь-якій із двох смуг.
+  color: var(--hd-fg-quiet);
+  background: transparent;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
   text-align: left;
 
   &:hover {
-    background: var(--background-secondary);
+    background: var(--hd-hover);
+    color: var(--hd-fg);
   }
 
   @media (min-width: 1024px) {
@@ -300,13 +382,14 @@
   transform: translateY(-50%);
   width: 18px;
   height: 18px;
-  color: var(--text-secondary);
+  color: var(--hd-fg-quiet);
 }
 
-// Expanded search bar (appears below header)
+// Розгорнутий пошук лежить усередині .wrapper, тобто на тій самій чорній
+// смузі — власного фону йому не треба. Було var(--background): біла плита
+// під чорним хедером виглядала б як чужий блок, приклеєний знизу.
 .expandedSearchContainer {
   width: 100%;
-  background: var(--background);
   padding: 0 var(--page-padding-x) var(--spacing-md);
 }
 
@@ -346,20 +429,25 @@
   padding: var(--spacing-sm) var(--spacing-lg);
   flex: 1;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--hd-border);
   font-size: var(--text-base);
   font-weight: var(--fw-normal);
-  color: var(--text-primary);
-  background: var(--background);
-  transition: var(--transition-fast);
+  color: var(--hd-fg);
+  background: var(--hd-hover);
+  transition:
+    border-color var(--dur-hover) var(--ease-out),
+    background var(--dur-hover) var(--ease-out);
 
   &:focus {
     outline: none;
     border-color: transparent;
   }
 
+  // На темній підкладці (#1a1a1a) --hd-fg-quiet = #9a9a9a → 6.18:1; на світлій
+  // (#e7eef3) — #606060 → 4.64:1. Плейсхолдер — звичайний текст, йому потрібні
+  // ті самі 4.5:1 (WCAG 1.4.3) на обох смугах.
   &::placeholder {
-    color: var(--text-secondary);
+    color: var(--hd-fg-quiet);
   }
 }
 
@@ -375,11 +463,13 @@
   border-radius: var(--radius-pill);
   background: transparent;
   cursor: pointer;
-  transition: var(--transition-fast);
-  color: var(--text-primary);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+  color: var(--hd-fg);
 
   &:hover {
-    background: var(--background-secondary);
+    background: var(--hd-hover);
   }
 
   svg {
@@ -388,20 +478,22 @@
   }
 }
 
-// Search suggestions dropdown
+// Підказки пошуку лишаються в межах смуги хедера — це продовження поля,
+// а не спливаючий шар над сторінкою. Поверхню відділяє підкладка + тонка межа
+// (тінь на чорному не працює, тому нею не користуємось на жодній зі смуг).
 .searchSuggestions {
   display: flex;
   flex-direction: column;
-  background: var(--background);
+  background: var(--hd-hover);
+  border: 1px solid var(--hd-border);
   border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-md);
   padding: var(--spacing-sm);
   margin-top: var(--spacing-xs);
 }
 
 .suggestionsLabel {
   font-size: var(--text-xs);
-  color: var(--text-secondary);
+  color: var(--hd-fg-quiet);
   padding: var(--spacing-xs) var(--spacing-sm);
 }
 
@@ -413,10 +505,11 @@
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   font-size: var(--text-base);
-  color: var(--text-primary);
+  color: var(--hd-fg);
+  transition: background var(--dur-hover) var(--ease-out);
 
   &:hover {
-    background: var(--background-secondary);
+    background: var(--hd-border);
   }
 }
 

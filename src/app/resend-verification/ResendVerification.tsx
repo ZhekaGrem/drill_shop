@@ -6,19 +6,9 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import {
-  Container,
-  Paper,
-  Title,
-  Text,
-  TextInput,
-  Alert,
-  Stack,
-  ThemeIcon,
-  Group,
-  Anchor,
-} from '@mantine/core';
+import { Paper, Title, Text, TextInput, Alert, Stack, ThemeIcon, Group, Anchor } from '@mantine/core';
 import { IconAlertCircle, IconMail, IconSend } from '@tabler/icons-react';
+import { Page } from '@/shared/components/Page/Page';
 import { apiClient } from '@/shared/api/client';
 import { endpoints } from '@/shared/api/endpoints';
 import styles from './resendVerification.module.scss';
@@ -69,7 +59,7 @@ const ResendVerification = () => {
 
   if (isSuccess) {
     return (
-      <Container size="xs" py="xl" className={styles.container}>
+      <Page width="narrow" className={styles.container}>
         <Paper radius="md" p="xl" withBorder className={styles.paper}>
           <Stack align="center" gap="md">
             <ThemeIcon size={60} radius="xl" color="green" variant="light">
@@ -102,58 +92,56 @@ const ResendVerification = () => {
             </div>
           </Stack>
         </Paper>
-      </Container>
+      </Page>
     );
   }
 
   return (
-    <div className={styles.container}>
-      <Container size="xs" py="xl">
-        <Paper radius="md" p="xl" className={styles.paper}>
-          <Stack gap="lg">
-            <div>
-              <Title order={2} ta="center">
-                Підтвердження email
-              </Title>
-              <Text ta="center" c="dimmed" mt="sm">
-                Введіть вашу електронну адресу, щоб отримати нове посилання для підтвердження
-              </Text>
-            </div>
+    <Page width="narrow" className={styles.container}>
+      <Paper radius="md" p="xl" className={styles.paper}>
+        <Stack gap="lg">
+          <div>
+            <Title order={2} ta="center">
+              Підтвердження email
+            </Title>
+            <Text ta="center" c="dimmed" mt="sm">
+              Введіть вашу електронну адресу, щоб отримати нове посилання для підтвердження
+            </Text>
+          </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
-              <Stack gap="md">
-                {errorMessage && (
-                  <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
-                    {errorMessage}
-                  </Alert>
-                )}
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <Stack gap="md">
+              {errorMessage && (
+                <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
+                  {errorMessage}
+                </Alert>
+              )}
 
-                <TextInput
-                  label="Email"
-                  placeholder="your@email.com"
-                  type="email"
-                  required
-                  size="md"
-                  leftSection={<IconMail size={18} />}
-                  {...register('email')}
-                  error={errors.email?.message}
-                />
+              <TextInput
+                label="Email"
+                placeholder="your@email.com"
+                type="email"
+                required
+                size="md"
+                leftSection={<IconMail size={18} />}
+                {...register('email')}
+                error={errors.email?.message}
+              />
 
-                <Stack gap="xs">
-                  <Button type="submit" loading={isLoading} fullWidth disabled={isLoading}>
-                    Надіслати підтвердження
-                  </Button>
+              <Stack gap="xs">
+                <Button type="submit" loading={isLoading} fullWidth disabled={isLoading}>
+                  Надіслати підтвердження
+                </Button>
 
-                  <Button fullWidth onClick={() => router.push('/catalog')} disabled={isLoading}>
-                    Повернутись до входу
-                  </Button>
-                </Stack>
+                <Button fullWidth onClick={() => router.push('/catalog')} disabled={isLoading}>
+                  Повернутись до входу
+                </Button>
               </Stack>
-            </form>
-          </Stack>
-        </Paper>
-      </Container>
-    </div>
+            </Stack>
+          </form>
+        </Stack>
+      </Paper>
+    </Page>
   );
 };
 

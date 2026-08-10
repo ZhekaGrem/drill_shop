@@ -1,5 +1,6 @@
 // src/features/catalog/components/ProductCard/ProductCardImage.tsx
 import React from 'react';
+import { ViewTransition } from 'react';
 import { Product } from '@/shared/types';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
 import { ProductBadges } from '@/features/catalog/components/ProductBadges/ProductBadges';
@@ -33,18 +34,24 @@ export const ProductCardImage: React.FC<ProductCardImageProps> = ({
   return (
     <div className={styles.productCardImageContainer} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <div className={styles.productCardImageContainer__ImageWrapper}>
-        <CloudinaryImage
-          src={imageUrl || '/assets/img/placeholder-product.jpg'}
-          alt={
-            isImageHovered && secondaryImage
-              ? secondaryImage.altText || product.name
-              : primaryImage?.altText || product.name
-          }
-          width={400}
-          height={400}
-          className={styles.productImage}
-          loading="lazy"
-        />
+        {/* name збігається з обгорткою головного фото на сторінці товару — по
+            ньому React знаходить пару й морфить фото між позиціями. share="morph"
+            і default="none" потрібні обидва: без default фото крос-фейдилось би
+            на КОЖНОМУ переході, без share пара мовчки перестає морфитись. */}
+        <ViewTransition name={`product-${product.id}`} share="morph" default="none">
+          <CloudinaryImage
+            src={imageUrl || '/assets/img/placeholder-product.jpg'}
+            alt={
+              isImageHovered && secondaryImage
+                ? secondaryImage.altText || product.name
+                : primaryImage?.altText || product.name
+            }
+            width={400}
+            height={400}
+            className={styles.productImage}
+            loading="lazy"
+          />
+        </ViewTransition>
       </div>
       <ProductBadges product={product} selectedVariant={selectedVariantObject} />
     </div>

@@ -6,6 +6,8 @@
   min-height: 60vh;
 }
 
+// Картка підʼїжджає слідом за іконкою, із затримкою: спершу результат,
+// потім деталі.
 .card {
   display: flex;
   flex-direction: column;
@@ -17,6 +19,7 @@
   background: var(--surface-card);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
+  animation: motion-rise-in var(--dur-modal) var(--ease-out) 120ms both;
 
   @media (max-width: 768px) {
     padding: var(--space-8) var(--card-padding);
@@ -32,9 +35,16 @@
   border-radius: var(--radius-pill);
   background: var(--background-secondary);
 
+  // Іконка малюється, а не зʼявляється. Це екран, який користувач бачить раз
+  // на замовлення — тут доречно витратити 600 мс на підтвердження результату.
+  // stroke-dasharray свідомо із запасом: точна довжина контуру залежить від
+  // конкретної іконки Tabler, а надлишок лише подовжує «хвіст» пунктиру.
   svg {
     width: 32px;
     height: 32px;
+    stroke-dasharray: 120;
+    stroke-dashoffset: 0;
+    animation: status-draw 600ms var(--ease-out) both;
   }
 
   &--neutral {
@@ -92,4 +102,14 @@
   gap: var(--space-3);
   justify-content: center;
   margin-top: var(--space-2);
+}
+
+@keyframes status-draw {
+  from {
+    stroke-dashoffset: 120;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
 }

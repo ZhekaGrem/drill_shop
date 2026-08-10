@@ -17,6 +17,8 @@ interface ProductCardProps {
   className?: string;
   enableQuickView?: boolean;
   basePath?: string;
+  /** Порядковий номер у списку — керує каскадом появи (--i) */
+  index?: number;
 }
 
 /**
@@ -24,7 +26,7 @@ interface ProductCardProps {
  * Оркеструє логіку відображення товару в каталозі
  */
 export const ProductCard = React.memo<ProductCardProps>(
-  ({ product, className = '', enableQuickView = false, basePath = '' }) => {
+  ({ product, className = '', enableQuickView = false, basePath = '', index }) => {
     const [quickViewOpened, setQuickViewOpened] = useState(false);
 
     // Використовуємо hooks для логіки
@@ -57,7 +59,11 @@ export const ProductCard = React.memo<ProductCardProps>(
     });
 
     return (
-      <div className={`${styles.card} ${className}`}>
+      // Обрізаємо --i на 8: далі затримка каскаду робить низ довгого списку
+      // відчутно повільним, і каскад із декоративного стає перешкодою.
+      <div
+        className={`${styles.card} ${className}`}
+        style={{ '--i': Math.min(index ?? 0, 8) } as React.CSSProperties}>
         <div className={styles.link} onClick={handleCardClick}>
           {/* Product Image */}
           <ProductCardImage

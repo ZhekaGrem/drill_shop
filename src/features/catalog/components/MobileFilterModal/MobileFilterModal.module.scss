@@ -1,68 +1,7 @@
-// Bottom sheet фільтрів. Патерн Дії: скруглений верх, «ручка»,
+// Футер шторки фільтрів. Сама шторка (поверхня, ручка, жест, скрол) —
+// це спільний <Sheet>; тут лишилось тільки те, що властиве фільтрам:
 // закріплена кнопка підтвердження внизу.
-// `.drawer .mantine-*` = специфічність (0,2,0) проти (0,1,0) у Mantine —
-// !important не потрібен.
-
-.drawer {
-  :global(.mantine-Drawer-content) {
-    display: flex;
-    flex-direction: column;
-    // height: auto — Mantine для нижнього drawer тягне контент на всю задану
-    // висоту; без цього sheet стоїть на 88vh навіть коли фільтрів на пів екрана.
-    // max-height лишається стелею для довгого списку категорій.
-    height: auto;
-    max-height: 88vh;
-    background: var(--surface-card);
-    border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
-  }
-
-  :global(.mantine-Drawer-header) {
-    position: relative;
-    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
-    background: var(--surface-card);
-    border-bottom: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
-
-    // «Ручка» sheet — сигнал, що панель тягнеться/закривається
-    &::before {
-      content: '';
-      position: absolute;
-      top: 8px;
-      left: 50%;
-      width: 36px;
-      height: 4px;
-      background: var(--border-subtle);
-      border-radius: var(--radius-pill);
-      transform: translateX(-50%);
-    }
-  }
-
-  :global(.mantine-Drawer-title) {
-    font-family: var(--font-heading);
-    font-size: var(--text-xl);
-    font-weight: var(--fw-medium);
-    color: var(--text-primary);
-  }
-
-  :global(.mantine-Drawer-close) {
-    color: var(--text-primary);
-    border-radius: var(--radius-pill);
-
-    &:hover {
-      background: var(--background-secondary);
-    }
-  }
-
-  // flex: 0 1 auto — body стискається під довгий вміст, але НЕ розтягується
-  // під короткий. min-height: 0 потрібен, щоб overflow у flex-колонці працював.
-  :global(.mantine-Drawer-body) {
-    flex: 0 1 auto;
-    min-height: 0;
-    padding: var(--spacing-md) var(--spacing-md) 0;
-    overflow-y: auto;
-    background: var(--surface-card);
-  }
-}
+@use '../../../../shared/styles/motion' as motion;
 
 // Закріплена кнопка підтвердження — головна дія sheet завжди під великим пальцем.
 // sticky, а не absolute: футер живе всередині скрольного body, і тільки sticky
@@ -102,9 +41,13 @@
   border: none;
   border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: var(--transition-normal);
 
-  &:hover {
-    background: var(--btn-primary-hover);
+  @include motion.pressable-transition;
+  @include motion.press;
+
+  @include motion.hoverable {
+    &:hover {
+      background: var(--btn-primary-hover);
+    }
   }
 }

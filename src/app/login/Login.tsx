@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Container, Paper, Alert } from '@mantine/core';
+import { Paper, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AuthModal } from '@/features/auth/components/AuthModal/AuthModal';
+import { Page } from '@/shared/components/Page/Page';
 import { useAuthStore } from '@/shared/stores/auth';
 
 export default function LoginPage() {
@@ -54,7 +55,7 @@ export default function LoginPage() {
         justifyContent: 'center',
         padding: '1rem',
       }}>
-      <Container size="sm">
+      <Page width="narrow">
         <Paper>
           {message && (
             <Alert icon={<IconAlertCircle size={16} />} color="yellow" variant="light" mb="lg">
@@ -69,7 +70,7 @@ export default function LoginPage() {
             onSuccess={() => {}}
           />
         </Paper>
-      </Container>
+      </Page>
     </div>
   );
 }

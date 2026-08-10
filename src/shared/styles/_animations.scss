@@ -1,35 +1,29 @@
 // Shared animations - import this file instead of duplicating keyframes
 // ✅ This prevents CSS conflicts and reduces bundle size
 
-// Skeleton loading animation with blur effect
-@keyframes skeletonPulse {
-  0% {
-    opacity: 0;
-    filter: blur(10px);
+// Shimmer через transform: рухається лише композитний шар, layout і paint
+// не чіпаються. Попередні skeletonPulse/blurFadeIn анімували filter: blur —
+// це перемальовування всього блока кожен кадр.
+// Шаблон споживача:
+//   .skeleton {
+//     position: relative;
+//     background: var(--background-secondary);
+//     overflow: hidden;
+//     &::after {
+//       content: '';
+//       position: absolute;
+//       inset: 0;
+//       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+//       animation: skeletonShimmer 1.2s var(--ease-in-out) infinite;
+//     }
+//   }
+@keyframes skeletonShimmer {
+  from {
+    transform: translateX(-100%);
   }
-  50% {
-    opacity: 0.6;
-    filter: blur(5px);
-  }
-  100% {
-    opacity: 1;
-    filter: blur(0px);
-  }
-}
 
-// Image blur fade-in animation
-@keyframes blurFadeIn {
-  0% {
-    opacity: 0;
-    filter: blur(10px);
-  }
-  50% {
-    opacity: 0.6;
-    filter: blur(5px);
-  }
-  100% {
-    opacity: 1;
-    filter: blur(0px);
+  to {
+    transform: translateX(100%);
   }
 }
 
