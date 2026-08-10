@@ -87,7 +87,7 @@ export const ReviewList = ({ productId, limit = 10 }: ReviewListProps) => {
   if (error) {
     return (
       <div className={styles.error}>
-        <p>Помилка завантаження відгуків: {error.message}</p>
+        <p>Не вдалося завантажити відгуки. Спробуйте ще раз.</p>
         <button onClick={() => window.location.reload()}>Спробувати знову</button>
       </div>
     );
