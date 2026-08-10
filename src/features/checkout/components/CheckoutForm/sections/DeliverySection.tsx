@@ -31,7 +31,7 @@ export const DeliverySection = ({
 }: DeliverySectionProps) => {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isSubmitted },
   } = form;
 
   return (
@@ -67,6 +67,7 @@ export const DeliverySection = ({
           value={customDeliveryText}
           onChange={onCustomDeliveryChange}
           onQuickInsert={onQuickInsert}
+          isSubmitted={isSubmitted}
         />
       )}
 

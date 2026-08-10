@@ -6,9 +6,15 @@ interface CustomDeliveryFieldProps {
   value: string;
   onChange: (value: string) => void;
   onQuickInsert: (text: string) => void;
+  isSubmitted: boolean;
 }
 
-export const CustomDeliveryField = ({ value, onChange, onQuickInsert }: CustomDeliveryFieldProps) => {
+export const CustomDeliveryField = ({
+  value,
+  onChange,
+  onQuickInsert,
+  isSubmitted,
+}: CustomDeliveryFieldProps) => {
   return (
     <div className={styles.customDelivery}>
       <div className={styles.quickButtons}>
@@ -26,7 +32,7 @@ export const CustomDeliveryField = ({ value, onChange, onQuickInsert }: CustomDe
         value={value}
         onChange={(e) => onChange(e.target.value)}
         minRows={3}
-        error={!value ? 'Вкажіть адресу доставки' : undefined}
+        error={isSubmitted && !value ? 'Вкажіть адресу доставки' : undefined}
       />
     </div>
   );
