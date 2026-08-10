@@ -24,36 +24,64 @@
 
 ```css
 .btn_more-news {
-  border-radius: 40px; padding: 16px 25px; color: #fff;
-  position: relative; z-index: 1;
+  border-radius: 40px;
+  padding: 16px 25px;
+  color: #fff;
+  position: relative;
+  z-index: 1;
 }
 @media (min-width: 768px) {
   .btn_more-news {
     transition: 0.2s ease-in-out;
     background-image:
-      linear-gradient(217deg, rgba(255,0,0,0.8), rgba(255,0,0,0) 70.71%),
-      linear-gradient(127deg, rgba(0,0,255,0.8), rgba(0,0,255,0) 70.71%),
-      linear-gradient(336deg, rgba(0,255,0,0.8), rgba(0,255,0,0) 70.71%);
+      linear-gradient(217deg, rgba(255, 0, 0, 0.8), rgba(255, 0, 0, 0) 70.71%),
+      linear-gradient(127deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%),
+      linear-gradient(336deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%);
     background-size: 200% 300%;
     animation: 10s infinite granimate;
   }
 }
 .btn_more-news::before {
-  content: ""; position: absolute; left:-1px; right:-1px; top:-1px; bottom:-1px;
-  margin: auto; z-index: -1; border-radius: 40px;
-  background-color: #000; opacity: 1; visibility: visible;
+  content: '';
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  top: -1px;
+  bottom: -1px;
+  margin: auto;
+  z-index: -1;
+  border-radius: 40px;
+  background-color: #000;
+  opacity: 1;
+  visibility: visible;
   transition: 0.2s ease-in-out;
 }
 @media (min-width: 768px) {
-  .btn_more-news:hover        { color: #000; background-color: transparent; }
-  .btn_more-news:hover::before{ opacity: 0; visibility: hidden; }
+  .btn_more-news:hover {
+    color: #000;
+    background-color: transparent;
+  }
+  .btn_more-news:hover::before {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
-.btn_more-news:disabled::before { background-color: #ccc; }
+.btn_more-news:disabled::before {
+  background-color: #ccc;
+}
 
 @keyframes granimate {
-  0%, 100% { background-position: 0 25%; }
-  25%, 75% { background-position: 50% 50%; }
-  50%      { background-position: 100% 100%; }
+  0%,
+  100% {
+    background-position: 0 25%;
+  }
+  25%,
+  75% {
+    background-position: 50% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
 }
 ```
 
@@ -77,6 +105,7 @@ Mantine-кнопки `variant="filled"`, з ручним opt-out через `dat
 деструктивних кнопках.
 
 Відхилено:
+
 - чистий CSS без JS — «рандом» неповний (див. вище);
 - випадковий вибір із набору пресет-градієнтів на JS — більше коду, різкіші
   стрибки кольору, і через тему Mantine обробники подій не навісиш.
@@ -131,10 +160,14 @@ Mantine-кнопки `variant="filled"`, з ручним opt-out через `dat
     }
 
     &:hover:not(:disabled),
-    &:focus-visible { color: var(--text-primary); }
+    &:focus-visible {
+      color: var(--text-primary);
+    }
 
     &:hover:not(:disabled)::before,
-    &:focus-visible::before { opacity: 0; }
+    &:focus-visible::before {
+      opacity: 0;
+    }
   }
 }
 ```
@@ -158,7 +191,9 @@ Mantine-кнопки `variant="filled"`, з ручним opt-out через `dat
 
 ```css
 @media (hover: hover) and (pointer: fine) {
-  .mantine-Button-root[data-variant='filled']:not([data-plain]) { /* та сама схема */ }
+  .mantine-Button-root[data-variant='filled']:not([data-plain]) {
+    /* та сама схема */
+  }
 }
 ```
 
@@ -187,8 +222,7 @@ opt-out тільки ручний.
 'use client';
 
 const CYCLE = 10;
-const SELECTOR =
-  '[data-gradient-btn], .mantine-Button-root[data-variant="filled"]:not([data-plain])';
+const SELECTOR = '[data-gradient-btn], .mantine-Button-root[data-variant="filled"]:not([data-plain])';
 
 export function useRandomGradientPhase() {
   useEffect(() => {
@@ -236,16 +270,16 @@ export function useRandomGradientPhase() {
 
 ## Файли
 
-| Файл | Зміна |
-|---|---|
-| `src/app/globals.css` | токени `--gradient-btn*`, `@keyframes granimate`, правило для Mantine |
-| `src/shared/components/Button/button.module.scss` | переписаний `&--primary` |
-| `src/shared/components/Button/Button.tsx` | атрибут `data-gradient-btn` |
-| `src/shared/config/mantine-theme.ts` | `Button.defaultProps.variant = 'filled'` |
-| `src/shared/hooks/useRandomGradientPhase.ts` | новий файл |
-| `src/shared/hooks/index.ts` | експорт хука |
-| `src/app/LayoutWrapper.tsx` | виклик хука |
-| `src/app/admin/reviews/AdminReviews.tsx` та інші | `data-plain` на деструктивних кнопках |
+| Файл                                              | Зміна                                                                 |
+| ------------------------------------------------- | --------------------------------------------------------------------- |
+| `src/app/globals.css`                             | токени `--gradient-btn*`, `@keyframes granimate`, правило для Mantine |
+| `src/shared/components/Button/button.module.scss` | переписаний `&--primary`                                              |
+| `src/shared/components/Button/Button.tsx`         | атрибут `data-gradient-btn`                                           |
+| `src/shared/config/mantine-theme.ts`              | `Button.defaultProps.variant = 'filled'`                              |
+| `src/shared/hooks/useRandomGradientPhase.ts`      | новий файл                                                            |
+| `src/shared/hooks/index.ts`                       | експорт хука                                                          |
+| `src/app/LayoutWrapper.tsx`                       | виклик хука                                                           |
+| `src/app/admin/reviews/AdminReviews.tsx` та інші  | `data-plain` на деструктивних кнопках                                 |
 
 ## Ризик, який перевіряється першим
 
