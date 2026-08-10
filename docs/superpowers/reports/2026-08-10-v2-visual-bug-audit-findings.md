@@ -1,0 +1,55 @@
+# v2 Visual Bug Audit — Findings
+
+**Date:** 2026-08-10
+**Spec:** docs/superpowers/specs/2026-08-10-v2-visual-bug-audit-design.md
+
+## Environment notes (deviation from spec)
+
+- Real backend's local DB (`F:\Progect\2025\shop_bogdan\backend`, `.env` `DATABASE_URL`) currently serves unrelated content (an electrical-equipment shop, "Е-МАРКЕТ"/"КВ Електро") — not shchilnui Drill data. User confirmed this backend/DB is wrong for this purpose.
+- Switched to a temporary local mock API server instead (`http://localhost:3005`, plain Node script, not part of any repo — scratchpad only), with 3 realistic fake products (varied name lengths, multiple images via placeholder URLs, variants/sizes) covering catalog, product, cart, checkout contracts.
+- `NEXT_PUBLIC_API_URL` / `NEXT_PUBLIC_BACKEND_URL` in `.env.local` temporarily point to `http://localhost:3005/api/v1` for this audit only — not a permanent change.
+- Frontend dev server ended up on **`http://localhost:3001`**, not 3000 — an unrelated Docker container (a different project, `emark-checkout-prefill-last-order`) already occupies host port 3000. All audit URLs below use `:3001`.
+- Confirmed real site content (`Є.Дріл`, ye-dril.com, correct merch copy) renders correctly once pointed at the mock — the earlier wrong-content sighting was entirely a backend/DB and port-collision issue, not a frontend code issue.
+
+Each finding: page, viewport, component/file (if identified), description, likely cause.
+
+## Catalog (/catalog)
+
+### Mobile (375×812)
+
+1. **Розмірний чіп "S" читається як "N".** У картці товару чорний кружечок з розміром "S" (перший, невибраний варіант) на 12px шрифті `eUkraine` виглядає як літера "N" — переплутати легко, хоча в DOM/accessible name текст коректний ("S").
+   - Компонент: `src/features/catalog/components/ProductCard/ProductCard.module.scss` (клас `.variantCheckboxText`), мобільний брейкпоінт `font-size: 12px`.
+   - Причина: гарнітура `eUkraine` при 12px дає нечітку літероформу "S" — на десктопі (14px) читається нормально, проблема саме дрібного кегля.
+2. **Дубльований текст "Знайдено 3 товари" в мобільній модалці фільтрів.** Відкрити "Фільтри" на мобільному — рядок "Знайдено 3 товари" рендериться ДВІЧІ підряд (підтверджено в DOM: два окремі `live="polite"` вузли з однаковим текстом), над кнопкою "Готово".
+   - Ймовірно: компонент лічильника результатів рендериться і в тілі фільтрів, і окремо перед футером модалки (дублікат виклику/пропса).
+
+### Desktop (1440×900)
+
+1. **Назва товару "наїжджає" на статус "В наявності" при довгій назві (3+ рядки).** Картка товару "Худі 'Розлючений грифон крокодилячого монастиря' Limited Edition Oversize..." — третій рядок назви частково видно й накладається на рядок "В наявності" під ним.
+   - Компонент: `src/features/catalog/components/ProductCard/ProductCard.module.scss:117-132` (клас `.title`).
+   - Причина: `-webkit-line-clamp: 2` разом із `-webkit-box-orient: vertical` заявлені, але computed `display` для елемента виявився `flow-root`, а не `-webkit-box` — тобто щось перебиває `display: -webkit-box` з рядка 118, і line-clamp не спрацьовує. Замість чіткого обрізання в 2 рядки з `...`, третій (частковий) рядок просто вилазить за межі `overflow: hidden`-контейнера без явної `max-height`.
+   - Відтворюється на обох viewport-ах (мобільний і десктоп) — фактично баг компонента, не специфічний для розміру екрана.
+
+## Product page (/catalog/[slug])
+
+### Mobile (375×812)
+
+(none found yet)
+
+### Desktop (1440×900)
+
+(none found yet)
+
+## Cart → Checkout (/cart, /checkout)
+
+### Mobile (375×812)
+
+(none found yet)
+
+### Desktop (1440×900)
+
+(none found yet)
+
+## Summary
+
+Total findings: 0
