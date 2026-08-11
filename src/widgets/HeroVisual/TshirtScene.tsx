@@ -9,10 +9,10 @@
 'use client';
 
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Bounds, useAnimations, useCursor, useGLTF } from '@react-three/drei';
 import { Box3 } from 'three';
-import type { Group, Mesh } from 'three';
+import type { Group, Mesh, MeshStandardMaterial } from 'three';
 import { useJump } from './useJump';
 import { useWind } from './useWind';
 
@@ -50,17 +50,23 @@ const Tshirt = ({ onReady, interactive = false }: Props) => {
     firstAction?.reset().play();
   }, [actions, hasBakedRotation]);
 
-  // Страховка на випадок моделі без нормалей: без них матеріал нічим
-  // освітлювати й тканина виходить пласкою плямою. У поточній вони є.
+  const gl = useThree((state) => state.gl);
+  // Анізотропія обов'язкова: з дефолтом (=1) під ковзним кутом GPU бере глибокі
+  // mip-рівні, де рідкий принт усереднюється в чорну тканину — по спині «пливли»
+  // чорні плями. Плюс страховка нормалей для моделей без них.
   const prepared = useMemo(() => {
+    const anisotropy = Math.min(16, gl.capabilities.getMaxAnisotropy());
     scene.traverse((object) => {
       const mesh = object as Mesh;
-      if (mesh.isMesh && !mesh.geometry.getAttribute('normal')) {
-        mesh.geometry.computeVertexNormals();
-      }
+      if (!mesh.isMesh) return;
+      if (!mesh.geometry.getAttribute('normal')) mesh.geometry.computeVertexNormals();
+      const material = mesh.material as MeshStandardMaterial;
+      [material.map, material.normalMap].forEach((texture) => {
+        if (texture) Object.assign(texture, { anisotropy, needsUpdate: true });
+      });
     });
     return scene;
-  }, [scene]);
+  }, [scene, gl]);
 
   // Низ і висота моделі: pivot присідання і масштаб висоти стрибка.
   // Припущення: вузли GLB без власних трансформів — ці межі порівнюються
@@ -90,8 +96,7 @@ const Tshirt = ({ onReady, interactive = false }: Props) => {
 
   // Габарити: X 0.67 (ширина) · Y 0.74 (висота) · Z 0.36 (товщина). Перед уже
   // дивиться в +Z, тобто просто на камеру — доводити орієнтацію не треба.
-  // Обробники пасхалки чіпляються лише в interactive-режимі: без нього
-  // сцена не реагує на вказівник узагалі (і не рендериться від hover)
+  // Обробники пасхалки чіпляються лише в interactive-режимі
   const jumpHandlers = interactive
     ? {
         onPointerDown: jump.onPointerDown,
@@ -133,8 +138,7 @@ const TshirtScene = ({ onReady, interactive }: Props) => {
       <directionalLight position={[0, -4, 3]} intensity={0.6} />
 
       <Suspense fallback={null}>
-        {/* Запас у кадрі: силует змінює ширину під час обертання, і при
-            щільній підгонці об'єкт торкався б країв полотна */}
+        {/* Запас у кадрі: силует міняє ширину в оберті — без запасу торкався б країв */}
         <Bounds fit clip observe margin={1.15}>
           <Tshirt onReady={onReady} interactive={interactive} />
         </Bounds>
