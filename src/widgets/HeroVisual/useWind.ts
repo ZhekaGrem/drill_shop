@@ -44,18 +44,23 @@ const windChunk = (bottom: number, height: number) => /* glsl */ `
   vec3 windDir = normalize(vec3(position.x, 0.0, position.z + 0.0001));
   transformed += windDir * windWave * windW * ${glslFloat(WIND_AMPLITUDE)};
   transformed.x += sin(uWindTime * ${glslFloat(SWAY_SPEED)}) * windW * ${glslFloat(WIND_AMPLITUDE * SWAY_RATIO)};
+  // Інерція: тканина відстає від прискорень оберту. Тангенс (-z,0,x) спільний
+  // для обох шарів тканини — шари рухаються разом, проколи неможливі
+  transformed += vec3(-position.z, 0.0, position.x) * uWindLag * windW;
 }
 `;
 
 const patchMaterial = (material: MeshStandardMaterial, bottom: number, height: number) => {
   material.userData.uWindTime ??= { value: 0 };
+  material.userData.uWindLag ??= { value: 0 };
   if (material.userData.windPatched) return;
   material.userData.windPatched = true;
   material.customProgramCacheKey = () => 'tshirt-wind';
   material.onBeforeCompile = (shader) => {
     shader.uniforms.uWindTime = material.userData.uWindTime;
+    shader.uniforms.uWindLag = material.userData.uWindLag;
     shader.vertexShader = shader.vertexShader
-      .replace('#include <common>', '#include <common>\nuniform float uWindTime;')
+      .replace('#include <common>', '#include <common>\nuniform float uWindTime;\nuniform float uWindLag;')
       .replace('#include <begin_vertex>', windChunk(bottom, height));
   };
   material.needsUpdate = true;
@@ -68,8 +73,10 @@ export const useWind = (scene: Group, box: { bottom: number; height: number }) =
     if (!material) return () => {};
     patchMaterial(material, box.bottom, box.height);
     const uniform = material.userData.uWindTime as { value: number };
-    return (elapsedTime: number) => {
+    const lagUniform = material.userData.uWindLag as { value: number };
+    return (elapsedTime: number, lag: number) => {
       uniform.value = elapsedTime;
+      lagUniform.value = lag;
     };
   }, [scene, box.bottom, box.height]);
 };
