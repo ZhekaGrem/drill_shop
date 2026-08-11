@@ -158,14 +158,14 @@ import { useWind } from './useWind';
 Було:
 
 ```tsx
-  const jump = useJump(jumpRef, box.height);
+const jump = useJump(jumpRef, box.height);
 ```
 
 Стає:
 
 ```tsx
-  const jump = useJump(jumpRef, box.height);
-  const windStep = useWind(prepared, box);
+const jump = useJump(jumpRef, box.height);
+const windStep = useWind(prepared, box);
 ```
 
 - [ ] **Step 3: Оновити useFrame — час вітру одним рядком**
@@ -173,22 +173,22 @@ import { useWind } from './useWind';
 Було:
 
 ```tsx
-  useFrame((_, delta) => {
-    jump.step(delta);
-    if (hasBakedRotation || !group.current) return;
-    group.current.rotation.y += delta * ROTATION_SPEED;
-  });
+useFrame((_, delta) => {
+  jump.step(delta);
+  if (hasBakedRotation || !group.current) return;
+  group.current.rotation.y += delta * ROTATION_SPEED;
+});
 ```
 
 Стає:
 
 ```tsx
-  useFrame((state, delta) => {
-    windStep(state.clock.elapsedTime);
-    jump.step(delta);
-    if (hasBakedRotation || !group.current) return;
-    group.current.rotation.y += delta * ROTATION_SPEED;
-  });
+useFrame((state, delta) => {
+  windStep(state.clock.elapsedTime);
+  jump.step(delta);
+  if (hasBakedRotation || !group.current) return;
+  group.current.rotation.y += delta * ROTATION_SPEED;
+});
 ```
 
 Коментар над useFrame («Стрибок мутує внутрішню групу…») лишається як є.
