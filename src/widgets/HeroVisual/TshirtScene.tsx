@@ -65,8 +65,8 @@ const Tshirt = ({ onReady, interactive = false }: Props) => {
   }, [scene, gl]);
 
   // Низ і висота моделі: pivot присідання і масштаб висоти стрибка.
-  // Припущення: вузли GLB без власних трансформів — ці межі порівнюються
-  // з сирими position у шейдері вітру (useWind), інакше ваги з'їдуть.
+  // Вузол GLB несе рівномірний масштаб квантування (0.368): у шейдері вітру
+  // position — у нормалізованому просторі, константи відкалібровані там же.
   const box = useMemo(() => {
     const b = new Box3().setFromObject(prepared);
     return { bottom: b.min.y, height: b.max.y - b.min.y };
@@ -126,10 +126,8 @@ const TshirtScene = ({ onReady, interactive }: Props) => {
       gl={{ antialias: true }}
       camera={{ fov: 35, position: [0, 0, 6] }}
       style={{ width: '100%', height: '100%' }}>
-      {
-        /* Локальні джерела замість drei Environment (той тягне HDRI з CDN).
-        Зустрічне й нижнє світло відбивають край чорної тканини від фону */
-      }
+      {/* Локальні джерела замість drei Environment (той тягне HDRI з CDN).
+        Зустрічне й нижнє світло відбивають край чорної тканини від фону */}
       <ambientLight intensity={0.9} />
       <directionalLight position={[4, 6, 5]} intensity={2.4} />
       <directionalLight position={[-5, 2, -4]} intensity={1.2} />
