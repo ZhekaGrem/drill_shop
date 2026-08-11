@@ -26,9 +26,11 @@ useGLTF.preload(MODEL_URL);
 
 type Props = {
   onReady: () => void;
+  /** Стрибок-пасхалка по кліку. Вимкнено дефолтно; повернути — передати true */
+  interactive?: boolean;
 };
 
-const Tshirt = ({ onReady }: Props) => {
+const Tshirt = ({ onReady, interactive = false }: Props) => {
   const { scene, animations } = useGLTF(MODEL_URL);
   const group = useRef<Group>(null);
   const jumpRef = useRef<Group>(null);
@@ -36,7 +38,7 @@ const Tshirt = ({ onReady }: Props) => {
   const { actions } = useAnimations(animations, group);
 
   // Курсор-pointer над футболкою: підказка «мене можна натиснути»
-  useCursor(hovered);
+  useCursor(interactive && hovered);
 
   const hasBakedRotation = animations.length > 0;
 
@@ -76,7 +78,7 @@ const Tshirt = ({ onReady }: Props) => {
   // <Bounds>, і рух нею збив би підігнане кадрування.
   useFrame((state, delta) => {
     windStep(state.clock.elapsedTime);
-    jump.step(delta);
+    if (interactive) jump.step(delta);
     if (hasBakedRotation || !group.current) return;
     group.current.rotation.y += delta * ROTATION_SPEED;
   });
@@ -88,14 +90,20 @@ const Tshirt = ({ onReady }: Props) => {
 
   // Габарити: X 0.67 (ширина) · Y 0.74 (висота) · Z 0.36 (товщина). Перед уже
   // дивиться в +Z, тобто просто на камеру — доводити орієнтацію не треба.
+  // Обробники пасхалки чіпляються лише в interactive-режимі: без нього
+  // сцена не реагує на вказівник узагалі (і не рендериться від hover)
+  const jumpHandlers = interactive
+    ? {
+        onPointerDown: jump.onPointerDown,
+        onPointerUp: jump.onPointerUp,
+        onPointerLeave: jump.onPointerLeave,
+        onPointerOver: () => setHovered(true),
+        onPointerOut: () => setHovered(false),
+      }
+    : undefined;
+
   return (
-    <group
-      ref={group}
-      onPointerDown={jump.onPointerDown}
-      onPointerUp={jump.onPointerUp}
-      onPointerLeave={jump.onPointerLeave}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}>
+    <group ref={group} {...jumpHandlers}>
       {/* Пара +bottom/−bottom переносить pivot масштабування на нижню межу:
           присідання тисне «в підлогу», а не стискає футболку в повітрі.
           Сумарний transform нульовий — кадрування Bounds не зсувається. */}
@@ -108,7 +116,7 @@ const Tshirt = ({ onReady }: Props) => {
   );
 };
 
-const TshirtScene = ({ onReady }: Props) => {
+const TshirtScene = ({ onReady, interactive }: Props) => {
   return (
     <Canvas
       dpr={[1, 2]}
@@ -128,7 +136,7 @@ const TshirtScene = ({ onReady }: Props) => {
         {/* Запас у кадрі: силует змінює ширину під час обертання, і при
             щільній підгонці об'єкт торкався б країв полотна */}
         <Bounds fit clip observe margin={1.15}>
-          <Tshirt onReady={onReady} />
+          <Tshirt onReady={onReady} interactive={interactive} />
         </Bounds>
       </Suspense>
     </Canvas>
