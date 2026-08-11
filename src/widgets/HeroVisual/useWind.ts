@@ -39,7 +39,10 @@ const windChunk = (bottom: number, height: number) => /* glsl */ `
   float windWave =
     sin(position.y * ${glslFloat(WAVE1_FREQ)} + uWindTime * ${glslFloat(WAVE1_SPEED)}) * 0.6
       + sin((position.x + position.y) * ${glslFloat(WAVE2_FREQ)} + uWindTime * ${glslFloat(WAVE2_SPEED)}) * 0.4;
-  transformed += objectNormal * windWave * windW * ${glslFloat(WIND_AMPLITUDE)};
+  // Радіально від осі, НЕ вздовж нормалі: тканина двошарова (зазор ~0.7 мм),
+  // а нормалі шарів протилежні — рух по нормалі прошивав би шар крізь шар
+  vec3 windDir = normalize(vec3(position.x, 0.0, position.z + 0.0001));
+  transformed += windDir * windWave * windW * ${glslFloat(WIND_AMPLITUDE)};
   transformed.x += sin(uWindTime * ${glslFloat(SWAY_SPEED)}) * windW * ${glslFloat(WIND_AMPLITUDE * SWAY_RATIO)};
 }
 `;
