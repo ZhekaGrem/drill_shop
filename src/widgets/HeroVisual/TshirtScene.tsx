@@ -15,12 +15,9 @@ import { Box3 } from 'three';
 import type { Group, Mesh, MeshStandardMaterial } from 'three';
 import { useJump } from './useJump';
 import { useWind } from './useWind';
+import { useIdleMotion } from './useIdleMotion';
 
 const MODEL_URL = '/model/tshirt.glb';
-
-// Оберт за ~21 секунду. Вмикається, коли в моделі немає власної анімації —
-// у поточній її немає, тож рух задає саме цей код.
-const ROTATION_SPEED = 0.3;
 
 useGLTF.preload(MODEL_URL);
 
@@ -42,8 +39,7 @@ const Tshirt = ({ onReady, interactive = false }: Props) => {
 
   const hasBakedRotation = animations.length > 0;
 
-  // Обертання, запечене в Blender, — це задум автора моделі: власна швидкість,
-  // власна вісь. Програємо його замість того, щоб дублювати рух кодом.
+  // Запечена в Blender анімація — задум автора моделі: граємо її, а не дублюємо
   useEffect(() => {
     if (!hasBakedRotation) return;
     const [firstAction] = Object.values(actions);
@@ -78,15 +74,18 @@ const Tshirt = ({ onReady, interactive = false }: Props) => {
 
   const jump = useJump(jumpRef, box.height);
   const windStep = useWind(prepared, box);
+  const idleStep = useIdleMotion();
 
-  // Стрибок мутує внутрішню групу, оберт — зовнішню; в одному кадрі
-  // вони не конфліктують. Фолбек-оберт лишається кодовим: камера належить
-  // <Bounds>, і рух нею збив би підігнане кадрування.
+  // Стрибок мутує внутрішню групу, idle-рух — зовнішню: не конфліктують.
+  // Запечена анімація (якщо колись з'явиться) повністю вимикає idle-рух.
   useFrame((state, delta) => {
-    windStep(state.clock.elapsedTime);
     if (interactive) jump.step(delta);
-    if (hasBakedRotation || !group.current) return;
-    group.current.rotation.y += delta * ROTATION_SPEED;
+    if (hasBakedRotation || !group.current) {
+      windStep(state.clock.elapsedTime, 0);
+      return;
+    }
+    const lag = idleStep(group.current, delta, state.clock.elapsedTime);
+    windStep(state.clock.elapsedTime, lag);
   });
 
   // useGLTF саспендиться до завантаження, тож монтування = модель готова
@@ -94,8 +93,7 @@ const Tshirt = ({ onReady, interactive = false }: Props) => {
     onReady();
   }, [onReady]);
 
-  // Габарити: X 0.67 (ширина) · Y 0.74 (висота) · Z 0.36 (товщина). Перед уже
-  // дивиться в +Z, тобто просто на камеру — доводити орієнтацію не треба.
+  // Габарити 0.67×0.74×0.36; перед дивиться в +Z — просто на камеру
   // Обробники пасхалки чіпляються лише в interactive-режимі
   const jumpHandlers = interactive
     ? {
@@ -128,10 +126,10 @@ const TshirtScene = ({ onReady, interactive }: Props) => {
       gl={{ antialias: true }}
       camera={{ fov: 35, position: [0, 0, 6] }}
       style={{ width: '100%', height: '100%' }}>
-      {/* Три джерела замість <Environment preset>: пресети drei тягнуть HDRI
-          зі стороннього CDN, а сенс міграції — прибрати зовнішні запити.
-          Ключове світло дає об'єм, зустрічне й нижнє відбивають край, інакше
-          чорна тканина зливається в силует. */}
+      {
+        /* Локальні джерела замість drei Environment (той тягне HDRI з CDN).
+        Зустрічне й нижнє світло відбивають край чорної тканини від фону */
+      }
       <ambientLight intensity={0.9} />
       <directionalLight position={[4, 6, 5]} intensity={2.4} />
       <directionalLight position={[-5, 2, -4]} intensity={1.2} />
