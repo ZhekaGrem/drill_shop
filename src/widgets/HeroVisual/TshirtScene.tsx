@@ -14,6 +14,7 @@ import { Bounds, useAnimations, useCursor, useGLTF } from '@react-three/drei';
 import { Box3 } from 'three';
 import type { Group, Mesh } from 'three';
 import { useJump } from './useJump';
+import { useWind } from './useWind';
 
 const MODEL_URL = '/model/tshirt.glb';
 
@@ -66,11 +67,13 @@ const Tshirt = ({ onReady }: Props) => {
   }, [prepared]);
 
   const jump = useJump(jumpRef, box.height);
+  const windStep = useWind(prepared, box);
 
   // Стрибок мутує внутрішню групу, оберт — зовнішню; в одному кадрі
   // вони не конфліктують. Фолбек-оберт лишається кодовим: камера належить
   // <Bounds>, і рух нею збив би підігнане кадрування.
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
+    windStep(state.clock.elapsedTime);
     jump.step(delta);
     if (hasBakedRotation || !group.current) return;
     group.current.rotation.y += delta * ROTATION_SPEED;
