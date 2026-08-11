@@ -33,7 +33,7 @@ const windChunk = (bottom: number, height: number) => /* glsl */ `
   float windH = (position.y - ${glslFloat(bottom)}) / ${glslFloat(height)};
   float windW = min(
     1.0,
-    smoothstep(${glslFloat(TOP_QUIET)}, ${glslFloat(HEM_FULL)}, windH)
+    (1.0 - smoothstep(${glslFloat(HEM_FULL)}, ${glslFloat(TOP_QUIET)}, windH))
       + 0.5 * smoothstep(${glslFloat(SLEEVE_START)}, ${glslFloat(SLEEVE_FULL)}, abs(position.x))
   );
   float windWave =

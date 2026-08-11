@@ -60,7 +60,9 @@ const Tshirt = ({ onReady }: Props) => {
     return scene;
   }, [scene]);
 
-  // Низ і висота моделі: pivot присідання і масштаб висоти стрибка
+  // Низ і висота моделі: pivot присідання і масштаб висоти стрибка.
+  // Припущення: вузли GLB без власних трансформів — ці межі порівнюються
+  // з сирими position у шейдері вітру (useWind), інакше ваги з'їдуть.
   const box = useMemo(() => {
     const b = new Box3().setFromObject(prepared);
     return { bottom: b.min.y, height: b.max.y - b.min.y };

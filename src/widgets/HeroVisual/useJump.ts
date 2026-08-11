@@ -61,6 +61,9 @@ export const useJump = (targetRef: RefObject<Group | null>, height: number) => {
 
   const onPointerLeave = useCallback(() => {
     if (phase.current !== 'pressed') return;
+    // Тач шле pointerleave ПІСЛЯ pointerup: відпускання вже зафіксовано,
+    // стрибок має відбутись — скасовуємо лише незавершене утримання
+    if (releaseQueued.current) return;
     returnFrom.current = targetRef.current?.scale.y ?? 1;
     phase.current = 'returning';
     time.current = 0;
