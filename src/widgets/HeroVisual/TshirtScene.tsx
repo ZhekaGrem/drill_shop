@@ -16,6 +16,7 @@ import type { Group, Mesh, MeshStandardMaterial } from 'three';
 import { useJump } from './useJump';
 import { useWind } from './useWind';
 import { useIdleMotion } from './useIdleMotion';
+import { useDesignMap } from './useDesignMap';
 
 const MODEL_URL = '/model/tshirt.glb';
 
@@ -25,9 +26,11 @@ type Props = {
   onReady: () => void;
   /** Стрибок-пасхалка по кліку. Вимкнено дефолтно; повернути — передати true */
   interactive?: boolean;
+  /** URL basecolor-дизайну; без нього — запечена в GLB мапа */
+  mapUrl?: string;
 };
 
-const Tshirt = ({ onReady, interactive = false }: Props) => {
+const Tshirt = ({ onReady, interactive = false, mapUrl }: Props) => {
   const { scene, animations } = useGLTF(MODEL_URL);
   const group = useRef<Group>(null);
   const jumpRef = useRef<Group>(null);
@@ -48,8 +51,7 @@ const Tshirt = ({ onReady, interactive = false }: Props) => {
 
   const gl = useThree((state) => state.gl);
   // Анізотропія обов'язкова: з дефолтом (=1) під ковзним кутом GPU бере глибокі
-  // mip-рівні, де рідкий принт усереднюється в чорну тканину — по спині «пливли»
-  // чорні плями. Плюс страховка нормалей для моделей без них.
+  // mip-рівні, де рідкий принт усереднюється в чорну тканину («пливучі плями»)
   const prepared = useMemo(() => {
     const anisotropy = Math.min(16, gl.capabilities.getMaxAnisotropy());
     scene.traverse((object) => {
@@ -75,6 +77,7 @@ const Tshirt = ({ onReady, interactive = false }: Props) => {
   const jump = useJump(jumpRef, box.height);
   const windStep = useWind(prepared, box);
   const idleStep = useIdleMotion();
+  useDesignMap(prepared, mapUrl);
 
   // Стрибок мутує внутрішню групу, idle-рух — зовнішню: не конфліктують.
   // Запечена анімація (якщо колись з'явиться) повністю вимикає idle-рух.
@@ -107,9 +110,7 @@ const Tshirt = ({ onReady, interactive = false }: Props) => {
 
   return (
     <group ref={group} {...jumpHandlers}>
-      {/* Пара +bottom/−bottom переносить pivot масштабування на нижню межу:
-          присідання тисне «в підлогу», а не стискає футболку в повітрі.
-          Сумарний transform нульовий — кадрування Bounds не зсувається. */}
+      {/* Pivot на нижній межі: присідання тисне «в підлогу»; сумарний transform нульовий */}
       <group ref={jumpRef} position={[0, box.bottom, 0]}>
         <group position={[0, -box.bottom, 0]}>
           <primitive object={prepared} />
@@ -119,7 +120,7 @@ const Tshirt = ({ onReady, interactive = false }: Props) => {
   );
 };
 
-const TshirtScene = ({ onReady, interactive }: Props) => {
+const TshirtScene = ({ onReady, interactive, mapUrl }: Props) => {
   return (
     <Canvas
       dpr={[1, 2]}
@@ -136,7 +137,7 @@ const TshirtScene = ({ onReady, interactive }: Props) => {
       <Suspense fallback={null}>
         {/* Запас у кадрі: силует міняє ширину в оберті — без запасу торкався б країв */}
         <Bounds fit clip observe margin={1.15}>
-          <Tshirt onReady={onReady} interactive={interactive} />
+          <Tshirt onReady={onReady} interactive={interactive} mapUrl={mapUrl} />
         </Bounds>
       </Suspense>
     </Canvas>
