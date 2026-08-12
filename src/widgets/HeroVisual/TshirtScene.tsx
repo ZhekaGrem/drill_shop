@@ -20,7 +20,7 @@ import { useDesignMap } from './useDesignMap';
 import type { RefObject } from 'react';
 import type { DragState } from './useDragRotation';
 
-const MODEL_URL = '/model/tshirt.glb';
+const MODEL_URL = '/3d/models/tshirt.glb';
 
 useGLTF.preload(MODEL_URL);
 
