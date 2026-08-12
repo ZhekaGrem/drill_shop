@@ -2,6 +2,10 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Дев-доступ із локальної мережі (телефон тощо): без цього Next 16 мовчки
+  // блокує cross-origin запити до чанків — сторінка вантажиться, а lazy-сцена
+  // висне без помилки. Стосується ЛИШЕ dev-сервера, на прод не впливає.
+  allowedDevOrigins: ['192.168.0.171'],
   typescript: {
     // ✅ Enable type checking during build for production safety
     ignoreBuildErrors: false,
