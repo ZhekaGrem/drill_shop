@@ -9,15 +9,15 @@ import type { Group } from 'three';
 
 // Орієнтири зі спеки (docs/superpowers/specs/2026-08-11-tshirt-idle-mass-design.md).
 // Тюняться на око, не ламаючи характеру «важка підвішена річ».
-const BASE_SPEED = 0.2; // рад/с
-const MOD1_AMP = 0.35; // дихання швидкості: дві некратні синусоїди
-const MOD1_FREQ = 0.23; // рад/с (~27 с період)
-const MOD2_AMP = 0.2;
-const MOD2_FREQ = 0.37; // (~17 с)
+const BASE_SPEED = 0.22; // рад/с
+const MOD1_AMP = 0.28; // дихання швидкості: дві некратні синусоїди;
+const MOD1_FREQ = 0.23; // менші амплітуди — щоб «пауза» (мін ~0.13 рад/с,
+const MOD2_AMP = 0.14; // ~7.5°/с) читалась як повільний рух, не як зупинка
+const MOD2_FREQ = 0.37;
 const MOD2_PHASE = 1.7;
-const TILT_X_AMP = (2.5 * Math.PI) / 180; // маятникові нахили
+const TILT_X_AMP = (3.2 * Math.PI) / 180; // маятникові нахили
 const TILT_X_FREQ = (2 * Math.PI) / 9.3;
-const TILT_Z_AMP = (2.0 * Math.PI) / 180;
+const TILT_Z_AMP = (2.6 * Math.PI) / 180;
 const TILT_Z_FREQ = (2 * Math.PI) / 7.1;
 const BOB_AMP = 0.006; // вертикальний дрейф ≈ 0.8 % висоти (0.736)
 const BOB_FREQ = (2 * Math.PI) / 11;

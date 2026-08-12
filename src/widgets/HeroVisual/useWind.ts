@@ -10,8 +10,9 @@ import { useMemo } from 'react';
 import type { Group, Mesh, MeshStandardMaterial } from 'three';
 
 // Орієнтири руху — зі спеки (docs/superpowers/specs/2026-08-11-tshirt-wind-design.md).
-// Тюняться на око, не втрачаючи характеру «легко».
-const WIND_AMPLITUDE = 0.01; // ≈1.35 % висоти моделі (0.74) на подолі
+// Тюняться на око. Всі величини — у нормалізованому просторі атрибутів
+// (квантована модель: висота = 2.0 юніта), межі міряються з геометрії.
+const WIND_AMPLITUDE = 0.028; // ≈1.4 % висоти моделі на подолі
 const WAVE1_FREQ = 9.0; // просторова частота першої октави, 1/юніт
 const WAVE1_SPEED = 1.6; // рад/с
 const WAVE2_FREQ = 16.0;
@@ -66,17 +67,21 @@ const patchMaterial = (material: MeshStandardMaterial, bottom: number, height: n
   material.needsUpdate = true;
 };
 
-export const useWind = (scene: Group, box: { bottom: number; height: number }) => {
+export const useWind = (scene: Group) => {
   return useMemo(() => {
     const mesh = scene.getObjectByProperty('isMesh', true) as Mesh | undefined;
     const material = mesh?.material as MeshStandardMaterial | undefined;
-    if (!material) return () => {};
-    patchMaterial(material, box.bottom, box.height);
+    if (!mesh || !material) return () => {};
+    // Межі — з ГЕОМЕТРІЇ (нормалізований простір атрибутів, як і position
+    // у шейдері), а не зі світового Box3: інакше вагова смуга з'їжджає
+    mesh.geometry.computeBoundingBox();
+    const gb = mesh.geometry.boundingBox!;
+    patchMaterial(material, gb.min.y, gb.max.y - gb.min.y);
     const uniform = material.userData.uWindTime as { value: number };
     const lagUniform = material.userData.uWindLag as { value: number };
     return (elapsedTime: number, lag: number) => {
       uniform.value = elapsedTime;
       lagUniform.value = lag;
     };
-  }, [scene, box.bottom, box.height]);
+  }, [scene]);
 };

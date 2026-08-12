@@ -75,7 +75,7 @@ const Tshirt = ({ onReady, interactive = false, mapUrl }: Props) => {
   }, [prepared]);
 
   const jump = useJump(jumpRef, box.height);
-  const windStep = useWind(prepared, box);
+  const windStep = useWind(prepared);
   const idleStep = useIdleMotion();
   useDesignMap(prepared, mapUrl);
 
