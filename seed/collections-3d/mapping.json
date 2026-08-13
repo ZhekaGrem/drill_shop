@@ -1,0 +1,78 @@
+{
+  "$comment": "Сід колекцій і 3D-полів. Шляхи файлів — відносно кореня drill_shop. Свотчі пораховані palette-алгоритмом з рендерів (тканина + акценти принта).",
+  "collections": [
+    {
+      "slug": "nizhna-oksana",
+      "title": "Ніжна Оксана",
+      "description": "Легосінька мягосінька колекція придумана МС Сваркою в важкі часи часончики",
+      "sortOrder": 0,
+      "heroEnabled": true,
+      "products": [
+        {
+          "productSlug": "red-oxana",
+          "collectionOrder": 0,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-no-red.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 55%, #b03050 55% 100%)"
+        },
+        {
+          "productSlug": "nizhna-viloet",
+          "collectionOrder": 1,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-no-violet.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-violet.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 55%, #d030f0 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-black-green",
+          "collectionOrder": 2,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-no-green.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-green.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 55%, #30f030 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-black-yellow-oksana",
+          "collectionOrder": 3,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-no-yellow.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-yellow.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 55%, #f0f030 55% 100%)"
+        },
+        {
+          "productSlug": "nirvana-runic",
+          "collectionOrder": 4,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-no-runic.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-runic.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 55%, #70a050 55% 100%)"
+        },
+        {
+          "productSlug": "oxana-white-violet",
+          "collectionOrder": 5,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-no-white-violet.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-white-violet.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #d0d0d0 0 55%, #6020b0 55% 100%)"
+        },
+        {
+          "productSlug": "nizhna-oksana-rock-black-list",
+          "collectionOrder": 6,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-rock-departament.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-rock-departament.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #303030 0 55%, #a0a0a0 55% 100%)"
+        },
+        {
+          "productSlug": "nizhna-runic-dril-green",
+          "collectionOrder": 7,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-green-scratch.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-green-scratch.webp",
+          "switcherSwatch": "#309040"
+        }
+      ]
+    }
+  ]
+}
