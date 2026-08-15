@@ -72,7 +72,3 @@ export const itemBySlug = (slug: string): CollectionItem | undefined =>
 
 export const otherCollections = (currentKey: string): CollectionDef[] =>
   COLLECTIONS.filter((c) => c.key !== currentKey);
-
-// Сумісність зі старими v2-сторінками B/C (демо-репрезентації)
-export const COLLECTION_INFO = { title: COLLECTIONS[0].title, description: COLLECTIONS[0].description };
-export const COLLECTION_ITEMS = oksanaItems;

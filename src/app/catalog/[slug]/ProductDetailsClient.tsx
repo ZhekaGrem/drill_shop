@@ -286,13 +286,19 @@ export default function ProductDetailsClient({
 
   const { isInStock, availableQuantity } = getCurrentStock();
 
+  // Архівна колекція: товар лишається на вітрині, але контролі покупки
+  // не рендеряться. Бекенд-гард у кошику дублює це для прямих викликів API.
+  const collectionArchived = Boolean(product?.collection?.archivedAt);
+
   // Статус наявності словами, а не тільки кольором кнопки: людині перед покупкою
   // важливо бачити, що саме її чекає — і чи варто поспішати
-  const stockLabel = !isInStock
-    ? 'Немає в наявності'
-    : availableQuantity <= LOW_STOCK_THRESHOLD
-      ? `Залишилось ${availableQuantity} шт`
-      : 'В наявності';
+  const stockLabel = collectionArchived
+    ? 'Продаж завершено'
+    : !isInStock
+      ? 'Немає в наявності'
+      : availableQuantity <= LOW_STOCK_THRESHOLD
+        ? `Залишилось ${availableQuantity} шт`
+        : 'В наявності';
 
   // Ввід поза діапазоном не ігноруємо мовчки, а підрізаємо до межі: людина
   // друкувала «20», поле не змінювалось, і причини не було ніде на екрані
@@ -577,7 +583,7 @@ export default function ProductDetailsClient({
                 )}
                 <span
                   className={`${styles.productDetails__availability} ${
-                    isInStock ? '' : styles.productDetails__availability_out
+                    isInStock && !collectionArchived ? '' : styles.productDetails__availability_out
                   }`}>
                   {stockLabel}
                 </span>
@@ -638,7 +644,7 @@ export default function ProductDetailsClient({
               </div>
 
               {/* Variants Selector */}
-              {hasVariants && sortedVariants.length > 0 && (
+              {!collectionArchived && hasVariants && sortedVariants.length > 0 && (
                 <div className={styles.productDetails__variants}>
                   {/* ✅ Якщо варіанти мають size/color - показуємо чекбокси */}
                   {showVariantCheckboxes ? (
@@ -728,7 +734,12 @@ export default function ProductDetailsClient({
 
               {/* Add to Cart Section */}
               <div className={styles.productDetails__actions}>
-                {isInStock ? (
+                {collectionArchived ? (
+                  <p className={styles.archivedNotice}>
+                    Архівна колекція «{product.collection?.title}» — лишається на вітрині, але купити її
+                    вже не можна.
+                  </p>
+                ) : isInStock ? (
                   <>
                     {/* Кількість винесена з липкої панелі: це параметр товару,
                         а не дія. Разом з двома кнопками вона робила на мобільному

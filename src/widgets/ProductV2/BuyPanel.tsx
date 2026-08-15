@@ -35,12 +35,16 @@ export const BuyPanel = ({ product }: { product: Product }) => {
 
   const promo = variant ? calculateVariantPromoPrice(variant) : calculatePromoPrice(product);
   const available = stockOf(variant ?? product);
+  // Архівна колекція: вітрина без продажу — контролі покупки не рендеряться
+  const archived = Boolean(product.collection?.archivedAt);
   const inStock = available > 0;
-  const stockLabel = !inStock
-    ? 'Немає в наявності'
-    : available <= LOW_STOCK
-      ? `Залишилось ${available} шт`
-      : 'В наявності';
+  const stockLabel = archived
+    ? 'Продаж завершено'
+    : !inStock
+      ? 'Немає в наявності'
+      : available <= LOW_STOCK
+        ? `Залишилось ${available} шт`
+        : 'В наявності';
 
   const handleAdd = () => {
     setAdded(true);
@@ -65,7 +69,7 @@ export const BuyPanel = ({ product }: { product: Product }) => {
 
       <div className={styles.meta}>
         <span>Артикул: {product.sku}</span>
-        <span className={inStock ? styles.inStock : styles.outOfStock}>{stockLabel}</span>
+        <span className={!archived && inStock ? styles.inStock : styles.outOfStock}>{stockLabel}</span>
       </div>
 
       {product.shortDescription && <p className={styles.shortDescription}>{product.shortDescription}</p>}
@@ -77,7 +81,14 @@ export const BuyPanel = ({ product }: { product: Product }) => {
         </span>
       </div>
 
-      {variants.length > 0 && (
+      {archived && (
+        <p className={styles.archivedNote}>
+          Архівна колекція «{product.collection?.title}» — лишається на вітрині, але купити її вже не
+          можна.
+        </p>
+      )}
+
+      {!archived && variants.length > 0 && (
         <div className={styles.sizesBlock}>
           <span className={styles.blockLabel}>Розмір</span>
           <div className={styles.sizes} role="group" aria-label="Розмір">
@@ -99,7 +110,7 @@ export const BuyPanel = ({ product }: { product: Product }) => {
         </div>
       )}
 
-      {inStock && (
+      {!archived && inStock && (
         <div className={styles.quantityRow}>
           <span className={styles.blockLabel}>Кількість</span>
           <div className={styles.stepper}>
@@ -119,21 +130,30 @@ export const BuyPanel = ({ product }: { product: Product }) => {
       )}
 
       <div className={styles.actions}>
-        <Button size="lg" variant="primary" fullWidth disabled={!inStock || isAddingItem} onClick={handleAdd}>
-          <IconCart3 size={20} /> {added ? 'Додано в кошик ✓' : 'Додати в кошик'}
-        </Button>
-        <div className={styles.actionsRow}>
+        {!archived && (
           <Button
             size="lg"
-            variant="secondary"
+            variant="primary"
             fullWidth
             disabled={!inStock || isAddingItem}
-            onClick={() => {
-              addItem(product.id, quantity, variant?.id, buildCartSnapshot(product, variant));
-              router.push('/checkout');
-            }}>
-            Купити зараз
+            onClick={handleAdd}>
+            <IconCart3 size={20} /> {added ? 'Додано в кошик ✓' : 'Додати в кошик'}
           </Button>
+        )}
+        <div className={styles.actionsRow}>
+          {!archived && (
+            <Button
+              size="lg"
+              variant="secondary"
+              fullWidth
+              disabled={!inStock || isAddingItem}
+              onClick={() => {
+                addItem(product.id, quantity, variant?.id, buildCartSnapshot(product, variant));
+                router.push('/checkout');
+              }}>
+              Купити зараз
+            </Button>
+          )}
           <FavoriteButton product={product} size="lg" />
         </div>
       </div>

@@ -208,6 +208,12 @@ export interface Product {
   /** Інфо-бейдж (пігулка «Новинка»/«Знижка»): текст і колір задаються разом */
   badgeText?: string | null;
   badgeColor?: string | null;
+  /** Мінімум колекції товару; archivedAt = вітрина, продаж завершено */
+  collection?: {
+    slug: string;
+    title: string;
+    archivedAt: string | null;
+  } | null;
 }
 
 export interface ProductCategory {

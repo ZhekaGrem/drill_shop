@@ -16,7 +16,6 @@ import { BuyPanel } from '@/widgets/ProductV2/BuyPanel';
 import { ProductError, ProductSkeleton } from '@/widgets/ProductV2/ProductState';
 import { ProductInfoGroups } from '@/widgets/ProductV2/ProductInfoGroups';
 import { OtherCollections } from '@/widgets/ProductV2/OtherCollections';
-import { VersionSwitch } from '@/widgets/ProductV2/VersionSwitch';
 import styles from '@/widgets/ProductV2/ProductV2.module.scss';
 
 export default function ProductV2A({ params }: { params: Promise<{ slug: string }> }) {
@@ -43,8 +42,6 @@ export default function ProductV2A({ params }: { params: Promise<{ slug: string 
       />
 
       <div className={styles.page}>
-        <VersionSwitch current="a" slug={slug} />
-
         {/* Галерея = жива сцена колекції; мініатюри під нею перемикають товар */}
         <div className={styles.card}>
           <div className={styles.collectionHead}>

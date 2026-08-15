@@ -1,6 +1,6 @@
 // src/widgets/ProductV2/ProductV2.module.scss
-// Стилі v2-сторінок товару. Основна — версія A (3D-сцена колекції + повна
-// картка покупки); B і C лишаються демо-репрезентаціями для порівняння.
+// Стилі сторінки товару в колекції: 3D-сцена як галерея + повна картка
+// покупки, інфогрупи, інші колекції.
 .page {
   display: flex;
   flex-direction: column;
@@ -217,6 +217,17 @@
   gap: var(--space-2);
 }
 
+// Архівна колекція: вітрина без продажу
+.archivedNote {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--border-radius-sm);
+  background: #f4f6f5;
+  color: var(--text-secondary, #4b5563);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 // ---------- стани картки товару ----------
 .skeleton {
   display: flex;
@@ -316,67 +327,3 @@
   font-size: 12px;
 }
 
-// ---------- стрічка колекції (демо-версії B і C) ----------
-.strip {
-  display: flex;
-  gap: var(--space-2);
-  overflow-x: auto;
-  padding-bottom: var(--space-1);
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.stripThumb {
-  flex-shrink: 0;
-  width: 56px;
-  height: 56px;
-  padding: 0;
-  border: 2px solid transparent;
-  border-radius: var(--border-radius-sm);
-  overflow: hidden;
-  background: #f4f6f5;
-  cursor: pointer;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  &[aria-pressed='true'] {
-    border-color: var(--text-primary, #111);
-  }
-}
-
-.photo {
-  width: 100%;
-  height: auto;
-  align-self: center;
-  max-width: 420px;
-}
-
-// ---------- перемикач версій (демо) ----------
-.versionSwitch {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: 13px;
-  color: var(--text-secondary, #6b7280);
-}
-
-.versionLink {
-  padding: 4px 12px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: var(--radius-pill);
-  color: inherit;
-  text-decoration: none;
-
-  &[aria-current='page'] {
-    background: var(--text-primary, #111);
-    border-color: transparent;
-    color: #fff;
-  }
-}

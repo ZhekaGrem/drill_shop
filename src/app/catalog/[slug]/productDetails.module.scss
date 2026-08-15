@@ -326,6 +326,17 @@
     color: var(--accent-red);
   }
 
+  // Архівна колекція: плашка замість контролів покупки (вітрина без продажу)
+  .archivedNotice {
+    margin: 0;
+    padding: var(--space-4);
+    border-radius: var(--border-radius-sm);
+    background: var(--bg-secondary, #f4f6f5);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
   // ============ PRODUCT GALLERY ============
   // Висоту всієї галереї задає ОДИН елемент — фото-вставка з aspect-ratio.
   // Раніше висот було три незалежні: контейнер `max(433px, 56.67vw)`, колонка

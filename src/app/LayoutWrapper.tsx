@@ -27,8 +27,9 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className={styles.plug} role="status">
-        <h1 className={styles.plugTitle}>Вибачте в нас проблеми з підключенням...</h1>
+        <h1 className={styles.plugTitle}>Вибачте, у нас проблеми з підключенням</h1>
         <p className={styles.plugHint}>але з телефона може запрацює...</p>
+        <p className={styles.plugHint}>(Якщо сайт не робе, не пишіт мені)</p>
       </div>
       <div className={styles.site}>
         {/* viewTransitionName вилучає хедер зі знімка сторінки, щоб він не їхав
