@@ -46,7 +46,16 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
         {/* Галерея = жива сцена колекції; мініатюри під нею перемикають товар */}
         <div className={styles.card}>
           <div className={styles.collectionHead}>
-            <h2>{collection ? `Колекція «${collection.title}»` : 'Завантажуємо колекцію…'}</h2>
+            <h2>
+              {collection ? `Колекція «${collection.title}»` : 'Завантажуємо колекцію…'}
+              {collection?.labelText && (
+                <span
+                  className={styles.capsule}
+                  style={{ background: collection.labelColor ?? '#3b6ff5', marginLeft: 8 }}>
+                  {collection.labelText}
+                </span>
+              )}
+            </h2>
             {collection?.archivedAt && <p className={styles.outOfStock}>Архівна колекція</p>}
             {collection?.description && <p>{collection.description}</p>}
           </div>

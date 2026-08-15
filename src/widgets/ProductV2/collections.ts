@@ -16,6 +16,9 @@ export interface CollectionDef {
   description: string;
   /** Архівна колекція: вітрина без продажу (дата закриття дропу) */
   archivedAt: string | null;
+  /** Капсула-лейбл колекції («новинка» в кольоровій пігулці біля назви) */
+  labelText: string | null;
+  labelColor: string | null;
   designs: Record<string, Design>;
   items: CollectionItem[];
   cover: string;

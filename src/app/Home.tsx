@@ -66,7 +66,16 @@ const Home = () => {
         <div className={styles.heroText}>
           {/* Назва й опис — із БД колекції; поки вантажиться, копі з content
               як заглушка тієї ж довжини (без стрибка макета) */}
-          <h1 className={styles.heroTitle}>{heroCollection?.title ?? content.home.hero.title}</h1>
+          <h1 className={styles.heroTitle}>
+            {heroCollection?.title ?? content.home.hero.title}
+            {heroCollection?.labelText && (
+              <span
+                className={styles.capsule}
+                style={{ background: heroCollection.labelColor ?? '#3b6ff5' }}>
+                {heroCollection.labelText}
+              </span>
+            )}
+          </h1>
           <p className={styles.heroSubtitle}>
             {heroCollection?.description ?? content.home.hero.description}
           </p>
@@ -100,7 +109,16 @@ const Home = () => {
       {varCollection && (
         <section className={styles.hero}>
           <div className={styles.heroText}>
-            <h2 className={styles.heroTitle}>{varCollection.title}</h2>
+            <h2 className={styles.heroTitle}>
+              {varCollection.title}
+              {varCollection.labelText && (
+                <span
+                  className={styles.capsule}
+                  style={{ background: varCollection.labelColor ?? '#3b6ff5' }}>
+                  {varCollection.labelText}
+                </span>
+              )}
+            </h2>
             <p className={styles.heroSubtitle}>{varCollection.description}</p>
             <div className={styles.heroActions}>
               <Button

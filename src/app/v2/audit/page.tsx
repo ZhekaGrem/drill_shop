@@ -25,6 +25,8 @@ interface AuditProduct {
   switcherSwatch: string | null;
   badgeText: string | null;
   badgeColor: string | null;
+  labelText: string | null;
+  labelColor: string | null;
   images: AuditImage[];
 }
 
@@ -32,6 +34,8 @@ interface AuditCollection {
   slug: string;
   title: string;
   archivedAt: string | null;
+  labelText: string | null;
+  labelColor: string | null;
   products: AuditProduct[];
 }
 
@@ -76,6 +80,11 @@ export default function CollectionsAuditPage() {
         <section key={col.slug} className={styles.collection}>
           <h2 className={styles.collectionTitle}>
             «{col.title}» · {col.products.length} тов.
+            {col.labelText && (
+              <span className={styles.capsule} style={{ background: col.labelColor ?? '#3b6ff5' }}>
+                {col.labelText}
+              </span>
+            )}
             {col.archivedAt && <span className={styles.archived}>Архів</span>}
           </h2>
 
@@ -97,6 +106,13 @@ export default function CollectionsAuditPage() {
                       className={styles.badge}
                       style={{ background: p.badgeColor ?? 'var(--text-primary)' }}>
                       {p.badgeText}
+                    </span>
+                  )}
+                  {p.labelText && (
+                    <span
+                      className={styles.capsule}
+                      style={{ background: p.labelColor ?? '#3b6ff5', marginLeft: p.badgeText ? 0 : 'auto' }}>
+                      {p.labelText}
                     </span>
                   )}
                 </header>

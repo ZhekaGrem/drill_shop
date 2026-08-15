@@ -34,6 +34,8 @@ interface ApiCollection {
   title: string;
   description: string | null;
   archivedAt: string | null;
+  labelText: string | null;
+  labelColor: string | null;
   products: ApiCollectionProduct[];
 }
 
@@ -61,6 +63,8 @@ const toCollectionDef = (c: ApiCollection): CollectionDef => {
     title: c.title,
     description: c.description ?? '',
     archivedAt: c.archivedAt,
+    labelText: c.labelText ?? null,
+    labelColor: c.labelColor ?? null,
     designs: Object.fromEntries(items.map((i) => [i.slug, i.design])),
     items,
     cover: items[0]?.design.fallback ?? DEFAULT_FALLBACK,

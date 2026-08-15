@@ -37,6 +37,24 @@
   font-size: 13px;
 }
 
+// Капсула-лейбл (колекції або товару): текст у кольоровій пігулці з БД
+.capsule {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.badgesRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
 // ---------- блок покупки ----------
 .buyPanel {
   display: flex;

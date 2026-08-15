@@ -205,9 +205,12 @@ export interface Product {
   texture3dUrl?: string | null;
   texture3dPublicId?: string | null;
   switcherSwatch?: string | null;
-  /** Інфо-бейдж (пігулка «Новинка»/«Знижка»): текст і колір задаються разом */
+  /** Інфо-бейдж (пульсуюча крапка з підписом): текст і колір задаються разом */
   badgeText?: string | null;
   badgeColor?: string | null;
+  /** Капсула-лейбл (текст у кольоровій пігулці) — другий тип позначки */
+  labelText?: string | null;
+  labelColor?: string | null;
   /** Мінімум колекції товару; archivedAt = вітрина, продаж завершено */
   collection?: {
     slug: string;

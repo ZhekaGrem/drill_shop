@@ -54,15 +54,24 @@ export const BuyPanel = ({ product }: { product: Product }) => {
 
   return (
     <div className={styles.buyPanel}>
-      {product.badgeText && (
-        <span className={styles.badgeDot}>
-          <span
-            className={styles.pulseDot}
-            style={{ '--badge-color': product.badgeColor ?? '#1c8a37' } as CSSProperties}
-            aria-hidden="true"
-          />
-          {product.badgeText}
-        </span>
+      {(product.badgeText || product.labelText) && (
+        <div className={styles.badgesRow}>
+          {product.badgeText && (
+            <span className={styles.badgeDot}>
+              <span
+                className={styles.pulseDot}
+                style={{ '--badge-color': product.badgeColor ?? '#1c8a37' } as CSSProperties}
+                aria-hidden="true"
+              />
+              {product.badgeText}
+            </span>
+          )}
+          {product.labelText && (
+            <span className={styles.capsule} style={{ background: product.labelColor ?? '#3b6ff5' }}>
+              {product.labelText}
+            </span>
+          )}
+        </div>
       )}
 
       <h1 className={styles.productName}>{product.name}</h1>
