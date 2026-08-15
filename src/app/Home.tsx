@@ -13,12 +13,7 @@ import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
 import { PopularProductsSlider } from '@/widgets/PopularProductsSlider/PopularProductsSlider';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
-import { DRIL_DESIGNS, TEST_COLLECTION } from '@/widgets/HeroVisual/designs';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
-import { HeroShop } from '@/widgets/HeroShop/HeroShop';
-import { HeroLab } from '@/widgets/HeroLab/HeroLab';
-import { HeroTiles } from '@/widgets/HeroTiles/HeroTiles';
-import { BadgeLab } from '@/widgets/BadgeLab/BadgeLab';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import { CategoriesInitializer } from '@/shared/components/CategoriesInitializer/CategoriesInitializer';
 import { content } from '@/shared/config/content';
@@ -45,152 +40,73 @@ const FAQ_PREVIEW = faqData.slice(0, 3).map((category) => category.questions[0])
 const Home = () => {
   const router = useRouter();
   const categories = useCategoriesStore((s) => s.categories);
-  // Герой 1 живе з GET /collections: дизайни = товари першої колекції з БД.
-  // Вибраний дизайн (slug товару) і веде «До колекції» на свою сторінку.
+  // Герої = колекції з БД (GET /collections), по одному на кожну.
+  // Вибраний дизайн зберігається окремо на колекцію (slug товару)
   const { data: collections } = useCollections();
-  const heroCollection = collections?.[0];
-  const [heroDesign, setHeroDesign] = useState<string | null>(null);
-  const activeSlug = heroDesign ?? heroCollection?.items[0]?.slug;
-
-  // Герой «Гонорове вар'ятство»: різнорідні 3D-моделі (дизайн запечений у GLB),
-  // тому перемикач — міні-фото, а не кольорові крапки
-  const varCollection = collections?.find((c) => c.key === 'honorove-varyatstvo');
-  const [varDesign, setVarDesign] = useState<string | null>(null);
-  const varSlug = varDesign ?? varCollection?.items[0]?.slug;
+  const [selected, setSelected] = useState<Record<string, string>>({});
 
   return (
     <Page>
       <CategoriesInitializer />
 
-      <section className={styles.hero}>
-        <div className={styles.heroText}>
-          {/* Назва й опис — із БД колекції; поки вантажиться, копі з content
-              як заглушка тієї ж довжини (без стрибка макета) */}
-          <h1 className={styles.heroTitle}>
-            {heroCollection?.title ?? content.home.hero.title}
-            {heroCollection?.labelText && (
-              <span
-                className={styles.capsule}
-                style={{ background: heroCollection.labelColor ?? '#3b6ff5' }}>
-                {heroCollection.labelText}
-              </span>
-            )}
-          </h1>
-          <p className={styles.heroSubtitle}>
-            {heroCollection?.description ?? content.home.hero.description}
-          </p>
-          <div className={styles.heroActions}>
-            <Button
-              size="lg"
-              variant="primary"
-              disabled={!activeSlug}
-              onClick={() => activeSlug && router.push(`/v2/a/${activeSlug}`)}>
-              До колекції <ArrowRight size={20} />
-            </Button>
-            <Button size="lg" variant="secondary" onClick={() => router.push('/about')}>
-              Про бренд
-            </Button>
-          </div>
-        </div>
-        <div className={styles.heroVisualWrap}>
-          <span className={`${styles.heroBadgeDot} ${styles.heroBadgeOnStage}`}>
-            <span className={styles.heroPulseDot} aria-hidden="true" />
-            новинка
-          </span>
-          {heroCollection ? (
-            <HeroVisual designs={heroCollection.designs} value={activeSlug} onChange={setHeroDesign} />
-          ) : (
-            <div className={styles.heroStageSkeleton} aria-busy="true" aria-label="Завантаження колекції" />
-          )}
-        </div>
-      </section>
-
-      {/* Герой «Гонорове вар'ятство»: колекція 3D-моделей із БД */}
-      {varCollection && (
+      {/* Скелетон-герой, поки колекції вантажаться (без стрибка макета) */}
+      {!collections && (
         <section className={styles.hero}>
           <div className={styles.heroText}>
-            <h2 className={styles.heroTitle}>
-              {varCollection.title}
-              {varCollection.labelText && (
-                <span
-                  className={styles.capsule}
-                  style={{ background: varCollection.labelColor ?? '#3b6ff5' }}>
-                  {varCollection.labelText}
-                </span>
-              )}
-            </h2>
-            <p className={styles.heroSubtitle}>{varCollection.description}</p>
+            <h1 className={styles.heroTitle}>{content.home.hero.title}</h1>
+            <p className={styles.heroSubtitle}>{content.home.hero.description}</p>
             <div className={styles.heroActions}>
-              <Button
-                size="lg"
-                variant="primary"
-                disabled={!varSlug}
-                onClick={() => varSlug && router.push(`/v2/a/${varSlug}`)}>
+              <Button size="lg" variant="primary" disabled>
                 До колекції <ArrowRight size={20} />
               </Button>
             </div>
           </div>
-          <HeroVisual
-            designs={varCollection.designs}
-            switcher="thumbs"
-            value={varSlug}
-            onChange={setVarDesign}
-          />
+          <div className={styles.heroStageSkeleton} aria-busy="true" aria-label="Завантаження колекцій" />
         </section>
       )}
 
-      {/* Другий герой: колекція «Дріл» — свій набір дизайнів, та сама сцена */}
-      <section className={styles.hero}>
-        <div className={styles.heroText}>
-          <h2 className={styles.heroTitle}>{content.home.hero2.title}</h2>
-          <p className={styles.heroSubtitle}>{content.home.hero2.description}</p>
-          <div className={styles.heroActions}>
-            <Button size="lg" variant="primary" onClick={() => router.push('/catalog')}>
-              До каталогу <ArrowRight size={20} />
-            </Button>
-          </div>
-        </div>
-        <HeroVisual designs={DRIL_DESIGNS} />
-      </section>
-
-      {/* Герой 3: комерційний — вибір дизайну = вибір товару, кошик поруч */}
-      <HeroShop />
-
-      {/* Герой 4 (ТЕСТ): колекція різнорідних 3D-предметів, перемикач-мініатюри */}
-      <section className={styles.hero}>
-        <div className={styles.heroText}>
-          <h2 className={styles.heroTitle}>{content.home.heroTest.title}</h2>
-          <p className={styles.heroSubtitle}>{content.home.heroTest.description}</p>
-        </div>
-        <HeroVisual designs={TEST_COLLECTION} switcher="thumbs" />
-      </section>
-
-      {/* ТИМЧАСОВО: лабораторія №2 — механіки перемикання МІЖ колекціями */}
-      <HeroLab />
-
-      {/* Герой-кандидат: плитки колекцій + сторіз 5с (механіка власника) */}
-      <HeroTiles />
-
-      {/* Герой 6 (ДЕМО): копія першого героя з бейджем «Новинка» */}
-      <section className={styles.hero}>
-        <div className={styles.heroText}>
-          <span className={styles.heroBadge}>Новинка</span>
-          <h2 className={styles.heroTitle}>{content.home.hero.title}</h2>
-          <p className={styles.heroSubtitle}>{content.home.hero.description}</p>
-          <div className={styles.heroActions}>
-            <Button size="lg" variant="primary" onClick={() => router.push('/catalog')}>
-              До каталогу <ArrowRight size={20} />
-            </Button>
-            <Button size="lg" variant="secondary" onClick={() => router.push('/about')}>
-              Про бренд
-            </Button>
-          </div>
-        </div>
-        <HeroVisual />
-      </section>
-
-      {/* ТИМЧАСОВО: лабораторія №3 — варіанти бейджа «Новинка» (2–5) */}
-      <BadgeLab />
+      {/* Кожна колекція БД — герой: назва/опис/капсула з colections-ендпоінта.
+          Перемикач: міні-фото, якщо в колекції є власні моделі, інакше крапки */}
+      {collections?.map((col, i) => {
+        const TitleTag = (i === 0 ? 'h1' : 'h2') as 'h1';
+        const active = selected[col.key] ?? col.items[0]?.slug;
+        const switcher = col.items.some((it) => it.design.modelUrl) ? 'thumbs' : 'dots';
+        return (
+          <section key={col.key} className={styles.hero}>
+            <div className={styles.heroText}>
+              <TitleTag className={styles.heroTitle}>
+                {col.title}
+                {col.labelText && (
+                  <span className={styles.capsule} style={{ background: col.labelColor ?? '#3b6ff5' }}>
+                    {col.labelText}
+                  </span>
+                )}
+              </TitleTag>
+              <p className={styles.heroSubtitle}>{col.description}</p>
+              <div className={styles.heroActions}>
+                <Button
+                  size="lg"
+                  variant="primary"
+                  disabled={!active}
+                  onClick={() => active && router.push(`/v2/a/${active}`)}>
+                  До колекції <ArrowRight size={20} />
+                </Button>
+                {i === 0 && (
+                  <Button size="lg" variant="secondary" onClick={() => router.push('/about')}>
+                    Про бренд
+                  </Button>
+                )}
+              </div>
+            </div>
+            <HeroVisual
+              designs={col.designs}
+              switcher={switcher}
+              value={active}
+              onChange={(key) => setSelected((prev) => ({ ...prev, [col.key]: key }))}
+            />
+          </section>
+        );
+      })}
 
       <ul className={styles.trust}>
         {content.home.trust.map((item) => (
