@@ -58,14 +58,16 @@ const computeFindings = (collections: FindingsCollection[]): Finding[] => {
       });
 
     for (const p of col.products) {
+      // Текстура обов'язкова лише для базової футболки; у власних моделей
+      // (худі/вішак/walking) дизайн запечений у GLB — null легітимний
+      const needsTexture = p.model3dPath === '/3d/models/tshirt.glb';
       const gaps = [
-        !p.texture3dUrl && 'текстури',
+        needsTexture && !p.texture3dUrl && 'текстури',
         !p.images.some((i) => i.kind === 'render3d') && 'рендера',
         !p.switcherSwatch && 'свотча',
         !p.model3dPath && 'моделі',
       ].filter(Boolean);
-      if (gaps.length)
-        out.push({ level: 'warn', text: `${p.slug}: не вистачає ${gaps.join(', ')}` });
+      if (gaps.length) out.push({ level: 'warn', text: `${p.slug}: не вистачає ${gaps.join(', ')}` });
     }
 
     const drafts = col.products.filter((p) => p.name.includes('чернетка'));
@@ -75,8 +77,7 @@ const computeFindings = (collections: FindingsCollection[]): Finding[] => {
         text: `«${col.title}»: ${drafts.length} чернеток чекають редагування (${drafts.map((d) => '#' + d.collectionOrder).join(', ')})`,
       });
 
-    if (col.archivedAt)
-      out.push({ level: 'info', text: `«${col.title}»: архівна — вітрина без продажу` });
+    if (col.archivedAt) out.push({ level: 'info', text: `«${col.title}»: архівна — вітрина без продажу` });
   }
 
   // Конфлікт текстур: два товари вказують на той самий файл

@@ -52,6 +52,12 @@ const Home = () => {
   const [heroDesign, setHeroDesign] = useState<string | null>(null);
   const activeSlug = heroDesign ?? heroCollection?.items[0]?.slug;
 
+  // Герой «Гонорове вар'ятство»: різнорідні 3D-моделі (дизайн запечений у GLB),
+  // тому перемикач — міні-фото, а не кольорові крапки
+  const varCollection = collections?.find((c) => c.key === 'honorove-varyatstvo');
+  const [varDesign, setVarDesign] = useState<string | null>(null);
+  const varSlug = varDesign ?? varCollection?.items[0]?.slug;
+
   return (
     <Page>
       <CategoriesInitializer />
@@ -89,6 +95,31 @@ const Home = () => {
           )}
         </div>
       </section>
+
+      {/* Герой «Гонорове вар'ятство»: колекція 3D-моделей із БД */}
+      {varCollection && (
+        <section className={styles.hero}>
+          <div className={styles.heroText}>
+            <h2 className={styles.heroTitle}>{varCollection.title}</h2>
+            <p className={styles.heroSubtitle}>{varCollection.description}</p>
+            <div className={styles.heroActions}>
+              <Button
+                size="lg"
+                variant="primary"
+                disabled={!varSlug}
+                onClick={() => varSlug && router.push(`/v2/a/${varSlug}`)}>
+                До колекції <ArrowRight size={20} />
+              </Button>
+            </div>
+          </div>
+          <HeroVisual
+            designs={varCollection.designs}
+            switcher="thumbs"
+            value={varSlug}
+            onChange={setVarDesign}
+          />
+        </section>
+      )}
 
       {/* Другий герой: колекція «Дріл» — свій набір дизайнів, та сама сцена */}
       <section className={styles.hero}>
