@@ -2,7 +2,7 @@
 // Єдиний контейнер сторінки: одна максимальна ширина, одні горизонтальні поля.
 // До цього кожна сторінка оголошувала власний `.container` без max-width, тож на
 // широкому екрані контент розтягувався на всю ширину — мова Дії (одна колонка) ламалась.
-import type { ElementType, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { ViewTransition } from 'react';
 import clsx from 'clsx';
 import styles from './Page.module.scss';
@@ -21,7 +21,12 @@ interface PageProps {
   className?: string;
   /** narrow — читабельна колонка для тексту (юридичні сторінки, форми) */
   width?: 'default' | 'narrow';
-  as?: ElementType;
+  /**
+   * Тільки HTML-теги. Ширший `ElementType` сюди не годиться: React Three Fiber
+   * дописує свої елементи в JSX.IntrinsicElements, і серед них є такі, де
+   * `children` типізовані як `never` — union із ними ламає компіляцію.
+   */
+  as?: keyof HTMLElementTagNameMap;
 }
 
 export const Page = ({ children, className, width = 'default', as: Tag = 'div' }: PageProps) => (

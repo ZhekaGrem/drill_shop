@@ -3,7 +3,16 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { supabase } from '@/shared/utils/supabase/client';
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL;
+// Бекенд пускає CORS лише зі своїх доменів і localhost. Сайт мобільний, і в
+// розробці телефон відкриває його по LAN-адресі (192.168.x.x) — з такого
+// origin API відповідає 500 без CORS-заголовків, тобто на телефоні мовчки
+// відвалюються ВСІ дані. Тому в браузері в dev ходимо через same-origin
+// проксі Next (rewrites у next.config.ts): для API запит приходить із самого
+// сервера, CORS не діє. Сервер-рендер і прод — прямий абсолютний URL.
+export const API_BASE =
+  process.env.NODE_ENV === 'development' && typeof window !== 'undefined'
+    ? '/api/v1'
+    : process.env.NEXT_PUBLIC_API_URL;
 let tempAccessToken: string | null = null;
 
 // ✅ ФІКС CPU: Кешування токенів для зменшення getSession викликів

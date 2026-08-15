@@ -1,0 +1,38 @@
+// src/app/LayoutWrapper.module.scss
+// Десктоп свідомо вимкнено (рішення власника, 2026-08-13): сайт живе на
+// телефоні, широкий екран бачить заглушку в тоні бренду. Межа 769px — той
+// самий поріг, що в усіх мобільних медіа-правилах проєкту. Чистий CSS:
+// без JS-детекції, отже без гідраційних розбіжностей і живе при ресайзі.
+.plug {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .plug {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    min-height: 100svh;
+    padding: var(--space-8);
+    text-align: center;
+  }
+
+  .plugTitle {
+    margin: 0;
+    font-size: clamp(24px, 3vw, 40px);
+  }
+
+  .plugHint {
+    margin: 0;
+    color: var(--text-secondary, #6b7280);
+    font-size: 18px;
+  }
+
+  // Увесь сайт: display:none не лише ховає, а й глушить IntersectionObserver —
+  // 3D-сцени на десктопі навіть не монтуються
+  .site {
+    display: none;
+  }
+}
