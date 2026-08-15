@@ -22,16 +22,24 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
+  // ТИМЧАСОВО (2026-08-15): десктоп розблоковано на час допрацювання сайту.
+  // Повернути покупцям заглушку = DESKTOP_PLUG: true; виняток /v2/audit
+  // (внутрішній інструмент) при цьому лишиться робочим.
+  const DESKTOP_PLUG = false;
+  const isDesktopAllowed = !DESKTOP_PLUG || pathname?.startsWith('/v2/audit');
+
   // Всі інші сторінки - З Header і Footer. Десктоп бачить лише заглушку
   // (копі власника, дослівно) — сайт зараз мобільний.
   return (
     <>
-      <div className={styles.plug} role="status">
-        <h1 className={styles.plugTitle}>Вибачте, у нас проблеми з підключенням</h1>
-        <p className={styles.plugHint}>але з телефона може запрацює...</p>
-        <p className={styles.plugHint}>(Якщо сайт не робе, не пишіт мені)</p>
-      </div>
-      <div className={styles.site}>
+      {!isDesktopAllowed && (
+        <div className={styles.plug} role="status">
+          <h1 className={styles.plugTitle}>Вибачте, у нас проблеми з підключенням</h1>
+          <p className={styles.plugHint}>але з телефона може запрацює...</p>
+          <p className={styles.plugHint}>(Якщо сайт не робе, не пишіт мені)</p>
+        </div>
+      )}
+      <div className={isDesktopAllowed ? styles.siteAlways : styles.site}>
         {/* viewTransitionName вилучає хедер зі знімка сторінки, щоб він не їхав
           разом із контентом. Правило анімації — в globals.css. Inline-стиль —
           варіант C правил стилізації: це унікальний ідентифікатор ділянки,

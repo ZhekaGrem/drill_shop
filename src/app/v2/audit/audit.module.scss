@@ -1,0 +1,134 @@
+// src/app/v2/audit/audit.module.scss
+// Контрольний лист колекцій: компактні картки звіряння звʼязок БД.
+.note {
+  color: var(--text-secondary, #6b7280);
+}
+
+.collection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.collectionTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: 18px;
+}
+
+.archived {
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  background: #6b7280;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+
+  strong {
+    font-size: 15px;
+  }
+}
+
+.order {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--text-primary, #111);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.slug {
+  color: var(--text-secondary, #6b7280);
+  font-size: 12px;
+  font-family: var(--font-mono, monospace);
+}
+
+.badge {
+  margin-left: auto;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.visuals {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.visual {
+  flex-shrink: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  img {
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    background: #f4f6f5;
+  }
+
+  figcaption {
+    font-size: 11px;
+    color: var(--text-secondary, #6b7280);
+  }
+}
+
+.swatch {
+  width: 84px;
+  height: 84px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.missing {
+  width: 84px;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--border-radius-sm);
+  border: 1px dashed rgba(0, 0, 0, 0.25);
+  color: var(--accent-red, #c8102e);
+  font-size: 12px;
+}
+
+.model {
+  color: var(--text-secondary, #6b7280);
+  font-size: 12px;
+  font-family: var(--font-mono, monospace);
+}

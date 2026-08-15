@@ -58,8 +58,12 @@ const Home = () => {
 
       <section className={styles.hero}>
         <div className={styles.heroText}>
-          <h1 className={styles.heroTitle}>{content.home.hero.title}</h1>
-          <p className={styles.heroSubtitle}>{content.home.hero.description}</p>
+          {/* Назва й опис — із БД колекції; поки вантажиться, копі з content
+              як заглушка тієї ж довжини (без стрибка макета) */}
+          <h1 className={styles.heroTitle}>{heroCollection?.title ?? content.home.hero.title}</h1>
+          <p className={styles.heroSubtitle}>
+            {heroCollection?.description ?? content.home.hero.description}
+          </p>
           <div className={styles.heroActions}>
             <Button
               size="lg"

@@ -65,6 +65,143 @@
           "switcherSwatch": "#309040"
         }
       ]
+    },
+    {
+      "slug": "shchilnyi-dril",
+      "title": "Щільний Дріл",
+      "description": "Нова колекція «Дріл»: шістнадцять дизайнів на білому й чорному — обери свій",
+      "sortOrder": 1,
+      "heroEnabled": true,
+      "products": [
+        {
+          "productSlug": "t-shirt-nizhna-oksana-white-grinder-2",
+          "collectionOrder": 0,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril1-01.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril1-01.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #d0d0d0 0 55%, #808080 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-white-nizhna-oksana-cursed-grinder",
+          "collectionOrder": 1,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril1-02.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril1-02.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #d0d0d0 0 55%, #a05050 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-dril-1-03",
+          "collectionOrder": 2,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril1-03.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril1-03.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #d0d0d0 0 50%, #a03040 50% 78%, #808080 78% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-black-drill-oksana-symbol",
+          "collectionOrder": 3,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril1-04.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril1-04.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 55%, #d05060 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-white-blunts-lighter-red-logo-32",
+          "collectionOrder": 4,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril1-05.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril1-05.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #d0d0d0 0 55%, #909090 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-oksana-grinder-border-logo",
+          "collectionOrder": 5,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril1-06.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril1-06.webp",
+          "switcherSwatch": "#404040"
+        },
+        {
+          "productSlug": "t-shirt-black-oksana-red-grinder",
+          "collectionOrder": 6,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril1-07.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril1-07.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 55%, #e05060 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-black-logo-back-proklyatiy",
+          "collectionOrder": 7,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril1-08.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril1-08.webp",
+          "switcherSwatch": "#404040"
+        },
+        {
+          "productSlug": "t-shirt-dril-2-01",
+          "collectionOrder": 8,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril2-01.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril2-01.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #d0d0d0 0 55%, #202020 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-dril-2-02",
+          "collectionOrder": 9,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril2-02.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril2-02.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #d0d0d0 0 50%, #a03040 50% 78%, #808080 78% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-shchilnyi-drill-blunts-red-logo",
+          "collectionOrder": 10,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril2-03.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril2-03.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 55%, #808080 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-dril-2-04",
+          "collectionOrder": 11,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril2-04.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril2-04.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #d0d0d0 0 55%, #b08070 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-dril-2-05",
+          "collectionOrder": 12,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril2-05.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril2-05.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 55%, #a05050 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-dril-2-06",
+          "collectionOrder": 13,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril2-06.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril2-06.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #d0d0d0 0 55%, #202020 55% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-black-oksana-overlay-cig-logo",
+          "collectionOrder": 14,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril2-07.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril2-07.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 50%, #f0c0b0 50% 78%, #e06060 78% 100%)"
+        },
+        {
+          "productSlug": "t-shirt-black-red-proklyatiy",
+          "collectionOrder": 15,
+          "model3dPath": "/3d/models/tshirt.glb",
+          "textureFile": "public/3d/textures/tshirt-dril2-08.jpg",
+          "renderFile": "public/assets/img/tshirt-fallback-dril2-08.webp",
+          "switcherSwatch": "conic-gradient(from -45deg, #404040 0 55%, #b05050 55% 100%)"
+        }
+      ]
     }
   ]
 }
