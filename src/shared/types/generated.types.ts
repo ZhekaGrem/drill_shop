@@ -198,6 +198,16 @@ export interface Product {
   promoType?: ProductPromoType | null;
   promoConfig?: PromoConfig | null;
   promoEndsAt?: Date | null;
+  /** 3D-подача і колекція (герой головної) — спека collections-db-design */
+  collectionId?: string | null;
+  collectionOrder?: number;
+  model3dPath?: string | null;
+  texture3dUrl?: string | null;
+  texture3dPublicId?: string | null;
+  switcherSwatch?: string | null;
+  /** Інфо-бейдж (пігулка «Новинка»/«Знижка»): текст і колір задаються разом */
+  badgeText?: string | null;
+  badgeColor?: string | null;
 }
 
 export interface ProductCategory {
