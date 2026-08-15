@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import { apiClient } from '@/shared/api/client';
+import { AuditFindings } from './AuditFindings';
 import styles from './audit.module.scss';
 
 interface AuditImage {
@@ -69,6 +70,8 @@ export default function CollectionsAuditPage() {
 
       {isLoading && <p className={styles.note}>Завантажуємо колекції…</p>}
 
+      <AuditFindings collections={collections} />
+
       {collections?.map((col) => (
         <section key={col.slug} className={styles.collection}>
           <h2 className={styles.collectionTitle}>
@@ -80,7 +83,9 @@ export default function CollectionsAuditPage() {
             const render = p.images.find((i) => i.kind === 'render3d')?.url;
             const photo = p.images.find((i) => i.isPrimary)?.url ?? p.images[0]?.url;
             return (
-              <article key={p.slug} className={styles.card}>
+              <article
+                key={p.slug}
+                className={`${styles.card} ${p.name.includes('чернетка') ? styles.draftCard : ''}`}>
                 <header className={styles.cardHead}>
                   <span className={styles.order}>#{p.collectionOrder}</span>
                   <div>

@@ -132,3 +132,43 @@
   font-size: 12px;
   font-family: var(--font-mono, monospace);
 }
+
+// Автоматичні перевірки
+.findings {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.findWarn,
+.findInfo {
+  background: var(--surface-card);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.findWarn {
+  border-left: 3px solid var(--accent-red, #c8102e);
+}
+
+.findInfo {
+  border-left: 3px solid #6b7280;
+  color: var(--text-secondary, #4b5563);
+}
+
+.findOk {
+  margin: 0;
+  color: #1c8a37;
+  font-weight: 600;
+}
+
+// Чернетка: жовта мітка на картці — товар чекає редагування власником
+.draftCard {
+  border-left: 3px solid #f5d800;
+}
