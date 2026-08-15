@@ -1,22 +1,59 @@
 // src/widgets/HeroVisual/HeroVisual.module.scss
+// Колонка: сцена + свотчі дизайнів під нею
+.visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+
+  @media (max-width: 768px) {
+    width: 100%;
+    // На телефоні футболка в кадрі сягає нижнього краю полотна — без більшого
+    // проміжку перемикач візуально клеїться до неї
+    gap: var(--space-5);
+  }
+}
+
 .stage {
   position: relative;
   display: grid;
+  // Трек = розмір самої сцени: інакше квадратна фолбек-картинка (1200×1200)
+  // на вузькому екрані розтягує auto-трек до квадрата, і канвас із фото
+  // переливаються за межі сцени (перекривали перемикач і заголовок)
+  grid-template-rows: 100%;
+  grid-template-columns: 100%;
   place-items: center;
   width: 440px;
   height: 440px;
   flex-shrink: 0;
   isolation: isolate;
+  // Драг-обертання: вертикальний скрол лишається браузеру, горизонталь — нам
+  touch-action: pan-y;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
 
   @media (max-width: 1200px) {
     width: 360px;
     height: 360px;
   }
 
+  // Ціль: весь герой уміщається в перший екран iPhone 14 Pro без скролу.
+  // Видима область Safari там 659px. Хедер 57 + відступ сторінки 16 +
+  // падінги картки 32 + проміжок 24 + текстовий блок ~369 = 498px,
+  // решта висоти лишається візуалу. Перший рядок — фолбек для браузерів
+  // без svh; другий рахує залишок і сам підлаштовується під вищі екрани.
   @media (max-width: 768px) {
+    // Слот займає всю ширину картки, а розмір самої футболки в кадрі задає
+    // камера через <Bounds> у сцені. Полотну більше не потрібні ні квадратна
+    // форма, ні transform: раніше без них Spline вписував модель у меншу
+    // сторону й вона дрібнішала, тепер камера підганяється під будь-який
+    // формат полотна і перераховується на зміну розміру.
     width: 100%;
-    max-width: 300px;
-    height: 300px;
+    max-width: none;
+    height: clamp(220px, 38svh, 320px);
   }
 }
 
@@ -89,5 +126,81 @@
   .still,
   .scene {
     transition: none;
+  }
+}
+
+.designSwitcher {
+  display: flex;
+  // Дизайнів уже 7 (~356px рядок): на вузьких екранах крапки переносяться,
+  // а не вилазять за картку
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+// Мініатюра предмета (режим switcher="thumbs"): фолбек-фото як кнопка.
+// Для різнорідних колекцій силует говорить більше, ніж колір крапки
+.thumb {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  background: #f4f6f5;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &:active {
+    transform: scale(var(--motion-press-scale));
+  }
+
+  &[aria-pressed='true'] {
+    border-color: var(--text-primary, #111);
+  }
+  // Явний стекінг-контекст: на iOS композитний шар WebGL-канваса інакше
+  // малюється поверх сусідів і перехоплює тапи по свотчах
+  position: relative;
+  z-index: 1;
+}
+
+// Круглий свотч кольору дизайну; тап-зона 44px — розмір самої кнопки,
+// видимий кружечок менший і малюється в ::before
+.swatch {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: none;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+
+  &:active {
+    transform: scale(var(--motion-press-scale));
+  }
+
+  &::before {
+    content: '';
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius-pill);
+    background: var(--swatch-color);
+    // Тонка постійна обводка: світлі свотчі (білий) не зливаються з карткою
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    transition: box-shadow var(--transition-fast);
+  }
+
+  &[aria-pressed='true']::before {
+    box-shadow:
+      0 0 0 2px var(--background-primary, #fff),
+      0 0 0 4px var(--text-primary, #111);
   }
 }

@@ -1,7 +1,8 @@
 // src/widgets/HeroVisual/useDesignMap.ts
 // Рантайм-своп basecolor-мапи (дизайни футболки). Без Suspense: до готовності
-// нової текстури висить чинна — сцена не блимає. Оригінальна запечена мапа
-// запам'ятовується при першому свопі; кеш url→Texture робить повтори миттєвими.
+// нової текстури висить чинна — сцена не блимає. Запечена мапа пам'ятається
+// ПО МАТЕРІАЛУ (сцена вміє мінятись: худі ↔ футболка), кеш url→Texture —
+// повтори миттєві.
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -12,18 +13,21 @@ import type { Group, Mesh, MeshStandardMaterial, Texture } from 'three';
 export const useDesignMap = (scene: Group, mapUrl?: string) => {
   const gl = useThree((state) => state.gl);
   const cache = useRef(new Map<string, Texture>());
-  const original = useRef<Texture | null>(null);
   const wanted = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     const mesh = scene.getObjectByProperty('isMesh', true) as Mesh | undefined;
     const material = mesh?.material as MeshStandardMaterial | undefined;
     if (!material) return;
-    original.current ??= material.map;
+    // Оригінал — у userData, НЕ в React-рефі: зміна моделі ремонтує сцену
+    // (рефи згорають), а матеріал живе в кеші drei з останньою мапою. Реф
+    // після ремонту «запам'ятав» би дизайн як оригінал — і червона крапка
+    // (mapUrl: undefined) показувала б чужу текстуру.
+    if (!('originalMap' in material.userData)) material.userData.originalMap = material.map;
     wanted.current = mapUrl;
 
     if (!mapUrl) {
-      material.map = original.current;
+      material.map = (material.userData.originalMap as Texture | null) ?? null;
       return;
     }
     const cached = cache.current.get(mapUrl);

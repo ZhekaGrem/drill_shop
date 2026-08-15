@@ -43,3 +43,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 3D-сирці й проміжні моделі: гігабайти Blender/Alembic/OBJ і важкі GLB.
+# У git їдуть лише текстури (jpeg ~60-130 КБ) і фолбек-рендери (webp),
+# а моделі складаються конвеєром (docs: model-3d-extendance-task) і
+# кладуться в public/3d/models/ руками.
+3d/
+model/
+/*.glb
+public/3d/models/
+
+# Тимчасові діагностичні сторінки 3D
+public/3d-test.html
+src/app/3d-live/

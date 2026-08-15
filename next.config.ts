@@ -34,6 +34,10 @@ const nextConfig: NextConfig = {
   images: {
     // ✅ Enable Next.js image optimization (безкоштовно!)
     unoptimized: false,
+    // Локальні src із query (?v=N — версіонування кешу фолбеків 3D-дизайнів):
+    // без цього next/image у Next 16 кидає unconfigured-localpatterns.
+    // '/**' зберігає стару поведінку «будь-який локальний шлях» + дозволяє query.
+    localPatterns: [{ pathname: '/**' }],
     // Cloudinary залишається як джерело картинок
     remotePatterns: [
       {
@@ -54,6 +58,16 @@ const nextConfig: NextConfig = {
     // Розміри для responsive images
     deviceSizes: [640, 1080, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+  // Dev-проксі до бекенда: телефон відкриває сайт по LAN-адресі, а бекенд
+  // дозволяє CORS лише для своїх доменів і localhost. Через same-origin
+  // /api/v1/* запит іде з дев-сервера, тож CORS не застосовується.
+  // На проді не діє: там фронт ходить на API напряму (NEXT_PUBLIC_API_URL).
+  async rewrites() {
+    if (process.env.NODE_ENV !== 'development') return [];
+    const target = process.env.NEXT_PUBLIC_API_URL;
+    if (!target) return [];
+    return [{ source: '/api/v1/:path*', destination: `${target}/:path*` }];
   },
   async headers() {
     return [

@@ -9,18 +9,19 @@
 'use client';
 
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Bounds, useAnimations, useCursor, useGLTF } from '@react-three/drei';
 import { Box3 } from 'three';
-import type { Group, Mesh, MeshStandardMaterial } from 'three';
+import type { Group } from 'three';
 import { useJump } from './useJump';
 import { useWind } from './useWind';
 import { useIdleMotion } from './useIdleMotion';
 import { useDesignMap } from './useDesignMap';
+import { useSceneClone } from './useSceneClone';
 import type { RefObject } from 'react';
 import type { DragState } from './useDragRotation';
 
-const MODEL_URL = '/3d/models/tshirt.glb';
+const MODEL_URL = '/3d/models/tshirt.glb?v=2';
 
 useGLTF.preload(MODEL_URL);
 
@@ -30,12 +31,14 @@ type Props = {
   interactive?: boolean;
   /** URL basecolor-дизайну; без нього — запечена в GLB мапа */
   mapUrl?: string;
+  /** GLB іншої моделі (худі тощо); без нього — дефолтна футболка */
+  modelUrl?: string;
   /** Ref драг-обертання зі stage; сцена лише читає його покадрово */
   dragRef?: RefObject<DragState | null>;
 };
 
-const Tshirt = ({ onReady, interactive = false, mapUrl, dragRef }: Props) => {
-  const { scene, animations } = useGLTF(MODEL_URL);
+const Tshirt = ({ onReady, interactive = false, mapUrl, modelUrl = MODEL_URL, dragRef }: Props) => {
+  const { scene, animations } = useGLTF(modelUrl);
   const group = useRef<Group>(null);
   const jumpRef = useRef<Group>(null);
   const [hovered, setHovered] = useState(false);
@@ -53,26 +56,11 @@ const Tshirt = ({ onReady, interactive = false, mapUrl, dragRef }: Props) => {
     firstAction?.reset().play();
   }, [actions, hasBakedRotation]);
 
-  const gl = useThree((state) => state.gl);
-  // Анізотропія обов'язкова: з дефолтом (=1) під ковзним кутом GPU бере глибокі
-  // mip-рівні, де рідкий принт усереднюється в чорну тканину («пливучі плями»)
-  const prepared = useMemo(() => {
-    const anisotropy = Math.min(16, gl.capabilities.getMaxAnisotropy());
-    scene.traverse((object) => {
-      const mesh = object as Mesh;
-      if (!mesh.isMesh) return;
-      if (!mesh.geometry.getAttribute('normal')) mesh.geometry.computeVertexNormals();
-      const material = mesh.material as MeshStandardMaterial;
-      [material.map, material.normalMap].forEach((texture) => {
-        if (texture) Object.assign(texture, { anisotropy, needsUpdate: true });
-      });
-    });
-    return scene;
-  }, [scene, gl]);
+  // Своя копія кешованої сцени (два герої на сторінці) + анізотропія на мапах
+  const prepared = useSceneClone(scene);
 
-  // Низ і висота моделі: pivot присідання і масштаб висоти стрибка.
-  // Вузол GLB несе рівномірний масштаб квантування (0.368): у шейдері вітру
-  // position — у нормалізованому просторі, константи відкалібровані там же.
+  // Низ і висота моделі: pivot присідання і масштаб висоти стрибка. У шейдері
+  // вітру position — у нормалізованому квантуванням просторі, константи звідти.
   const box = useMemo(() => {
     const b = new Box3().setFromObject(prepared);
     return { bottom: b.min.y, height: b.max.y - b.min.y };
@@ -99,8 +87,7 @@ const Tshirt = ({ onReady, interactive = false, mapUrl, dragRef }: Props) => {
     onReady();
   }, [onReady]);
 
-  // Габарити 0.67×0.74×0.36; перед дивиться в +Z — просто на камеру
-  // Обробники пасхалки чіпляються лише в interactive-режимі
+  // Перед моделі дивиться в +Z; обробники пасхалки — лише в interactive-режимі
   const jumpHandlers = interactive
     ? {
         onPointerDown: jump.onPointerDown,
@@ -123,7 +110,7 @@ const Tshirt = ({ onReady, interactive = false, mapUrl, dragRef }: Props) => {
   );
 };
 
-const TshirtScene = ({ onReady, interactive, mapUrl, dragRef }: Props) => {
+const TshirtScene = (props: Props) => {
   return (
     <Canvas
       dpr={[1, 2]}
@@ -140,7 +127,7 @@ const TshirtScene = ({ onReady, interactive, mapUrl, dragRef }: Props) => {
       <Suspense fallback={null}>
         {/* Запас у кадрі: силует міняє ширину в оберті — без запасу торкався б країв */}
         <Bounds fit clip observe margin={1.15}>
-          <Tshirt onReady={onReady} interactive={interactive} mapUrl={mapUrl} dragRef={dragRef} />
+          <Tshirt {...props} />
         </Bounds>
       </Suspense>
     </Canvas>

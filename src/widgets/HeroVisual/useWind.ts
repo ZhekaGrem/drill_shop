@@ -12,6 +12,11 @@ import type { Group, Mesh, MeshStandardMaterial } from 'three';
 // Орієнтири руху — зі спеки (docs/superpowers/specs/2026-08-11-tshirt-wind-design.md).
 // Тюняться на око. Всі величини — у нормалізованому просторі атрибутів
 // (квантована модель: висота = 2.0 юніта), межі міряються з геометрії.
+// Вимкнено на прохання власника (2026-08-12): матеріали не патчаться, тканина
+// статична. Повернути вітер = true (потрібен повний рефреш сторінки, не HMR).
+// Разом з вітром вимикається і тканинне відставання при драгу (uWindLag).
+const WIND_ENABLED = false;
+
 const WIND_AMPLITUDE = 0.028; // ≈1.4 % висоти моделі на подолі
 const WAVE1_FREQ = 9.0; // просторова частота першої октави, 1/юніт
 const WAVE1_SPEED = 1.6; // рад/с
@@ -69,6 +74,7 @@ const patchMaterial = (material: MeshStandardMaterial, bottom: number, height: n
 
 export const useWind = (scene: Group) => {
   return useMemo(() => {
+    if (!WIND_ENABLED) return () => {};
     const mesh = scene.getObjectByProperty('isMesh', true) as Mesh | undefined;
     const material = mesh?.material as MeshStandardMaterial | undefined;
     if (!mesh || !material) return () => {};
