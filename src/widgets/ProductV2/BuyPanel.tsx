@@ -83,8 +83,7 @@ export const BuyPanel = ({ product }: { product: Product }) => {
 
       {archived && (
         <p className={styles.archivedNote}>
-          Архівна колекція «{product.collection?.title}» — лишається на вітрині, але купити її вже не
-          можна.
+          Архівна колекція «{product.collection?.title}» — лишається на вітрині, але купити її вже не можна.
         </p>
       )}
 

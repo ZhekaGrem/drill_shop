@@ -100,47 +100,47 @@ export const useDragRotation = (): {
 Новий step (цілком, ≤ 50 рядків):
 
 ```ts
-  return useCallback(
-    (group: Group, delta: number, elapsed: number) => {
-      const dt = Math.min(delta, MAX_DELTA);
-      const idleOmega =
-        BASE_SPEED *
-        (1 + MOD1_AMP * Math.sin(MOD1_FREQ * elapsed) + MOD2_AMP * Math.sin(MOD2_FREQ * elapsed + MOD2_PHASE));
+return useCallback(
+  (group: Group, delta: number, elapsed: number) => {
+    const dt = Math.min(delta, MAX_DELTA);
+    const idleOmega =
+      BASE_SPEED *
+      (1 + MOD1_AMP * Math.sin(MOD1_FREQ * elapsed) + MOD2_AMP * Math.sin(MOD2_FREQ * elapsed + MOD2_PHASE));
 
-      const drag = dragRef?.current;
-      let omega: number;
-      if (drag?.active) {
-        // Рука веде кут напряму; ω-конвеєр живиться швидкістю руки,
-        // щоб α→lag тканини реагував на ривки
-        angle.current += drag.pendingAngle;
-        drag.pendingAngle = 0;
-        omega = Math.max(-MAX_DRAG_OMEGA, Math.min(MAX_DRAG_OMEGA, drag.velocity));
-        prevDragActive.current = true;
-      } else {
-        if (prevDragActive.current) {
-          // Реліз: підхопити надлишок швидкості руки як momentum
-          const v = Math.max(-MAX_DRAG_OMEGA, Math.min(MAX_DRAG_OMEGA, drag?.velocity ?? 0));
-          momentum.current = v - idleOmega;
-          prevDragActive.current = false;
-        }
-        momentum.current *= Math.exp(-MOMENTUM_DECAY * dt);
-        omega = idleOmega + momentum.current;
-        angle.current += omega * dt;
+    const drag = dragRef?.current;
+    let omega: number;
+    if (drag?.active) {
+      // Рука веде кут напряму; ω-конвеєр живиться швидкістю руки,
+      // щоб α→lag тканини реагував на ривки
+      angle.current += drag.pendingAngle;
+      drag.pendingAngle = 0;
+      omega = Math.max(-MAX_DRAG_OMEGA, Math.min(MAX_DRAG_OMEGA, drag.velocity));
+      prevDragActive.current = true;
+    } else {
+      if (prevDragActive.current) {
+        // Реліз: підхопити надлишок швидкості руки як momentum
+        const v = Math.max(-MAX_DRAG_OMEGA, Math.min(MAX_DRAG_OMEGA, drag?.velocity ?? 0));
+        momentum.current = v - idleOmega;
+        prevDragActive.current = false;
       }
+      momentum.current *= Math.exp(-MOMENTUM_DECAY * dt);
+      omega = idleOmega + momentum.current;
+      angle.current += omega * dt;
+    }
 
-      const rawAlpha = dt > 0 ? (omega - prevOmega.current) / dt : 0;
-      const alpha = Math.max(-MAX_ALPHA, Math.min(MAX_ALPHA, rawAlpha));
-      prevOmega.current = omega;
-      lag.current += (-alpha * LAG_GAIN - lag.current) * Math.min(1, dt * LAG_SMOOTHING);
+    const rawAlpha = dt > 0 ? (omega - prevOmega.current) / dt : 0;
+    const alpha = Math.max(-MAX_ALPHA, Math.min(MAX_ALPHA, rawAlpha));
+    prevOmega.current = omega;
+    lag.current += (-alpha * LAG_GAIN - lag.current) * Math.min(1, dt * LAG_SMOOTHING);
 
-      group.rotation.y = angle.current;
-      group.rotation.x = TILT_X_AMP * Math.sin(TILT_X_FREQ * elapsed);
-      group.rotation.z = TILT_Z_AMP * Math.sin(TILT_Z_FREQ * elapsed);
-      group.position.y = BOB_AMP * Math.sin(BOB_FREQ * elapsed);
-      return lag.current;
-    },
-    [dragRef]
-  );
+    group.rotation.y = angle.current;
+    group.rotation.x = TILT_X_AMP * Math.sin(TILT_X_FREQ * elapsed);
+    group.rotation.z = TILT_Z_AMP * Math.sin(TILT_Z_FREQ * elapsed);
+    group.position.y = BOB_AMP * Math.sin(BOB_FREQ * elapsed);
+    return lag.current;
+  },
+  [dragRef]
+);
 ```
 
 Примітка: `MAX_ALPHA` лишається 0.06 для idle-плавності; ривки руки самі по

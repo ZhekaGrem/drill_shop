@@ -736,8 +736,8 @@ export default function ProductDetailsClient({
               <div className={styles.productDetails__actions}>
                 {collectionArchived ? (
                   <p className={styles.archivedNotice}>
-                    Архівна колекція «{product.collection?.title}» — лишається на вітрині, але купити її
-                    вже не можна.
+                    Архівна колекція «{product.collection?.title}» — лишається на вітрині, але купити її вже
+                    не можна.
                   </p>
                 ) : isInStock ? (
                   <>

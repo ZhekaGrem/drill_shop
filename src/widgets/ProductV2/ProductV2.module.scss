@@ -228,6 +228,16 @@
   line-height: 1.5;
 }
 
+// Скелетон сцени, поки колекції вантажаться: висота як у стейджа
+.stageSkeleton {
+  width: 100%;
+  height: min(60vw, 420px);
+  border-radius: var(--border-radius-sm);
+  background: linear-gradient(90deg, #eef1f0 25%, #f7f9f8 37%, #eef1f0 63%);
+  background-size: 400% 100%;
+  animation: v2Shimmer 1.4s ease infinite;
+}
+
 // ---------- стани картки товару ----------
 .skeleton {
   display: flex;
@@ -326,4 +336,3 @@
   color: var(--text-secondary, #6b7280);
   font-size: 12px;
 }
-

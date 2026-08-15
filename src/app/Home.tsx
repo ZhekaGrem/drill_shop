@@ -14,8 +14,7 @@ import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
 import { PopularProductsSlider } from '@/widgets/PopularProductsSlider/PopularProductsSlider';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import { DRIL_DESIGNS, TEST_COLLECTION } from '@/widgets/HeroVisual/designs';
-import { HERO3_SLUGS } from '@/widgets/HeroShop/config';
-import type { Hero3Key } from '@/widgets/HeroShop/config';
+import { useCollections } from '@/widgets/ProductV2/useCollections';
 import { HeroShop } from '@/widgets/HeroShop/HeroShop';
 import { HeroLab } from '@/widgets/HeroLab/HeroLab';
 import { HeroTiles } from '@/widgets/HeroTiles/HeroTiles';
@@ -46,8 +45,12 @@ const FAQ_PREVIEW = faqData.slice(0, 3).map((category) => category.questions[0])
 const Home = () => {
   const router = useRouter();
   const categories = useCategoriesStore((s) => s.categories);
-  // Герой 1 контрольований: «До колекції» веде на v2-сторінку ВИБРАНОГО дизайну
-  const [heroDesign, setHeroDesign] = useState<string>('red');
+  // Герой 1 живе з GET /collections: дизайни = товари першої колекції з БД.
+  // Вибраний дизайн (slug товару) і веде «До колекції» на свою сторінку.
+  const { data: collections } = useCollections();
+  const heroCollection = collections?.[0];
+  const [heroDesign, setHeroDesign] = useState<string | null>(null);
+  const activeSlug = heroDesign ?? heroCollection?.items[0]?.slug;
 
   return (
     <Page>
@@ -61,7 +64,8 @@ const Home = () => {
             <Button
               size="lg"
               variant="primary"
-              onClick={() => router.push(`/v2/a/${HERO3_SLUGS[heroDesign as Hero3Key]}`)}>
+              disabled={!activeSlug}
+              onClick={() => activeSlug && router.push(`/v2/a/${activeSlug}`)}>
               До колекції <ArrowRight size={20} />
             </Button>
             <Button size="lg" variant="secondary" onClick={() => router.push('/about')}>
@@ -74,7 +78,11 @@ const Home = () => {
             <span className={styles.heroPulseDot} aria-hidden="true" />
             новинка
           </span>
-          <HeroVisual value={heroDesign} onChange={setHeroDesign} />
+          {heroCollection ? (
+            <HeroVisual designs={heroCollection.designs} value={activeSlug} onChange={setHeroDesign} />
+          ) : (
+            <div className={styles.heroStageSkeleton} aria-busy="true" aria-label="Завантаження колекції" />
+          )}
         </div>
       </section>
 

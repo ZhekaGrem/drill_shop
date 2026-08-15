@@ -73,9 +73,7 @@ export const useIdleMotion = () => {
     const dt = Math.min(delta, MAX_DELTA);
     const omega =
       BASE_SPEED *
-      (1 +
-        MOD1_AMP * Math.sin(MOD1_FREQ * elapsed) +
-        MOD2_AMP * Math.sin(MOD2_FREQ * elapsed + MOD2_PHASE));
+      (1 + MOD1_AMP * Math.sin(MOD1_FREQ * elapsed) + MOD2_AMP * Math.sin(MOD2_FREQ * elapsed + MOD2_PHASE));
     angle.current += omega * dt;
     const rawAlpha = dt > 0 ? (omega - prevOmega.current) / dt : 0;
     const alpha = Math.max(-MAX_ALPHA, Math.min(MAX_ALPHA, rawAlpha));
@@ -189,23 +187,23 @@ const patchMaterial = (material: MeshStandardMaterial, bottom: number, height: n
 Було (кінець `useWind`):
 
 ```ts
-    patchMaterial(material, box.bottom, box.height);
-    const uniform = material.userData.uWindTime as { value: number };
-    return (elapsedTime: number) => {
-      uniform.value = elapsedTime;
-    };
+patchMaterial(material, box.bottom, box.height);
+const uniform = material.userData.uWindTime as { value: number };
+return (elapsedTime: number) => {
+  uniform.value = elapsedTime;
+};
 ```
 
 Стає:
 
 ```ts
-    patchMaterial(material, box.bottom, box.height);
-    const uniform = material.userData.uWindTime as { value: number };
-    const lagUniform = material.userData.uWindLag as { value: number };
-    return (elapsedTime: number, lag: number) => {
-      uniform.value = elapsedTime;
-      lagUniform.value = lag;
-    };
+patchMaterial(material, box.bottom, box.height);
+const uniform = material.userData.uWindTime as { value: number };
+const lagUniform = material.userData.uWindLag as { value: number };
+return (elapsedTime: number, lag: number) => {
+  uniform.value = elapsedTime;
+  lagUniform.value = lag;
+};
 ```
 
 Гілка `if (!material) return () => {};` лишається як є — no-op сумісний із новою сигнатурою.
@@ -252,7 +250,7 @@ import { useIdleMotion } from './useIdleMotion';
 Після `const windStep = useWind(prepared, box);` додати:
 
 ```tsx
-  const idleStep = useIdleMotion();
+const idleStep = useIdleMotion();
 ```
 
 - [ ] **Step 3: Новий useFrame**
@@ -260,31 +258,31 @@ import { useIdleMotion } from './useIdleMotion';
 Було:
 
 ```tsx
-  // Стрибок мутує внутрішню групу, оберт — зовнішню; в одному кадрі
-  // вони не конфліктують. Фолбек-оберт лишається кодовим: камера належить
-  // <Bounds>, і рух нею збив би підігнане кадрування.
-  useFrame((state, delta) => {
-    windStep(state.clock.elapsedTime);
-    if (interactive) jump.step(delta);
-    if (hasBakedRotation || !group.current) return;
-    group.current.rotation.y += delta * ROTATION_SPEED;
-  });
+// Стрибок мутує внутрішню групу, оберт — зовнішню; в одному кадрі
+// вони не конфліктують. Фолбек-оберт лишається кодовим: камера належить
+// <Bounds>, і рух нею збив би підігнане кадрування.
+useFrame((state, delta) => {
+  windStep(state.clock.elapsedTime);
+  if (interactive) jump.step(delta);
+  if (hasBakedRotation || !group.current) return;
+  group.current.rotation.y += delta * ROTATION_SPEED;
+});
 ```
 
 Стає:
 
 ```tsx
-  // Стрибок мутує внутрішню групу, idle-рух — зовнішню: не конфліктують.
-  // Запечена анімація (якщо колись з'явиться) повністю вимикає idle-рух.
-  useFrame((state, delta) => {
-    if (interactive) jump.step(delta);
-    if (hasBakedRotation || !group.current) {
-      windStep(state.clock.elapsedTime, 0);
-      return;
-    }
-    const lag = idleStep(group.current, delta, state.clock.elapsedTime);
-    windStep(state.clock.elapsedTime, lag);
-  });
+// Стрибок мутує внутрішню групу, idle-рух — зовнішню: не конфліктують.
+// Запечена анімація (якщо колись з'явиться) повністю вимикає idle-рух.
+useFrame((state, delta) => {
+  if (interactive) jump.step(delta);
+  if (hasBakedRotation || !group.current) {
+    windStep(state.clock.elapsedTime, 0);
+    return;
+  }
+  const lag = idleStep(group.current, delta, state.clock.elapsedTime);
+  windStep(state.clock.elapsedTime, lag);
+});
 ```
 
 - [ ] **Step 4: Чотири скорочення коментарів (бюджет рядків)**
@@ -292,21 +290,23 @@ import { useIdleMotion } from './useIdleMotion';
 1. Коментар над `useEffect` із baked-анімацією (3 рядки «Обертання, запечене в Blender…») → 1 рядок:
 
 ```tsx
-  // Запечена в Blender анімація — задум автора моделі: граємо її, а не дублюємо
+// Запечена в Blender анімація — задум автора моделі: граємо її, а не дублюємо
 ```
 
 2. Коментар над `useCursor` (1 рядок) лишити як є.
 3. Коментар у Canvas про світло (4 рядки «Три джерела замість…») → 2 рядки:
 
 ```tsx
-      {/* Локальні джерела замість drei Environment (той тягне HDRI з CDN).
-          Зустрічне й нижнє світло відбивають край чорної тканини від фону */}
+{
+  /* Локальні джерела замість drei Environment (той тягне HDRI з CDN).
+          Зустрічне й нижнє світло відбивають край чорної тканини від фону */
+}
 ```
 
 4. Коментар «Габарити: X 0.67…» (2 рядки) → 1 рядок:
 
 ```tsx
-  // Габарити 0.67×0.74×0.36; перед дивиться в +Z — просто на камеру
+// Габарити 0.67×0.74×0.36; перед дивиться в +Z — просто на камеру
 ```
 
 - [ ] **Step 5: Перевірити типи, лінт, розмір і збірку**

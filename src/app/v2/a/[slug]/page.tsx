@@ -1,7 +1,7 @@
 'use client';
-// v2 «A» — повна сторінка товару в колекції: 3D-сцена як галерея (мініатюри
-// перемикають товар колекції), під нею картка покупки, характеристики,
-// доставка, опис, відгуки та інші колекції.
+// Сторінка товару в колекції: 3D-сцена як галерея (мініатюри перемикають
+// товар колекції), під нею картка покупки, характеристики, доставка, опис,
+// відгуки та інші колекції. Колекції — живі, з GET /collections.
 import { use } from 'react';
 import { useRouter } from 'next/navigation';
 import { Page } from '@/shared/components/Page/Page';
@@ -11,6 +11,7 @@ import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import { ProductReviews } from '@/features/reviews/components/ProductReviews/ProductReviews';
 import { sanitizeHTML } from '@/shared/utils/sanitize';
 import { useProduct } from '@/widgets/ProductV2/useProduct';
+import { useCollections } from '@/widgets/ProductV2/useCollections';
 import { collectionOfSlug, itemBySlug } from '@/widgets/ProductV2/collections';
 import { BuyPanel } from '@/widgets/ProductV2/BuyPanel';
 import { ProductError, ProductSkeleton } from '@/widgets/ProductV2/ProductState';
@@ -18,17 +19,17 @@ import { ProductInfoGroups } from '@/widgets/ProductV2/ProductInfoGroups';
 import { OtherCollections } from '@/widgets/ProductV2/OtherCollections';
 import styles from '@/widgets/ProductV2/ProductV2.module.scss';
 
-export default function ProductV2A({ params }: { params: Promise<{ slug: string }> }) {
+export default function CollectionProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const router = useRouter();
-  const collection = collectionOfSlug(slug);
-  const item = itemBySlug(slug);
+  const { data: collections } = useCollections();
+  const collection = collectionOfSlug(collections, slug);
+  const item = itemBySlug(collections, slug);
   const { data: product, isError, refetch } = useProduct(slug);
 
   // Мініатюра в сцені = інший товар колекції: міняємо адресу без перезавантаження
   const handleDesignChange = (key: string) => {
-    const target = collection.items.find((i) => i.key === key);
-    if (target && target.slug !== slug) router.replace(`/v2/a/${target.slug}`);
+    if (key !== slug) router.replace(`/v2/a/${key}`);
   };
 
   return (
@@ -45,15 +46,20 @@ export default function ProductV2A({ params }: { params: Promise<{ slug: string 
         {/* Галерея = жива сцена колекції; мініатюри під нею перемикають товар */}
         <div className={styles.card}>
           <div className={styles.collectionHead}>
-            <h2>Колекція «{collection.title}»</h2>
-            <p>{collection.description}</p>
+            <h2>{collection ? `Колекція «${collection.title}»` : 'Завантажуємо колекцію…'}</h2>
+            {collection?.archivedAt && <p className={styles.outOfStock}>Архівна колекція</p>}
+            {collection?.description && <p>{collection.description}</p>}
           </div>
-          <HeroVisual
-            designs={collection.designs}
-            switcher="thumbs"
-            value={item?.key}
-            onChange={handleDesignChange}
-          />
+          {collection ? (
+            <HeroVisual
+              designs={collection.designs}
+              switcher="thumbs"
+              value={item?.key}
+              onChange={handleDesignChange}
+            />
+          ) : (
+            <div className={styles.stageSkeleton} aria-busy="true" aria-label="Завантаження колекції" />
+          )}
         </div>
 
         <div className={styles.card}>
@@ -81,7 +87,7 @@ export default function ProductV2A({ params }: { params: Promise<{ slug: string 
 
         {product && <ProductReviews productId={product.id} />}
 
-        <OtherCollections currentKey={collection.key} />
+        <OtherCollections collections={collections} currentKey={collection?.key} />
       </div>
     </Page>
   );

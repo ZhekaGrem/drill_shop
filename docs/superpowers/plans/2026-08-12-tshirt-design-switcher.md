@@ -222,7 +222,7 @@ type DesignKey = keyof typeof DESIGNS;
 }
 ```
 
-  (колір свотча — через inline `style={{ '--swatch-color': DESIGNS[key].swatch }}`; точні токени звірити з `globals.css` при виконанні)
+(колір свотча — через inline `style={{ '--swatch-color': DESIGNS[key].swatch }}`; точні токени звірити з `globals.css` при виконанні)
 
 - [ ] Reduced-motion шлях безкоштовний: свотчі свопають `fallback` навіть без сцени
 - [ ] `npx tsc --noEmit` + eslint по обох файлах — чисто; `npm run build` зелений

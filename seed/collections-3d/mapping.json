@@ -57,14 +57,6 @@
           "switcherSwatch": "#f4f2f7"
         },
         {
-          "productSlug": "nizhna-oksana-rock-black-list",
-          "collectionOrder": 6,
-          "model3dPath": "/3d/models/tshirt.glb",
-          "textureFile": "public/3d/textures/tshirt-rock-departament.jpg",
-          "renderFile": "public/assets/img/tshirt-fallback-rock-departament.webp",
-          "switcherSwatch": "conic-gradient(from -45deg, #303030 0 55%, #a0a0a0 55% 100%)"
-        },
-        {
           "productSlug": "nizhna-runic-dril-green",
           "collectionOrder": 7,
           "model3dPath": "/3d/models/tshirt.glb",
