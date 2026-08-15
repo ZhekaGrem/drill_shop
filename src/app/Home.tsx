@@ -1,6 +1,7 @@
 // src/app/Home.tsx
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { IconAward, IconCircleCheck, IconMail, IconMapPin, IconMessageCircle } from '@tabler/icons-react';
@@ -12,6 +13,13 @@ import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
 import { PopularProductsSlider } from '@/widgets/PopularProductsSlider/PopularProductsSlider';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
+import { DRIL_DESIGNS, TEST_COLLECTION } from '@/widgets/HeroVisual/designs';
+import { HERO3_SLUGS } from '@/widgets/HeroShop/config';
+import type { Hero3Key } from '@/widgets/HeroShop/config';
+import { HeroShop } from '@/widgets/HeroShop/HeroShop';
+import { HeroLab } from '@/widgets/HeroLab/HeroLab';
+import { HeroTiles } from '@/widgets/HeroTiles/HeroTiles';
+import { BadgeLab } from '@/widgets/BadgeLab/BadgeLab';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import { CategoriesInitializer } from '@/shared/components/CategoriesInitializer/CategoriesInitializer';
 import { content } from '@/shared/config/content';
@@ -38,6 +46,8 @@ const FAQ_PREVIEW = faqData.slice(0, 3).map((category) => category.questions[0])
 const Home = () => {
   const router = useRouter();
   const categories = useCategoriesStore((s) => s.categories);
+  // Герой 1 контрольований: «До колекції» веде на v2-сторінку ВИБРАНОГО дизайну
+  const [heroDesign, setHeroDesign] = useState<string>('red');
 
   return (
     <Page>
@@ -45,8 +55,66 @@ const Home = () => {
 
       <section className={styles.hero}>
         <div className={styles.heroText}>
-          <span className={styles.heroBadge}>Офіційний магазин</span>
           <h1 className={styles.heroTitle}>{content.home.hero.title}</h1>
+          <p className={styles.heroSubtitle}>{content.home.hero.description}</p>
+          <div className={styles.heroActions}>
+            <Button
+              size="lg"
+              variant="primary"
+              onClick={() => router.push(`/v2/a/${HERO3_SLUGS[heroDesign as Hero3Key]}`)}>
+              До колекції <ArrowRight size={20} />
+            </Button>
+            <Button size="lg" variant="secondary" onClick={() => router.push('/about')}>
+              Про бренд
+            </Button>
+          </div>
+        </div>
+        <div className={styles.heroVisualWrap}>
+          <span className={`${styles.heroBadgeDot} ${styles.heroBadgeOnStage}`}>
+            <span className={styles.heroPulseDot} aria-hidden="true" />
+            новинка
+          </span>
+          <HeroVisual value={heroDesign} onChange={setHeroDesign} />
+        </div>
+      </section>
+
+      {/* Другий герой: колекція «Дріл» — свій набір дизайнів, та сама сцена */}
+      <section className={styles.hero}>
+        <div className={styles.heroText}>
+          <h2 className={styles.heroTitle}>{content.home.hero2.title}</h2>
+          <p className={styles.heroSubtitle}>{content.home.hero2.description}</p>
+          <div className={styles.heroActions}>
+            <Button size="lg" variant="primary" onClick={() => router.push('/catalog')}>
+              До каталогу <ArrowRight size={20} />
+            </Button>
+          </div>
+        </div>
+        <HeroVisual designs={DRIL_DESIGNS} />
+      </section>
+
+      {/* Герой 3: комерційний — вибір дизайну = вибір товару, кошик поруч */}
+      <HeroShop />
+
+      {/* Герой 4 (ТЕСТ): колекція різнорідних 3D-предметів, перемикач-мініатюри */}
+      <section className={styles.hero}>
+        <div className={styles.heroText}>
+          <h2 className={styles.heroTitle}>{content.home.heroTest.title}</h2>
+          <p className={styles.heroSubtitle}>{content.home.heroTest.description}</p>
+        </div>
+        <HeroVisual designs={TEST_COLLECTION} switcher="thumbs" />
+      </section>
+
+      {/* ТИМЧАСОВО: лабораторія №2 — механіки перемикання МІЖ колекціями */}
+      <HeroLab />
+
+      {/* Герой-кандидат: плитки колекцій + сторіз 5с (механіка власника) */}
+      <HeroTiles />
+
+      {/* Герой 6 (ДЕМО): копія першого героя з бейджем «Новинка» */}
+      <section className={styles.hero}>
+        <div className={styles.heroText}>
+          <span className={styles.heroBadge}>Новинка</span>
+          <h2 className={styles.heroTitle}>{content.home.hero.title}</h2>
           <p className={styles.heroSubtitle}>{content.home.hero.description}</p>
           <div className={styles.heroActions}>
             <Button size="lg" variant="primary" onClick={() => router.push('/catalog')}>
@@ -59,6 +127,9 @@ const Home = () => {
         </div>
         <HeroVisual />
       </section>
+
+      {/* ТИМЧАСОВО: лабораторія №3 — варіанти бейджа «Новинка» (2–5) */}
+      <BadgeLab />
 
       <ul className={styles.trust}>
         {content.home.trust.map((item) => (

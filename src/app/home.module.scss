@@ -6,6 +6,77 @@
 // Біла картка на градієнті сторінки. Раніше hero сам малював --gradient-brand
 // поверх --gradient-page і клав усередину білу плівку 0.82 — три шари одного
 // градієнта. У Дії градієнт це фон екрана, а картки на ньому просто білі.
+
+// Між героями — той самий токен, що відділяє контент від хедера: сусідні
+// картки не клеяться, ритм однаковий. Селектор через тег section, а не
+// .hero + .hero: у героїв-віджетів (HeroShop) свій CSS-module-клас, і пара
+// «чужий герой → наш» інакше лишалась би без відступу
+section + .hero {
+  margin-top: var(--page-padding-y);
+}
+
+// Обраний бейдж героя 1 (рішення власника, 2026-08-15, третя ітерація):
+// пульсуюча крапка з підписом ПОВЕРХ 3D-сцени (верхній лівий кут візуала)
+.heroVisualWrap {
+  position: relative;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.heroBadgeOnStage {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-3);
+  z-index: 2;
+  // Бейдж — не контрол: не має перехоплювати драг-обертання сцени
+  pointer-events: none;
+}
+
+.heroBadgeDot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary, #6b7280);
+}
+
+.heroPulseDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: #1c8a37;
+  animation: heroBadgePulse 1.6s ease-out infinite;
+}
+
+@keyframes heroBadgePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(28, 138, 55, 0.45);
+  }
+
+  70% {
+    box-shadow: 0 0 0 9px rgba(28, 138, 55, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(28, 138, 55, 0);
+  }
+}
+
+// Бейдж «Новинка»: фірмовий градієнт-пігулка над заголовком героя —
+// відрізняється від чорних кнопок-пігулок, щоб не читатись як контрол
+.heroBadge {
+  width: fit-content;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-brand);
+  color: var(--text-primary, #111);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .hero {
   display: flex;
   align-items: center;
@@ -20,6 +91,12 @@
     flex-direction: column-reverse;
     gap: var(--space-6);
     padding: var(--card-padding);
+
+    // Картка добирає екран до низу: липкий хедер 57px (8 + контрол 40 + 8 +
+    // межа 1) плюс верхній відступ сторінки. Вільну висоту забирає текстовий
+    // блок і віддає кнопкам (див. .heroActions).
+    min-height: 586px;
+    min-height: calc(100svh - 57px - var(--page-padding-y));
   }
 }
 
@@ -29,19 +106,13 @@
   align-items: flex-start;
   gap: var(--space-4);
   max-width: 520px;
-}
 
-// Дрібний pill-бейдж над заголовком — патерн статусу з Дії
-// («ОПИТУВАННЯ ЗАВЕРШЕНО»): капслок, розріджений трекінг, тиха підкладка
-.heroBadge {
-  padding: 6px var(--space-3);
-  font-size: var(--text-xs);
-  font-weight: var(--fw-medium);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  background: var(--background-secondary);
-  border-radius: var(--radius-pill);
+  // Текстовий блок забирає всю вільну висоту картки, щоб було звідки
+  // відштовхнути кнопки вниз. Заголовок і опис лишаються вгорі, під візуалом.
+  @media (max-width: 768px) {
+    width: 100%;
+    flex: 1;
+  }
 }
 
 .heroTitle {
@@ -74,6 +145,12 @@
 
   @media (max-width: 768px) {
     width: 100%;
+
+    // Кнопки стають на низ білої картки — патерн Дії, де основна дія завжди
+    // чекає внизу екрана. auto з'їдає всю вільну висоту, тому між описом і
+    // кнопками лишається рівно стільки повітря, скільки лишив екран.
+    margin-top: auto;
+    padding-top: var(--space-6);
 
     // Обидві кнопки на всю ширину — на вузькому екрані вони інакше
     // розповзаються на різну довжину і втрачають спільну вісь

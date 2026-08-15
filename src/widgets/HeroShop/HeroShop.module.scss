@@ -1,0 +1,71 @@
+// src/widgets/HeroShop/HeroShop.module.scss
+// Та сама біла картка-герой, що на головній (свідома копія композиції .hero
+// з home.module.scss — віджет не може імпортувати стилі сторінки).
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  padding: var(--space-8);
+  margin-top: var(--page-padding-y);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: var(--space-6);
+  }
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.1;
+}
+
+.price {
+  margin: 0;
+  font-family: var(--font-price, inherit);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.size {
+  min-width: 52px;
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: var(--radius-pill);
+  background: none;
+  cursor: pointer;
+
+  &[aria-pressed='true'] {
+    background: var(--text-primary, #111);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
