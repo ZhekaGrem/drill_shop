@@ -27,7 +27,7 @@ const EXAMPLES: LabExample[] = [
     capsuleColor: '#2ea8e0',
     description:
       '«Hoodie Mockup Final Template» у живому 3D: драпірована поза з Alembic-кешу, шаблонний принт FRONT. Покрути пальцем або мишею.',
-    facts: '143k полігонів · 4.2 МБ GLB (квантизація gltfpack) · текстури 2048² · джерело в 3d/ (поза git)',
+    facts: '96k полігонів · 0.87 МБ GLB (meshopt+квантизація) · текстури 2048² · джерело в 3d/ (поза git)',
     design: {
       label: 'Hoodie Mockup',
       swatch: '#2ea8e0',
@@ -42,7 +42,7 @@ const EXAMPLES: LabExample[] = [
     capsuleColor: '#101413',
     description:
       'Другий мокап з 3d/ — «Hoodie Mockup BrockCreative»: стояча A-pose, принт BROCK CREATIVE. Ця сама модель вже живе на головній як худі колекції «Гонорове варʼятство».',
-    facts: '169k полігонів · 1.5 МБ GLB · чинний public/3d/models/hoodie.glb — без дубля файла',
+    facts: '84k полігонів · 0.8 МБ GLB · чинний public/3d/models/hoodie.glb — без дубля файла',
     design: {
       label: 'BrockCreative',
       swatch: '#101413',
