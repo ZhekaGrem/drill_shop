@@ -524,7 +524,6 @@ html,
 body {
   max-width: 100vw;
   font-family: var(--font-body);
-  background: var(--gradient-page) fixed;
   color: var(--text-primary);
   line-height: 1.6;
   font-size: var(--text-base);
@@ -532,13 +531,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Фон сторінки малює ТІЛЬКИ html/body. Раніше `main` малював другу копію
-   `--gradient-page` поверх першої, і разом із `fixed` це давало різкий
-   горизонтальний стик рівно на висоті вікна: область позиціонування фону при
-   `fixed` дорівнює вікну, тож нижче першого екрана градієнта не лишалось.
-   Заміряно на 1440×900 до правки: y=896 → rgb(39,40,39), y=900 → rgb(17,19,18),
-   далі плоский колір до кінця сторінки. На ≤768px стику не було лише тому, що
-   правило нижче повертає там `scroll`. */
+/* Фон сторінки малює РІВНО ОДИН елемент — html. Його фон піднімається на
+   полотно документа й накриває всю область прокрутки; `fixed` тримає градієнт
+   нерухомим відносно вікна.
+   Раніше ту саму декларацію мали `html, body` і ще й `main`. Кожна наступна
+   копія при `fixed` малює градієнт у своїй коробці, прив'язаний до вікна, —
+   і нижче першого екрана лишався плоский колір. Заміряно на 1440 до правки:
+   y=896 rgb(39,40,39) → y=900 rgb(17,19,18), далі рівно до кінця сторінки.
+   На ≤768px стику не було лише тому, що правило нижче повертає там `scroll`. */
+html {
+  background: var(--gradient-page) fixed;
+}
+
 main {
   font-family: var(--font-body);
   min-height: 100vh;
@@ -547,8 +551,7 @@ main {
 /* iOS Safari repaints `background-attachment: fixed` on every scroll frame,
    which janks mobile scrolling — fall back to normal scroll attachment below 768px. */
 @media (max-width: 768px) {
-  html,
-  body {
+  html {
     background-attachment: scroll;
   }
 }
