@@ -48,8 +48,17 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         {/* viewTransitionName вилучає хедер зі знімка сторінки, щоб він не їхав
           разом із контентом. Правило анімації — в globals.css. Inline-стиль —
           варіант C правил стилізації: це унікальний ідентифікатор ділянки,
-          а не оформлення; у SCSS-модулі імʼя захешувалось би. */}
-        <div style={{ viewTransitionName: 'site-header' }}>
+          а не оформлення; у SCSS-модулі імʼя захешувалось би.
+
+          position/top/z-index (P0.2) навмисно тут, а не в header.module.scss.
+          Sticky-елемент не може вийти за межі БЕЗПОСЕРЕДНЬОГО батька — раніше
+          sticky стояв на самому Header (.wrapper), і цей div був тим батьком,
+          заввишки рівно з хедер: діапазон прилипання дорівнював нулю, і хедер
+          їхав геть зі сторінкою (заміряно 2026-08-17). Тут батько — .site,
+          заввишки в усю сторінку, тож прилипати є де. Три властивості лишаються
+          в тому самому inline-стилі, а не в новому класі: інакше на одному
+          елементі змішались би два методи стилізації (SCSS-модуль + inline). */}
+        <div style={{ viewTransitionName: 'site-header', position: 'sticky', top: 0, zIndex: 100 }}>
           <Header />
         </div>
         <EmailVerificationBanner />

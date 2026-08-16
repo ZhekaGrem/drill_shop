@@ -29,9 +29,11 @@
   --hd-cta-fg: var(--background-dark);
   --hd-cta-hover: var(--background-secondary);
 
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  // position/top/z-index (P0.2) НЕ тут — вони на обгортці з viewTransitionName
+  // у LayoutWrapper.tsx. .wrapper — прямий батько цього div; поки sticky стояв
+  // тут, sticky не мав куди прилипати (батько заввишки рівно з хедер), і хедер
+  // їхав геть зі сторінки. Колір/фон лишаються тут — вони належать хедеру,
+  // а не механіці прилипання.
   background: var(--hd-bg);
   border-bottom: 1px solid var(--hd-border);
   color: var(--hd-fg);
@@ -46,6 +48,11 @@
     --hd-cta-bg: var(--btn-primary);
     --hd-cta-fg: var(--btn-primary-fg, var(--text-inverse));
     --hd-cta-hover: var(--btn-primary-hover);
+
+    // Токен, а не число: ту саму висоту читає .buyColumn на сторінці товару
+    // (ProductV2.module.scss), щоб липка колонка покупки не заїжджала під
+    // тепер-таки липкий хедер (P0.2). Один власник числа — globals.css.
+    min-height: var(--header-height-desktop);
   }
 }
 
