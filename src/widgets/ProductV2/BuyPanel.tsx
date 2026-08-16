@@ -15,18 +15,23 @@ import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/
 import type { Product, ProductVariant } from '@/shared/types';
 import { buildCartSnapshot } from './cart-snapshot';
 import { capsuleStyle } from './collections';
+import { useActionOffscreen } from './useActionOffscreen';
 import styles from './ProductV2.module.scss';
 
 // Поріг «закінчується» — той самий, що на сторінці товару
 const LOW_STOCK = 5;
 const stockOf = (v: { quantity?: number; reservedQuantity?: number }) =>
   (v.quantity || 0) - (v.reservedQuantity || 0);
+const sizeLabel = (v: ProductVariant) => String(v.options?.size ?? v.name ?? v.sku);
 
 export const BuyPanel = ({ product }: { product: Product }) => {
   const { addItem, isAddingItem } = useCart();
   const [variantId, setVariantId] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  // Головна дія лежить на 292px нижче згину телефона — кнопка є, її не видно.
+  // Липка панель нижче показує ту саму дію, поки інлайн-кнопка поза кадром.
+  const [actionRef, actionOffscreen] = useActionOffscreen<HTMLButtonElement>();
 
   const variants = useMemo(() => sortVariantsBySize(product.variants ?? []), [product.variants]);
   const variant: ProductVariant | undefined = variants.find((v) => v.id === variantId) ?? variants[0];
@@ -57,6 +62,11 @@ export const BuyPanel = ({ product }: { product: Product }) => {
       // тут головне — не малювати успіх там, де його не було.
     }
   };
+
+  // Одна дія — один опис її стану. Липка панель показує ту саму кнопку, тож
+  // підпис і блокування живуть тут, а не двічі в розмітці.
+  const actionLabel = added ? 'Додано в кошик ✓' : 'Додати в кошик';
+  const actionDisabled = !inStock || isAddingItem;
 
   return (
     <div className={styles.buyPanel}>
@@ -119,7 +129,7 @@ export const BuyPanel = ({ product }: { product: Product }) => {
                   setVariantId(v.id);
                   setQuantity(1);
                 }}>
-                {String(v.options?.size ?? v.name ?? v.sku)}
+                {sizeLabel(v)}
               </button>
             ))}
           </div>
@@ -153,15 +163,37 @@ export const BuyPanel = ({ product }: { product: Product }) => {
       <div className={styles.actions}>
         {!archived && (
           <Button
+            ref={actionRef}
             size="lg"
             variant="primary"
             fullWidth
-            disabled={!inStock || isAddingItem}
+            disabled={actionDisabled}
             onClick={handleAdd}>
-            <IconCart3 size={20} /> {added ? 'Додано в кошик ✓' : 'Додати в кошик'}
+            <IconCart3 size={20} /> {actionLabel}
           </Button>
         )}
       </div>
+
+      {/* Липка панель дії (≤1023px). Ціна тут обовʼязкова: вона теж за згином,
+          а рішення про покупку без ціни не приймається. На ≥1024px панелі
+          немає — там її роль виконує липка права колонка сторінки.
+          Рендер за умовою, а не приховування: невидима кнопка лишалась би
+          у фокусній послідовності. */}
+      {!archived && actionOffscreen && (
+        <div className={styles.stickyAction}>
+          <div className={styles.stickyActionInfo}>
+            <span className={`${styles.stickyPrice} ${promo.hasDiscount ? styles.priceDiscount : ''}`}>
+              {formatPrice(promo.finalPrice)}
+            </span>
+            {variant && variants.length > 0 && (
+              <span className={styles.stickySize}>Розмір {sizeLabel(variant)}</span>
+            )}
+          </div>
+          <Button size="lg" variant="primary" disabled={actionDisabled} onClick={handleAdd}>
+            <IconCart3 size={20} /> {actionLabel}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
