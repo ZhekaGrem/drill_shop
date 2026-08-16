@@ -2,9 +2,8 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Product } from '@/shared/types';
-import { ProductQuickViewModal } from '@/features/catalog/components/ProductQuickViewModal';
 import { useProductCardLogic } from '@/features/catalog/hooks/useProductCardLogic';
 import { useProductCardActions } from '@/features/catalog/hooks/useProductCardActions';
 import { ProductCardImage } from './ProductCardImage';
@@ -15,7 +14,6 @@ import styles from './ProductCard.module.scss';
 interface ProductCardProps {
   product: Product;
   className?: string;
-  enableQuickView?: boolean;
   basePath?: string;
   /** Порядковий номер у списку — керує каскадом появи (--i) */
   index?: number;
@@ -26,9 +24,7 @@ interface ProductCardProps {
  * Оркеструє логіку відображення товару в каталозі
  */
 export const ProductCard = React.memo<ProductCardProps>(
-  ({ product, className = '', enableQuickView = false, basePath = '', index }) => {
-    const [quickViewOpened, setQuickViewOpened] = useState(false);
-
+  ({ product, className = '', basePath = '', index }) => {
     // Використовуємо hooks для логіки
     const {
       selectedVariant,
@@ -53,8 +49,6 @@ export const ProductCard = React.memo<ProductCardProps>(
       selectedVariantObject,
       showVariantsInCatalog,
       variantLabel,
-      enableQuickView,
-      onQuickViewOpen: () => setQuickViewOpened(true),
       basePath,
     });
 
@@ -99,16 +93,6 @@ export const ProductCard = React.memo<ProductCardProps>(
           buttonText={getButtonText()}
           onAddToCart={handleAddToCart}
         />
-
-        {/* Quick View Modal */}
-        {enableQuickView && (
-          <ProductQuickViewModal
-            product={product}
-            opened={quickViewOpened}
-            onClose={() => setQuickViewOpened(false)}
-            basePath={basePath}
-          />
-        )}
       </div>
     );
   }

@@ -12,8 +12,6 @@ interface UseProductCardActionsParams {
   selectedVariantObject: any;
   showVariantsInCatalog: boolean;
   variantLabel: string;
-  enableQuickView: boolean;
-  onQuickViewOpen?: () => void;
   basePath?: string;
 }
 
@@ -34,8 +32,6 @@ export const useProductCardActions = ({
   selectedVariantObject,
   showVariantsInCatalog,
   variantLabel,
-  enableQuickView,
-  onQuickViewOpen,
   basePath = '',
 }: UseProductCardActionsParams): UseProductCardActionsReturn => {
   const router = useRouter();
@@ -108,18 +104,14 @@ export const useProductCardActions = ({
 
       // Якщо варіанти БЕЗ SIZE/COLOR
       if (product.variants && product.variants.length > 0 && !showVariantsInCatalog) {
-        if (enableQuickView && onQuickViewOpen) {
-          onQuickViewOpen();
-        } else {
-          pushForward(`${basePath}/catalog/${product.slug}`);
-        }
+        pushForward(`${basePath}/catalog/${product.slug}`);
         return;
       }
 
-      // Якщо товар-контейнер (hasVariants = true), варіант обов'язковий
+      // Якщо товар-контейнер (hasVariants = true), варіант обовʼязковий
       if (product.hasVariants && !selectedVariant) {
         showNotification({
-          message: 'Оберіть варіант товару',
+          message: 'Оберіть розмір',
         });
         return;
       }
@@ -151,32 +143,25 @@ export const useProductCardActions = ({
       selectedVariantObject,
       addItem,
       setTimeoutSafe,
-      enableQuickView,
-      onQuickViewOpen,
       pushForward,
       basePath,
     ]
   );
 
   const handleCardClick = () => {
-    if (enableQuickView && onQuickViewOpen) {
-      // Quick View disabled for now
-      // onQuickViewOpen();
-    } else {
-      pushForward(`${basePath}/catalog/${product.slug}`);
-    }
+    pushForward(`${basePath}/catalog/${product.slug}`);
   };
 
   const getButtonText = () => {
-    if (isClicked) return 'ДОДАЄМО В ДРІЛ';
-    if (!isInStock) return 'НЕМАЄ';
+    if (isClicked) return 'Додано в кошик';
+    if (!isInStock) return 'Немає в наявності';
 
     // Якщо є варіанти БЕЗ size/color - показуємо "Деталі" для Quick View
     if (product.variants && product.variants.length > 0 && !showVariantsInCatalog) {
-      return 'ДЕТАЛІ';
+      return 'Показати товар';
     }
 
-    return 'ДОДАТИ В КОШИК';
+    return 'Додати в кошик';
   };
 
   return {

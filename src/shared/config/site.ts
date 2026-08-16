@@ -16,21 +16,5 @@ export const siteConfig = {
     instagram: 'https://www.instagram.com/r4zyob',
     telegram: 'https://t.me/makaron_gang?direct',
   },
-  workingHours: 'Пн-Пт: 08:00 - 20:00 | Сб-Нд: 09:00 - 18:00',
+  workingHours: 'Пн–Пт: 08:00–20:00 | Сб–Нд: 09:00–18:00',
 };
-
-export const footerLinks = [
-  { link: '/contact', label: 'Контакти' },
-  { link: '/public-offer', label: 'Публічна оферта' },
-  { link: '/privacy-policy', label: 'Конфіденційність' },
-  { link: '/delivery-and-payment', label: 'Доставка і оплата' },
-  { link: '/returns-exchanges', label: 'Повернення' },
-  { link: '/faq', label: 'FAQ' },
-];
-
-// Категорії для футера
-export const footerCategories = [
-  { link: '/catalog?category=t-shirt', label: 'Футболки' },
-  { link: '/catalog?category=buba', label: 'Худі' },
-  { link: '/catalog?category=size', label: 'Аксесуари' },
-];
