@@ -3,7 +3,7 @@
 // посилання (інстаграм автора дизайну тощо) прямо в текст без деплою.
 // Лінки на instagram.com отримують іконку. Решта тексту — як був.
 import type { ReactNode } from 'react';
-import { IconInstagram } from '@/shared/components/Svg';
+import { IconInstagramColor } from '@/shared/components/Svg';
 import styles from './RichDescription.module.scss';
 
 const LINK_RE = /\[([^\]]+)\]\(([^)\s]+)\)/g;
@@ -16,7 +16,7 @@ export const RichDescription = ({ text }: { text: string }) => {
     if (match.index > last) nodes.push(text.slice(last, match.index));
     nodes.push(
       <a key={match.index} href={url} target="_blank" rel="noreferrer" className={styles.link}>
-        {url.includes('instagram.com') && <IconInstagram size={15} />}
+        {url.includes('instagram.com') && <IconInstagramColor size={16} />}
         {label}
       </a>
     );

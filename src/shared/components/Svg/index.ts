@@ -14,4 +14,5 @@ export { IconMail } from './IconMail';
 export { IconInfo } from './IconInfo';
 export { IconClock } from './IconClock';
 export { IconInstagram } from './IconInstagram';
+export { IconInstagramColor } from './IconInstagramColor';
 export { IconTelegram } from './IconTelegram';
