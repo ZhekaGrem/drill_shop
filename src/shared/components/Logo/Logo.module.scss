@@ -54,6 +54,9 @@
 
   .mark {
     background: var(--text-inverse);
-    color: var(--text-primary);
+    // --background-dark, а не --text-primary. Хедер і футер чорні в ОБОХ темах,
+    // тому й сквіркл білий в обох — а --text-primary уночі стає #f2f4f3, і
+    // літера «є» зникала на білій плитці (1.10:1). Лишалась сама синя крапка.
+    color: var(--background-dark);
   }
 }

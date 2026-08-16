@@ -16,6 +16,10 @@ export const ThemeClock = () => {
       if (localStorage.getItem(THEME_KEY)) return; // явний вибір — автоматика не втручається
       applyTheme(autoTheme());
     };
+    // Негайний виклик обовʼязковий. Без нього перша звірка була аж через
+    // хвилину після завантаження, і весь цей час сторінка жила з тим, що
+    // встиг поставити інлайн-скрипт, без жодної можливості це виправити.
+    syncAuto();
     const tick = setInterval(syncAuto, 60_000);
     const mql = window.matchMedia('(prefers-color-scheme: dark)');
     mql.addEventListener('change', syncAuto);

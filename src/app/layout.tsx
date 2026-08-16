@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import './globals.css';
+// Порядок цих двох рядків має значення. Mantine має власне глобальне правило
+// body { color: var(--mantine-color-text) } тієї самої специфічності, що й наше
+// html, body { color: var(--text-primary) } у globals.css. Поки Mantine
+// підключався ДРУГИМ, він вигравав каскад, і вночі весь документ успадковував
+// чорний текст на графітовому фоні. Наші стилі мають іти останніми.
 import '@mantine/core/styles.css';
+import './globals.css';
 import { Providers } from '@/shared/providers/Providers';
 import { LayoutWrapper } from './LayoutWrapper';
 import { ErrorBoundary } from '@/shared/providers/ErrorBoundary';

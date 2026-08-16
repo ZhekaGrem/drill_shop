@@ -11,9 +11,18 @@ import { createTheme, Input } from '@mantine/core';
 
 const inputStyles = {
   input: {
-    backgroundColor: '#ffffff',
-    border: '1px solid var(--border-subtle)',
+    // Було жорстке '#ffffff'. Це inline-стиль, тобто він перебивав будь-яку
+    // тему — вночі кожне поле на сайті ставало білою коробкою з майже-білим
+    // текстом (--text-primary #f2f4f3 на #ffffff = 1.10:1).
+    backgroundColor: 'var(--surface-card)',
+    // --border-control, а не --border-subtle: межа поля несе афорданс «сюди
+    // можна тицьнути», для неї WCAG 1.4.11 вимагає 3:1.
+    border: '1px solid var(--border-control)',
     borderRadius: 'var(--border-radius-sm)',
+    // Дефолтна висота Mantine-інпута — 42px, і вона не збігалася ні з нашим
+    // <Input> (40px), ні з <Button --md> (48px). Тепер поля проєкту стоять на
+    // тій самій сходинці, що й решта контролів.
+    minHeight: 'var(--control-h-sm)',
     color: 'var(--text-primary)',
     padding: 'var(--spacing-sm) var(--spacing-md)',
     transition: 'var(--transition-fast)',
@@ -120,12 +129,26 @@ export const mantineTheme = createTheme({
         content: {
           borderRadius: 'var(--border-radius-md)',
           borderTop: '2px solid var(--text-primary)',
+          // Без цих двох рядків спливаючий шар брав --mantine-color-body /
+          // --mantine-color-text, тобто малювався світлою палітрою Mantine
+          // поверх нашої темної сторінки.
+          backgroundColor: 'var(--surface-card)',
+          color: 'var(--text-primary)',
         },
+        header: { backgroundColor: 'var(--surface-card)', color: 'var(--text-primary)' },
+        body: { color: 'var(--text-primary)' },
       },
     },
     Drawer: {
       defaultProps: {
         transitionProps: { duration: 300, timingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' },
+      },
+      // Те саме, що й для Modal. Заголовок шухляди кошика рендериться поза
+      // нашою розміткою, тому колір йому мусить дати саме тема.
+      styles: {
+        content: { backgroundColor: 'var(--background)', color: 'var(--text-primary)' },
+        header: { backgroundColor: 'var(--background)', color: 'var(--text-primary)' },
+        body: { color: 'var(--text-primary)' },
       },
     },
     Menu: {

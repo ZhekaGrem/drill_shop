@@ -23,7 +23,10 @@
   --hd-hover: var(--surface-inverse-hover);
   --hd-pill-border: var(--text-inverse-secondary);
   --hd-cta-bg: var(--text-inverse);
-  --hd-cta-fg: var(--text-primary);
+  // --background-dark, а не --text-primary. Смуга хедера тут чорна в ОБОХ
+  // темах, тож біла пігулка теж стала в обох, а --text-primary уночі світлішає
+  // до #f2f4f3 — лічильник кошика ставав білим числом на білому кружку (1.10:1).
+  --hd-cta-fg: var(--background-dark);
   --hd-cta-hover: var(--background-secondary);
 
   position: sticky;
@@ -178,56 +181,6 @@
 .menuDivider {
   border-color: var(--border-subtle);
   margin: 0;
-}
-
-// Account pill — diia.gov.ua CTA values (radius/padding/typography verbatim,
-// min-/max-width dropped: those are sized for full-size hero CTAs, not a header button)
-.accountPill {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  border: none;
-  // 10px + 24px line-height + 10px = 44px — та сама висота, що й у сусідніх
-  // іконок-кнопок. Було 12px → 48px, і ряд контролів розʼїжджався на 4px.
-  padding: 10px var(--space-5);
-  border-radius: var(--radius-pill);
-  font-size: var(--text-base);
-  line-height: 24px;
-  font-weight: var(--fw-medium);
-  letter-spacing: -0.02em;
-  // CTA-pill інвертується відносно фону смуги: на чорному хедері вона біла,
-  // на світлому десктопному — чорна (головна дія хедера, Von Restorff).
-  background: var(--hd-cta-bg);
-  color: var(--hd-cta-fg);
-  cursor: pointer;
-  transition:
-    background var(--dur-hover) var(--ease-out),
-    color var(--dur-hover) var(--ease-out),
-    transform var(--dur-press) var(--ease-out);
-  white-space: nowrap;
-
-  &:active:not(:disabled) {
-    transform: scale(var(--motion-press-scale));
-  }
-
-  &:hover {
-    background: var(--hd-cta-hover);
-  }
-
-  // Плейсхолдер до ініціалізації auth — виглядає як кнопка, але не реагує
-  &:disabled {
-    cursor: default;
-
-    &:hover {
-      background: var(--hd-cta-bg);
-    }
-  }
-
-  svg {
-    width: 18px;
-    height: 20px;
-    flex-shrink: 0;
-  }
 }
 
 // Cart button with badge
@@ -524,13 +477,16 @@
     padding: 0 var(--page-padding-x) var(--spacing-sm);
   }
 
+  // Був 40×40 з іконкою 20×20 поруч із .cartButton 44×44 і іконкою 24×24:
+  // два сусідні круглі контроли різного діаметра, до того ж нижче 44px
+  // (WCAG 2.5.5). Тепер обидва на одній осі й одного розміру.
   .searchTrigger {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
 
     svg {
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
     }
   }
 
@@ -540,11 +496,3 @@
   }
 }
 
-// Нижню панель прибрано (рішення власника, 2026-08-15): кошик повернувся
-// в хедер поруч із пошуком і видимий на всіх ширинах. «Кабінет» на мобілці
-// й далі схований — для нього окремого місця в хедері поки нема.
-@media (max-width: 1023px) {
-  .accountPill {
-    display: none;
-  }
-}

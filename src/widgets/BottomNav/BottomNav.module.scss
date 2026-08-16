@@ -106,8 +106,11 @@
 .tabActive {
   color: var(--text-inverse);
 
+  // --background-dark, а не --text-primary: пігулка під іконкою — це
+  // --text-inverse, тобто білий в ОБОХ темах, а --text-primary уночі світлішає
+  // до #f2f4f3. Активний таб перетворювався на порожню білу пігулку (1.10:1).
   .iconWrap {
-    color: var(--text-primary);
+    color: var(--background-dark);
   }
 
   .label {
@@ -118,7 +121,7 @@
   // назад разом з нею, інакше білий кружок зникає в білому
   .badge {
     border-color: var(--text-inverse);
-    background: var(--text-primary);
+    background: var(--background-dark);
     color: var(--text-inverse);
   }
 }
@@ -160,7 +163,9 @@
   border: 2px solid var(--background-dark);
   border-radius: var(--radius-pill);
   background: var(--text-inverse);
-  color: var(--text-primary);
+  // Панель чорна в обох темах, тому число на білому кружку теж має бути
+  // стабільно чорним — --text-primary тут уночі схлопувався з фоном.
+  color: var(--background-dark);
   font-size: 11px;
   font-weight: var(--fw-medium);
   line-height: 16px;

@@ -26,14 +26,14 @@
 
   p {
     margin: 0;
-    color: var(--text-secondary, #6b7280);
+    color: var(--text-secondary);
     font-size: 14px;
   }
 }
 
 .collectionLink {
   align-self: flex-start;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
@@ -42,7 +42,7 @@
   display: inline-block;
   padding: 3px 12px;
   border-radius: var(--radius-pill);
-  color: #fff;
+  color: var(--text-white);
   font-size: 12px;
   font-weight: 600;
   vertical-align: middle;
@@ -68,14 +68,14 @@
   gap: 8px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
 }
 
 .pulseDot {
   width: 10px;
   height: 10px;
   border-radius: var(--radius-pill);
-  background: var(--badge-color, #1c8a37);
+  background: var(--badge-color, var(--success-green));
   animation: v2BadgePulse 1.6s ease-out infinite;
 }
 
@@ -104,22 +104,22 @@
   flex-wrap: wrap;
   gap: var(--space-3);
   font-size: 13px;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
 }
 
 .inStock {
-  color: #1c8a37;
+  color: var(--success-green);
   font-weight: 600;
 }
 
 .outOfStock {
-  color: #c8102e;
+  color: var(--accent-red);
   font-weight: 600;
 }
 
 .shortDescription {
   margin: 0;
-  color: var(--text-secondary, #4b5563);
+  color: var(--text-secondary);
   font-size: 15px;
   line-height: 1.5;
 }
@@ -137,11 +137,11 @@
 }
 
 .priceDiscount {
-  color: #c8102e;
+  color: var(--accent-red);
 }
 
 .oldPrice {
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
   font-size: 18px;
   text-decoration: line-through;
 }
@@ -149,7 +149,7 @@
 .blockLabel {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
 }
 
 .sizesBlock {
@@ -167,16 +167,16 @@
 .size {
   min-width: 54px;
   padding: 11px 15px;
-  border: 1px solid var(--border-subtle, #d6dde4);
+  border: 1px solid var(--border-control);
   border-radius: var(--radius-pill);
   background: none;
   font-size: 15px;
   cursor: pointer;
 
   &[aria-pressed='true'] {
-    background: var(--text-primary, #111);
+    background: var(--btn-primary);
     border-color: transparent;
-    color: var(--btn-primary-fg, #fff);
+    color: var(--btn-primary-fg);
   }
 
   &:disabled {
@@ -197,7 +197,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  border: 1px solid var(--border-subtle, #d6dde4);
+  border: 1px solid var(--border-control);
   border-radius: var(--radius-pill);
   padding: 4px;
 
@@ -240,8 +240,8 @@
   margin: 0;
   padding: var(--space-3) var(--space-4);
   border-radius: var(--border-radius-sm);
-  background: var(--surface-muted, #f4f6f5);
-  color: var(--text-secondary, #4b5563);
+  background: var(--surface-muted);
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.5;
 }
@@ -299,7 +299,7 @@
 
   p {
     margin: 0;
-    color: var(--text-secondary, #6b7280);
+    color: var(--text-secondary);
     font-size: 14px;
   }
 }
@@ -312,7 +312,7 @@
 }
 
 .description {
-  color: var(--text-secondary, #4b5563);
+  color: var(--text-secondary);
   font-size: 15px;
   line-height: 1.6;
 
@@ -349,7 +349,7 @@
     width: 100%;
     height: auto;
     border-radius: var(--border-radius-sm);
-    background: var(--surface-muted, #f4f6f5);
+    background: var(--surface-muted);
   }
 }
 
@@ -361,7 +361,7 @@
 }
 
 .collectionCardHint {
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
   font-size: 12px;
 }
 
@@ -378,5 +378,5 @@
   margin: var(--space-3) 0 0;
   font-size: 14px;
   line-height: 1.5;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
 }

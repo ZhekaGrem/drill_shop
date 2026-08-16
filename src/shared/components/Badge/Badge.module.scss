@@ -14,12 +14,15 @@
   &.badgePromo,
   &.badgeDiscount {
     background-color: var(--accent-red);
-    color: var(--text-white);
+    // --accent-red-fg, а не --text-white: уночі червоний світлішає до #f1707a,
+    // і білий текст на ньому дає 2.9:1. Парний токен тримає контраст в обох
+    // темах (6.49:1 уночі, 6.22:1 удень).
+    color: var(--accent-red-fg);
   }
 
   &.badgeFeatured {
     background-color: var(--text-primary);
-    color: var(--text-inverse);
+    color: var(--btn-primary-fg);
   }
 
   &.badgeNew {
@@ -27,9 +30,15 @@
     color: var(--text-primary);
   }
 
+  // Тихий чіп, а не заливка. Було --text-white на --text-secondary: 4.05:1
+  // удень і 2.22:1 уночі — і це найважливіша плашка каталогу, бо вона єдина
+  // каже, що товар купити не можна. Сірий на сірому не тримає жодного порогу
+  // ні в одній темі, тож замість підбору третього сірого беремо приглушену
+  // поверхню з основним вторинним текстом і видимою межею.
   &.badgeOutOfStock {
-    background-color: var(--text-secondary);
-    color: var(--text-white);
+    background-color: var(--surface-muted);
+    color: var(--text-secondary);
+    box-shadow: inset 0 0 0 1px var(--border-control);
   }
 }
 

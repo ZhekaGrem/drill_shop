@@ -314,7 +314,7 @@
 
   .variantCheckbox input:checked + .variantCheckboxText {
     background: var(--text-primary);
-    color: var(--text-inverse);
+    color: var(--btn-primary-fg);
     border-color: var(--text-primary);
   }
 
@@ -424,7 +424,7 @@
 
       &:hover {
         background: var(--btn-primary);
-        color: var(--text-inverse);
+        color: var(--btn-primary-fg);
         border-color: var(--btn-primary);
       }
 
@@ -509,7 +509,7 @@
 
       &:hover {
         background: var(--btn-primary);
-        color: var(--text-inverse);
+        color: var(--btn-primary-fg);
       }
 
       &Left {
@@ -708,7 +708,7 @@
     &__success {
       background: var(--success-green);
       border-color: var(--success-green);
-      color: var(--text-inverse);
+      color: var(--success-fg);
     }
   }
 

@@ -259,7 +259,7 @@
 
 .variantCheckbox input:checked + .variantCheckboxText {
   background: var(--text-primary);
-  color: var(--text-inverse);
+  color: var(--btn-primary-fg);
   border-color: var(--text-primary);
 }
 
@@ -311,9 +311,12 @@
 }
 
 .addButton {
-  // Одна висота з чіпами варіантів — на стику нічого не розʼїжджається
-  height: 44px;
-  min-height: 44px;
+  // Клас подвоєно навмисно: без цього селектор має ту саму специфічність 0,1,0,
+  // що й .button--md, і переможець залежав би від порядку CSS-чанків у збірці.
+  &.addButton {
+    height: var(--control-h-md);
+    min-height: var(--control-h-md);
+  }
 }
 
 // ============ Мобільний ============

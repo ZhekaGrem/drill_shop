@@ -109,31 +109,31 @@
     }
   }
 
-  // Sizes (висоти збережені — верстка не стрибає)
+  // Sizes — усі висоти з однієї шкали (--control-h-*, globals.css)
   &--sm {
     padding: 10px 20px;
     font-size: var(--text-sm);
-    height: 40px;
+    height: var(--control-h-sm);
   }
   &--md {
     padding: 12px 24px;
     font-size: var(--text-base);
-    height: 48px;
+    height: var(--control-h-md);
   }
   &--lg {
     padding: 16px 32px;
     font-size: var(--text-base);
-    height: 56px;
+    height: var(--control-h-lg);
   }
   &--xl {
     padding: 16px 40px;
     font-size: var(--text-lg);
-    height: 60px;
+    height: var(--control-h-xl);
   }
   &--promo {
-    padding: 8px 16px;
+    padding: 10px 20px;
     font-size: var(--text-sm);
-    height: 36px;
+    height: var(--control-h-sm);
   }
   &--fl {
     padding: 0;
@@ -142,7 +142,7 @@
   &--menu {
     padding: 12px 24px;
     font-size: var(--text-base);
-    height: 48px;
+    height: var(--control-h-md);
     width: 100%;
     justify-content: flex-start;
     border-radius: var(--border-radius-sm);

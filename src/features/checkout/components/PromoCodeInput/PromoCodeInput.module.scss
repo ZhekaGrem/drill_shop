@@ -9,6 +9,6 @@
   &:hover:not(:disabled) {
     background: var(--btn-primary);
     border-color: var(--btn-primary);
-    color: var(--text-inverse);
+    color: var(--btn-primary-fg);
   }
 }

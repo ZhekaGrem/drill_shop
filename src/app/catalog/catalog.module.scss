@@ -31,7 +31,7 @@
 
   @media (max-width: 768px) {
     display: flex;
-    height: 44px;
+    height: var(--control-h-md);
     margin-bottom: var(--space-4);
   }
 }
@@ -57,7 +57,7 @@
   font-size: var(--text-xs);
   font-weight: var(--fw-medium);
   line-height: 1;
-  color: var(--text-inverse);
+  color: var(--btn-primary-fg);
   background: var(--text-primary);
   border-radius: var(--radius-pill);
 }

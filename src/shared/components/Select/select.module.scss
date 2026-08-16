@@ -25,8 +25,8 @@
 
   // Variant: default (стандартний, мінімалістичний)
   &--default {
-    background: #ffffff;
-    border: 1px solid #dee2e6;
+    background: var(--surface-card);
+    border: 1px solid var(--border-control);
     color: var(--text-primary);
 
     &:hover:not(:disabled) {
@@ -36,85 +36,85 @@
     &:focus {
       border-color: var(--primary);
       outline: none;
-      box-shadow: 0 0 0 2px rgba(255, 184, 0, 0.1);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
     }
   }
 
   // Variant: filled (заповнений фон)
   &--filled {
-    background: #f1f3f5;
+    background: var(--surface-muted);
     border: 2px solid transparent;
     color: var(--text-primary);
 
     &:hover:not(:disabled) {
-      background: #e9ecef;
+      background: var(--background-secondary);
     }
 
     &:focus {
-      background: #ffffff;
+      background: var(--surface-card);
       border-color: var(--primary);
       outline: none;
-      box-shadow: 0 0 0 2px rgba(255, 184, 0, 0.1);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
     }
   }
 
   // Variant: bordered (яскрава рамка)
   &--bordered {
-    background: #ffffff;
+    background: var(--surface-card);
     border: 2px solid var(--primary);
     color: var(--text-primary);
 
     &:hover:not(:disabled) {
       border-color: var(--accent);
-      box-shadow: 0 2px 8px rgba(255, 184, 0, 0.15);
+      box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 25%, transparent);
     }
 
     &:focus {
       border-color: var(--accent);
       outline: none;
-      box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.2);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
     }
   }
 
   // Size: sm
   &--sm {
-    padding: 6px 12px;
-    font-size: 14px;
-    height: 36px;
+    padding: 10px 20px;
+    font-size: var(--text-sm);
+    height: var(--control-h-sm);
     border-radius: 4px;
   }
 
   // Size: md
   &--md {
-    padding: 8px 16px;
-    font-size: 16px;
-    height: 44px;
+    padding: 12px 24px;
+    font-size: var(--text-base);
+    height: var(--control-h-md);
     border-radius: 4px;
   }
 
   // Size: lg
   &--lg {
-    padding: 12px 20px;
-    font-size: 18px;
-    height: 52px;
+    padding: 16px 32px;
+    font-size: var(--text-base);
+    height: var(--control-h-lg);
     border-radius: 6px;
   }
 
   // Size: xl
   &--xl {
-    padding: 14px 24px;
-    font-size: 20px;
-    height: 60px;
+    padding: 16px 40px;
+    font-size: var(--text-lg);
+    height: var(--control-h-xl);
     border-radius: 8px;
   }
 }
 
 // Dropdown menu styles
 .select__dropdown {
-  background: #ffffff;
-  border: 1px solid #dee2e6;
+  background: var(--surface-card);
+  border: 1px solid var(--border-control);
   border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   margin-top: 4px;
   padding: 4px 0;
 }
@@ -130,12 +130,12 @@
     color var(--dur-hover) var(--ease-out);
 
   &:hover {
-    background: #f8f9fa;
+    background: var(--background-secondary);
   }
 
   &[data-selected='true'] {
     background: var(--primary);
-    color: var(--text-inverse);
+    color: var(--btn-primary-fg);
 
     &:hover {
       background: var(--accent);

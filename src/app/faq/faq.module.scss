@@ -164,7 +164,7 @@
 
   &::before,
   &::after {
-    background: var(--text-inverse);
+    background: var(--btn-primary-fg);
   }
 
   &::before {
@@ -212,7 +212,7 @@
   border: none;
   border-radius: var(--radius-pill);
   background: var(--btn-primary);
-  color: var(--text-inverse);
+  color: var(--btn-primary-fg);
   font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);

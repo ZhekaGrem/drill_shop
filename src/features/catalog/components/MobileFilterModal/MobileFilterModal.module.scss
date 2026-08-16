@@ -31,11 +31,11 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 52px;
+  height: var(--control-h-lg);
   font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: var(--fw-medium);
-  color: var(--text-inverse);
+  color: var(--btn-primary-fg);
   letter-spacing: -0.02em;
   background: var(--btn-primary);
   border: none;

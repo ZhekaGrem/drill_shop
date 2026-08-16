@@ -107,7 +107,10 @@
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   transition: var(--transition-fast);
-  border: 1px solid var(--border-subtle);
+  // --border-control: межа тут єдине, що робить опцію об.єктом, бо фон опції
+  // збігається з фоном секції. З --border-subtle це давало 1.37:1 удень і
+  // 1.28:1 уночі — невибране радіо не було видно в жодній темі.
+  border: 1px solid var(--border-control);
 
   &Active {
     border-color: var(--text-primary);
@@ -136,7 +139,7 @@
 .radioCircle {
   width: 20px;
   height: 20px;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-control);
   border-radius: 50%;
   position: relative;
   flex-shrink: 0;
@@ -148,7 +151,7 @@
 .radioCircleInner {
   width: 10px;
   height: 10px;
-  background: var(--text-secondary);
+  background: var(--text-primary);
   border-radius: 50%;
 }
 
@@ -355,11 +358,14 @@
   }
 }
 
-.btnConfirm {
+// Показ/приховування за шириною. Раніше ці два класи звались .btnConfirm і
+// .btnConfirmPhone — тобто «кнопка», хоч ними ж перемикався і чекбокс
+// «Не дзвонити». Будь-яка правка «кнопкового» класу мовчки ламала чекбокс.
+.desktopOnly {
   display: block;
   margin: 2px;
 }
-.btnConfirmPhone {
+.phoneOnly {
   display: none;
 }
 
@@ -387,10 +393,10 @@
   .agreementNoticePhone {
     display: block;
   }
-  .btnConfirm {
+  .desktopOnly {
     display: none;
   }
-  .btnConfirmPhone {
+  .phoneOnly {
     display: block;
   }
   .formSection {
@@ -442,4 +448,23 @@
     padding: var(--spacing-sm) var(--spacing-md);
     gap: var(--spacing-lg);
   }
+}
+
+// Ці два класи використовувались у розмітці (DeliveryMethodSelector,
+// PaymentSection), але у файлі їх не було — CSS Modules віддавали undefined,
+// і в DOM летіло class="undefined". Тобто зірочка обовʼязковості малювалась
+// звичайним текстом, а повідомлення про помилку вибору доставки виглядало
+// точно так само, як підпис над ним.
+.required {
+  margin-left: 2px;
+  color: var(--error);
+  font-weight: var(--fw-medium);
+}
+
+.errorMessage {
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--error);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
 }

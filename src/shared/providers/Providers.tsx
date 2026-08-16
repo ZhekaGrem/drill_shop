@@ -8,6 +8,7 @@ import { useState } from 'react';
 import '@mantine/notifications/styles.css';
 import { AuthProvider } from './AuthProvider';
 import { mantineTheme } from '@/shared/config/mantine-theme';
+import { siteColorSchemeManager } from '@/shared/config/mantine-color-scheme';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -27,9 +28,19 @@ export function Providers({ children }: { children: React.ReactNode }) {
       })
   );
 
+  // Менеджер створюємо один раз: інакше кожен ре-рендер віддавав би Mantine
+  // новий обʼєкт, і MutationObserver перепідписувався б без потреби.
+  const [colorSchemeManager] = useState(siteColorSchemeManager);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <MantineProvider theme={mantineTheme} defaultColorScheme="light">
+      {/* colorSchemeManager читає data-theme з <html>, тому тема Mantine більше
+          не розходиться з нашою. defaultColorScheme — лише SSR-фолбек на випадок,
+          коли атрибута ще немає. */}
+      <MantineProvider
+        theme={mantineTheme}
+        defaultColorScheme="light"
+        colorSchemeManager={colorSchemeManager}>
         <Notifications position="top-center" zIndex={2077} />
         <AuthProvider>{children}</AuthProvider>
       </MantineProvider>

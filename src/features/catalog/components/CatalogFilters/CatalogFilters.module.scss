@@ -70,12 +70,12 @@
   gap: var(--space-2);
   // 36px, а не 44: це третинна дія-«знялося», і вона свідомо тихіша за
   // чіпи вибору. Сусідів по ряду в неї немає, тож спільну вісь не ламає.
-  height: 36px;
+  height: var(--control-h-sm);
   padding: 0 var(--space-3) 0 var(--space-4);
   font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: var(--fw-normal);
-  color: var(--text-inverse);
+  color: var(--btn-primary-fg);
   background: var(--text-primary);
   border: none;
   border-radius: var(--radius-pill);
@@ -104,7 +104,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  height: 44px;
+  height: var(--control-h-md);
   padding: 0 var(--space-5);
   margin-left: auto;
   font-family: var(--font-body);
@@ -134,7 +134,7 @@
   justify-content: space-between;
   gap: var(--space-2);
   width: 100%;
-  height: 44px;
+  height: var(--control-h-md);
   padding: 0 var(--space-4);
   font-family: var(--font-body);
   font-size: var(--text-sm);
@@ -204,7 +204,7 @@
 
   &.active {
     background: var(--text-primary);
-    color: var(--text-inverse);
+    color: var(--btn-primary-fg);
     font-weight: var(--fw-medium);
   }
 }
@@ -224,7 +224,7 @@
 .priceInput {
   min-width: 0;
   flex: 1;
-  height: 44px;
+  height: var(--control-h-md);
   padding: 0 var(--space-4);
   font-family: var(--font-body);
   font-size: var(--text-sm);
@@ -286,7 +286,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
+  min-height: var(--control-h-md);
   min-width: 56px;
   padding: 0 var(--space-4);
   font-family: var(--font-body);
@@ -308,7 +308,7 @@
 
   input[type='checkbox']:checked + & {
     background: var(--text-primary);
-    color: var(--text-inverse);
+    color: var(--btn-primary-fg);
     border-color: var(--text-primary);
     font-weight: var(--fw-medium);
   }
@@ -340,8 +340,8 @@
   .priceInput,
   .dropdownButton,
   .resetButton {
-    min-height: 40px;
-    height: 40px;
+    min-height: var(--control-h-md);
+    height: var(--control-h-md);
   }
 
   .checkboxText {
