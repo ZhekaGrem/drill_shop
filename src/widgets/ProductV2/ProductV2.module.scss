@@ -251,7 +251,12 @@
   width: 100%;
   height: min(60vw, 420px);
   border-radius: var(--border-radius-sm);
-  background: linear-gradient(90deg, var(--surface-muted) 25%, var(--surface-card) 37%, var(--surface-muted) 63%);
+  background: linear-gradient(
+    90deg,
+    var(--surface-muted) 25%,
+    var(--surface-card) 37%,
+    var(--surface-muted) 63%
+  );
   background-size: 400% 100%;
   animation: v2Shimmer 1.4s ease infinite;
 }
@@ -267,7 +272,12 @@
   display: block;
   height: 16px;
   border-radius: var(--border-radius-sm);
-  background: linear-gradient(90deg, var(--surface-muted) 25%, var(--surface-card) 37%, var(--surface-muted) 63%);
+  background: linear-gradient(
+    90deg,
+    var(--surface-muted) 25%,
+    var(--surface-card) 37%,
+    var(--surface-muted) 63%
+  );
   background-size: 400% 100%;
   animation: v2Shimmer 1.4s ease infinite;
 }

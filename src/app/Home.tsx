@@ -1,20 +1,16 @@
 // src/app/Home.tsx
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { IconAward, IconCircleCheck, IconMail, IconMapPin, IconMessageCircle } from '@tabler/icons-react';
-import { Button } from '@/shared/components/Button/Button';
-import { ArrowRight, IconInstagram, IconTelegram } from '@/shared/components/Svg';
+import { IconInstagram, IconTelegram } from '@/shared/components/Svg';
 import { Page } from '@/shared/components/Page/Page';
 import { Section } from '@/shared/components/Section/Section';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
 import { PopularProductsSlider } from '@/widgets/PopularProductsSlider/PopularProductsSlider';
-import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
+import { HomeHeroes } from '@/widgets/HomeHeroes/HomeHeroes';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
-import { capsuleStyle } from '@/widgets/ProductV2/collections';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import { CategoriesInitializer } from '@/shared/components/CategoriesInitializer/CategoriesInitializer';
 import { content } from '@/shared/config/content';
@@ -39,85 +35,16 @@ const REASONS = [
 const FAQ_PREVIEW = faqData.slice(0, 3).map((category) => category.questions[0]);
 
 const Home = () => {
-  const router = useRouter();
   const categories = useCategoriesStore((s) => s.categories);
-  // Герої = колекції з БД (GET /collections), по одному на кожну.
-  // Вибраний дизайн зберігається окремо на колекцію (slug товару)
+  // Герої = колекції з БД (GET /collections); механіку розкладки вибирає
+  // активна дизайн-концепція (data-design, перемикач на /v2/dev)
   const { data: collections } = useCollections();
-  const [selected, setSelected] = useState<Record<string, string>>({});
 
   return (
     <Page>
       <CategoriesInitializer />
 
-      {/* Скелетон-герой, поки колекції вантажаться (без стрибка макета) */}
-      {!collections && (
-        <section className={styles.hero}>
-          <div className={styles.heroText}>
-            <h1 className={styles.heroTitle}>{content.home.hero.title}</h1>
-            <p className={styles.heroSubtitle}>{content.home.hero.description}</p>
-            <div className={styles.heroActions}>
-              <Button size="lg" variant="primary" disabled>
-                До колекції <ArrowRight size={20} />
-              </Button>
-            </div>
-          </div>
-          <div className={styles.heroStageSkeleton} aria-busy="true" aria-label="Завантаження колекцій" />
-        </section>
-      )}
-
-      {/* Кожна колекція БД — герой: назва/опис/капсула з colections-ендпоінта.
-          Перемикач: міні-фото, якщо в колекції є власні моделі, інакше крапки */}
-      {collections?.map((col, i) => {
-        const TitleTag = (i === 0 ? 'h1' : 'h2') as 'h1';
-        const active = selected[col.key] ?? col.items[0]?.slug;
-        const switcher = col.items.some((it) => it.design.modelUrl) ? 'thumbs' : 'dots';
-        return (
-          <section key={col.key} className={styles.hero}>
-            <div className={styles.heroText}>
-              <TitleTag className={styles.heroTitle}>
-                {col.title}
-                {col.labelText && (
-                  <span className={styles.capsule} style={capsuleStyle(col.labelColor)}>
-                    {col.labelText}
-                  </span>
-                )}
-              </TitleTag>
-              <p className={styles.heroSubtitle}>{col.description}</p>
-              <div className={styles.heroActions}>
-                <Button
-                  size="lg"
-                  variant="primary"
-                  disabled={!active}
-                  onClick={() => active && router.push(`/v2/a/${active}`)}>
-                  До колекції <ArrowRight size={20} />
-                </Button>
-                {i === 0 && (
-                  <Button size="lg" variant="secondary" onClick={() => router.push('/about')}>
-                    Про бренд
-                  </Button>
-                )}
-              </div>
-            </div>
-            <div className={styles.heroVisualWrap}>
-              {col.badgeText && (
-                <span
-                  className={styles.heroBadgeOnStage}
-                  style={{ '--badge-color': col.badgeColor ?? '#1c8a37' } as React.CSSProperties}>
-                  <span className={styles.heroPulseDot} aria-hidden="true" />
-                  {col.badgeText}
-                </span>
-              )}
-              <HeroVisual
-                designs={col.designs}
-                switcher={switcher}
-                value={active}
-                onChange={(key) => setSelected((prev) => ({ ...prev, [col.key]: key }))}
-              />
-            </div>
-          </section>
-        );
-      })}
+      <HomeHeroes collections={collections} />
 
       <ul className={styles.trust}>
         {content.home.trust.map((item) => (

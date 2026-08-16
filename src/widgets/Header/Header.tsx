@@ -11,8 +11,6 @@ import Link from 'next/link';
 import { useCartDrawerActions, useCartCalculations, useCartStore } from '@/shared/stores/cart';
 import { useAuthStore } from '@/shared/stores/auth';
 import { CartDrawer } from '@/features/cart/components/CartDrawer/CartDrawer';
-import { ThemeToggle } from '@/shared/components/ThemeToggle/ThemeToggle';
-import { DEV_MODE } from '@/shared/config/dev-mode';
 import { AuthDrawer } from '@/features/auth/components/AuthDrawer/AuthDrawer';
 import { content } from '@/shared/config/content';
 import { Logo } from '@/shared/components/Logo';
@@ -246,10 +244,6 @@ export function Header() {
             aria-label="Відкрити пошук">
             <IconSearch className={styles.searchPlaceholder} />
           </button>
-
-          {/* Тумблер теми — лише в DEV_MODE (shared/config/dev-mode);
-              покупці живуть на автоматиці 18:00–6:00 */}
-          {DEV_MODE && <ThemeToggle className={styles.cartButton} />}
 
           <button className={styles.cartButton} onClick={toggleCartDrawer} aria-label="Кошик">
             <IconCart />

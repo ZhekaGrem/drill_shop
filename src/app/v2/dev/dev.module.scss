@@ -1,0 +1,149 @@
+// src/app/v2/dev/dev.module.scss
+// Дев-панель: усе на токенах, щоб сторінка сама демонструвала обидві теми.
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary, #6b7280);
+}
+
+.seg {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.segBtn,
+.segBtnActive {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.segBtn {
+  background: transparent;
+  border: 1px solid var(--border-subtle, #d6dde4);
+  color: var(--text-primary, #111);
+}
+
+// Актив — як пігулки-контроли Дії: чорна у світлій, світла в темній
+.segBtnActive {
+  background: var(--text-primary, #111);
+  border: 1px solid var(--text-primary, #111);
+  color: var(--btn-primary-fg, #fff);
+}
+
+.mono {
+  margin: 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: var(--text-secondary, #6b7280);
+}
+
+.rows {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  dt {
+    font-size: 12px;
+    color: var(--text-secondary, #6b7280);
+  }
+
+  dd {
+    margin: 4px 0 0;
+    font-size: 14px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+}
+
+.links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+
+  li + li {
+    border-top: 1px solid var(--border-subtle, #d6dde4);
+  }
+
+  a {
+    display: block;
+    padding: var(--space-3) 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary, #111);
+    text-decoration: none;
+  }
+}
+
+.dim {
+  color: var(--text-secondary, #6b7280);
+  font-weight: 400;
+  font-size: 13px;
+}
+
+// Перемикач дизайн-концепцій: рядки з назвою і підказкою механіки
+.designList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.designRow,
+.designRowActive {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius-md);
+  text-align: left;
+  cursor: pointer;
+
+  strong {
+    font-size: 14px;
+  }
+
+  span {
+    font-size: 12px;
+  }
+}
+
+.designRow {
+  background: transparent;
+  border: 1px solid var(--border-subtle, #d6dde4);
+  color: var(--text-primary, #111);
+
+  span {
+    color: var(--text-secondary, #6b7280);
+  }
+}
+
+.designRowActive {
+  background: var(--text-primary, #111);
+  border: 1px solid var(--text-primary, #111);
+  color: var(--btn-primary-fg, #fff);
+
+  span {
+    color: inherit;
+    opacity: 0.75;
+  }
+}

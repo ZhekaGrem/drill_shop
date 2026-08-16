@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Header } from '@/widgets/Header/Header';
 import { Footer } from '@/widgets/Footer/Footer';
 import { EmailVerificationBanner } from '@/shared/components/EmailVerificationBanner';
+import { ThemeClock } from '@/shared/components/ThemeClock/ThemeClock';
 import { useRandomGradientPhase } from '@/shared/hooks';
 import { DEV_MODE } from '@/shared/config/dev-mode';
 import styles from './LayoutWrapper.module.scss';
@@ -31,6 +32,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   // (копі власника, дослівно) — сайт зараз мобільний.
   return (
     <>
+      <ThemeClock />
       {!isDesktopAllowed && (
         <div className={styles.plug} role="status">
           <h1 className={styles.plugTitle}>Вибачте, у нас проблеми з підключенням</h1>

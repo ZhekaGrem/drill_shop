@@ -50,7 +50,7 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
               {collection ? `Колекція «${collection.title}»` : 'Завантажуємо колекцію…'}
               {collection?.labelText && (
                 <span
-                  className={styles.capsule}
+                  className={`${styles.capsule} designCapsule`}
                   style={{ ...capsuleStyle(collection.labelColor), marginLeft: 8 }}>
                   {collection.labelText}
                 </span>

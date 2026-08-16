@@ -1,0 +1,379 @@
+// src/widgets/HomeHeroes/HomeHeroes.module.scss
+// База героя (переїхала з home.module.scss разом із виділенням віджета)
+// + розкладки механік трьох дизайн-концепцій.
+
+// Між героями-колекціями — той самий токен, що відділяє контент від хедера
+section + .hero {
+  margin-top: var(--page-padding-y);
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  padding: var(--space-10);
+  box-shadow: var(--shadow-sm);
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+    gap: var(--space-6);
+    padding: var(--card-padding);
+
+    // Картка добирає екран до низу: липкий хедер 57px + верхній відступ.
+    // Вільну висоту забирає текстовий блок і віддає кнопкам (.heroActions)
+    min-height: 586px;
+    min-height: calc(100svh - 57px - var(--page-padding-y));
+  }
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  max-width: 520px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex: 1;
+  }
+}
+
+.heroTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-6xl);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+
+  @media (max-width: 768px) {
+    font-size: var(--text-4xl);
+  }
+}
+
+.heroSubtitle {
+  font-size: var(--text-lg);
+  font-weight: var(--fw-light);
+  line-height: 1.55;
+  color: var(--text-secondary);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+  }
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: auto;
+    padding-top: var(--space-6);
+
+    button {
+      flex: 1 1 100%;
+    }
+  }
+}
+
+// Капсула-лейбл колекції біля назви (колір із БД, label_color)
+.capsule {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+// Пульсуюча крапка колекції поверх сцени (текст і колір із БД)
+.heroVisualWrap {
+  position: relative;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.heroBadgeOnStage {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-3);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary, #6b7280);
+  pointer-events: none;
+}
+
+.heroPulseDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--badge-color, #1c8a37);
+  animation: heroBadgePulse 1.6s ease-out infinite;
+}
+
+@keyframes heroBadgePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.25);
+  }
+
+  70% {
+    box-shadow: 0 0 0 9px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+// Постер замість живої сцени (бічні картки каруселі К1) — та сама висота,
+// що в стейджа HeroVisual, щоб снап не смикав макет
+.heroPoster {
+  position: relative;
+  width: 100%;
+  height: min(60vw, 420px);
+
+  img {
+    object-fit: contain;
+  }
+}
+
+// Скелетон сцени, поки колекції вантажаться
+.heroStageSkeleton {
+  width: 100%;
+  height: min(60vw, 420px);
+  border-radius: var(--radius-card);
+  background: linear-gradient(
+    90deg,
+    var(--surface-muted) 25%,
+    var(--surface-card) 37%,
+    var(--surface-muted) 63%
+  );
+  background-size: 400% 100%;
+  animation: heroSkeletonShimmer 1.4s ease infinite;
+}
+
+@keyframes heroSkeletonShimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+// ============ К1 · Peek-карусель ============
+.carousel {
+  position: relative;
+}
+
+.carouselTrack {
+  margin: 0;
+  padding: 0 6vw; // визирання сусідніх карток з країв
+  list-style: none;
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.carouselCard {
+  flex: 0 0 88%;
+  scroll-snap-align: center;
+  display: flex; // герой розтягується на висоту найвищої картки ряду
+
+  .hero {
+    width: 100%;
+  }
+}
+
+.carouselDots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--space-3);
+}
+
+.carouselDot,
+.carouselDotActive {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-pill);
+  background: var(--border-strong);
+  transition: background 0.2s ease;
+}
+
+.carouselDotActive {
+  background: var(--accent);
+}
+
+// ============ К3 · Таби ============
+// Обгортка секції: якір для селекторів/тестів; ритм задає внутрішній .hero
+.tabsHero {
+  display: block;
+}
+
+.tabsRow {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: var(--space-3);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tab,
+.tabActive {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.tabActive {
+  background: var(--text-primary);
+  border: 1px solid var(--text-primary);
+  color: var(--btn-primary-fg);
+}
+
+.tabArchived {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.tabActive .tabArchived {
+  color: inherit;
+  opacity: 0.7;
+}
+
+// ============ К2 · Плитки + сторіз ============
+.tilesHero {
+  display: block;
+}
+
+.storyBars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: var(--space-2);
+}
+
+.storyBar {
+  position: relative;
+  flex: 1;
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--border-subtle);
+  overflow: hidden;
+}
+
+.storyBarFill,
+.storyBarDone {
+  position: absolute;
+  inset: 0;
+  background: var(--acid, #ccff00);
+}
+
+.storyBarFill {
+  transform-origin: left;
+  animation: storyProgress 5s linear forwards;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes storyProgress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.tilesRow {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: var(--space-3);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tile,
+.tileActive {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  max-width: 84px;
+}
+
+.tileSwatch {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--border-radius-md);
+  background: var(--tile-color, #666);
+  border: 2px solid transparent;
+  transition: border-color 0.15s ease;
+}
+
+.tileActive .tileSwatch {
+  border-color: var(--acid, #ccff00);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6);
+}
+
+.tileLabel {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.tileActive .tileLabel {
+  color: var(--text-primary);
+}

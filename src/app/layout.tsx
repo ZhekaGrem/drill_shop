@@ -45,17 +45,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // suppressHydrationWarning: інлайн-скрипт у <head> ставить data-theme ДО
+  // гідрації, тож атрибути <html> на клієнті свідомо інші, ніж у SSR-HTML
   return (
-    <html lang="uk" dir="ltr">
+    <html lang="uk" dir="ltr" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-        {/* Тема ДО першого кадру (без блимання): явний вибір із localStorage
-            перекриває годинник; без вибору — темна з 18:00 до 6:00 */}
+        {/* Дизайн-концепція і тема ДО першого кадру (без блимання). Дзеркало
+            правил shared/config/design.ts + theme.ts: явний вибір теми
+            перекриває автоматику; авто залежить від дизайну — стрітвір завжди
+            темний, Cupertino за системою, решта за годинником 18:00–6:00 */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){var h=new Date().getHours();t=h>=18||h<6?'dark':'light';}var d=document.documentElement;d.setAttribute('data-theme',t);d.setAttribute('data-mantine-color-scheme',t);}catch(e){}})();",
+              "(function(){try{var d=document.documentElement;var ds=localStorage.getItem('design');if(ds==='cupertino'||ds==='streetwear'||ds==='tactile'){d.setAttribute('data-design',ds);}else{ds=null;}var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){if(ds==='streetwear'){t='dark';}else if(ds==='cupertino'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}else{var h=new Date().getHours();t=h>=18||h<6?'dark':'light';}}d.setAttribute('data-theme',t);d.setAttribute('data-mantine-color-scheme',t);}catch(e){}})();",
           }}
         />
       </head>

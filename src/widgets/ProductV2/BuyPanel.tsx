@@ -68,7 +68,9 @@ export const BuyPanel = ({ product }: { product: Product }) => {
             </span>
           )}
           {product.labelText && (
-            <span className={styles.capsule} style={capsuleStyle(product.labelColor ?? null)}>
+            <span
+              className={`${styles.capsule} designCapsule`}
+              style={capsuleStyle(product.labelColor ?? null)}>
               {product.labelText}
             </span>
           )}
