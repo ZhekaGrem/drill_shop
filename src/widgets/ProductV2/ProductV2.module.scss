@@ -1,10 +1,46 @@
 // src/widgets/ProductV2/ProductV2.module.scss
 // Стилі сторінки товару в колекції: 3D-сцена як галерея + повна картка
 // покупки, інфогрупи, інші колекції.
+// Телефон — один стовпчик, як і був. Від 1024px сторінка стає двоколонковою:
+// медіа зліва, покупка справа (див. .buyColumn). Порядок DOM однаковий в обох
+// розкладках, тому вузький екран не залежить від десктопних правил.
 .page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+// Права колонка: картка покупки + інфогрупи одним блоком, щоб на телефоні між
+// ними лишався той самий проміжок, що й між рештою блоків сторінки.
+.buyColumn {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+}
+
+@media (min-width: 1024px) {
+  .page {
+    // 400px — міра, під яку рахована мова списків і блок покупки; ліва колонка
+    // забирає решту. minmax(0, …) обов'язковий: без нього 3D-полотно з власною
+    // шириною роздуває доріжку й ламає грид.
+    grid-template-columns: minmax(0, 1fr) 400px;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  // Покупка лишається на екрані, поки гортаєш високу медіа-колонку. Це і є
+  // десктопна відповідь на «кнопки не видно» — окрема липка панель тут зайва.
+  // Зсув поки без висоти хедера: хедер не липкий (див. спеку, P0.2). Коли його
+  // полагодять — сюди йде «висота хедера + --space-4».
+  .buyColumn {
+    position: sticky;
+    top: var(--space-4);
+  }
+
+  // Секція «Інші колекції» — на всю ширину, під обома колонками
+  .fullWidth {
+    grid-column: 1 / -1;
+  }
 }
 
 .card {
@@ -179,6 +215,19 @@
     color: var(--btn-primary-fg);
   }
 
+  // Наведення існує тільки там, де є курсор: на дотику :hover «залипає» після
+  // тапа. Обраний чіп не підсвічуємо — він уже в максимальному стані.
+  @media (hover: hover) {
+    &:not([aria-pressed='true']):not(:disabled):hover {
+      border-color: var(--text-primary);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
   &:disabled {
     opacity: 0.35;
     cursor: not-allowed;
@@ -332,6 +381,16 @@
   &::-webkit-scrollbar {
     display: none;
   }
+
+  // На широкому екрані горизонтальна доріжка ховає картки без жодного натяку,
+  // що вбік є ще щось: смуга прокрутки прихована, а миша не «свайпає».
+  // Тому від 1024px це звичайна сітка — усі колекції видно одразу.
+  @media (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    overflow-x: visible;
+    padding-bottom: 0;
+  }
 }
 
 .collectionCard {
@@ -344,6 +403,23 @@
   border-radius: var(--radius-card);
   color: inherit;
   text-decoration: none;
+  transition: transform var(--transition-fast);
+
+  // У сітці ширину задає доріжка, а не картка (DESIGN_SYSTEM, «картка товару»)
+  @media (min-width: 1024px) {
+    flex: initial;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
 
   img {
     width: 100%;

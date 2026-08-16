@@ -94,22 +94,29 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
           )}
         </div>
 
-        <div className={styles.card}>
-          {product ? (
-            // key: зміна товару скидає вибір розміру/кількості до дефолтів
-            <BuyPanel key={product.id} product={product} />
-          ) : isError ? (
-            <ProductError slug={slug} onRetry={() => refetch()} />
-          ) : (
-            <ProductSkeleton />
-          )}
-        </div>
+        {/* Покупка й інфогрупи — одна колонка: від 1024px вона стає правою
+            і липкою, на телефоні просто йде наступними блоками (той самий
+            порядок DOM, жодного дубля розмітки під ширини) */}
+        <div className={styles.buyColumn}>
+          <div className={styles.card}>
+            {product ? (
+              // key: зміна товару скидає вибір розміру/кількості до дефолтів
+              <BuyPanel key={product.id} product={product} />
+            ) : isError ? (
+              <ProductError slug={slug} onRetry={() => refetch()} />
+            ) : (
+              <ProductSkeleton />
+            )}
+          </div>
 
-        {product && <ProductInfoGroups product={product} />}
+          {product && <ProductInfoGroups product={product} />}
+        </div>
 
         {/* Опис і відгуки прибрані з клієнтської сторінки (рішення власника) */}
 
-        <OtherCollections collections={collections} currentKey={collection?.key} />
+        <div className={styles.fullWidth}>
+          <OtherCollections collections={collections} currentKey={collection?.key} />
+        </div>
       </div>
     </Page>
   );
