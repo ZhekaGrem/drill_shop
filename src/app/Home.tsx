@@ -8,7 +8,6 @@ import { Page } from '@/shared/components/Page/Page';
 import { Section } from '@/shared/components/Section/Section';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
-import { PopularProductsSlider } from '@/widgets/PopularProductsSlider/PopularProductsSlider';
 import { HomeHeroes } from '@/widgets/HomeHeroes/HomeHeroes';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
 import { useCategoriesStore } from '@/shared/stores/categories';
@@ -78,10 +77,6 @@ const Home = () => {
           </ListGroup>
         </Section>
       )}
-
-      <Section title="Популярне" action={{ href: '/catalog', label: 'Весь каталог' }}>
-        <PopularProductsSlider />
-      </Section>
 
       <Section title="Чому Є.Дріл" description="Що стоїть за кожним замовленням">
         <ListGroup>

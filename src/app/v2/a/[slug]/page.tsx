@@ -17,6 +17,7 @@ import { BuyPanel } from '@/widgets/ProductV2/BuyPanel';
 import { ProductError, ProductSkeleton } from '@/widgets/ProductV2/ProductState';
 import { ProductInfoGroups } from '@/widgets/ProductV2/ProductInfoGroups';
 import { OtherCollections } from '@/widgets/ProductV2/OtherCollections';
+import { RichDescription } from '@/shared/components/RichDescription/RichDescription';
 import styles from '@/widgets/ProductV2/ProductV2.module.scss';
 
 export default function CollectionProductPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -67,7 +68,11 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
               </p>
             )}
             {collection?.archivedAt && <p className={styles.outOfStock}>Архівна колекція</p>}
-            {collection?.description && <p>{collection.description}</p>}
+            {collection?.description && (
+              <p>
+                <RichDescription text={collection.description} />
+              </p>
+            )}
           </div>
           {collection ? (
             <HeroVisual

@@ -1,0 +1,18 @@
+// src/shared/components/RichDescription/RichDescription.module.scss
+// Лінк в описі: акцентний колір, іконка сидить у рядку з текстом
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent, #0073e6);
+  font-weight: 600;
+  text-decoration: none;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

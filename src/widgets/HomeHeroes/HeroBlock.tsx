@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/components/Button/Button';
 import { ArrowRight } from '@/shared/components/Svg';
+import { RichDescription } from '@/shared/components/RichDescription/RichDescription';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import { capsuleStyle, type CollectionDef } from '@/widgets/ProductV2/collections';
 import styles from './HomeHeroes.module.scss';
@@ -49,7 +50,9 @@ export const HeroBlock = ({
             </span>
           )}
         </TitleTag>
-        <p className={styles.heroSubtitle}>{col.description}</p>
+        <p className={styles.heroSubtitle}>
+          <RichDescription text={col.description} />
+        </p>
         <div className={styles.heroActions}>
           <Button
             size="lg"

@@ -10,7 +10,7 @@
 ## Етап 1 · Темна палітра OLED — M
 
 - [ ] `globals.css`: дельта dark-блоку (`--background #000`, `--surface-card
-  #1C1C1E`, `--surface-muted #2C2C2E`, `--border-subtle #38383A`;
+#1C1C1E`, `--surface-muted #2C2C2E`, `--border-subtle #38383A`;
       `--gradient-page` dark → суцільний `#000`).
 - [ ] Межа навбару/футеру на OLED: перевірити `--border-inverse-subtle`
       (щоб чорне не зливалось із чорним) — правка, якщо треба.
@@ -43,7 +43,7 @@
 ## Етап 4 · Системна тема — S
 
 - [ ] Інлайн-скрипт у `layout.tsx`: години → `matchMedia('(prefers-color-scheme:
-  dark)')`; localStorage-вибір перекриває.
+dark)')`; localStorage-вибір перекриває.
 - [ ] `ThemeToggle`: інтервал-годинник → `change`-слухач medía-query.
 - Верифікація: перемикання теми ОС міняє сайт наживо без явного вибору;
   явний вибір липкий.
