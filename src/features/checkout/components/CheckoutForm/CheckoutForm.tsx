@@ -164,15 +164,15 @@ const CheckoutFormComponent = ({ email = true }: CheckoutFormProps) => {
               size="lg"
               variant="primary"
               fullWidth
-              className={styles.btnConfirm}
+              className={styles.desktopOnly}
               loading={isSubmitting}
               disabled={isCartLoading || items.length === 0}>
-              {isSubmitting ? 'Створення замовлення...' : 'Підтвердити замовлення'}
+              {isSubmitting ? 'Створення замовлення…' : 'Підтвердити замовлення'}
             </Button>
 
             <div className={styles.agreementNotice}>
               <p className={styles.agreementText}>
-                Натискаючи "Підтвердити замовлення", ви погоджуєтесь з умовами{' '}
+                Натискаючи «Підтвердити замовлення», ви погоджуєтесь з умовами{' '}
                 <Link href="/public-offer" className={styles.agreementLink}>
                   публічної оферти
                 </Link>{' '}

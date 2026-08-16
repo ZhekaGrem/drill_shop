@@ -54,7 +54,9 @@ export const CartDrawer = () => {
         },
       }}>
       <Stack h="100%" justify="space-between" gap={0} className={styles.drawer}>
-        {error && (
+        {/* error і порожній стан більше не малюються одночасно: раніше людина
+            бачила «Помилка завантаження кошика» і «Ваш кошик порожній» поруч. */}
+        {error && !isLoading && (
           <Box p="md" className={styles.body}>
             <Text size="sm" c="red">
               {error}
@@ -71,7 +73,14 @@ export const CartDrawer = () => {
               padding: isMobile ? '16px 20px' : '16px',
             },
           }}>
-          {!hasItems ? (
+          {/* isLoading перевіряємо ПЕРШИМ. Стор кошика ініціалізується
+              асинхронно, тож items спершу порожній — і власник повного кошика
+              бачив «Ваш кошик порожній» щоразу, коли відкривав шухляду. */}
+          {isLoading ? (
+            <Center py="xl">
+              <Loader size="sm" />
+            </Center>
+          ) : !hasItems ? (
             <Center py="xl">
               <Stack align="center">
                 <IconCart3 />
@@ -80,7 +89,7 @@ export const CartDrawer = () => {
                 </Text>
                 <Link href={`${basePath}/catalog`}>
                   <Button onClick={close} size={isMobile ? 'md' : 'sm'}>
-                    Перейти до покупок
+                    Перейти до каталогу
                   </Button>
                 </Link>
               </Stack>
@@ -95,7 +104,7 @@ export const CartDrawer = () => {
         </ScrollArea>
 
         {/* Footer with total and checkout */}
-        {hasItems && (
+        {hasItems && !isLoading && (
           <Stack gap="md" pt="md">
             <Divider className={styles.divider} />
 

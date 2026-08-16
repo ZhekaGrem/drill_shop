@@ -110,7 +110,7 @@ export const PromoCodeInput = ({
 
   return (
     <Stack gap="xs">
-      <Group wrap="nowrap" align="flex-start">
+      <Group wrap="nowrap" align="center">
         <div className={styles.promoInput} style={{ flex: 1 }}>
           <Input
             placeholder="Введіть промокод"

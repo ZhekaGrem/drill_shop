@@ -4,6 +4,7 @@
 import { usePathname } from 'next/navigation';
 import { Header } from '@/widgets/Header/Header';
 import { Footer } from '@/widgets/Footer/Footer';
+import { SiteBottomNav } from '@/widgets/BottomNav';
 import { EmailVerificationBanner } from '@/shared/components/EmailVerificationBanner';
 import { ThemeClock } from '@/shared/components/ThemeClock/ThemeClock';
 import { useRandomGradientPhase } from '@/shared/hooks';
@@ -24,12 +25,15 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  // Десктоп відкритий лише в DEV_MODE (shared/config/dev-mode); виняток
-  // /v2/audit — внутрішній інструмент, працює на десктопі завжди
-  const isDesktopAllowed = DEV_MODE || pathname?.startsWith('/v2/audit');
+  // Десктоп відкритий не всьому сайту, а поіменному списку (рішення власника,
+  // 2026-08-16): головна і все під /v2 мають власну широку розкладку, решта
+  // лишається мобільною і бачить заглушку. DEV_MODE відкриває все одразу.
+  //
+  // Головна звіряється на ТОЧНИЙ збіг: startsWith('/') відкрив би геть усе.
+  const isDesktopAllowed = DEV_MODE || pathname === '/' || pathname?.startsWith('/v2');
 
-  // Всі інші сторінки - З Header і Footer. Десктоп бачить лише заглушку
-  // (копі власника, дослівно) — сайт зараз мобільний.
+  // Решта сторінок на широкому екрані бачить заглушку (копі власника,
+  // дослівно) — вони досі мобільні.
   return (
     <>
       <ThemeClock />
@@ -53,6 +57,12 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         <div style={{ viewTransitionName: 'site-footer' }}>
           <Footer />
         </div>
+        {/* Нижня панель живе ВСЕРЕДИНІ .site, а не поруч із ним. Інакше в
+            діапазоні 769–1023px вона малювалась би поверх десктопної заглушки:
+            .site ховається від 769px, а власний брейкпоінт панелі — 1024px.
+            Сама панель фіксована, тож на розкладку всередині контейнера це не
+            впливає; відступ під неї ставить body[data-bottom-nav] (globals.css). */}
+        <SiteBottomNav />
       </div>
     </>
   );

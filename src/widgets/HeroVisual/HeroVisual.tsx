@@ -6,7 +6,7 @@
 // фолбеку — своє фото, тож перемикач працює і при reduced-motion без 3D.
 //
 // Порядок завантаження лишився той самий: сцена підвантажується лише коли блок
-// реально потрапив у в'юпорт, і взагалі не вантажиться, якщо система просить
+// реально потрапив у вʼюпорт, і взагалі не вантажиться, якщо система просить
 // менше руху. Статичне фото — не «заглушка на час», а повноцінний фолбек.
 'use client';
 
@@ -38,16 +38,19 @@ export const HeroVisual = ({ designs = DESIGNS, value, onChange, switcher = 'dot
   const [inner, setInner] = useState(() => Object.keys(designs)[0]);
   const design = value ?? inner;
   const setDesign = onChange ?? setInner;
-  // Union записів звужуємо до спільного інтерфейсу: modelUrl є не в усіх
-  const active: Design = designs[design];
-  // Готовність пам'ятаємо ЯК МОДЕЛЬ: перемкнули GLB — активна модель ще не
+  // Union записів звужуємо до спільного інтерфейсу: modelUrl є не в усіх.
+  // Колекція без товарів (designs = {}) — легітимний стан: useCollections.ts
+  // окремо його обробляє. Без цієї перевірки active був undefined і перший же
+  // доступ до active.modelUrl нижче валив сторінку в білий екран.
+  const active: Design | undefined = designs[design];
+  // Готовність памʼятаємо ЯК МОДЕЛЬ: перемкнули GLB — активна модель ще не
   // готова, канвас сам ховається за фолбек до onReady нової сцени
-  const activeModel = active.modelUrl ?? 'tshirt';
+  const activeModel = active?.modelUrl ?? 'tshirt';
   const [readyModel, setReadyModel] = useState<string | null>(null);
   const isSceneReady = readyModel === activeModel;
 
   // rootMargin — щоб сцена почала вантажитись трохи раніше, ніж блок
-  // з'явиться на екрані, і не «клацала» вже на видимому місці
+  // зʼявиться на екрані, і не «клацала» вже на видимому місці
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: '200px' });
   // Драг-обертання: обробники на stage, сцена читає ref покадрово
   const { dragRef, handlers: dragHandlers } = useDragRotation();
@@ -65,17 +68,24 @@ export const HeroVisual = ({ designs = DESIGNS, value, onChange, switcher = 'dot
     }
   }, [readyModel, designs]);
 
+  // Ранній вихід ПІСЛЯ всіх хуків (правила хуків): порожня колекція більше не
+  // валить сторінку, а просто не малює сцену.
+  if (!active) return null;
+
   return (
     <div className={styles.visual}>
       <div ref={ref} className={styles.stage} {...dragHandlers}>
-        {/* Підсвітка-«стенд» під об'єктом: предмет стоїть на поверхні,
+        {/* Підсвітка-«стенд» під обʼєктом: предмет стоїть на поверхні,
           а не висить у порожнечі */}
         <span className={styles.spotlight} aria-hidden="true" />
         <span className={styles.shadow} aria-hidden="true" />
 
         <Image
           src={active.fallback}
-          alt={`Футболка «Ніжна Оксана», ${active.label} дизайн — офіційний мерч Є.Дріл`}
+          // Назва товару приходить з active.label. Раніше тут була захардкоджена
+          // «Ніжна Оксана» — компонент став галереєю довільної колекції, і той
+          // самий alt віддавався для КОЖНОГО товару сайту.
+          alt={`${active.label} — офіційний мерч є.Дріл`}
           width={1200}
           height={1200}
           priority
@@ -99,14 +109,14 @@ export const HeroVisual = ({ designs = DESIGNS, value, onChange, switcher = 'dot
         )}
       </div>
 
-      <div className={styles.designSwitcher} role="group" aria-label="Дизайн футболки">
+      <div className={styles.designSwitcher} role="group" aria-label="Товари колекції">
         {Object.keys(designs).map((key) => (
           <button
             key={key}
             type="button"
             className={switcher === 'thumbs' ? styles.thumb : styles.swatch}
             style={{ '--swatch-color': designs[key].swatch } as CSSProperties}
-            aria-label={`Дизайн: ${designs[key].label}`}
+            aria-label={designs[key].label}
             aria-pressed={design === key}
             onClick={() => setDesign(key)}>
             {switcher === 'thumbs' && (

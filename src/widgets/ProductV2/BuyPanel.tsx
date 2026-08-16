@@ -42,12 +42,20 @@ export const BuyPanel = ({ product }: { product: Product }) => {
       ? 'Немає в наявності'
       : available <= LOW_STOCK
         ? `Залишилось ${available} шт`
-        : 'Розробка і доставка до 7 днів (вебачте)';
+        : 'Виготовлення і доставка — до 7 днів';
 
-  const handleAdd = () => {
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-    addItem(product.id, quantity, variant?.id, buildCartSnapshot(product, variant));
+  // setAdded ПІСЛЯ успіху, а не до виклику. Раніше кнопка казала «Додано в
+  // кошик ✓» навіть тоді, коли запит падав, — людина йшла в кошик по товар,
+  // якого там не було.
+  const handleAdd = async () => {
+    try {
+      await addItem(product.id, quantity, variant?.id, buildCartSnapshot(product, variant));
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    } catch {
+      // Повідомлення про помилку показує сам useCart (тост);
+      // тут головне — не малювати успіх там, де його не було.
+    }
   };
 
   return (
@@ -122,13 +130,16 @@ export const BuyPanel = ({ product }: { product: Product }) => {
         <div className={styles.quantityRow}>
           <span className={styles.blockLabel}>Кількість</span>
           <div className={styles.stepper}>
-            <button type="button" aria-label="Менше" onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
+            <button
+              type="button"
+              aria-label="Зменшити кількість"
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
               −
             </button>
             <span>{quantity}</span>
             <button
               type="button"
-              aria-label="Більше"
+              aria-label="Збільшити кількість"
               disabled={quantity >= available}
               onClick={() => setQuantity((q) => Math.min(available, q + 1))}>
               +

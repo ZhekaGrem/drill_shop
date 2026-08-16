@@ -10,7 +10,17 @@ import { otherCollections } from './collections';
 import type { CollectionDef } from './collections';
 import styles from './ProductV2.module.scss';
 
-const plural = (n: number) => (n % 10 === 1 && n % 100 !== 11 ? 'дизайн' : n < 5 ? 'дизайни' : 'дизайнів');
+// Форму обирає ОСТАННЯ цифра, а не саме число: умова `n < 5` давала
+// «22 дизайнів» замість «22 дизайни». Другий виняток — 11-14, де завжди
+// родовий множини.
+const plural = (n: number) => {
+  const last = n % 10;
+  const teen = n % 100;
+  if (teen >= 11 && teen <= 14) return 'дизайнів';
+  if (last === 1) return 'дизайн';
+  if (last >= 2 && last <= 4) return 'дизайни';
+  return 'дизайнів';
+};
 
 export const OtherCollections = ({
   collections,

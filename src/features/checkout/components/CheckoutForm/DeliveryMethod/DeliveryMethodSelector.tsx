@@ -2,7 +2,7 @@ import styles from '../CheckoutForm.module.scss';
 
 const deliveryMethods = [
   { value: 'nova_poshta', label: 'Нова Пошта', description: 'Доставка до відділення Нової Пошти' },
-  { value: 'other', label: 'Інший спосіб', description: 'Укрпошта, Містекспрес або інше' },
+  { value: 'other', label: 'Інший спосіб', description: 'Укрпошта, Міст Експрес або інше' },
 ];
 
 interface DeliveryMethodSelectorProps {

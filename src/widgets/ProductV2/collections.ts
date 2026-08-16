@@ -29,12 +29,14 @@ export interface CollectionDef {
   href: string;
 }
 
-/** Колекція, якій належить товар (за slug); дефолт — перша */
+/** Колекція, якій належить товар (за slug).
+ *  Фолбека «перша колекція» тут БУТИ НЕ МОЖЕ. Він був, і для невідомого slug
+ *  сцена показувала перший товар чужої колекції, тоді як панель покупки продавала
+ *  товар за slug — людина дивилась на одну річ, а купувала іншу. */
 export const collectionOfSlug = (
   collections: CollectionDef[] | undefined,
   slug: string
-): CollectionDef | undefined =>
-  collections?.find((c) => c.items.some((i) => i.slug === slug)) ?? collections?.[0];
+): CollectionDef | undefined => collections?.find((c) => c.items.some((i) => i.slug === slug));
 
 export const itemBySlug = (
   collections: CollectionDef[] | undefined,

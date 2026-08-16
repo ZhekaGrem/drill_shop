@@ -18,7 +18,7 @@ interface CartPageProps {
 }
 
 export default function CartPage({ basePath = '' }: CartPageProps) {
-  const { items, calculations, error } = useCart();
+  const { items, calculations, error, isLoading } = useCart();
 
   if (error) {
     return (
@@ -38,7 +38,7 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
       <PageHeader
         title="Кошик"
         description={
-          items.length > 0 ? `${formatProducts(calculations.itemsCount)} у замовленні` : 'Поки що порожній'
+          items.length > 0 ? `${formatProducts(calculations.itemsCount)} у кошику` : 'Поки що порожній'
         }
         aside={
           <Link href={`${basePath}/catalog`} className={styles.backLink}>
@@ -48,7 +48,11 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
         }
       />
 
-      {items.length === 0 ? (
+      {isLoading ? (
+        <div className={styles.state}>
+          <p>Завантажуємо кошик…</p>
+        </div>
+      ) : items.length === 0 ? (
         <div className={styles.state}>
           <IconShoppingCart size={48} stroke={1.5} className={styles.stateIcon} />
           <h2>Ваш кошик порожній</h2>

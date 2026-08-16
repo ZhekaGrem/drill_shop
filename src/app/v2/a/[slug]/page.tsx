@@ -24,7 +24,7 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
   // свопиться в тому ж матеріалі), а URL оновлюємо тихо через
   // history.replaceState — Next офіційно підтримує це без ре-рендера.
   const [slug, setSlug] = useState(initialSlug);
-  const { data: collections } = useCollections();
+  const { data: collections, isError: collectionsError } = useCollections();
   const collection = collectionOfSlug(collections, slug);
   const item = itemBySlug(collections, slug);
   const { data: product, isError, refetch } = useProduct(slug);
@@ -52,7 +52,7 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
             {/* Назва зліва, пульсуюча крапка колекції — у правому куті рядка */}
             <div className={styles.collectionTitleRow}>
               <h2>
-                {collection ? collection.title : 'Завантажуємо колекцію…'}
+                {collection?.title ?? (collectionsError ? 'Колекція недоступна' : 'Завантажуємо колекцію…')}
                 {collection?.labelText && (
                   <span
                     className={`${styles.capsule} designCapsule`}
@@ -81,7 +81,10 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
               value={item?.key}
               onChange={handleDesignChange}
             />
-          ) : (
+          ) : collections ||
+            collectionsError ? /* Колекції приїхали, але цього slug у них немає (або запит упав) —
+               сцену не малюємо взагалі. Раніше тут вічно крутився скелетон. */
+          null : (
             <div className={styles.stageSkeleton} aria-busy="true" aria-label="Завантаження колекції" />
           )}
           {/* Опис колекції — внизу картки, під сценою */}

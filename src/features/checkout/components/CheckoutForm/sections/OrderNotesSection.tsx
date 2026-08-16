@@ -29,7 +29,7 @@ export const OrderNotesSection = ({
         label="Не дзвонити для уточнення"
         checked={doNotCall}
         onChange={(e) => onDoNotCallChange(e.currentTarget.checked)}
-        className={styles.btnConfirm}
+        className={styles.desktopOnly}
         radius={0}
         styles={{
           root: { padding: 'var(--spacing-sm) var(--spacing-md)' },

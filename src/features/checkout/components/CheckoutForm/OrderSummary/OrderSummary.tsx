@@ -61,23 +61,23 @@ export const OrderSummary = ({
           label="Не дзвонити для уточнення"
           checked={doNotCall}
           onChange={(e) => onDoNotCallChange(e.currentTarget.checked)}
-          className={styles.btnConfirmPhone}
+          className={styles.phoneOnly}
         />
 
         <Button
           type="submit"
-          size="sm"
+          size="lg"
           variant="primary"
           fullWidth
-          className={styles.btnConfirmPhone}
+          className={styles.phoneOnly}
           loading={isSubmitting}
           disabled={isCartLoading || items.length === 0}>
-          {isSubmitting ? 'Створення замовлення...' : 'Підтвердити замовлення'}
+          {isSubmitting ? 'Створення замовлення…' : 'Підтвердити замовлення'}
         </Button>
 
         <div className={styles.agreementNoticePhone}>
           <p className={styles.agreementText}>
-            Натискаючи "Підтвердити замовлення", ви погоджуєтесь з умовами{' '}
+            Натискаючи «Підтвердити замовлення», ви погоджуєтесь з умовами{' '}
             <Link href="/public-offer" className={styles.agreementLink}>
               публічної оферти
             </Link>{' '}

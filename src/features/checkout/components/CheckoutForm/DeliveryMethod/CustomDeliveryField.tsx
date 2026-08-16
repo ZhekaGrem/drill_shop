@@ -21,8 +21,8 @@ export const CustomDeliveryField = ({
         <Button variant="ghost" size="sm" type="button" onClick={() => onQuickInsert('Укрпошта')}>
           Укрпошта
         </Button>
-        <Button variant="ghost" size="sm" type="button" onClick={() => onQuickInsert('Містекспрес')}>
-          Містекспрес
+        <Button variant="ghost" size="sm" type="button" onClick={() => onQuickInsert('Міст Експрес')}>
+          Міст Експрес
         </Button>
       </div>
       <TextareaField
