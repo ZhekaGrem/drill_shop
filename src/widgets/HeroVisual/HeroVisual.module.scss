@@ -1,10 +1,19 @@
 // src/widgets/HeroVisual/HeroVisual.module.scss
 // Колонка: сцена + свотчі дизайнів під нею
 .visual {
+  // Розмір сцени живе тут одним значенням, бо спираються на нього двоє:
+  // сама сцена і ряд мініатюр під нею — доріжка не має бути ширшою за
+  // предмет, під яким стоїть.
+  --stage-size: 440px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
+
+  @media (max-width: 1200px) {
+    --stage-size: 360px;
+  }
 
   @media (max-width: 768px) {
     width: 100%;
@@ -23,8 +32,8 @@
   grid-template-rows: 100%;
   grid-template-columns: 100%;
   place-items: center;
-  width: 440px;
-  height: 440px;
+  width: var(--stage-size);
+  height: var(--stage-size);
   flex-shrink: 0;
   isolation: isolate;
   // Драг-обертання: вертикальний скрол лишається браузеру, горизонталь — нам
@@ -33,11 +42,6 @@
 
   &:active {
     cursor: grabbing;
-  }
-
-  @media (max-width: 1200px) {
-    width: 360px;
-    height: 360px;
   }
 
   // Ціль: весь герой уміщається в перший екран iPhone 14 Pro без скролу.
@@ -136,6 +140,35 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--space-2);
+
+  // На десктопі перенос дає інший результат: у колекції з 16 дизайнами
+  // мініатюри складались у два щільні ряди, які важили більше за саму сцену.
+  // Тому від 1024px це одна доріжка в межах сцени. Смугу прокрутки НЕ ховаємо
+  // — на десктопі вона єдиний натяк, що вбік є ще щось (миша не «свайпає»).
+  @media (min-width: 1024px) {
+    max-width: var(--stage-size);
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: var(--space-1);
+    scrollbar-width: thin;
+
+    // Без цього мініатюри не поїхали б за край, а просто стиснулись:
+    // flex-shrink за замовчуванням 1, і доріжка лишилась би одним рядом
+    // розчавлених квадратиків.
+    > button {
+      flex-shrink: 0;
+    }
+  }
+}
+
+// Варіант switcherWidth="column": сцена стоїть у власній картці, тож доріжка
+// міряється колонкою, а не сценою. Правило нижче за специфічністю рівне
+// .designSwitcher і виграє порядком у файлі — тому воно тут, а не вище.
+.designSwitcherColumn {
+  @media (min-width: 1024px) {
+    max-width: 100%;
+  }
 }
 
 // Мініатюра предмета (режим switcher="thumbs"): фолбек-фото як кнопка.

@@ -30,9 +30,24 @@ type Props = {
   onChange?: (key: string) => void;
   /** Вигляд перемикача: крапки-кольори або міні-фото (різнорідні предмети) */
   switcher?: 'dots' | 'thumbs';
+  /**
+   * Скільки місця на десктопі має ряд перемикачів.
+   * `stage` — рівно під сценою: у герої головної праворуч від тексту ширшати
+   * нікуди, а колекція з 16 дизайнами інакше складається в другий ряд і важить
+   * більше за саму сцену.
+   * `column` — вся колонка: на сторінці товару сцена стоїть у власній картці,
+   * і обмеження шириною сцени тільки різало б останню мініатюру.
+   */
+  switcherWidth?: 'stage' | 'column';
 };
 
-export const HeroVisual = ({ designs = DESIGNS, value, onChange, switcher = 'dots' }: Props) => {
+export const HeroVisual = ({
+  designs = DESIGNS,
+  value,
+  onChange,
+  switcher = 'dots',
+  switcherWidth = 'stage',
+}: Props) => {
   // Рішення власника (2026-08-12): 3D показуємо всім, ігноруючи
   // prefers-reduced-motion. Компромісний режим (статична 3D + drag) — в історії.
   const [inner, setInner] = useState(() => Object.keys(designs)[0]);
@@ -109,7 +124,10 @@ export const HeroVisual = ({ designs = DESIGNS, value, onChange, switcher = 'dot
         )}
       </div>
 
-      <div className={styles.designSwitcher} role="group" aria-label="Товари колекції">
+      <div
+        className={`${styles.designSwitcher} ${switcherWidth === 'column' ? styles.designSwitcherColumn : ''}`}
+        role="group"
+        aria-label="Товари колекції">
         {Object.keys(designs).map((key) => (
           <button
             key={key}

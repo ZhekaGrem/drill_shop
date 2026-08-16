@@ -1,7 +1,6 @@
 // src/app/Home.tsx
 'use client';
 
-import Image from 'next/image';
 import { IconAward, IconCircleCheck, IconMail, IconMapPin, IconMessageCircle } from '@tabler/icons-react';
 import { IconInstagram, IconTelegram } from '@/shared/components/Svg';
 import { Page } from '@/shared/components/Page/Page';
@@ -17,12 +16,10 @@ import { siteConfig } from '@/shared/config/site';
 import { faqData } from './faq/faq-data';
 import styles from './home.module.scss';
 
-// Slug'и з власною ілюстрацією (public/assets/img/categories/).
-// Решта показує category-generic.webp — без runtime 404.
-const KNOWN_ILLUSTRATIONS = new Set(['t-shirts', 'hoodies', 'caps', 'accessories']);
-
-const getCategoryIllustration = (slug: string) =>
-  `/assets/img/categories/${KNOWN_ILLUSTRATIONS.has(slug) ? slug : 'category-generic'}.webp`;
+// Рядки категорій ідуть без іконки (рішення власника, 2026-08-17). Слуги в БД
+// не збігались із набором наявних ілюстрацій, тож усі чотири рядки показували
+// одну сіру заглушку — а чотири однакові заглушки в ряд читаються як
+// незавершена сторінка. Один шар деталей або є скрізь, або його немає.
 
 const REASONS = [
   { ...content.home.sections.freshness, icon: <IconCircleCheck stroke={1.5} /> },
@@ -54,49 +51,52 @@ const Home = () => {
         ))}
       </ul>
 
-      {categories && categories.length > 0 && (
-        <Section title="Категорії" action={{ href: '/catalog', label: 'Усі товари' }}>
+      {/* Секції-списки стоять парами: від 1024px пара лягає у дві доріжки,
+          нижче — одна під одною, як і було. Пари складені за змістом, а не за
+          висотою: навігація з аргументом, операційне з операційним. */}
+      <div className={styles.listTracks}>
+        {categories && categories.length > 0 && (
+          <Section title="Категорії" action={{ href: '/catalog', label: 'Усі товари' }}>
+            <ListGroup>
+              {categories.slice(0, 4).map((cat) => (
+                <ListRow
+                  key={cat.id}
+                  href={`/catalog/category/${cat.slug}`}
+                  title={cat.name}
+                  hint={cat.description || content.home.categoryHints[cat.slug]}
+                />
+              ))}
+            </ListGroup>
+          </Section>
+        )}
+
+        <Section title="Чому Є.Дріл" description="Що стоїть за кожним замовленням">
           <ListGroup>
-            {categories.slice(0, 4).map((cat) => (
+            {REASONS.map((reason) => (
               <ListRow
-                key={cat.id}
-                href={`/catalog/category/${cat.slug}`}
-                title={cat.name}
-                hint={cat.description || content.home.categoryHints[cat.slug]}
-                media={
-                  <Image
-                    src={getCategoryIllustration(cat.slug)}
-                    alt=""
-                    width={40}
-                    height={40}
-                    loading="lazy"
-                  />
-                }
+                key={reason.title}
+                media={reason.icon}
+                title={reason.title}
+                hint={reason.description}
               />
             ))}
           </ListGroup>
         </Section>
-      )}
+      </div>
 
-      <Section title="Чому Є.Дріл" description="Що стоїть за кожним замовленням">
-        <ListGroup>
-          {REASONS.map((reason) => (
-            <ListRow key={reason.title} media={reason.icon} title={reason.title} hint={reason.description} />
-          ))}
-        </ListGroup>
-      </Section>
+      <div className={styles.listTracks}>
+        <Section title="Доставка й оплата" action={{ href: '/delivery-and-payment', label: 'Деталі' }}>
+          <ServicesGroup />
+        </Section>
 
-      <Section title="Доставка й оплата" action={{ href: '/delivery-and-payment', label: 'Деталі' }}>
-        <ServicesGroup />
-      </Section>
-
-      <Section title="Часті питання" action={{ href: '/faq', label: 'Усі питання' }}>
-        <ListGroup>
-          {FAQ_PREVIEW.map((item) => (
-            <ListRow key={item.question} href="/faq" title={item.question} hint={item.answer} />
-          ))}
-        </ListGroup>
-      </Section>
+        <Section title="Часті питання" action={{ href: '/faq', label: 'Усі питання' }}>
+          <ListGroup>
+            {FAQ_PREVIEW.map((item) => (
+              <ListRow key={item.question} href="/faq" title={item.question} hint={item.answer} />
+            ))}
+          </ListGroup>
+        </Section>
+      </div>
 
       <Section title="Звʼязок">
         <ListGroup>

@@ -78,6 +78,7 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
             <HeroVisual
               designs={collection.designs}
               switcher="thumbs"
+              switcherWidth="column"
               value={item?.key}
               onChange={handleDesignChange}
             />
