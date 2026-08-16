@@ -36,7 +36,7 @@
     position: relative;
     isolation: isolate;
     background: var(--btn-primary);
-    color: var(--text-inverse);
+    color: var(--btn-primary-fg, var(--text-inverse));
 
     // Градієнт живе тільки там, де є справжній курсор. Тач лишається з чорною
     // кнопкою: показати hover-стан йому нічим (Дія робить те саме, тільки через

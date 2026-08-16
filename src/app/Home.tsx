@@ -14,6 +14,7 @@ import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
 import { PopularProductsSlider } from '@/widgets/PopularProductsSlider/PopularProductsSlider';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
+import { capsuleStyle } from '@/widgets/ProductV2/collections';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import { CategoriesInitializer } from '@/shared/components/CategoriesInitializer/CategoriesInitializer';
 import { content } from '@/shared/config/content';
@@ -77,7 +78,7 @@ const Home = () => {
               <TitleTag className={styles.heroTitle}>
                 {col.title}
                 {col.labelText && (
-                  <span className={styles.capsule} style={{ background: col.labelColor ?? '#3b6ff5' }}>
+                  <span className={styles.capsule} style={capsuleStyle(col.labelColor)}>
                     {col.labelText}
                   </span>
                 )}
@@ -98,12 +99,22 @@ const Home = () => {
                 )}
               </div>
             </div>
-            <HeroVisual
-              designs={col.designs}
-              switcher={switcher}
-              value={active}
-              onChange={(key) => setSelected((prev) => ({ ...prev, [col.key]: key }))}
-            />
+            <div className={styles.heroVisualWrap}>
+              {col.badgeText && (
+                <span
+                  className={styles.heroBadgeOnStage}
+                  style={{ '--badge-color': col.badgeColor ?? '#1c8a37' } as React.CSSProperties}>
+                  <span className={styles.heroPulseDot} aria-hidden="true" />
+                  {col.badgeText}
+                </span>
+              )}
+              <HeroVisual
+                designs={col.designs}
+                switcher={switcher}
+                value={active}
+                onChange={(key) => setSelected((prev) => ({ ...prev, [col.key]: key }))}
+              />
+            </div>
           </section>
         );
       })}

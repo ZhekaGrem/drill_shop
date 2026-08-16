@@ -12,7 +12,7 @@ import { ProductReviews } from '@/features/reviews/components/ProductReviews/Pro
 import { sanitizeHTML } from '@/shared/utils/sanitize';
 import { useProduct } from '@/widgets/ProductV2/useProduct';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
-import { collectionOfSlug, itemBySlug } from '@/widgets/ProductV2/collections';
+import { capsuleStyle, collectionOfSlug, itemBySlug } from '@/widgets/ProductV2/collections';
 import { BuyPanel } from '@/widgets/ProductV2/BuyPanel';
 import { ProductError, ProductSkeleton } from '@/widgets/ProductV2/ProductState';
 import { ProductInfoGroups } from '@/widgets/ProductV2/ProductInfoGroups';
@@ -51,11 +51,21 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
               {collection?.labelText && (
                 <span
                   className={styles.capsule}
-                  style={{ background: collection.labelColor ?? '#3b6ff5', marginLeft: 8 }}>
+                  style={{ ...capsuleStyle(collection.labelColor), marginLeft: 8 }}>
                   {collection.labelText}
                 </span>
               )}
             </h2>
+            {collection?.badgeText && (
+              <p className={styles.badgeDot}>
+                <span
+                  className={styles.pulseDot}
+                  style={{ '--badge-color': collection.badgeColor ?? '#1c8a37' } as React.CSSProperties}
+                  aria-hidden="true"
+                />
+                {collection.badgeText}
+              </p>
+            )}
             {collection?.archivedAt && <p className={styles.outOfStock}>Архівна колекція</p>}
             {collection?.description && <p>{collection.description}</p>}
           </div>

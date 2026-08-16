@@ -6,6 +6,7 @@ import { Header } from '@/widgets/Header/Header';
 import { Footer } from '@/widgets/Footer/Footer';
 import { EmailVerificationBanner } from '@/shared/components/EmailVerificationBanner';
 import { useRandomGradientPhase } from '@/shared/hooks';
+import { DEV_MODE } from '@/shared/config/dev-mode';
 import styles from './LayoutWrapper.module.scss';
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -22,11 +23,9 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  // ТИМЧАСОВО (2026-08-15): десктоп розблоковано на час допрацювання сайту.
-  // Повернути покупцям заглушку = DESKTOP_PLUG: true; виняток /v2/audit
-  // (внутрішній інструмент) при цьому лишиться робочим.
-  const DESKTOP_PLUG = false;
-  const isDesktopAllowed = !DESKTOP_PLUG || pathname?.startsWith('/v2/audit');
+  // Десктоп відкритий лише в DEV_MODE (shared/config/dev-mode); виняток
+  // /v2/audit — внутрішній інструмент, працює на десктопі завжди
+  const isDesktopAllowed = DEV_MODE || pathname?.startsWith('/v2/audit');
 
   // Всі інші сторінки - З Header і Footer. Десктоп бачить лише заглушку
   // (копі власника, дослівно) — сайт зараз мобільний.

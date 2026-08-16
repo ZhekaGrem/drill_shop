@@ -8,6 +8,7 @@ import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import { apiClient } from '@/shared/api/client';
 import { AuditFindings } from './AuditFindings';
+import { capsuleStyle } from '@/widgets/ProductV2/collections';
 import styles from './audit.module.scss';
 
 interface AuditImage {
@@ -36,6 +37,8 @@ interface AuditCollection {
   archivedAt: string | null;
   labelText: string | null;
   labelColor: string | null;
+  badgeText: string | null;
+  badgeColor: string | null;
   products: AuditProduct[];
 }
 
@@ -81,8 +84,13 @@ export default function CollectionsAuditPage() {
           <h2 className={styles.collectionTitle}>
             «{col.title}» · {col.products.length} тов.
             {col.labelText && (
-              <span className={styles.capsule} style={{ background: col.labelColor ?? '#3b6ff5' }}>
+              <span className={styles.capsule} style={capsuleStyle(col.labelColor)}>
                 {col.labelText}
+              </span>
+            )}
+            {col.badgeText && (
+              <span style={{ color: col.badgeColor ?? '#1c8a37', fontSize: 13, fontWeight: 600 }}>
+                ● {col.badgeText}
               </span>
             )}
             {col.archivedAt && <span className={styles.archived}>Архів</span>}
@@ -111,7 +119,7 @@ export default function CollectionsAuditPage() {
                   {p.labelText && (
                     <span
                       className={styles.capsule}
-                      style={{ background: p.labelColor ?? '#3b6ff5', marginLeft: p.badgeText ? 0 : 'auto' }}>
+                      style={{ ...capsuleStyle(p.labelColor), marginLeft: p.badgeText ? 0 : 'auto' }}>
                       {p.labelText}
                     </span>
                   )}

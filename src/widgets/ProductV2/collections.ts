@@ -19,6 +19,9 @@ export interface CollectionDef {
   /** Капсула-лейбл колекції («новинка» в кольоровій пігулці біля назви) */
   labelText: string | null;
   labelColor: string | null;
+  /** Пульсуюча крапка колекції (тихий підпис на герої) */
+  badgeText: string | null;
+  badgeColor: string | null;
   designs: Record<string, Design>;
   items: CollectionItem[];
   cover: string;
@@ -37,6 +40,14 @@ export const itemBySlug = (
   collections: CollectionDef[] | undefined,
   slug: string
 ): CollectionItem | undefined => collections?.flatMap((c) => c.items).find((i) => i.slug === slug);
+
+/** Стиль капсули-лейбла: фон приходить із БД (hex АБО градієнт — напр.
+ *  var(--gradient-brand)); бренд-градієнт світлий, тому текст на ньому
+ *  темний, а на суцільних кольорах — білий. */
+export const capsuleStyle = (labelColor: string | null) => {
+  const background = labelColor ?? '#3b6ff5';
+  return { background, color: background.includes('gradient') ? '#101413' : '#fff' };
+};
 
 export const otherCollections = (
   collections: CollectionDef[] | undefined,

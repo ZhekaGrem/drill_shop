@@ -50,6 +50,14 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        {/* Тема ДО першого кадру (без блимання): явний вибір із localStorage
+            перекриває годинник; без вибору — темна з 18:00 до 6:00 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){var h=new Date().getHours();t=h>=18||h<6?'dark':'light';}var d=document.documentElement;d.setAttribute('data-theme',t);d.setAttribute('data-mantine-color-scheme',t);}catch(e){}})();",
+          }}
+        />
       </head>
       <body
         className={`${eUkraine.variable} ${eUkraineHead.variable}`}

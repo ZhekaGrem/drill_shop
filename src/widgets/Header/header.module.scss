@@ -41,7 +41,7 @@
     --hd-hover: var(--background-secondary);
     --hd-pill-border: var(--border-strong);
     --hd-cta-bg: var(--btn-primary);
-    --hd-cta-fg: var(--text-inverse);
+    --hd-cta-fg: var(--btn-primary-fg, var(--text-inverse));
     --hd-cta-hover: var(--btn-primary-hover);
   }
 }

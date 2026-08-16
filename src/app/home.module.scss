@@ -19,7 +19,7 @@ section + .hero {
   width: 100%;
   height: min(60vw, 420px);
   border-radius: var(--radius-card);
-  background: linear-gradient(90deg, #eef1f0 25%, #f7f9f8 37%, #eef1f0 63%);
+  background: linear-gradient(90deg, var(--surface-muted) 25%, var(--surface-card) 37%, var(--surface-muted) 63%);
   background-size: 400% 100%;
   animation: heroSkeletonShimmer 1.4s ease infinite;
 }
@@ -31,6 +31,53 @@ section + .hero {
 
   100% {
     background-position: 0 50%;
+  }
+}
+
+// Пульсуюча крапка колекції ПОВЕРХ 3D-сцени (верхній лівий кут візуала) —
+// обраний власником вигляд позначки; текст і колір приходять із БД
+.heroVisualWrap {
+  position: relative;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.heroBadgeOnStage {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-3);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary, #6b7280);
+  // Бейдж — не контрол: не має перехоплювати драг-обертання сцени
+  pointer-events: none;
+}
+
+.heroPulseDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--badge-color, #1c8a37);
+  animation: heroBadgePulse 1.6s ease-out infinite;
+}
+
+@keyframes heroBadgePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.25);
+  }
+
+  70% {
+    box-shadow: 0 0 0 9px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
   }
 }
 

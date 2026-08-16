@@ -291,6 +291,8 @@ p {
   /* Кнопки */
   --btn-primary: #000000;
   --btn-primary-hover: #333333;
+  --btn-primary-fg: #ffffff; /* текст на primary-кнопці; НЕ --text-inverse:
+     той лишається «білим на чорних поверхнях» (хедер/футер) в ОБОХ темах */
   --btn-danger: #a63c48;
 
   /* Градієнт hover-стану кнопок (механіка diia.gov.ua/news, кнопка «Більше новин»).
@@ -1010,4 +1012,50 @@ svg.tabler-icon {
     animation-duration: 0s !important;
     animation-delay: 0s !important;
   }
+}
+
+/* ============ DARK MODE (тимчасовий експеримент, 2026-08-16) ============
+   Вмикається атрибутом data-theme='dark' на <html>: інлайн-скрипт у layout
+   ставить його ДО першого кадру (з 18:00 до 6:00 автоматично; явний вибір
+   у localStorage.theme перекриває годинник; тумблер — у хедері, тимчасовий).
+   Палітра — «нічна Дія»: той самий бренд-градієнт під темною плівкою,
+   картки графітові, pill-кнопки інвертуються в білі. Хедер/футер лишаються
+   чорними (свої токени, не чіпаємо). */
+
+:root {
+  /* Приглушена поверхня (чіпи/плейсхолдери/скелетони) — була жорстким #f4f6f5 */
+  --surface-muted: #f4f6f5;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --background: #101413;
+  --background-secondary: #171d1b;
+  --background-light: #151a18;
+  --foreground: #f2f4f3;
+
+  --gradient-page:
+    linear-gradient(rgba(10, 13, 12, 0.84), rgba(10, 13, 12, 0.84)),
+    linear-gradient(35.8deg, #c3aab2 -4.77%, #99eecc 46.72%, #80c0c8 90.23%, #4b8bfa 134.46%);
+  --surface-card: #1b211f;
+  --surface-muted: #262d2a;
+
+  --primary: #ffffff;
+  --secondary: #101413;
+
+  --text-primary: #f2f4f3;
+  --text-secondary: #a7b0ac;
+  --text-tertiary: #97a09b;
+  /* --text-inverse НЕ перевизначаємо: чорні поверхні (хедер, футер)
+     лишаються чорними в обох темах, і білий текст на них — теж */
+  --btn-primary: #f2f4f3;
+  --btn-primary-hover: #d9dfdc;
+  --btn-primary-fg: #101413;
+
+  --border-subtle: #2c3431;
+  --border-strong: #414b46;
+
+  /* Тіні на темному не читаються — картку тримає контраст поверхні */
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.45);
 }

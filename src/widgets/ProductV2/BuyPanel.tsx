@@ -16,6 +16,7 @@ import { formatPrice } from '@/shared/utils/format';
 import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/promo-calculator';
 import type { Product, ProductVariant } from '@/shared/types';
 import { buildCartSnapshot } from './cart-snapshot';
+import { capsuleStyle } from './collections';
 import styles from './ProductV2.module.scss';
 
 // Поріг «закінчується» — той самий, що на сторінці товару
@@ -67,7 +68,7 @@ export const BuyPanel = ({ product }: { product: Product }) => {
             </span>
           )}
           {product.labelText && (
-            <span className={styles.capsule} style={{ background: product.labelColor ?? '#3b6ff5' }}>
+            <span className={styles.capsule} style={capsuleStyle(product.labelColor ?? null)}>
               {product.labelText}
             </span>
           )}
