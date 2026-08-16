@@ -56,7 +56,7 @@ export const ProductCategorySelector = ({ form }: ProductCategorySelectorProps) 
 
       {categoriesLoading ? (
         <Text size="sm" c="dimmed">
-          Завантаження категорій...
+          Завантаження категорій…
         </Text>
       ) : categoriesError ? (
         <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
@@ -64,7 +64,7 @@ export const ProductCategorySelector = ({ form }: ProductCategorySelectorProps) 
         </Alert>
       ) : !categoriesInitialized ? (
         <Text size="sm" c="dimmed">
-          Ініціалізація категорій...
+          Ініціалізація категорій…
         </Text>
       ) : categoryOptions.length === 0 ? (
         <div>
@@ -83,7 +83,7 @@ export const ProductCategorySelector = ({ form }: ProductCategorySelectorProps) 
           <MultiSelect
             comboboxProps={{ zIndex: 1001 }}
             label="Оберіть категорії"
-            placeholder="Натисніть для вибору категорій..."
+            placeholder="Натисніть для вибору категорій…"
             data={categoryOptions}
             value={form.values.categoryIds || []}
             onChange={(value) => form.setFieldValue('categoryIds', value || [])}

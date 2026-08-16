@@ -33,7 +33,7 @@ export const SizeGuideModal = ({ opened, onClose, categories }: SizeGuideModalPr
         className={styles.modal}
         opened={opened}
         onClose={onClose}
-        title={`Інформація - ${category.categoryName}`}
+        title={`Розмірна сітка — ${category.categoryName}`}
         size="lg"
         centered>
         <Stack gap="md">
@@ -62,7 +62,7 @@ export const SizeGuideModal = ({ opened, onClose, categories }: SizeGuideModalPr
 
   // Якщо кілька категорій - показуємо з каруселлю
   return (
-    <Modal opened={opened} onClose={onClose} title="Інформація про категорії" size="lg" centered>
+    <Modal opened={opened} onClose={onClose} title="Розмірна сітка" size="lg" centered>
       <Carousel
         withIndicators
         height="auto"

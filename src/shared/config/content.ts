@@ -168,7 +168,7 @@ export const content = {
         title: 'Бренд, за яким йде сцена',
         description:
           'Щільний Drill — це більше, ніж одяг: це візуальна мова української сцени, яка формується щодня. Ми пишаємося тим, що транслюємо цю енергію через мерч і робимо її доступною фанатам по всій Україні та за її межами.',
-        buttonText: "Зв'язатися з нами",
+        buttonText: 'Звʼязатися з нами',
       },
     },
   },
@@ -278,7 +278,7 @@ export const content = {
       passwordLabel: 'Пароль',
       passwordPlaceholder: 'Ваш пароль',
       passwordError: 'Пароль не може бути порожнім',
-      rememberMe: "Запам'ятати мене",
+      rememberMe: 'Запамʼятати мене',
       forgotPassword: 'Забули пароль?',
       submitButton: 'Увійти',
       resendVerification: '→ Якщо лист не прийшов',
@@ -286,7 +286,7 @@ export const content = {
 
     // Форма реєстрації
     register: {
-      firstNameLabel: "Ім'я",
+      firstNameLabel: 'Імʼя',
       lastNameLabel: 'Прізвище',
       emailLabel: 'Email',
       passwordLabel: 'Пароль',
@@ -303,7 +303,7 @@ export const content = {
       paymentMethodLabel: 'Спосіб оплати',
       submitButton: 'Оформити замовлення',
       shippingAddress: {
-        firstNameLabel: "Ім'я",
+        firstNameLabel: 'Імʼя',
         lastNameLabel: 'Прізвище',
         phoneLabel: 'Телефон',
         addressLabel: 'Адреса',
@@ -350,7 +350,7 @@ export const content = {
 
   // ===== ЗАГАЛЬНІ ТЕКСТИ =====
   common: {
-    loading: 'Завантаження...',
+    loading: 'Завантаження…',
     error: 'Сталася помилка',
     noData: 'Немає даних',
     search: 'Пошук',

@@ -124,7 +124,7 @@ export const useCheckout = () => {
       } else {
         try {
           // Використовуємо totalAmount з відповіді бекенду (вже з урахуванням знижки від промокоду)
-          // totalAmount знаходиться в totals об'єкті
+          // totalAmount знаходиться в totals обʼєкті
           const totalAmount =
             orderData.totals?.totalAmount || orderData.totalAmount || calculations.totalAmount;
 

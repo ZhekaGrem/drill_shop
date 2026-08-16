@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
         get(name: string) {
           return request.cookies.get(name)?.value;
         },
-        // ✅ ЦЕ ОБОВ'ЯЗКОВО! Middleware оновлює токени
+        // ✅ ЦЕ ОБОВʼЯЗКОВО! Middleware оновлює токени
         set(name: string, value: string, options: any) {
           request.cookies.set({ name, value, ...options });
           response.cookies.set({ name, value, ...options });

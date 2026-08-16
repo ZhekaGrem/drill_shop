@@ -215,7 +215,7 @@ export default function AdminDiscounts() {
         <Button
           leftSection={<IconPlus size={16} />}
           onClick={handleCreateDiscount}
-          style={{ background: 'var(--btn-primary)', color: 'var(--text-white)' }}>
+          style={{ background: 'var(--btn-primary)', color: 'var(--btn-primary-fg)' }}>
           Додати знижку
         </Button>
       </Group>
@@ -225,7 +225,7 @@ export default function AdminDiscounts() {
         <Grid>
           <Grid.Col span={{ base: 12, md: 4 }}>
             <TextInput
-              placeholder="Пошук за назвою або кодом..."
+              placeholder="Пошук за назвою або кодом…"
               leftSection={<IconSearch size={16} />}
               value={filters.search}
               onChange={(e) => handleSearchChange(e.target.value)}
@@ -527,7 +527,7 @@ export default function AdminDiscounts() {
             </Group>
           </Stack>
         ) : (
-          <Text>Завантаження статистики...</Text>
+          <Text>Завантаження статистики…</Text>
         )}
       </Modal>
     </Box>

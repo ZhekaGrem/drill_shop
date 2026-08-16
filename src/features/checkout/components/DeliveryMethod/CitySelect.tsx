@@ -192,9 +192,9 @@ export const CitySelect = ({ value, onChange, error, onBlur }: CitySelectProps) 
             overflowY: 'auto',
           }}>
           {popularLoading ? (
-            <div className={styles.loadingText}>Завантаження...</div>
+            <div className={styles.loadingText}>Завантаження…</div>
           ) : isLoading ? (
-            <div className={styles.loadingText}>Пошук...</div>
+            <div className={styles.loadingText}>Пошук…</div>
           ) : displaySuggestions.length > 0 ? (
             <Stack gap={0}>
               {inputValue.length < 2 && popularCities.length > 0 && (
@@ -207,7 +207,7 @@ export const CitySelect = ({ value, onChange, error, onBlur }: CitySelectProps) 
               ))}
             </Stack>
           ) : inputValue.length >= 2 ? (
-            <div className={styles.loadingText}>Міста не знайдені</div>
+            <div className={styles.loadingText}>Міста не знайдено</div>
           ) : null}
         </Paper>
       )}

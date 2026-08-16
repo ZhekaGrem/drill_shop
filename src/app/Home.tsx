@@ -98,7 +98,7 @@ const Home = () => {
         </ListGroup>
       </Section>
 
-      <Section title="Зв'язок">
+      <Section title="Звʼязок">
         <ListGroup>
           <ListRow
             external

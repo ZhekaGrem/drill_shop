@@ -109,7 +109,7 @@ export default function AdminUsers() {
         <Grid>
           <Grid.Col span={{ base: 12, md: 4 }}>
             <TextInput
-              placeholder="Пошук за ім'ям або email..."
+              placeholder="Пошук за імʼям або email..."
               leftSection={<IconSearch size={16} />}
               value={filters.search}
               onChange={(e) => handleSearchChange(e.target.value)}

@@ -149,7 +149,7 @@ export const LoginForm = ({ onSuccess, onSwitchToForgotPassword }: LoginFormProp
           />
 
           <Group justify="space-between">
-            <Checkbox label="Запам'ятати мене" disabled={isLoading} {...register('rememberMe')} />
+            <Checkbox label="Запамʼятати мене" disabled={isLoading} {...register('rememberMe')} />
             <Anchor
               component="button"
               type="button"

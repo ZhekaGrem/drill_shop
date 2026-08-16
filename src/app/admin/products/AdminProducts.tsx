@@ -235,7 +235,7 @@ export default function AdminProducts() {
         <Button
           leftSection={<IconPlus size={16} />}
           onClick={handleCreateProduct}
-          style={{ background: 'var(--btn-primary)', color: 'var(--text-white)' }}>
+          style={{ background: 'var(--btn-primary)', color: 'var(--btn-primary-fg)' }}>
           Додати товар
         </Button>
       </Group>
@@ -243,7 +243,7 @@ export default function AdminProducts() {
       {/* Simple search only */}
       <Card shadow="sm" padding="lg" radius="md" withBorder mb="xl">
         <TextInput
-          placeholder="Пошук товарів..."
+          placeholder="Пошук товарів…"
           leftSection={<IconSearch size={16} />}
           value={filters.search}
           onChange={(e) => handleSearchChange(e.target.value)}

@@ -532,18 +532,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Фон сторінки малює ТІЛЬКИ html/body. Раніше `main` малював другу копію
+   `--gradient-page` поверх першої, і разом із `fixed` це давало різкий
+   горизонтальний стик рівно на висоті вікна: область позиціонування фону при
+   `fixed` дорівнює вікну, тож нижче першого екрана градієнта не лишалось.
+   Заміряно на 1440×900 до правки: y=896 → rgb(39,40,39), y=900 → rgb(17,19,18),
+   далі плоский колір до кінця сторінки. На ≤768px стику не було лише тому, що
+   правило нижче повертає там `scroll`. */
 main {
   font-family: var(--font-body);
   min-height: 100vh;
-  background: var(--gradient-page) fixed;
 }
 
 /* iOS Safari repaints `background-attachment: fixed` on every scroll frame,
    which janks mobile scrolling — fall back to normal scroll attachment below 768px. */
 @media (max-width: 768px) {
   html,
-  body,
-  main {
+  body {
     background-attachment: scroll;
   }
 }

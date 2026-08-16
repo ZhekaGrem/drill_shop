@@ -11,8 +11,8 @@ export const deliveryDataSchema = z.object({
 
 // Shipping address schema
 export const shippingAddressSchema = z.object({
-  firstName: z.string().min(1, "Ім'я є обов'язковим"),
-  lastName: z.string().min(1, "Прізвище є обов'язковим"),
+  firstName: z.string().min(1, 'Імʼя є обовʼязковим'),
+  lastName: z.string().min(1, 'Прізвище є обовʼязковим'),
   address1: z.string().min(3, 'Введіть повну адресу'),
   city: z.string(), // Може бути порожнім для "Інший спосіб"
   zipCode: z.string().default('00000'),
@@ -49,7 +49,7 @@ export const checkoutSchema = z
       return true;
     },
     {
-      message: "Для Нової Пошти обов'язково оберіть місто та відділення",
+      message: 'Для Нової Пошти обовʼязково оберіть місто та відділення',
       path: ['deliveryData'],
     }
   )
@@ -62,7 +62,7 @@ export const checkoutSchema = z
       return true;
     },
     {
-      message: "Місто є обов'язковим для Нової Пошти",
+      message: 'Місто є обовʼязковим для Нової Пошти',
       path: ['shippingAddress', 'city'],
     }
   );

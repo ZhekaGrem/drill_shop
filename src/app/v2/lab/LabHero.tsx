@@ -1,7 +1,7 @@
 'use client';
 // Лабораторія героїв: приклади карток героя (стилі HomeHeroes) з 3D-моделями
 // поза БД. Кожен запис EXAMPLES — окремий hero зі своєю сценою (сцени
-// вантажаться ліниво самим HeroVisual при попаданні у в'юпорт).
+// вантажаться ліниво самим HeroVisual при попаданні у вʼюпорт).
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';

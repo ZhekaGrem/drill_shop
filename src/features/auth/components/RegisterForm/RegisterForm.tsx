@@ -12,8 +12,8 @@ import { Button } from '@/shared/components/Button/Button';
 import { useRouter } from 'next/navigation';
 import { Input, PasswordField, PhoneInput } from '@/shared/components/Input';
 const registerSchema = z.object({
-  firstName: z.string().min(1, "Ім'я є обов'язковим").max(50, "Ім'я занадто довге"),
-  lastName: z.string().min(1, "Прізвище є обов'язковим").max(50, 'Прізвище занадто довге'),
+  firstName: z.string().min(1, 'Імʼя є обовʼязковим').max(50, 'Імʼя занадто довге'),
+  lastName: z.string().min(1, 'Прізвище є обовʼязковим').max(50, 'Прізвище занадто довге'),
   email: z.string().email('Неправильний формат email'),
   phone: z
     .string()
@@ -108,7 +108,7 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
 
           <Group grow>
             <Input
-              label="Ім'я"
+              label="Імʼя"
               placeholder="Іван"
               required
               {...register('firstName')}
@@ -137,7 +137,7 @@ export const RegisterForm = ({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
             name="phone"
             render={({ field }) => (
               <PhoneInput
-                label="Телефон (необов'язково)"
+                label="Телефон (необовʼязково)"
                 placeholder="+380 (XX) XXX XX XX"
                 value={field.value}
                 onChange={field.onChange}

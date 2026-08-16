@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!name || !message) {
-      return NextResponse.json({ success: false, message: "Заповніть обов'язкові поля" }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Заповніть обовʼязкові поля' }, { status: 400 });
     }
 
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const telegramMessage = `
  *Нове звернення з сайту*
 
- *Ім'я:* ${name}
+ *Імʼя:* ${name}
 ${phone ? ` *Телефон:* ${phone}` : ''}
 
 💬 *Повідомлення:*

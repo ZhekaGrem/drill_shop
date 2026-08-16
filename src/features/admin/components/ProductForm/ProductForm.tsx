@@ -61,13 +61,13 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
     },
     validate: {
       sku: (value) => {
-        if (!value?.trim()) return "Артикул обов'язковий";
+        if (!value?.trim()) return 'Артикул обовʼязковий';
         if (!/^[a-zA-Z0-9_-]*$/.test(value)) {
           return 'Артикул може містити лише англійські літери, цифри, - та _';
         }
         return null;
       },
-      name: (value) => (!value?.trim() ? "Назва обов'язкова" : null),
+      name: (value) => (!value?.trim() ? 'Назва обовʼязкова' : null),
       slug: (value) => {
         if (value && !/^[a-z0-9-]*$/.test(value)) {
           return 'Slug може містити лише англійські літери в нижньому регістрі, цифри та дефіс';
@@ -149,12 +149,12 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
     try {
       // Main product validation
       if (!values.sku?.trim()) {
-        alert("Артикул основного товару обов'язковий");
+        alert('Артикул основного товару обовʼязковий');
         return;
       }
 
       if (!values.name?.trim()) {
-        alert("Назва товару обов'язкова");
+        alert('Назва товару обовʼязкова');
         return;
       }
 
@@ -172,7 +172,7 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
 
       // Promo validation
       if (values.promoType && !values.promoConfig) {
-        alert("Налаштування акції обов'язкові при виборі типу акції");
+        alert('Налаштування акції обовʼязкові при виборі типу акції');
         return;
       }
 
@@ -202,7 +202,7 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
         isActive: values.isActive,
         isFeatured: values.isFeatured,
         hasVariants: values.hasVariants,
-        metaTitle: `${values.name.trim()} | М'ясний магазин`,
+        metaTitle: `${values.name.trim()} | Мʼясний магазин`,
         metaDescription: values.shortDescription?.trim() || values.description?.trim().substring(0, 160),
         categoryIds: values.categoryIds,
         // For new files: send index within newFiles array
@@ -320,7 +320,7 @@ export const ProductForm = ({ product, onSubmit, onCancel, isLoading }: ProductF
           <Button variant="subtle" onClick={onCancel} disabled={isLoading}>
             Скасувати
           </Button>
-          <Button type="submit" style={{ background: 'var(--btn-primary)', color: 'var(--text-white)' }}>
+          <Button type="submit" style={{ background: 'var(--btn-primary)', color: 'var(--btn-primary-fg)' }}>
             {product ? 'Оновити товар' : 'Створити товар'}
           </Button>
         </Group>

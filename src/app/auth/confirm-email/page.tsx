@@ -134,7 +134,7 @@ export default function ConfirmEmail() {
                   {message}
                 </Text>
                 <Text size="sm" c="dimmed" mt="sm">
-                  Це може зайняти кілька секунд...
+                  Це може зайняти кілька секунд…
                 </Text>
               </>
             )}

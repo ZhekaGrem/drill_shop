@@ -198,7 +198,7 @@ const TelegramOrderTrackingPage: React.FC = () => {
         <Center>
           <Stack align="center" gap="md">
             <Loader size="lg" />
-            <Text>Завантаження інформації про замовлення...</Text>
+            <Text>Завантаження інформації про замовлення…</Text>
           </Stack>
         </Center>
       </Container>

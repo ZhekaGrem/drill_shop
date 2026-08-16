@@ -66,7 +66,7 @@ const PrivacyPolicy = () => {
 
             <h3 className={styles.subsectionTitle}>2.1. Дані, які ви надаєте добровільно:</h3>
             <ul className={styles.list}>
-              <li>Ім'я та прізвище</li>
+              <li>Імʼя та прізвище</li>
               <li>Номер телефону</li>
               <li>Адреса електронної пошти</li>
               <li>Адреса доставки (місто, відділення Нової Пошти)</li>
@@ -221,7 +221,7 @@ const PrivacyPolicy = () => {
           <hr className={styles.divider} />
 
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>7. Ваші права як суб'єкта персональних даних</h2>
+            <h2 className={styles.sectionTitle}>7. Ваші права як субʼєкта персональних даних</h2>
 
             <p className={styles.textBlock}>
               Згідно зі ст. 8 Закону України "Про захист персональних даних", ви маєте наступні права:
@@ -294,11 +294,11 @@ const PrivacyPolicy = () => {
             <h3 className={styles.subsectionTitle}>Типи cookies:</h3>
             <ul className={styles.list}>
               <li>
-                <strong>Обов'язкові cookies:</strong> необхідні для базової роботи сайту (авторизація, кошик,
+                <strong>Обовʼязкові cookies:</strong> необхідні для базової роботи сайту (авторизація, кошик,
                 сесія)
               </li>
               <li>
-                <strong>Функціональні cookies:</strong> запам'ятовування ваших налаштувань (мова, валюта)
+                <strong>Функціональні cookies:</strong> запамʼятовування ваших налаштувань (мова, валюта)
               </li>
               <li>
                 <strong>Аналітичні cookies:</strong> збір статистики відвідуваності (Google Analytics)
@@ -310,7 +310,7 @@ const PrivacyPolicy = () => {
 
             <p className={styles.textBlock}>
               Ви можете налаштувати використання cookies у налаштуваннях свого браузера. Зверніть увагу, що
-              відключення обов'язкових cookies може порушити роботу сайту.
+              відключення обовʼязкових cookies може порушити роботу сайту.
             </p>
           </section>
 
@@ -390,7 +390,7 @@ const PrivacyPolicy = () => {
 
             <p className={styles.textBlock}>
               Якщо у вас виникли питання щодо обробки персональних даних або ви хочете скористатися своїми
-              правами, зв'яжіться з нами:
+              правами, звʼяжіться з нами:
             </p>
 
             <ul className={styles.list}>

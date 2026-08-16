@@ -18,15 +18,15 @@ const userDataSchema = z.object({
   email: z.string().email('Невірний формат email'),
   firstName: z
     .string()
-    .min(1, "Ім'я є обов'язковим")
-    .regex(/^[A-Za-zА-Яа-яЇїІіЄєҐґ0-9]+$/, "Ім'я може містити лише букви та цифри"),
+    .min(1, 'Імʼя є обовʼязковим')
+    .regex(/^[A-Za-zА-Яа-яЇїІіЄєҐґ0-9]+$/, 'Імʼя може містити лише букви та цифри'),
   lastName: z
     .string()
-    .min(1, "Прізвище є обов'язковим")
-    .regex(/^[A-Za-zА-Яа-яЇїІіЄєҐґ0-9]+$/, "Ім'я може містити лише букви та цифри"),
+    .min(1, 'Прізвище є обовʼязковим')
+    .regex(/^[A-Za-zА-Яа-яЇїІіЄєҐґ0-9]+$/, 'Імʼя може містити лише букви та цифри'),
   phone: z
     .string()
-    .regex(/^(\+380\d{9}|0\d{9})$/, "Телефон є обов'язковим у форматі +380XXXXXXXXX або 0XXXXXXXXX")
+    .regex(/^(\+380\d{9}|0\d{9})$/, 'Телефон є обовʼязковим у форматі +380XXXXXXXXX або 0XXXXXXXXX')
     .optional()
     .or(z.literal('')),
 });
@@ -133,7 +133,7 @@ const UserData = () => {
         <Stack>
           <Title order={4}>Змінити дані</Title>
           <Group grow>
-            <TextInput label="Ім'я" {...registerUser('firstName')} error={userErrors.firstName?.message} />
+            <TextInput label="Імʼя" {...registerUser('firstName')} error={userErrors.firstName?.message} />
             <TextInput label="Прізвище" {...registerUser('lastName')} error={userErrors.lastName?.message} />
           </Group>
           <TextInput label="Телефон" {...registerUser('phone')} error={userErrors.phone?.message} />

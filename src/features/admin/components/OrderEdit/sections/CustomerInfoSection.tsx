@@ -59,7 +59,7 @@ export const CustomerInfoSection: React.FC<CustomerInfoSectionProps> = ({
       <Grid>
         <Grid.Col span={{ base: 12, md: 6 }}>
           <TextInput
-            label="Ім'я"
+            label="Імʼя"
             required
             {...form.register('guestFirstName')}
             error={form.formState.errors.guestFirstName?.message as string | undefined}

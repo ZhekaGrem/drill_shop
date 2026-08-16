@@ -57,7 +57,7 @@ export const useProductCart = (
 
   const getButtonText = () => {
     if (isClicked) return 'Додано в кошик';
-    if (isAddingItem) return 'Додавання...';
+    if (isAddingItem) return 'Додавання…';
     if (!isInStock) return 'Немає в наявності';
     return 'Додати в кошик';
   };

@@ -23,7 +23,7 @@ export const useDiscountForm = ({ discount }: UseDiscountFormProps) => {
       applicableProductIds: discount?.applicableProductIds || [],
     },
     validate: {
-      name: (value) => (!value?.trim() ? "Назва знижки обов'язкова" : null),
+      name: (value) => (!value?.trim() ? 'Назва знижки обовʼязкова' : null),
       code: (value) => {
         if (value && !/^[A-Z0-9_-]+$/i.test(value)) {
           return 'Промокод може містити тільки літери, цифри, дефіси та підкреслення';

@@ -200,7 +200,7 @@ export const ReviewList = ({ productId, limit = 10 }: ReviewListProps) => {
       {data?.meta?.hasMore && (
         <div className={styles.loadMore}>
           <button onClick={handleLoadMore} disabled={isLoading} className={styles.loadMoreButton}>
-            {isLoading ? 'Завантаження...' : 'Показати більше'}
+            {isLoading ? 'Завантаження…' : 'Показати більше'}
           </button>
         </div>
       )}

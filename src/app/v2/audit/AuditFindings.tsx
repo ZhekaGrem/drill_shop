@@ -58,7 +58,7 @@ const computeFindings = (collections: FindingsCollection[]): Finding[] => {
       });
 
     for (const p of col.products) {
-      // Текстура обов'язкова лише для базової футболки; у власних моделей
+      // Текстура обовʼязкова лише для базової футболки; у власних моделей
       // (худі/вішак/walking) дизайн запечений у GLB — null легітимний
       const needsTexture = p.model3dPath === '/3d/models/tshirt.glb';
       const gaps = [

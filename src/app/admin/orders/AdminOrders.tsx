@@ -139,7 +139,7 @@ export default function OrdersManagement() {
         <Grid>
           <Grid.Col span={{ base: 12, md: 4 }}>
             <TextInput
-              placeholder="Пошук за номером або клієнтом..."
+              placeholder="Пошук за номером або клієнтом…"
               leftSection={<IconSearch size={16} />}
               value={filters.search}
               onChange={(e) => handleSearchChange(e.target.value)}

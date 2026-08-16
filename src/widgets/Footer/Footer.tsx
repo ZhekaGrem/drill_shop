@@ -40,7 +40,7 @@ export function Footer() {
               Покупцю
             </Text>
             <Stack gap="xs">
-              <Link href="/contact">Зв'язок з нами</Link>
+              <Link href="/contact">Звʼязок з нами</Link>
               <Link href="/delivery-and-payment">Доставка та оплата</Link>
               <Link href="/returns-exchanges">Обмін та Повернення</Link>
               <Link href="/faq">Питання та відповіді</Link>

@@ -27,7 +27,7 @@ export default function CategoryPageClient({ initialCategory, initialProducts }:
     initialData: initialProducts,
   });
 
-  // Об'єднуємо всі сторінки в один масив
+  // Обʼєднуємо всі сторінки в один масив
   const products = data?.pages.flatMap((page) => page.data) || [];
   const totalCount = data?.pages[0]?.meta?.total || 0;
 
@@ -76,7 +76,7 @@ export default function CategoryPageClient({ initialCategory, initialProducts }:
         {/* Список товарів */}
         {isLoading ? (
           <div className={styles.loading}>
-            <div className={styles.spinner}>Завантаження товарів...</div>
+            <div className={styles.spinner}>Завантаження товарів…</div>
           </div>
         ) : products.length > 0 ? (
           <>

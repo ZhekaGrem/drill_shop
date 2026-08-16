@@ -1,6 +1,6 @@
 // src/widgets/HeroVisual/useDesignMap.ts
 // Рантайм-своп basecolor-мапи (дизайни футболки). Без Suspense: до готовності
-// нової текстури висить чинна — сцена не блимає. Запечена мапа пам'ятається
+// нової текстури висить чинна — сцена не блимає. Запечена мапа памʼятається
 // ПО МАТЕРІАЛУ (сцена вміє мінятись: худі ↔ футболка), кеш url→Texture —
 // повтори миттєві.
 'use client';
@@ -21,7 +21,7 @@ export const useDesignMap = (scene: Group, mapUrl?: string) => {
     if (!material) return;
     // Оригінал — у userData, НЕ в React-рефі: зміна моделі ремонтує сцену
     // (рефи згорають), а матеріал живе в кеші drei з останньою мапою. Реф
-    // після ремонту «запам'ятав» би дизайн як оригінал — і червона крапка
+    // після ремонту «запамʼятав» би дизайн як оригінал — і червона крапка
     // (mapUrl: undefined) показувала б чужу текстуру.
     if (!('originalMap' in material.userData)) material.userData.originalMap = material.map;
     wanted.current = mapUrl;

@@ -79,7 +79,7 @@ export const useWind = (scene: Group) => {
     const material = mesh?.material as MeshStandardMaterial | undefined;
     if (!mesh || !material) return () => {};
     // Межі — з ГЕОМЕТРІЇ (нормалізований простір атрибутів, як і position
-    // у шейдері), а не зі світового Box3: інакше вагова смуга з'їжджає
+    // у шейдері), а не зі світового Box3: інакше вагова смуга зʼїжджає
     mesh.geometry.computeBoundingBox();
     const gb = mesh.geometry.boundingBox!;
     patchMaterial(material, gb.min.y, gb.max.y - gb.min.y);

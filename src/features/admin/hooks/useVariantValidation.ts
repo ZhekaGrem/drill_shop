@@ -9,7 +9,7 @@ interface Variant {
 
 export const useVariantValidation = (mainProductSku: string, variants: Variant[]) => {
   const validateVariantSku = (sku: string, currentIndex: number): string | null => {
-    if (!sku?.trim()) return "Артикул варіанту обов'язковий";
+    if (!sku?.trim()) return 'Артикул варіанту обовʼязковий';
 
     const trimmedSku = sku.trim();
 
@@ -34,7 +34,7 @@ export const useVariantValidation = (mainProductSku: string, variants: Variant[]
     const errors = [];
 
     if (!newVariant.sku?.trim()) {
-      errors.push("Артикул варіанту обов'язковий");
+      errors.push('Артикул варіанту обовʼязковий');
     }
 
     if (newVariant.price <= 0) {

@@ -122,7 +122,7 @@ export const PasswordResetForm = ({ onSuccess, onBackToLogin }: PasswordResetFor
       <ScrollArea flex={1} offsetScrollbars>
         <Stack gap="md">
           <Text size="sm" c="dimmed">
-            Введіть email, пов'язаний з вашим акаунтом, і ми надішлемо вам інструкції для відновлення пароля.
+            Введіть email, повʼязаний з вашим акаунтом, і ми надішлемо вам інструкції для відновлення пароля.
           </Text>
 
           {errorMessage && (

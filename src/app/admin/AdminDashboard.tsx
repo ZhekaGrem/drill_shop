@@ -134,7 +134,7 @@ export default function AdminDashboard() {
         <Grid.Col span={{ base: 12, sm: 6, lg: 3 }}>
           <StatCard
             title="Загальний дохід"
-            value={stats ? formatPrice(stats.totalRevenue) : 'Завантаження...'}
+            value={stats ? formatPrice(stats.totalRevenue) : 'Завантаження…'}
             icon={<IconTrendingUp size={24} />}
             color="green"
           />
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
         <Grid.Col span={{ base: 12, sm: 6, lg: 3 }}>
           <StatCard
             title="Замовлення"
-            value={stats ? stats.totalOrders.toString() : 'Завантаження...'}
+            value={stats ? stats.totalOrders.toString() : 'Завантаження…'}
             icon={<IconShoppingCart size={24} />}
             color="blue"
           />
@@ -152,7 +152,7 @@ export default function AdminDashboard() {
         <Grid.Col span={{ base: 12, sm: 6, lg: 3 }}>
           <StatCard
             title="Клієнти"
-            value={stats ? stats.totalCustomers.toString() : 'Завантаження...'}
+            value={stats ? stats.totalCustomers.toString() : 'Завантаження…'}
             icon={<IconUsers size={24} />}
             color="violet"
           />
@@ -161,7 +161,7 @@ export default function AdminDashboard() {
         <Grid.Col span={{ base: 12, sm: 6, lg: 3 }}>
           <StatCard
             title="Товари"
-            value={stats ? stats.totalProducts.toString() : 'Завантаження...'}
+            value={stats ? stats.totalProducts.toString() : 'Завантаження…'}
             icon={<IconPackage size={24} />}
             color="orange"
           />

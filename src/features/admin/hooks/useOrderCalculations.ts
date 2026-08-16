@@ -30,7 +30,7 @@ export const useOrderCalculations = () => {
    * @param items - Поточні товари замовлення
    * @param newItems - Нові товари, що додаються
    * @param order - Дані замовлення (для доставки)
-   * @returns Об'єкт з підсумками
+   * @returns Обʼєкт з підсумками
    */
   const calculateTotals = (
     items: OrderItemEdit[],

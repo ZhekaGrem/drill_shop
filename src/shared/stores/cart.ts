@@ -189,7 +189,7 @@ export const useCartStore = create<CartState>()(
         // Відправити гостьові товари на бекенд для злиття
         await mergeGuestCart(itemsToMerge);
 
-        // Завантажити об'єднаний кошик з сервера
+        // Завантажити обʼєднаний кошик з сервера
         await get().syncCart();
       } catch (error: any) {
         console.error('❌ Merge cart error:', error);
@@ -223,7 +223,7 @@ export const useCartItems = () => useCartStore((state) => state.items);
 export const useCartCalculations = () => useCartStore((state) => state.calculations);
 export const useCartDrawerState = () => useCartStore((state) => state.isDrawerOpen);
 
-// ✅ ВИПРАВЛЕНО: Стабільний об'єкт з actions
+// ✅ ВИПРАВЛЕНО: Стабільний обʼєкт з actions
 const cartDrawerActions = {
   open: () => useCartStore.getState().openDrawer(),
   close: () => useCartStore.getState().closeDrawer(),

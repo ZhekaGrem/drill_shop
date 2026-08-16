@@ -53,10 +53,7 @@ const toSpecRows = (options?: Record<string, unknown> | null) =>
       value: String(value),
     }));
 
-export default function ProductDetailsClient({
-  initialProduct,
-  basePath = '',
-}: ProductDetailsProps) {
+export default function ProductDetailsClient({ initialProduct, basePath = '' }: ProductDetailsProps) {
   const { addItem, isAddingItem } = useCart();
   const [product, setProduct] = useState<ProductWithRelations | null>(initialProduct || null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>(initialProduct?.relatedProducts || []);
@@ -286,7 +283,7 @@ export default function ProductDetailsClient({
       ? 'Немає в наявності'
       : availableQuantity <= LOW_STOCK_THRESHOLD
         ? `Залишилось ${availableQuantity} шт`
-        : 'Розробка і доставка до 7 днів (вебачте)';
+        : 'Виготовлення і доставка — до 7 днів';
 
   // Ввід поза діапазоном не ігноруємо мовчки, а підрізаємо до межі: людина
   // друкувала «20», поле не змінювалось, і причини не було ніде на екрані
@@ -317,7 +314,7 @@ export default function ProductDetailsClient({
 
   const getButtonText = () => {
     if (isClicked) return 'Додано в кошик';
-    if (isAddingItem) return 'Додавання...';
+    if (isAddingItem) return 'Додавання…';
     if (!isInStock) return 'Немає в наявності';
 
     return 'Додати в кошик';
@@ -755,7 +752,7 @@ export default function ProductDetailsClient({
                       </div>
                     </div>
 
-                    {/* Пояснення з'являється рівно тоді, коли лічильник упер
+                    {/* Пояснення зʼявляється рівно тоді, коли лічильник упер
                         у стелю — інакше це просто зайвий рядок під контролом */}
                     {quantity >= availableQuantity && (
                       <p className={styles.quantityHint}>Це все, що залишилось: {availableQuantity} шт</p>

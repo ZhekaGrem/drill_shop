@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';

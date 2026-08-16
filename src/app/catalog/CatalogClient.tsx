@@ -47,7 +47,7 @@ export default function CatalogClient({ initialData, initialCategories, basePath
       initialData: initialData,
     });
 
-  // Об'єднуємо всі сторінки в один масив
+  // Обʼєднуємо всі сторінки в один масив
   const products = data?.pages.flatMap((page) => page.data) || [];
   const totalCount = data?.pages[0]?.meta.total || 0;
   const activeFilterCount = countActiveFilters(filters);

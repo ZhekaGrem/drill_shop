@@ -8,7 +8,7 @@ export const queryDefaults = {
   staleTime: 30 * 60 * 1000, // 30 хвилин - дані вважаються свіжими
   gcTime: 60 * 60 * 1000, // 1 година - зберігання в кеші
   refetchOnWindowFocus: false, // Не рефетчити при фокусі вікна
-  refetchOnReconnect: false, // Не рефетчити при з'єднанні
+  refetchOnReconnect: false, // Не рефетчити при зʼєднанні
   retry: 1, // Одна спроба повтору
   retryDelay: 1000, // 1 секунда між спробами
 } as const;

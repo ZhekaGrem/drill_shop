@@ -203,7 +203,7 @@ export default function AdminReviews() {
         <Grid>
           <Grid.Col span={{ base: 12, md: 5 }}>
             <TextInput
-              placeholder="Пошук відгуків..."
+              placeholder="Пошук відгуків…"
               leftSection={<IconSearch size={16} />}
               value={filters.search}
               onChange={(e) => handleSearchChange(e.target.value)}

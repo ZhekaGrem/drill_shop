@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     if (!productName || !contactMethod || !contactValue) {
       return NextResponse.json(
-        { success: false, message: "Заповніть всі обов'язкові поля" },
+        { success: false, message: 'Заповніть всі обовʼязкові поля' },
         { status: 400 }
       );
     }
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 ${variantName ? `🏷 *Варіант:* ${variantName}` : ''}
  *Посилання:* [Переглянути товар](${productUrl})
 
- *Спосіб зв'язку:* ${contactMethodLabels[contactMethod]}
+ *Спосіб звʼязку:* ${contactMethodLabels[contactMethod]}
  *Контакт:* ${contactValue}
 
  *Час запиту:* ${new Date().toLocaleString('uk-UA')}
@@ -74,7 +74,7 @@ ${variantName ? `🏷 *Варіант:* ${variantName}` : ''}
 
     return NextResponse.json({
       success: true,
-      message: "Ваш запит успішно відправлено. Ми зв'яжемось з вами, коли товар з'явиться.",
+      message: 'Ваш запит успішно відправлено. Ми звʼяжемось з вами, коли товар зʼявиться.',
     });
   } catch (error) {
     console.error('Notify availability error:', error);

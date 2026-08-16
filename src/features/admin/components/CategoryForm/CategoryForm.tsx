@@ -41,7 +41,7 @@ export const CategoryForm = ({ category, categories, onSubmit, onCancel, isLoadi
       sizeGuideText: category?.sizeGuideText || '',
     },
     validate: {
-      name: (value) => (!value?.trim() ? "Назва категорії обов'язкова" : null),
+      name: (value) => (!value?.trim() ? 'Назва категорії обовʼязкова' : null),
       slug: (value) => {
         if (value && !/^[a-z0-9-]*$/.test(value)) {
           return 'Slug може містити лише англійські літери в нижньому регістрі, цифри та дефіс';
@@ -335,7 +335,7 @@ export const CategoryForm = ({ category, categories, onSubmit, onCancel, isLoadi
           <Button
             type="submit"
             loading={isLoading || isUploading}
-            style={{ background: 'var(--btn-primary)', color: 'var(--text-white)' }}>
+            style={{ background: 'var(--btn-primary)', color: 'var(--btn-primary-fg)' }}>
             {category ? 'Оновити категорію' : 'Створити категорію'}
           </Button>
         </Group>

@@ -150,7 +150,7 @@ export function Header() {
             <input
               type="text"
               className={styles.expandedSearchInput}
-              placeholder="Пошук товарів..."
+              placeholder="Пошук товарів…"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onBlur={() => {

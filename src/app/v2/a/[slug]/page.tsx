@@ -82,9 +82,8 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
               onChange={handleDesignChange}
             />
           ) : collections ||
-            collectionsError ? /* Колекції приїхали, але цього slug у них немає (або запит упав) —
-               сцену не малюємо взагалі. Раніше тут вічно крутився скелетон. */
-          null : (
+            collectionsError /* Колекції приїхали, але цього slug у них немає (або запит упав) —
+               сцену не малюємо взагалі. Раніше тут вічно крутився скелетон. */ ? null : (
             <div className={styles.stageSkeleton} aria-busy="true" aria-label="Завантаження колекції" />
           )}
           {/* Опис колекції — внизу картки, під сценою */}

@@ -16,7 +16,7 @@ export const validateVariants = (variants: any[], mainProductSku: string): strin
 
     // Check required fields
     if (!variant.sku?.trim()) {
-      errors.push(`${variantLabel}: Артикул обов'язковий`);
+      errors.push(`${variantLabel}: Артикул обовʼязковий`);
       return;
     }
 
@@ -74,7 +74,7 @@ export const validateSingleVariant = (variant: any, index: number, allSkus: stri
   const variantLabel = `Варіант ${index + 1}`;
 
   if (!variant.sku?.trim()) {
-    errors.push(`${variantLabel}: Артикул обов'язковий`);
+    errors.push(`${variantLabel}: Артикул обовʼязковий`);
   } else {
     const sku = variant.sku.trim().toLowerCase();
 

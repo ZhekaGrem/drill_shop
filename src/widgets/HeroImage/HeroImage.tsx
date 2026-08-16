@@ -31,7 +31,7 @@ export const HeroImageContact = () => {
       <Container size="lg">
         <div className={`${styles.inner} ${styles.innerContact}`}>
           <div className={`${styles.content} ${styles.contentContact}`}>
-            <Title className={styles.title}>Завжди на зв'язку</Title>
+            <Title className={styles.title}>Завжди на звʼязку</Title>
 
             <Text className={styles.description} mt={5}>
               Маєте питання про мерч, розмір чи доставку? Наша команда готова підказати, що обрати, та

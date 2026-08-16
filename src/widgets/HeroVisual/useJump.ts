@@ -14,7 +14,7 @@ type Phase = 'idle' | 'pressed' | 'returning' | 'airborne' | 'landing';
 // Тюняться на око, не виходячи за «весь стрибок ≤ ~700 мс».
 const PRESS_DURATION = 0.09; // присідання, с
 const PRESS_SCALE_Y = 0.88;
-const RETURN_DURATION = 0.12; // м'яке повернення при скасуванні, с
+const RETURN_DURATION = 0.12; // мʼяке повернення при скасуванні, с
 const JUMP_HEIGHT_RATIO = 0.13; // апекс як частка висоти моделі
 const FLIGHT_TIME = 0.35; // політ вгору + вниз, с
 const STRETCH = 0.12; // розтяг у польоті на максимальній швидкості
@@ -26,7 +26,7 @@ const MAX_DELTA = 1 / 30; // кламп кадру після фонової в�
 
 const easeOutCubic = (u: number) => 1 - (1 - u) ** 3;
 
-// Сплюскування по Y компенсується розширенням по X/Z — об'єм зберігається,
+// Сплюскування по Y компенсується розширенням по X/Z — обʼєм зберігається,
 // саме це читається як «пружна тканина», а не «зіжмаканий скріншот»
 const applyScaleY = (target: Group, scaleY: number) => {
   const xz = 1 / Math.sqrt(scaleY);

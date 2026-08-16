@@ -23,7 +23,7 @@ export const ShippingAddressSection: React.FC<ShippingAddressSectionProps> = ({ 
       <Grid>
         <Grid.Col span={12}>
           <TextInput
-            label="Повне ім'я"
+            label="Повне імʼя"
             required
             {...form.register('shippingAddress.fullName')}
             error={(form.formState.errors.shippingAddress as any)?.fullName?.message as string | undefined}

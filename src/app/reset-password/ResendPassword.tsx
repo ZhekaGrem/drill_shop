@@ -37,7 +37,7 @@ const resetPasswordSchema = z
       .regex(/(?=.*[a-z])/, 'Мінімум одна мала літера')
       .regex(/(?=.*[A-Z])/, 'Мінімум одна велика літера')
       .regex(/(?=.*\d)/, 'Мінімум одна цифра'),
-    confirmPassword: z.string().min(1, "Підтвердження пароля обов'язкове"),
+    confirmPassword: z.string().min(1, 'Підтвердження пароля обовʼязкове'),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: 'Паролі не співпадають',

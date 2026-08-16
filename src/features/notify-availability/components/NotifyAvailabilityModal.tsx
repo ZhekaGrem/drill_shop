@@ -103,12 +103,12 @@ export function NotifyAvailabilityModal({
       <form onSubmit={handleSubmit}>
         <Stack gap="md">
           <Text size="sm" c="dimmed">
-            Оберіть зручний спосіб зв'язку, і ми повідомимо вас, коли товар з'явиться в наявності.
+            Оберіть зручний спосіб звʼязку, і ми повідомимо вас, коли товар зʼявиться в наявності.
           </Text>
 
           <div>
             <Text size="sm" fw={500} mb="xs">
-              Спосіб зв'язку:
+              Спосіб звʼязку:
             </Text>
             <SegmentedControl
               fullWidth

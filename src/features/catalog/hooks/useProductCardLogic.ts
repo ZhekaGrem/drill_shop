@@ -41,7 +41,7 @@ export const useProductCardLogic = (product: Product): UseProductCardLogicReturn
       ? secondaryImage.url || secondaryImage.publicId
       : primaryImage?.url || primaryImage?.publicId) || undefined;
 
-  // Отримати об'єкт обраного варіанту
+  // Отримати обʼєкт обраного варіанту
   const selectedVariantObject = useMemo(() => {
     if (!selectedVariant || selectedVariant === 'main') return null;
     return sortedVariants.find((v) => v.id === selectedVariant) || null;

@@ -30,7 +30,7 @@ const Contact = () => {
       message: '',
     },
     validate: {
-      name: (value) => (value.trim().length < 2 ? "Ім'я повинно містити мінімум 2 символи" : null),
+      name: (value) => (value.trim().length < 2 ? 'Імʼя повинно містити мінімум 2 символи' : null),
       message: (value) =>
         value.trim().length < 10 ? 'Повідомлення повинно містити мінімум 10 символів' : null,
     },
@@ -66,7 +66,7 @@ const Contact = () => {
   return (
     <Page>
       <PageHeader
-        title="Зворотний зв'язок"
+        title="Зворотний звʼязок"
         description="Напишіть нам про замовлення, наявність або розміри — відповідаємо в робочі години."
       />
 
@@ -93,7 +93,7 @@ const Contact = () => {
           ) : (
             <form onSubmit={form.onSubmit(handleSubmit)} noValidate>
               <div className={styles.fields}>
-                <Input label="Ім'я" placeholder="Ваше ім'я" {...form.getInputProps('name')} />
+                <Input label="Імʼя" placeholder="Ваше імʼя" {...form.getInputProps('name')} />
 
                 {/* PhoneInput сам тримає префікс +380: раніше та сама логіка
                     жила ще й тут трьома локальними хендлерами. */}
@@ -113,7 +113,7 @@ const Contact = () => {
               </div>
 
               <Button type="submit" disabled={isSubmitting} fullWidth>
-                {isSubmitting ? 'Надсилання...' : 'Відправити'}
+                {isSubmitting ? 'Надсилання…' : 'Відправити'}
               </Button>
             </form>
           )}

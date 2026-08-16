@@ -28,7 +28,7 @@ export function DeliveryMethodSelector({
 }: DeliveryMethodSelectorProps) {
   const quickButtons = [
     { label: 'Укрпошта', text: 'Укрпошта' },
-    { label: 'Містекспрес', text: 'Містекспрес' },
+    { label: 'Міст Експрес', text: 'Міст Експрес' },
   ];
 
   const insertQuickText = (text: string) => {

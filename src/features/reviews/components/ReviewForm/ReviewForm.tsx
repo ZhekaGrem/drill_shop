@@ -10,7 +10,7 @@ import { useAuthStore } from '@/shared/stores/auth';
 import styles from './reviewForm.module.scss';
 import { Button } from '@/shared/components/Button/Button';
 
-// ВИПРАВЛЕНО: title не обов'язковий, буде заповнюватися автоматично
+// ВИПРАВЛЕНО: title не обовʼязковий, буде заповнюватися автоматично
 const reviewSchema = z.object({
   rating: z.number().min(1, 'Оберіть рейтинг').max(5),
   content: z.string().min(10, 'Відгук повинен містити мінімум 10 символів').max(2000),
@@ -95,7 +95,7 @@ export const ReviewForm = ({ productId, onSuccess, onCancel }: ReviewFormProps) 
         </label>
         <textarea
           id="content"
-          placeholder="Розкажіть детальніше про товар: якість, смак, упаковка..."
+          placeholder="Розкажіть детальніше про товар: якість, смак, упаковка…"
           rows={5}
           className={`${styles.textarea} ${errors.content ? styles.inputError : ''}`}
           {...register('content')}
@@ -115,7 +115,7 @@ export const ReviewForm = ({ productId, onSuccess, onCancel }: ReviewFormProps) 
           </Button>
         )}
         <Button type="submit" className={styles.submitButton} disabled={isSubmitting || rating === 0}>
-          {isSubmitting ? 'Відправлення...' : 'Залишити відгук'}
+          {isSubmitting ? 'Відправлення…' : 'Залишити відгук'}
         </Button>
       </div>
     </form>

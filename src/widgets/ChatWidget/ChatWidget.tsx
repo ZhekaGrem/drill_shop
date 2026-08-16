@@ -25,12 +25,12 @@ export function ChatWidget() {
         radius="50%"
         color="yellow"
         onClick={open}
-        aria-label="Зв'язатися з консультантом">
+        aria-label="Звʼязатися з консультантом">
         <IconMessageCircle size={28} />
       </ActionIcon>
 
       {/* Contact modal */}
-      <Modal opened={opened} onClose={close} title="Зв'язатися з консультантом" centered size="sm">
+      <Modal opened={opened} onClose={close} title="Звʼязатися з консультантом" centered size="sm">
         <Stack gap="md">
           <a href={contactLinks.telegram} rel="noopener noreferrer" target="_blank" className={styles.link}>
             <IconBrandTelegram size={20} /> Telegram
