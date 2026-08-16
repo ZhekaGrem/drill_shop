@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 import { productsApi } from '@/features/catalog/api/products';
-import { reviewsApi } from '@/features/reviews/api/reviews-api';
 import ProductDetailsClient from './ProductDetailsClient';
 import { JsonLd } from '../../JsonLd';
 import { structuredData } from '../../seo';
@@ -18,21 +17,6 @@ export const dynamicParams = true;
 const getProduct = cache(async (slug: string) => {
   const response = await productsApi.getProductBySlug(slug);
   return response.data;
-});
-
-// Кешовані відгуки для schema (top-5 найкорисніших). Errors = degrade gracefully.
-const getProductReviewsForSchema = cache(async (productId: string) => {
-  try {
-    const res = await reviewsApi.getProductReviews({
-      productId,
-      sortBy: 'helpful',
-      limit: 5,
-      offset: 0,
-    });
-    return { stats: res.stats, reviews: res.data };
-  } catch {
-    return null;
-  }
 });
 
 // Генеруємо статичні шляхи для ВСІХ товарів при білді
@@ -126,8 +110,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   // Витягуємо назву категорії з breadcrumbs якщо доступна
   const categoryName = productData.breadcrumbs?.find((b) => b.slug !== 'catalog')?.name;
 
-  const reviewsPayload = await getProductReviewsForSchema(productData.id);
-
+  // Відгуки прибрані з видимої сторінки (рішення власника), тому JSON-LD
+  // aggregateRating/review теж не віддаємо: розмітка контенту, якого нема на
+  // екрані, порушує вимоги Google до rich results
   const productStructuredData = structuredData.product({
     name: productData.name,
     description: productData.description || productData.shortDescription || undefined,
@@ -137,21 +122,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     sku: productData.id?.toString(),
     category: categoryName ? { name: categoryName } : undefined,
     inStock: productData.isInStock,
-    ...(reviewsPayload && reviewsPayload.stats.totalReviews > 0
-      ? {
-          aggregateRating: {
-            averageRating: reviewsPayload.stats.averageRating,
-            totalReviews: reviewsPayload.stats.totalReviews,
-          },
-          reviews: reviewsPayload.reviews.map((r) => ({
-            author: r.author.name,
-            rating: r.rating,
-            title: r.title,
-            content: r.content,
-            createdAt: r.createdAt,
-          })),
-        }
-      : {}),
   });
 
   // Генеруємо breadcrumb structured data (з fallback, якщо бекенд не повертає breadcrumbs)
@@ -173,19 +143,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     <>
       <JsonLd data={productStructuredData} />
       <JsonLd data={breadcrumbData} />
-      <ProductDetailsClient
-        initialProduct={productData}
-        // Підсумок відгуків уже завантажений вище для JSON-LD — передаємо його
-        // в UI, щоб рейтинг був не тільки в розмітці для пошуковика
-        reviewSummary={
-          reviewsPayload && reviewsPayload.stats.totalReviews > 0
-            ? {
-                averageRating: reviewsPayload.stats.averageRating,
-                totalReviews: reviewsPayload.stats.totalReviews,
-              }
-            : undefined
-        }
-      />
+      <ProductDetailsClient initialProduct={productData} />
     </>
   );
 }

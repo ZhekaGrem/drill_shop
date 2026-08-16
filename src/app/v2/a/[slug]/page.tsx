@@ -1,15 +1,11 @@
 'use client';
 // Сторінка товару в колекції: 3D-сцена як галерея (мініатюри перемикають
-// товар колекції), під нею картка покупки, характеристики, доставка, опис,
-// відгуки та інші колекції. Колекції — живі, з GET /collections.
-import { use } from 'react';
-import { useRouter } from 'next/navigation';
+// товар колекції), під нею картка покупки, характеристики, доставка та інші
+// колекції. Опис і відгуки прибрані (рішення власника). Колекції — живі.
+import { use, useState } from 'react';
 import { Page } from '@/shared/components/Page/Page';
-import { Section } from '@/shared/components/Section/Section';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
-import { ProductReviews } from '@/features/reviews/components/ProductReviews/ProductReviews';
-import { sanitizeHTML } from '@/shared/utils/sanitize';
 import { useProduct } from '@/widgets/ProductV2/useProduct';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
 import { capsuleStyle, collectionOfSlug, itemBySlug } from '@/widgets/ProductV2/collections';
@@ -21,16 +17,22 @@ import { RichDescription } from '@/shared/components/RichDescription/RichDescrip
 import styles from '@/widgets/ProductV2/ProductV2.module.scss';
 
 export default function CollectionProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
-  const router = useRouter();
+  const { slug: initialSlug } = use(params);
+  // Активний товар — СТАН, а не маршрут. router.replace тут перемонтовував
+  // сторінку разом із Canvas: WebGL-контекст гинув, сцена вантажилась заново,
+  // обертання скидалось. Тепер мініатюри міняють стан (сцена живе, текстура
+  // свопиться в тому ж матеріалі), а URL оновлюємо тихо через
+  // history.replaceState — Next офіційно підтримує це без ре-рендера.
+  const [slug, setSlug] = useState(initialSlug);
   const { data: collections } = useCollections();
   const collection = collectionOfSlug(collections, slug);
   const item = itemBySlug(collections, slug);
   const { data: product, isError, refetch } = useProduct(slug);
 
-  // Мініатюра в сцені = інший товар колекції: міняємо адресу без перезавантаження
   const handleDesignChange = (key: string) => {
-    if (key !== slug) router.replace(`/v2/a/${key}`);
+    if (key === slug) return;
+    setSlug(key);
+    window.history.replaceState(null, '', `/v2/a/${key}`);
   };
 
   return (
@@ -47,32 +49,30 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
         {/* Галерея = жива сцена колекції; мініатюри під нею перемикають товар */}
         <div className={styles.card}>
           <div className={styles.collectionHead}>
-            <h2>
-              {collection ? `Колекція «${collection.title}»` : 'Завантажуємо колекцію…'}
-              {collection?.labelText && (
-                <span
-                  className={`${styles.capsule} designCapsule`}
-                  style={{ ...capsuleStyle(collection.labelColor), marginLeft: 8 }}>
-                  {collection.labelText}
-                </span>
+            {/* Назва зліва, пульсуюча крапка колекції — у правому куті рядка */}
+            <div className={styles.collectionTitleRow}>
+              <h2>
+                {collection ? collection.title : 'Завантажуємо колекцію…'}
+                {collection?.labelText && (
+                  <span
+                    className={`${styles.capsule} designCapsule`}
+                    style={{ ...capsuleStyle(collection.labelColor), marginLeft: 8 }}>
+                    {collection.labelText}
+                  </span>
+                )}
+              </h2>
+              {collection?.badgeText && (
+                <p className={styles.badgeDot}>
+                  <span
+                    className={styles.pulseDot}
+                    style={{ '--badge-color': collection.badgeColor ?? '#1c8a37' } as React.CSSProperties}
+                    aria-hidden="true"
+                  />
+                  {collection.badgeText}
+                </p>
               )}
-            </h2>
-            {collection?.badgeText && (
-              <p className={styles.badgeDot}>
-                <span
-                  className={styles.pulseDot}
-                  style={{ '--badge-color': collection.badgeColor ?? '#1c8a37' } as React.CSSProperties}
-                  aria-hidden="true"
-                />
-                {collection.badgeText}
-              </p>
-            )}
+            </div>
             {collection?.archivedAt && <p className={styles.outOfStock}>Архівна колекція</p>}
-            {collection?.description && (
-              <p>
-                <RichDescription text={collection.description} />
-              </p>
-            )}
           </div>
           {collection ? (
             <HeroVisual
@@ -84,11 +84,18 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
           ) : (
             <div className={styles.stageSkeleton} aria-busy="true" aria-label="Завантаження колекції" />
           )}
+          {/* Опис колекції — внизу картки, під сценою */}
+          {collection?.description && (
+            <p className={styles.collectionDescription}>
+              <RichDescription text={collection.description} />
+            </p>
+          )}
         </div>
 
         <div className={styles.card}>
           {product ? (
-            <BuyPanel product={product} />
+            // key: зміна товару скидає вибір розміру/кількості до дефолтів
+            <BuyPanel key={product.id} product={product} />
           ) : isError ? (
             <ProductError slug={slug} onRetry={() => refetch()} />
           ) : (
@@ -98,18 +105,7 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
 
         {product && <ProductInfoGroups product={product} />}
 
-        {product?.description && (
-          <Section title="Опис">
-            <div className={styles.card}>
-              <div
-                className={styles.description}
-                dangerouslySetInnerHTML={{ __html: sanitizeHTML(product.description) }}
-              />
-            </div>
-          </Section>
-        )}
-
-        {product && <ProductReviews productId={product.id} />}
+        {/* Опис і відгуки прибрані з клієнтської сторінки (рішення власника) */}
 
         <OtherCollections collections={collections} currentKey={collection?.key} />
       </div>

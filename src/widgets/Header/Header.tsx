@@ -2,19 +2,14 @@
 'use client';
 import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { IconLogout, IconSettings } from '@tabler/icons-react';
-import { Box, Menu, Badge } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Box, Badge } from '@mantine/core';
 import { useEffect } from 'react';
 import styles from './header.module.scss';
 import Link from 'next/link';
 import { useCartDrawerActions, useCartCalculations, useCartStore } from '@/shared/stores/cart';
-import { useAuthStore } from '@/shared/stores/auth';
 import { CartDrawer } from '@/features/cart/components/CartDrawer/CartDrawer';
-import { AuthDrawer } from '@/features/auth/components/AuthDrawer/AuthDrawer';
-import { content } from '@/shared/config/content';
 import { Logo } from '@/shared/components/Logo';
-import { IconX, IconSearch, IconCart, IconUser } from '@/shared/components/Svg';
+import { IconX, IconSearch, IconCart } from '@/shared/components/Svg';
 
 // Тільки десктопна навігація. На мобільному ці розділи живуть у таб-барі
 // (widgets/BottomNav) і на екрані «Кабінет» — бургер-шторки більше немає.
@@ -23,113 +18,6 @@ const NAV_ITEMS = [
   { label: 'Про нас', href: '/about' },
   { label: 'Контакти', href: '/contact' },
 ];
-
-// SINGLE logout handler
-const useLogoutHandler = () => {
-  const logout = useAuthStore((state) => state.logout);
-
-  return async () => {
-    await logout();
-    window.location.href = '/';
-  };
-};
-
-// ✅ Оптимізовано: React.memo
-const AuthControl = React.memo(
-  ({
-    onNavigate,
-    onOpenAuth,
-    onCloseAuth,
-    isAuthDrawerOpen,
-  }: {
-    onNavigate?: () => void;
-    onOpenAuth: () => void;
-    onCloseAuth: () => void;
-    isAuthDrawerOpen: boolean;
-  }) => {
-    const userProfile = useAuthStore((state) => state.userProfile);
-    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-    const isInitialized = useAuthStore((state) => state.isInitialized);
-    const handleLogout = useLogoutHandler();
-    const isAdmin = userProfile?.role === 'ADMIN' || userProfile?.role === 'SUPER_ADMIN';
-    const isManager = userProfile?.role === 'MANAGER' || isAdmin;
-
-    const handleLogoutClick = async () => {
-      onNavigate?.();
-      await handleLogout();
-    };
-
-    if (!isInitialized) {
-      // Той самий розмір, що й справжня пігулка — інакше хедер стрибає,
-      // коли auth ініціалізується і кнопка «Кабінет» з'являється
-      return (
-        <button className={styles.accountPill} disabled aria-hidden="true" tabIndex={-1}>
-          <IconUser />
-          <span>Кабінет</span>
-        </button>
-      );
-    }
-
-    if (isAuthenticated && userProfile) {
-      return (
-        <Menu
-          shadow="md"
-          width={200}
-          classNames={{
-            dropdown: styles.dropdown,
-            item: styles.menuItem,
-            label: styles.menuLabel,
-            divider: styles.menuDivider,
-          }}>
-          <Menu.Target>
-            <button className={styles.accountPill} aria-label="Кабінет">
-              <IconUser />
-              <span>Кабінет</span>
-            </button>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Label>{content.header.accountMenu.label}</Menu.Label>
-            <Menu.Item component={Link} href="/profile">
-              {content.header.accountMenu.profile}
-            </Menu.Item>
-            {/* <Menu.Item component={Link} href="/profile/favorites">
-              {content.header.accountMenu.favorites}
-            </Menu.Item> */}
-            <Menu.Item component={Link} href="/profile/orders">
-              {content.header.accountMenu.orders}
-            </Menu.Item>
-            {isManager && (
-              <>
-                <Menu.Divider />
-                <Menu.Label>{content.header.accountMenu.management}</Menu.Label>
-                <Menu.Item component={Link} href="/admin" leftSection={<IconSettings size={18} />}>
-                  {content.header.accountMenu.adminPanel}
-                </Menu.Item>
-              </>
-            )}
-            <Menu.Divider />
-            <Menu.Item color="red" leftSection={<IconLogout size={18} />} onClick={handleLogoutClick}>
-              {content.header.accountMenu.logout}
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      );
-    }
-    const handleAuthToggle = () => {
-      if (isAuthDrawerOpen) {
-        onCloseAuth();
-      } else {
-        onOpenAuth();
-      }
-    };
-    return (
-      <button className={styles.accountPill} onClick={handleAuthToggle} aria-label="Кабінет">
-        {isAuthDrawerOpen ? <IconX /> : <IconUser />}
-        <span>Кабінет</span>
-      </button>
-    );
-  }
-);
 
 /** Порівнюємо ТІЛЬКИ pathname, свідомо: щоб врахувати query, потрібен
  *  `useSearchParams()`, а він у Next вимагає Suspense і вибиває сторінку зі
@@ -143,7 +31,6 @@ const RECENT_KEY = 'recent-searches';
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const [authDrawerOpened, { open: openAuthDrawer, close: closeAuthDrawer }] = useDisclosure(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -188,11 +75,6 @@ export function Header() {
   const handleSearchClear = () => {
     setSearchQuery('');
     setIsSearchExpanded(false);
-  };
-
-  const handleAuthSuccess = () => {
-    closeAuthDrawer();
-    window.location.reload();
   };
 
   return (
@@ -256,11 +138,8 @@ export function Header() {
               </Badge>
             )}
           </button>
-          <AuthControl
-            onOpenAuth={openAuthDrawer}
-            onCloseAuth={closeAuthDrawer}
-            isAuthDrawerOpen={authDrawerOpened}
-          />
+          {/* Кнопка «Кабінет» прибрана з навбару (рішення власника) —
+              профіль/адмінка доступні прямими URL */}
         </div>
       </header>
 
@@ -312,7 +191,6 @@ export function Header() {
       <CartDrawer />
 
       {/* Auth Drawer */}
-      <AuthDrawer opened={authDrawerOpened} onClose={closeAuthDrawer} onSuccess={handleAuthSuccess} />
     </Box>
   );
 }

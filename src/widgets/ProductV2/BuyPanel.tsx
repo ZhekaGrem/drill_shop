@@ -6,10 +6,8 @@
 
 import { useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/components/Button/Button';
 import { IconCart3 } from '@/shared/components/Svg';
-import { FavoriteButton } from '@/features/favorites/components/FavoriteButton/FavoriteButton';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
 import { formatPrice } from '@/shared/utils/format';
@@ -25,7 +23,6 @@ const stockOf = (v: { quantity?: number; reservedQuantity?: number }) =>
   (v.quantity || 0) - (v.reservedQuantity || 0);
 
 export const BuyPanel = ({ product }: { product: Product }) => {
-  const router = useRouter();
   const { addItem, isAddingItem } = useCart();
   const [variantId, setVariantId] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -45,7 +42,7 @@ export const BuyPanel = ({ product }: { product: Product }) => {
       ? 'Немає в наявності'
       : available <= LOW_STOCK
         ? `Залишилось ${available} шт`
-        : 'В наявності';
+        : 'Розробка і доставка до 7 днів (вебачте)';
 
   const handleAdd = () => {
     setAdded(true);
@@ -79,8 +76,8 @@ export const BuyPanel = ({ product }: { product: Product }) => {
 
       <h1 className={styles.productName}>{product.name}</h1>
 
+      {/* Артикул клієнтам не показуємо — він лишається в адмінці й замовленнях */}
       <div className={styles.meta}>
-        <span>Артикул: {product.sku}</span>
         <span className={!archived && inStock ? styles.inStock : styles.outOfStock}>{stockLabel}</span>
       </div>
 
@@ -140,6 +137,8 @@ export const BuyPanel = ({ product }: { product: Product }) => {
         </div>
       )}
 
+      {/* «Купити зараз» і сердечко-обране прибрані (рішення власника) —
+          дія одна: «Додати в кошик» */}
       <div className={styles.actions}>
         {!archived && (
           <Button
@@ -151,22 +150,6 @@ export const BuyPanel = ({ product }: { product: Product }) => {
             <IconCart3 size={20} /> {added ? 'Додано в кошик ✓' : 'Додати в кошик'}
           </Button>
         )}
-        <div className={styles.actionsRow}>
-          {!archived && (
-            <Button
-              size="lg"
-              variant="secondary"
-              fullWidth
-              disabled={!inStock || isAddingItem}
-              onClick={() => {
-                addItem(product.id, quantity, variant?.id, buildCartSnapshot(product, variant));
-                router.push('/checkout');
-              }}>
-              Купити зараз
-            </Button>
-          )}
-          <FavoriteButton product={product} size="lg" />
-        </div>
       </div>
     </div>
   );

@@ -364,3 +364,19 @@
   color: var(--text-secondary, #6b7280);
   font-size: 12px;
 }
+
+// Рядок шапки колекції: назва зліва, пульсуюча крапка в правому куті
+.collectionTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+// Опис колекції — тихий рядок під сценою, внизу картки
+.collectionDescription {
+  margin: var(--space-3) 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary, #6b7280);
+}

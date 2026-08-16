@@ -3,7 +3,7 @@
 // перемикання товарів колекції в межах сторінки не рефетчить повторно.
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { productsApi } from '@/features/catalog/api/products';
 
 export const useProduct = (slug: string) =>
@@ -18,4 +18,7 @@ export const useProduct = (slug: string) =>
     },
     staleTime: 5 * 60_000,
     enabled: Boolean(slug),
+    // Перемикання мініатюр: тримаємо попередній товар, поки їде новий —
+    // панель покупки міняє дані без блимання скелетоном
+    placeholderData: keepPreviousData,
   });

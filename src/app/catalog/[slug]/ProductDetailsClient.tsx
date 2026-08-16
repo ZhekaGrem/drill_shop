@@ -2,12 +2,10 @@
 import { useEffect, useState, useMemo, useRef, ViewTransition } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
-import { ProductReviews } from '@/features/reviews/components/ProductReviews/ProductReviews';
 import { productsApi, ProductResponse } from '@/features/catalog/api/products';
 import { Product, ProductWithRelations } from '@/shared/types';
-import { useAuthStore } from '@/shared/stores/auth';
 import { Select } from '@mantine/core';
-import { IconChevronDown, IconChevronUp, IconRuler, IconStarFilled } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronUp, IconRuler } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { Page } from '@/shared/components/Page/Page';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs';
@@ -19,10 +17,8 @@ import { useCart } from '@/features/cart/hooks/useCart';
 import styles from './productDetails.module.scss';
 import { getImageUrl } from '@/shared/utils/image';
 import { ProductBadges } from '@/features/catalog/components/ProductBadges/ProductBadges';
-import { FavoriteButton } from '@/features/favorites/components/FavoriteButton/FavoriteButton';
 import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/promo-calculator';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
-import { sanitizeHTML } from '@/shared/utils/sanitize';
 import { SizeGuideModal } from '@/shared/components/SizeGuideModal';
 import { IconCart3 } from '@/shared/components/Svg';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
@@ -32,12 +28,6 @@ import { ImageGalleryModal } from '@/shared/components/ImageGalleryModal';
 interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
   basePath?: string;
-  /**
-   * Підсумок відгуків із сервера. Сторінка вже тягне його для JSON-LD
-   * (aggregateRating), тож окремий клієнтський запит тут не потрібен —
-   * лишається тільки показати те, що розмітка й так обіцяє пошуковику.
-   */
-  reviewSummary?: { averageRating: number; totalReviews: number };
 }
 
 // Людські назви для ключів options. Раніше цей словник був продубльований
@@ -66,10 +56,8 @@ const toSpecRows = (options?: Record<string, unknown> | null) =>
 export default function ProductDetailsClient({
   initialProduct,
   basePath = '',
-  reviewSummary,
 }: ProductDetailsProps) {
   const { addItem, isAddingItem } = useCart();
-  const { isAuthenticated } = useAuthStore();
   const [product, setProduct] = useState<ProductWithRelations | null>(initialProduct || null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>(initialProduct?.relatedProducts || []);
   const [isLoading, setIsLoading] = useState(!initialProduct);
@@ -298,7 +286,7 @@ export default function ProductDetailsClient({
       ? 'Немає в наявності'
       : availableQuantity <= LOW_STOCK_THRESHOLD
         ? `Залишилось ${availableQuantity} шт`
-        : 'В наявності';
+        : 'Розробка і доставка до 7 днів (вебачте)';
 
   // Ввід поза діапазоном не ігноруємо мовчки, а підрізаємо до межі: людина
   // друкувала «20», поле не змінювалось, і причини не було ніде на екрані
@@ -557,9 +545,7 @@ export default function ProductDetailsClient({
                     selectedVariant={selectedVariant}
                     className={styles.galleryBadges}
                   />
-                  <div className={styles.favoriteButtonWrapper}>
-                    <FavoriteButton product={product} />
-                  </div>
+                  {/* Сердечко-обране прибране з клієнтської сторінки (рішення власника) */}
                 </div>
               </div>
             </div>
@@ -570,17 +556,9 @@ export default function ProductDetailsClient({
             <div className={styles.productDetails__container}>
               <h1 className={styles.productDetails__title}>{product.name}</h1>
 
+              {/* Артикул і рейтинг клієнтам не показуємо (відгуки прибрані зі
+                  сторінки — рейтинг-плашка вела б на якір, якого нема) */}
               <div className={styles.productDetails__meta}>
-                <span className={styles.productDetails__sku}>Артикул: {product.sku}</span>
-                {reviewSummary && reviewSummary.totalReviews > 0 && (
-                  <a href="#reviews" className={styles.productDetails__rating}>
-                    <IconStarFilled size={14} />
-                    {reviewSummary.averageRating.toFixed(1)}
-                    <span className={styles.productDetails__ratingCount}>
-                      · {reviewSummary.totalReviews} відгуків
-                    </span>
-                  </a>
-                )}
                 <span
                   className={`${styles.productDetails__availability} ${
                     isInStock && !collectionArchived ? '' : styles.productDetails__availability_out
@@ -783,25 +761,8 @@ export default function ProductDetailsClient({
                       <p className={styles.quantityHint}>Це все, що залишилось: {availableQuantity} шт</p>
                     )}
 
-                    {/* Була назва «ЗАМОВИТИ В 1 КЛІК» — це не 1 клік: товар
-                        клався в кошик і людина все одно заповнювала форму на
-                        /checkout. Плюс капсу в Дії немає в жодній кнопці.
-                        setTimeout(500) прибрано: це була затримка без жодного
-                        візуального відгуку, за порогом Догерті (~400 мс). */}
-                    <div className={styles.secondaryAction}>
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        fullWidth
-                        className={styles.buyNowButton}
-                        onClick={() => {
-                          handleAddToCart();
-                          router.push(`${basePath}/checkout`);
-                        }}>
-                        Купити зараз
-                      </Button>
-                    </div>
-
+                    {/* «Купити зараз» прибрана (рішення власника) — головна
+                        дія одна: «Додати в кошик» */}
                     {/* Головна дія магазину — чорна, і в липкій панелі вона одна.
                         Раніше чорною була «ЗАМОВИТИ В 1 КЛІК», а додавання в
                         кошик виглядало вторинним: дві кнопки однакового розміру
@@ -861,15 +822,7 @@ export default function ProductDetailsClient({
         {/* Опис на всю ширину. Раніше він лежав у правій колонці сітки — вузька
             колонка розтягувалась на кілька екранів, поки ліва (галерея)
             закінчувалась угорі, і сторінка ставала кривою. */}
-        {product.description && (
-          <section className={styles.productDescription}>
-            <h2 className={styles.productDescription__title}>Опис</h2>
-            <div
-              className={styles.productDescription__content}
-              dangerouslySetInnerHTML={{ __html: sanitizeHTML(product.description) }}
-            />
-          </section>
-        )}
+        {/* Опис прибраний з клієнтської сторінки (рішення власника) */}
 
         {/* Схожі товари. Верхній відступ секції дає сам <Section>
             (--section-gap) — власного класу тут не було в модулі взагалі,
@@ -888,15 +841,10 @@ export default function ProductDetailsClient({
           </Section>
         )}
 
-        {/* Відгуки були закоментовані, але сторінка при цьому віддавала
-            aggregateRating і review в JSON-LD (page.tsx → structuredData.product).
-            Розмітка описувала контент, якого на сторінці не видно, — окрім
-            втраченої довіри це ще й пряме порушення вимог до rich results. */}
-        {/* Якір для плашки рейтингу біля назви: цифра над згином має вести
-            до самих відгуків, а не лишатись декорацією */}
-        <div id="reviews">
-          <ProductReviews productId={product.id} canReview={isAuthenticated} />
-        </div>
+        {/* Відгуки прибрані з клієнтської сторінки (рішення власника).
+            ВАЖЛИВО: JSON-LD (page.tsx → structuredData) НЕ має віддавати
+            aggregateRating/review — розмітка невидимого контенту порушує
+            вимоги rich results. */}
 
         {/* Size Guide Modal */}
         {hasSizeGuide && (
