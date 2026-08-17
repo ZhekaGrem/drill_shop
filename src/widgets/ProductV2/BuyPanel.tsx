@@ -7,16 +7,17 @@
 import { useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { Button } from '@/shared/components/Button/Button';
+import { StickyBuyBar } from '@/shared/components/StickyBuyBar';
 import { IconCart3 } from '@/shared/components/Svg';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { useDesign } from '@/shared/hooks/useDesign';
+import { useActionOffscreen } from '@/shared/hooks/useActionOffscreen';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
 import { formatPrice } from '@/shared/utils/format';
 import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/promo-calculator';
 import type { Product, ProductVariant } from '@/shared/types';
 import { buildCartSnapshot } from './cart-snapshot';
 import { capsuleStyle } from './collections';
-import { useActionOffscreen } from './useActionOffscreen';
 import styles from './ProductV2.module.scss';
 
 // Поріг «закінчується» — той самий, що на сторінці товару
@@ -185,24 +186,16 @@ export const BuyPanel = ({ product }: { product: Product }) => {
 
       {/* Липка панель дії (≤1023px). Ціна тут обовʼязкова: вона теж за згином,
           а рішення про покупку без ціни не приймається. На ≥1024px панелі
-          немає — там її роль виконує липка права колонка сторінки.
-          Рендер за умовою, а не приховування: невидима кнопка лишалась би
-          у фокусній послідовності. */}
-      {!archived && actionOffscreen && (
-        <div className={styles.stickyAction}>
-          <div className={styles.stickyActionInfo}>
-            <span className={`${styles.stickyPrice} ${promo.hasDiscount ? styles.priceDiscount : ''}`}>
-              {formatPrice(promo.finalPrice)}
-            </span>
-            {variant && variants.length > 0 && (
-              <span className={styles.stickySize}>Розмір {sizeLabel(variant)}</span>
-            )}
-          </div>
-          <Button size="lg" variant="primary" disabled={actionDisabled} onClick={handleAdd}>
-            <IconCart3 size={20} /> {actionLabel}
-          </Button>
-        </div>
-      )}
+          немає — там її роль виконує липка права колонка сторінки. */}
+      <StickyBuyBar
+        visible={!archived && actionOffscreen}
+        price={promo.finalPrice}
+        oldPrice={promo.hasDiscount ? promo.originalPrice : null}
+        sizeLabel={variant && variants.length > 0 ? sizeLabel(variant) : null}
+        disabled={actionDisabled}
+        added={added}
+        onAdd={handleAdd}
+      />
     </div>
   );
 };

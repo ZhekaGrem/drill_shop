@@ -1,8 +1,12 @@
-// src/widgets/ProductV2/useActionOffscreen.ts
+// src/shared/hooks/useActionOffscreen.ts
 // «Чи вийшла головна кнопка з кадру» — умова появи липкої панелі дії.
 // Спостерігаємо саме за кнопкою, а не за позицією скролу: дві однакові головні
 // кнопки одночасно на екрані знецінюють обидві (Von Restorff), тому панель
 // зʼявляється рівно тоді, коли інлайн-кнопки не видно.
+//
+// Живе в shared, а не в ProductV2: на нього спираються обидві сторінки товару
+// (/catalog/[slug] і /v2/a/[slug]) через StickyBuyBar, а widgets → shared
+// імпортувати не можна (FSD).
 'use client';
 
 import { useEffect, useState } from 'react';

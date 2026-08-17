@@ -21,6 +21,8 @@ import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
 import { SizeGuideModal } from '@/shared/components/SizeGuideModal';
 import { IconCart3 } from '@/shared/components/Svg';
+import { StickyBuyBar } from '@/shared/components/StickyBuyBar';
+import { useActionOffscreen } from '@/shared/hooks/useActionOffscreen';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
 import { NotifyAvailabilityModal } from '@/features/notify-availability';
 import { ImageGalleryModal } from '@/shared/components/ImageGalleryModal';
@@ -69,6 +71,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   const [galleryOpened, setGalleryOpened] = useState(false);
   const [variantError, setVariantError] = useState<string | null>(null);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
+  const variantsRef = useRef<HTMLDivElement>(null);
 
   const params = useParams();
   const router = useRouter();
@@ -125,6 +128,13 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   };
   const basePromoData = product ? calculatePromoPrice(product) : null;
 
+  // Липка панель показує ту саму дію, поки інлайн-кнопки не видно.
+  // Спостерігаємо за самою кнопкою, а не за позицією скролу — деталі в хуку.
+  const [addActionRef, addActionOffscreen] = useActionOffscreen<HTMLButtonElement>();
+  // Ціна для панелі: обраний варіант перекриває базовий товар — той самий
+  // порядок, що й у блоці ціни в розмітці.
+  const stickyPromo = selectedVariant ? calculateVariantPromoPrice(selectedVariant) : basePromoData;
+
   const handleAddToCart = () => {
     if (!product) return;
 
@@ -132,6 +142,9 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
     // посеред екрана (Nielsen #9: помилку показуємо там, де вона сталась)
     if (product.hasVariants && !selectedVariant) {
       setVariantError('Оберіть варіант товару');
+      // Дію можна натиснути з липкої панелі, а чіпи варіантів на той момент
+      // уже за кадром — сам напис про помилку людина б не побачила.
+      variantsRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
       return;
     }
 
@@ -620,7 +633,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
 
               {/* Variants Selector */}
               {!collectionArchived && hasVariants && sortedVariants.length > 0 && (
-                <div className={styles.productDetails__variants}>
+                <div className={styles.productDetails__variants} ref={variantsRef}>
                   {/* ✅ Якщо варіанти мають size/color - показуємо чекбокси */}
                   {showVariantCheckboxes ? (
                     <div>
@@ -766,12 +779,11 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                         билися за роль головної (Von Restorff). */}
                     <div className={styles.actionButtons}>
                       <Button
+                        ref={addActionRef}
                         variant="primary"
                         size="lg"
                         fullWidth
-                        className={`${styles.addToCartButton} ${
-                          isClicked ? styles.addToCartButton__success : ''
-                        }`}
+                        className={styles.addToCartButton}
                         onClick={handleAddToCart}>
                         <IconCart3 /> {getButtonText()}
                       </Button>
@@ -868,6 +880,18 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           onClose={() => setGalleryOpened(false)}
           initialIndex={selectedImageIndex}
           productName={product.name}
+        />
+
+        {/* Липка панель дії (≤1023px) — та сама, що на /v2/a/[slug].
+            Зʼявляється, коли інлайн-кнопка «Додати в кошик» вийшла з кадру. */}
+        <StickyBuyBar
+          visible={!collectionArchived && isInStock && addActionOffscreen}
+          price={stickyPromo?.finalPrice ?? product.price}
+          oldPrice={stickyPromo?.hasDiscount ? stickyPromo.originalPrice : null}
+          sizeLabel={selectedVariant ? createVariantDisplayLabel(selectedVariant) : null}
+          disabled={isAddingItem}
+          added={isClicked}
+          onAdd={handleAddToCart}
         />
       </div>
     </Page>

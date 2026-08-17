@@ -5,6 +5,7 @@ export { ArrowLeft } from './ArrowLeft';
 export { IconSearch } from './IconSearch';
 export { IconCart } from './IconCart2';
 export { IconCart3 } from './IconCart3';
+export { IconCheck } from './IconCheck';
 export { IconUser } from './IconUser';
 export { IconHome } from './IconHome';
 export { IconCatalog } from './IconCatalog';
