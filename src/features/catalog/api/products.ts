@@ -63,7 +63,12 @@ export const productsApi = {
     const response = await apiClient.get<ProductsResponse>(productEndpoints.products, {
       params: { ...filters, ...pagination },
       paramsSerializer: {
-        indexes: null, // Це дозволяє правильно серіалізувати масиви (categoryIds[]=1&categoryIds[]=2)
+        // `indexes: null` — повторний ключ без дужок: categoryIds=1&categoryIds=2.
+        // Виміряно напряму на бекенді: цю форму він читає (фільтр за категорією
+        // реально звужує видачу), а `categoryIds[]=1&categoryIds[]=2` (дужки,
+        // `indexes: false`) бекенд мовчки ігнорує й повертає всі товари. Якщо
+        // колись захочеться "полагодити" на дужки — не треба, це поверне бага.
+        indexes: null,
       },
     });
     return response.data;
