@@ -136,6 +136,9 @@
     height: var(--control-h-sm);
   }
   &--fl {
+    // Було без height взагалі — 24px за вмістом, нижче мінімального тап-таргету
+    // 40px (DESIGN_SYSTEM.md:185). На той самий control-h-sm, що й --promo.
+    height: var(--control-h-sm);
     padding: 0;
     min-width: 0;
   }

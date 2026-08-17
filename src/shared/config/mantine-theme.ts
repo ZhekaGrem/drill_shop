@@ -7,9 +7,15 @@
 // :checked/::placeholder/[dataSelected]) rules live in globals.css targeting
 // Mantine's static classNames instead. Only static, always-applied
 // properties stay here.
-import { createTheme, Input } from '@mantine/core';
+import { createTheme, Input, MantineTheme } from '@mantine/core';
 
-const inputStyles = {
+// Mantine передає власні пропси компонента другим аргументом у styles-функцію
+// (StylesApiProps), тому висота може реагувати на size, а не бути фіксованим
+// значенням. Дефолтний (sm, коли size не задано) інпут стоїть на тій самій
+// сходинці, що й наш <Input> (40px, Input.tsx:20) і <Button --md> раніше не
+// збігались — тепер обидва читають --control-h-sm. size="lg" піднімається на
+// сходинку --control-h-md (48px), як велика кнопка поруч із ним.
+const getInputStyles = (_theme: MantineTheme, props: { size?: string }) => ({
   input: {
     // Було жорстке '#ffffff'. Це inline-стиль, тобто він перебивав будь-яку
     // тему — вночі кожне поле на сайті ставало білою коробкою з майже-білим
@@ -19,10 +25,7 @@ const inputStyles = {
     // можна тицьнути», для неї WCAG 1.4.11 вимагає 3:1.
     border: '1px solid var(--border-control)',
     borderRadius: 'var(--border-radius-sm)',
-    // Дефолтна висота Mantine-інпута — 42px, і вона не збігалася ні з нашим
-    // <Input> (40px), ні з <Button --md> (48px). Тепер поля проєкту стоять на
-    // тій самій сходинці, що й решта контролів.
-    minHeight: 'var(--control-h-sm)',
+    minHeight: props.size === 'lg' ? 'var(--control-h-md)' : 'var(--control-h-sm)',
     color: 'var(--text-primary)',
     padding: 'var(--spacing-sm) var(--spacing-md)',
     transition: 'var(--transition-fast)',
@@ -32,7 +35,7 @@ const inputStyles = {
     fontWeight: 400,
     marginBottom: '4px',
   },
-};
+});
 
 export const mantineTheme = createTheme({
   primaryColor: 'dark',
@@ -54,18 +57,18 @@ export const mantineTheme = createTheme({
         error: { color: 'var(--error)', fontWeight: '500' },
       },
     }),
-    TextInput: { styles: inputStyles },
+    TextInput: { styles: getInputStyles },
     PasswordInput: {
-      styles: {
-        ...inputStyles,
+      styles: (theme: MantineTheme, props: { size?: string }) => ({
+        ...getInputStyles(theme, props),
         innerInput: { backgroundColor: 'transparent' },
-      },
+      }),
     },
-    Textarea: { styles: inputStyles },
+    Textarea: { styles: getInputStyles },
     Select: {
-      styles: {
-        input: inputStyles.input,
-        label: inputStyles.label,
+      styles: (theme: MantineTheme, props: { size?: string }) => ({
+        input: getInputStyles(theme, props).input,
+        label: getInputStyles(theme, props).label,
         dropdown: {
           backgroundColor: 'var(--background)',
           border: '1px solid var(--border-subtle)',
@@ -77,7 +80,7 @@ export const mantineTheme = createTheme({
           color: 'var(--text-primary)',
           borderRadius: 'var(--border-radius-sm)',
         },
-      },
+      }),
     },
     Paper: {
       styles: {
