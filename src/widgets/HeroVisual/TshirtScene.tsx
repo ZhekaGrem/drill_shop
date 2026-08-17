@@ -13,6 +13,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Bounds, useAnimations, useCursor, useGLTF } from '@react-three/drei';
 import { Box3 } from 'three';
 import type { Group } from 'three';
+import { DisposeRenderer } from './DisposeRenderer';
 import { useJump } from './useJump';
 import { useWind } from './useWind';
 import { useIdleMotion } from './useIdleMotion';
@@ -117,6 +118,11 @@ const TshirtScene = (props: Props) => {
       gl={{ antialias: true }}
       camera={{ fov: 35, position: [0, 0, 6] }}
       style={{ width: '100%', height: '100%' }}>
+      {/* Поза <Suspense>: рендерер треба звільняти на смерть КАНВАСА, а не на
+        кожне підвисання моделі. Без цього кожен візит лишав живий рендерер,
+        а він через canvas → React-fiber тримав усе дерево сторінки. */}
+      <DisposeRenderer />
+
       {/* Локальні джерела замість drei Environment (той тягне HDRI з CDN).
         Зустрічне й нижнє світло відбивають край чорної тканини від фону */}
       <ambientLight intensity={0.9} />
