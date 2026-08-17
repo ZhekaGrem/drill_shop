@@ -18,6 +18,10 @@ export function useCategoryProducts({ categorySlug, initialData }: UseCategoryPr
         offset: pageParam as number,
       });
     },
+    // SSG (`page.tsx`) тягне ці самі 18 товарів тим самим `categorySlug` —
+    // на відміну від каталогу тут немає інших вимірів фільтрації, тож
+    // підставляти initialData можна безумовно.
+    initialData: initialData ? { pages: [initialData], pageParams: [0] } : undefined,
     getNextPageParam: (lastPage) => {
       const currentOffset = lastPage.meta.offset;
       const currentLimit = lastPage.meta.limit;

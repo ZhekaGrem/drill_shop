@@ -36,20 +36,23 @@ export default function CatalogClient({ initialData, initialCategories, basePath
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const { filters, setFromUrlParams, clearFilters } = useCatalogFilters();
+  const { filters, setFromUrlParams, clearFilters, updateUrl } = useCatalogFilters();
 
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  const { data, isLoading, error, refetch, isFetchingNextPage, fetchNextPage, hasNextPage } =
-    useCatalogProducts({
+  const { data, status, error, refetch, isFetchingNextPage, fetchNextPage, hasNextPage } = useCatalogProducts(
+    {
       filters: filters,
       enabled: initialized,
       initialData: initialData,
-    });
+    }
+  );
 
   // Обʼєднуємо всі сторінки в один масив
   const products = data?.pages.flatMap((page) => page.data) || [];
-  const totalCount = data?.pages[0]?.meta.total || 0;
+  // undefined, поки запит ще не осів — «Знайдено 0 товарів» не має права
+  // звучати з aria-live, доки ми не знаємо реальної кількості (крок 5)
+  const totalCount = data?.pages[0]?.meta.total;
   const activeFilterCount = countActiveFilters(filters);
 
   useEffect(() => {
@@ -57,10 +60,12 @@ export default function CatalogClient({ initialData, initialCategories, basePath
     setInitialized(true);
   }, [searchParams, setFromUrlParams]);
 
-  // ✅ Скролимо до верху при зміні фільтрів
+  // Скролимо до верху при зміні маршруту. Зміну фільтрів сюди свідомо не
+  // додаємо: `handleFiltersChange` нижче вже робить плавний скрол на ту саму
+  // подію, і instant+smooth одночасно давали подвійний, зойомий стрибок (крок 8).
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [pathname, filters]); // Спрацює при зміні маршруту або фільтрів
+  }, [pathname]);
 
   // Скільки сторінок уже дотягнув автоскрол — рахуємо з самих даних, а не
   // окремим станом: при зміні фільтрів TanStack Query і так починає з однієї
@@ -93,9 +98,13 @@ export default function CatalogClient({ initialData, initialCategories, basePath
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, autoLoadExhausted]);
 
   const handleFiltersChange = useCallback(() => {
+    // Стан фільтрів іде в URL одразу після кожної зміни (крок 1) — інакше
+    // оновлення сторінки чи «назад» у браузері мовчки скидають усе, що обрав
+    // користувач.
+    updateUrl(router, basePath);
     setAutoPagesBudget(AUTO_PAGES_STEP);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  }, [updateUrl, router, basePath]);
 
   const handleResetFilters = useCallback(() => {
     clearFilters();
@@ -108,7 +117,11 @@ export default function CatalogClient({ initialData, initialCategories, basePath
       <PageHeader
         title="Каталог"
         description="Футболки, худі, постери та аксесуари — офіційний мерч, лімітовані тиражі."
-        aside={totalCount > 0 ? <span className={styles.totalCount}>{totalCount} товарів</span> : null}
+        aside={
+          totalCount !== undefined && totalCount > 0 ? (
+            <span className={styles.totalCount}>{totalCount} товарів</span>
+          ) : null
+        }
       />
 
       {/* Кнопка фільтрів для мобільних — з лічильником активних.
@@ -155,7 +168,10 @@ export default function CatalogClient({ initialData, initialCategories, basePath
           </div>
         )}
 
-        {isLoading && !initialData && (
+        {/* status === 'pending' охоплює і «URL ще не розібраний» (enabled=false),
+            і сам перший запит — обидва варто показувати скелетоном, а не
+            порожнім кадром «Нічого не знайдено» (крок 4) */}
+        {status === 'pending' && (
           <div className={styles.products}>
             {Array.from({ length: 18 }).map((_, i) => (
               <div key={i} className={styles.productSkeleton}>
@@ -171,7 +187,7 @@ export default function CatalogClient({ initialData, initialCategories, basePath
           </div>
         )}
 
-        {!isLoading && !error && products.length > 0 && (
+        {status === 'success' && products.length > 0 && (
           <>
             <div className={styles.products}>
               {products.map((product, index) => (
@@ -214,8 +230,9 @@ export default function CatalogClient({ initialData, initialCategories, basePath
           </>
         )}
 
-        {/* Повідомлення якщо товарів немає */}
-        {!isLoading && !error && products.length === 0 && (
+        {/* Повідомлення якщо товарів немає — тільки коли запит реально осів
+            порожнім, а не поки він ще в польоті (крок 4) */}
+        {status === 'success' && products.length === 0 && (
           <div className={styles.empty}>
             {/* Була IconFilter — та сама іконка, що й на кнопці «Фільтри»:
                 один знак ніс два різні значення */}

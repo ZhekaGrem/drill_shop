@@ -10,6 +10,7 @@ import { useCartDrawerActions, useCartCalculations, useCartStore } from '@/share
 import { CartDrawer } from '@/features/cart/components/CartDrawer/CartDrawer';
 import { Logo } from '@/shared/components/Logo';
 import { IconX, IconSearch, IconCart } from '@/shared/components/Svg';
+import { useCatalogFilters } from '@/features/catalog/hooks/useCatalogFilters';
 
 // Тільки десктопна навігація. На мобільному ці розділи живуть у таб-барі
 // (widgets/BottomNav) і на екрані «Кабінет» — бургер-шторки більше немає.
@@ -51,9 +52,15 @@ export function Header() {
   // документ (заново шрифти, JS, стан кошика) там, де достатньо клієнтського
   // переходу. Пошук — найчастіша дія в магазині, і саме вона була найповільнішою
   // (4.7 Doherty: відгук має вкладатись у ~400 мс).
+  //
+  // Пошук іде через стор фільтрів каталогу, а не будує URL з нуля: інакше
+  // кожен пошук з хедера стирав категорії й ціну, які людина вже обрала на
+  // сторінці каталогу (URL містив би лише `search`, і нічого більше).
   const goToSearch = (query: string) => {
     saveRecent(query);
-    router.push(`/catalog?search=${encodeURIComponent(query)}`);
+    const { setFilter, updateUrl } = useCatalogFilters.getState();
+    setFilter('search', query);
+    updateUrl(router);
     setIsSearchExpanded(false);
   };
 

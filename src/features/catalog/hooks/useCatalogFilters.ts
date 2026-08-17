@@ -2,6 +2,12 @@
 import { create } from 'zustand';
 import { ProductFilters, Pagination } from '@/features/catalog/api/products';
 
+/** Мінімальний інтерфейс, який реально потрібен від router — так стор не тягне
+ *  залежність на конкретний тип з `next/navigation`. */
+interface UrlNavigator {
+  push: (href: string) => void;
+}
+
 interface CatalogFiltersState {
   filters: ProductFilters & { categoryIds?: string[] }; // Додали categoryIds
 
@@ -13,7 +19,9 @@ interface CatalogFiltersState {
   getUrlParams: () => URLSearchParams;
   setFromUrlParams: (params: URLSearchParams) => void;
   getApiParams: () => Record<string, any>;
-  updateUrl: (router: any) => void;
+  /** basePath — префікс маршруту («/telegram» для Mini App), щоб пуш не виносив
+   *  користувача з `/telegram/catalog` на звичайний `/catalog`. */
+  updateUrl: (router: UrlNavigator, basePath?: string) => void;
 }
 
 const defaultFilters: ProductFilters = {};
@@ -116,30 +124,38 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
   },
 
   setFromUrlParams: (params) => {
-    const filters: ProductFilters & { categoryIds?: string[] } = {};
-
-    if (params.get('search')) filters.search = params.get('search')!;
-
-    // FIXED: Читаємо categoryIds з URL
+    // Злиття, а не заміна: URL — джерело правди для полів, якими він керує
+    // (search, categoryIds, ціна, сортування, promo), тому присутній параметр
+    // завжди перезаписує, а відсутній — знімає фільтр. Це принципово для
+    // кнопки «назад»: попередній запис в історії має право прибрати фільтр,
+    // якого там немає, інакше «назад» ніколи нічого не скидає.
+    //
+    // Але саму `filters` не замінюємо цілком (`set({ filters })`) — зливаємо
+    // з поточним станом (`set(state => ...)`), щоб поля, яких у URL-словнику
+    // взагалі немає (categorySlug, limit), не губились щоразу, коли хтось
+    // (наприклад, пошук у хедері) пушить URL лише з одним параметром.
     const categoryIds = params.getAll('categoryId');
-    if (categoryIds.length > 0) {
-      filters.categoryIds = categoryIds;
-    }
 
-    if (params.get('sort')) filters.sortBy = params.get('sort') as any;
-    if (params.get('order')) filters.sortOrder = params.get('order') as any;
-    if (params.get('priceMin')) filters.priceMin = Number(params.get('priceMin'));
-    if (params.get('priceMax')) filters.priceMax = Number(params.get('priceMax'));
-    if (params.get('promo')) filters.hasPromo = params.get('promo') === 'true';
-
-    set({ filters });
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        search: params.get('search') || undefined,
+        categoryIds: categoryIds.length > 0 ? categoryIds : undefined,
+        sortBy: (params.get('sort') as ProductFilters['sortBy']) || undefined,
+        sortOrder: (params.get('order') as ProductFilters['sortOrder']) || undefined,
+        priceMin: params.get('priceMin') ? Number(params.get('priceMin')) : undefined,
+        priceMax: params.get('priceMax') ? Number(params.get('priceMax')) : undefined,
+        hasPromo: params.get('promo') ? params.get('promo') === 'true' : undefined,
+      },
+    }));
   },
 
-  updateUrl: (router) => {
+  updateUrl: (router, basePath = '') => {
     const params = get().getUrlParams();
-    const newUrl = params.toString() ? `/catalog?${params.toString()}` : '/catalog';
+    const path = `${basePath}/catalog`;
+    const newUrl = params.toString() ? `${path}?${params.toString()}` : path;
 
-    router.push(newUrl, { shallow: true });
+    router.push(newUrl);
   },
 }));
 
