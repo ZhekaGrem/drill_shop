@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { Section } from '@/shared/components/Section/Section';
+import { useDesign } from '@/shared/hooks/useDesign';
 import { capsuleStyle, otherCollections } from './collections';
 import type { CollectionDef } from './collections';
 import styles from './ProductV2.module.scss';
@@ -30,6 +31,7 @@ export const OtherCollections = ({
   collections: CollectionDef[] | undefined;
   currentKey: string | undefined;
 }) => {
+  const design = useDesign();
   const others = otherCollections(collections, currentKey);
   if (others.length === 0) return null;
 
@@ -48,7 +50,9 @@ export const OtherCollections = ({
                 <span className={styles.collectionCardTitle}>
                   <strong>{col.title}</strong>
                   {col.labelText && (
-                    <span className={`${styles.capsule} designCapsule`} style={capsuleStyle(col.labelColor)}>
+                    <span
+                      className={`${styles.capsule} designCapsule`}
+                      style={capsuleStyle(col.labelColor, design)}>
                       {col.labelText}
                     </span>
                   )}

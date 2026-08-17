@@ -4,6 +4,7 @@
 // вантажаться ліниво самим HeroVisual при попаданні у вʼюпорт).
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
+import { useDesign } from '@/shared/hooks/useDesign';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import type { Design } from '@/widgets/HeroVisual/designs';
 import heroStyles from '@/widgets/HomeHeroes/HomeHeroes.module.scss';
@@ -52,38 +53,51 @@ const EXAMPLES: LabExample[] = [
   },
 ];
 
-export const LabHero = () => (
-  <Page>
-    <PageHeader
-      title="Hero Lab"
-      description="Приклади героїв з моделями поза колекціями БД. Сторінка існує лише в DEV_MODE."
-    />
+export const LabHero = () => {
+  const design = useDesign();
+  // К2/К3 перефарбовують .designCapsule повністю самі (globals.css) — той
+  // самий фікс, що й у capsuleStyle() (widgets/ProductV2/collections.ts):
+  // без інлайнового background нема з чим битись, і клас керує капсулою сам,
+  // без !important.
+  const skinOwnsCapsule = design === 'streetwear' || design === 'tactile';
 
-    {EXAMPLES.map((ex, i) => (
-      <section key={ex.key} className={heroStyles.hero}>
-        <div className={heroStyles.heroText}>
-          {i === 0 ? (
-            <h1 className={heroStyles.heroTitle}>
-              {ex.title}
-              <span className={`${heroStyles.capsule} designCapsule`} style={{ background: ex.capsuleColor }}>
-                {ex.capsule}
-              </span>
-            </h1>
-          ) : (
-            <h2 className={heroStyles.heroTitle}>
-              {ex.title}
-              <span className={`${heroStyles.capsule} designCapsule`} style={{ background: ex.capsuleColor }}>
-                {ex.capsule}
-              </span>
-            </h2>
-          )}
-          <p className={heroStyles.heroSubtitle}>{ex.description}</p>
-          <p className={styles.facts}>{ex.facts}</p>
-        </div>
-        <div className={heroStyles.heroVisualWrap}>
-          <HeroVisual designs={{ [ex.key]: ex.design }} switcher="dots" />
-        </div>
-      </section>
-    ))}
-  </Page>
-);
+  return (
+    <Page>
+      <PageHeader
+        title="Hero Lab"
+        description="Приклади героїв з моделями поза колекціями БД. Сторінка існує лише в DEV_MODE."
+      />
+
+      {EXAMPLES.map((ex, i) => (
+        <section key={ex.key} className={heroStyles.hero}>
+          <div className={heroStyles.heroText}>
+            {i === 0 ? (
+              <h1 className={heroStyles.heroTitle}>
+                {ex.title}
+                <span
+                  className={`${heroStyles.capsule} designCapsule`}
+                  style={skinOwnsCapsule ? undefined : { background: ex.capsuleColor }}>
+                  {ex.capsule}
+                </span>
+              </h1>
+            ) : (
+              <h2 className={heroStyles.heroTitle}>
+                {ex.title}
+                <span
+                  className={`${heroStyles.capsule} designCapsule`}
+                  style={skinOwnsCapsule ? undefined : { background: ex.capsuleColor }}>
+                  {ex.capsule}
+                </span>
+              </h2>
+            )}
+            <p className={heroStyles.heroSubtitle}>{ex.description}</p>
+            <p className={styles.facts}>{ex.facts}</p>
+          </div>
+          <div className={heroStyles.heroVisualWrap}>
+            <HeroVisual designs={{ [ex.key]: ex.design }} switcher="dots" />
+          </div>
+        </section>
+      ))}
+    </Page>
+  );
+};

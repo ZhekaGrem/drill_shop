@@ -5,6 +5,7 @@
 import { use, useState } from 'react';
 import { Page } from '@/shared/components/Page/Page';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs';
+import { useDesign } from '@/shared/hooks/useDesign';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import { useProduct } from '@/widgets/ProductV2/useProduct';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
@@ -24,6 +25,7 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
   // свопиться в тому ж матеріалі), а URL оновлюємо тихо через
   // history.replaceState — Next офіційно підтримує це без ре-рендера.
   const [slug, setSlug] = useState(initialSlug);
+  const design = useDesign();
   const { data: collections, isError: collectionsError } = useCollections();
   const collection = collectionOfSlug(collections, slug);
   const item = itemBySlug(collections, slug);
@@ -76,7 +78,7 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
                 {collection?.labelText && (
                   <span
                     className={`${styles.capsule} designCapsule`}
-                    style={{ ...capsuleStyle(collection.labelColor), marginLeft: 8 }}>
+                    style={{ ...capsuleStyle(collection.labelColor, design), marginLeft: 8 }}>
                     {collection.labelText}
                   </span>
                 )}

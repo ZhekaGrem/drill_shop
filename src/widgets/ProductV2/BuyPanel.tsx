@@ -9,6 +9,7 @@ import type { CSSProperties } from 'react';
 import { Button } from '@/shared/components/Button/Button';
 import { IconCart3 } from '@/shared/components/Svg';
 import { useCart } from '@/features/cart/hooks/useCart';
+import { useDesign } from '@/shared/hooks/useDesign';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
 import { formatPrice } from '@/shared/utils/format';
 import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/promo-calculator';
@@ -26,6 +27,7 @@ const sizeLabel = (v: ProductVariant) => String(v.options?.size ?? v.name ?? v.s
 
 export const BuyPanel = ({ product }: { product: Product }) => {
   const { addItem, isAddingItem } = useCart();
+  const design = useDesign();
   const [variantId, setVariantId] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -92,7 +94,7 @@ export const BuyPanel = ({ product }: { product: Product }) => {
           {product.labelText && (
             <span
               className={`${styles.capsule} designCapsule`}
-              style={capsuleStyle(product.labelColor ?? null)}>
+              style={capsuleStyle(product.labelColor ?? null, design)}>
               {product.labelText}
             </span>
           )}

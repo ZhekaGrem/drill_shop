@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/components/Button/Button';
 import { ArrowRight } from '@/shared/components/Svg';
 import { RichDescription } from '@/shared/components/RichDescription/RichDescription';
+import { useDesign } from '@/shared/hooks/useDesign';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import { capsuleStyle, type CollectionDef } from '@/widgets/ProductV2/collections';
 import styles from './HomeHeroes.module.scss';
@@ -35,6 +36,7 @@ export const HeroBlock = ({
   live = true,
 }: HeroBlockProps) => {
   const router = useRouter();
+  const design = useDesign();
   const TitleTag = titleTag;
   const switcher = col.items.some((it) => it.design.modelUrl) ? 'thumbs' : 'dots';
   const activeDesign = col.designs[active] ?? col.items[0]?.design;
@@ -45,7 +47,7 @@ export const HeroBlock = ({
         <TitleTag className={styles.heroTitle}>
           {col.title}
           {col.labelText && (
-            <span className={`${styles.capsule} designCapsule`} style={capsuleStyle(col.labelColor)}>
+            <span className={`${styles.capsule} designCapsule`} style={capsuleStyle(col.labelColor, design)}>
               {col.labelText}
             </span>
           )}
