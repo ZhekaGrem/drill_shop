@@ -209,6 +209,14 @@
     color: var(--btn-primary-fg);
     font-weight: var(--fw-medium);
   }
+
+  // DOM-фокус лишається на кнопці (aria-activedescendant-патерн), тож підсвітку
+  // опції, обраної стрілками, треба малювати вручну — інакше клавіатурний
+  // користувач не бачить, що саме обере Enter.
+  &.highlighted {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
 }
 
 // ============ Ціна ============

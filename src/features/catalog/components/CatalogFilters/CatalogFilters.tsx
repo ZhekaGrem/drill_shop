@@ -1,5 +1,5 @@
 // src/features/catalog/components/CatalogFilters/CatalogFilters.tsx
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useId } from 'react';
 import { useCatalogFilters, countActiveFilters } from '@/features/catalog/hooks/useCatalogFilters';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import { formatProducts } from '@/shared/utils/format';
@@ -35,9 +35,18 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
   const { filters, setFilter, clearFilters } = useCatalogFilters();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+  // Підсвічена стрілками опція — окремо від filters.sortBy/sortOrder: стрілка
+  // лише пересуває підсвітку, а не застосовує сортування й не тягне товари
+  // наново на кожен ArrowDown (крок 7). Комітить вибір лише Enter/клік.
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sortButtonRef = useRef<HTMLButtonElement>(null);
   const priceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Унікальний на кожен змонтований екземпляр: компонент рендериться і в
+  // десктопних фільтрах, і всередині мобільного Sheet одночасно — хардкоджений
+  // "sort-label" давав два однакових id в DOM (крок 9).
+  const sortLabelId = useId();
+  const sortOptionId = (value: string) => `${sortLabelId}-option-${value}`;
 
   const {
     categories,
@@ -76,6 +85,7 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowSortDropdown(false);
+        setHighlightedIndex(-1);
       }
     };
 
@@ -98,33 +108,53 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
   const currentSort = `${filters.sortBy || 'created'}_${filters.sortOrder || 'desc'}`;
   const currentSortLabel = SORT_OPTIONS.find((opt) => opt.value === currentSort)?.label || 'Рекомендовані';
 
+  const closeSortDropdown = () => {
+    setShowSortDropdown(false);
+    setHighlightedIndex(-1);
+  };
+
+  const openSortDropdown = () => {
+    setHighlightedIndex(SORT_OPTIONS.findIndex((o) => o.value === currentSort));
+    setShowSortDropdown(true);
+  };
+
   const handleSortChange = (value: string) => {
     const [sortBy, sortOrder] = value.split('_');
     setFilter('sortBy', sortBy);
     setFilter('sortOrder', sortOrder);
-    setShowSortDropdown(false);
+    closeSortDropdown();
     sortButtonRef.current?.focus();
     onFiltersChange?.();
   };
 
   /** Стрілки / Home / End / Escape у списку сортування.
    *  Раніше це була пара <button> + <div> без ролей: мишею працювало,
-   *  з клавіатури — ні (Nielsen #7, доступність). */
+   *  з клавіатури — ні (Nielsen #7, доступність). Стрілки самі по собі лише
+   *  пересувають підсвітку (highlightedIndex) — застосовує вибір тільки
+   *  Enter/Space, інакше кожен ArrowDown бив по TanStack Query. */
   const handleSortKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
-      setShowSortDropdown(false);
+      closeSortDropdown();
       sortButtonRef.current?.focus();
       return;
     }
-    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
 
-    event.preventDefault();
-    if (!showSortDropdown) {
-      setShowSortDropdown(true);
+    if (event.key === 'Enter' || event.key === ' ') {
+      if (showSortDropdown && highlightedIndex >= 0) {
+        event.preventDefault();
+        handleSortChange(SORT_OPTIONS[highlightedIndex].value);
+      }
       return;
     }
 
-    const index = SORT_OPTIONS.findIndex((o) => o.value === currentSort);
+    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+
+    if (!showSortDropdown) {
+      openSortDropdown();
+      return;
+    }
+
     const last = SORT_OPTIONS.length - 1;
     const next =
       event.key === 'Home'
@@ -132,11 +162,10 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
         : event.key === 'End'
           ? last
           : event.key === 'ArrowDown'
-            ? Math.min(index + 1, last)
-            : Math.max(index - 1, 0);
+            ? Math.min(highlightedIndex + 1, last)
+            : Math.max(highlightedIndex - 1, 0);
 
-    handleSortChange(SORT_OPTIONS[next].value);
-    setShowSortDropdown(true);
+    setHighlightedIndex(next);
   };
 
   const handleCategoryToggle = (categoryId: string) => {
@@ -175,6 +204,11 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
 
     if (priceTimer.current) clearTimeout(priceTimer.current);
     priceTimer.current = setTimeout(() => applyPrice(next), PRICE_APPLY_DELAY);
+  };
+
+  const handlePromoToggle = (checked: boolean) => {
+    setFilter('hasPromo', checked ? true : undefined);
+    onFiltersChange?.();
   };
 
   const handleClearFilters = () => {
@@ -234,10 +268,7 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
           {
             key: 'promo',
             label: 'Тільки зі знижкою',
-            onRemove: () => {
-              setFilter('hasPromo', undefined);
-              onFiltersChange?.();
-            },
+            onRemove: () => handlePromoToggle(false),
           },
         ]
       : []),
@@ -259,7 +290,7 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     <div className={`${styles.filters} ${className}`}>
       {/* Сортування */}
       <div className={styles.filterGroup}>
-        <span className={styles.label} id="sort-label">
+        <span className={styles.label} id={sortLabelId}>
           Сортувати
         </span>
         <div className={styles.dropdown} ref={dropdownRef} onKeyDown={handleSortKeyDown}>
@@ -269,8 +300,13 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
             className={styles.dropdownButton}
             aria-haspopup="listbox"
             aria-expanded={showSortDropdown}
-            aria-labelledby="sort-label"
-            onClick={() => setShowSortDropdown(!showSortDropdown)}>
+            aria-labelledby={sortLabelId}
+            aria-activedescendant={
+              showSortDropdown && highlightedIndex >= 0
+                ? sortOptionId(SORT_OPTIONS[highlightedIndex].value)
+                : undefined
+            }
+            onClick={() => (showSortDropdown ? closeSortDropdown() : openSortDropdown())}>
             <span>{currentSortLabel}</span>
             <svg
               width="16"
@@ -284,14 +320,16 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
           </button>
 
           {showSortDropdown && (
-            <div className={styles.dropdownMenu} role="listbox" aria-labelledby="sort-label">
-              {SORT_OPTIONS.map((option) => (
+            <div className={styles.dropdownMenu} role="listbox" aria-labelledby={sortLabelId}>
+              {SORT_OPTIONS.map((option, index) => (
                 <button
                   type="button"
+                  id={sortOptionId(option.value)}
                   key={option.value}
                   role="option"
                   aria-selected={currentSort === option.value}
-                  className={`${styles.dropdownItem} ${currentSort === option.value ? styles.active : ''}`}
+                  className={`${styles.dropdownItem} ${currentSort === option.value ? styles.active : ''} ${index === highlightedIndex ? styles.highlighted : ''}`}
+                  onMouseEnter={() => setHighlightedIndex(index)}
                   onClick={() => handleSortChange(option.value)}>
                   {option.label}
                 </button>
@@ -331,6 +369,20 @@ export const CatalogFilters: React.FC<CatalogFiltersProps> = ({
             aria-label="Ціна до"
           />
         </div>
+      </div>
+
+      {/* Знижка — раніше чіп «Тільки зі знижкою» міг зʼявитись лише через URL,
+          у самому UI не було, чим його увімкнути (крок 6). */}
+      <div className={styles.filterGroup}>
+        <span className={styles.label}>Знижка</span>
+        <label className={styles.checkbox}>
+          <input
+            type="checkbox"
+            checked={Boolean(filters.hasPromo)}
+            onChange={(e) => handlePromoToggle(e.target.checked)}
+          />
+          <span className={styles.checkboxText}>Тільки зі знижкою</span>
+        </label>
       </div>
 
       {/* Категорії. Раніше кожна група стояла в тому самому горизонтальному
