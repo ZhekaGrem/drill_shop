@@ -85,9 +85,12 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
                 <p className={styles.badgeDot}>
                   <span
                     className={styles.pulseDot}
-                    // Той самий фікс, що й у BuyPanel: #1c8a37 = 4.43:1, нижче
-                    // порогу 4.5:1. --success-green — 5.44:1 удень / 7.52:1
-                    // уночі (комент з обчисленням у globals.css).
+                    // Той самий фікс, що й у BuyPanel, і з тієї ж причини:
+                    // жодного hex у компоненті (правило проєкту), а не
+                    // контраст — крапка aria-hidden і дублює текст поруч,
+                    // тож рахується WCAG 1.4.11 (нетекстовий контраст, 3:1),
+                    // не 1.4.3. #1c8a37 проходить 3:1 (4.43:1 удень / 3.60:1
+                    // уночі) так само, як і токен.
                     style={
                       {
                         '--badge-color': collection.badgeColor ?? 'var(--success-green)',

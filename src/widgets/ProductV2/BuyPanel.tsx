@@ -76,10 +76,13 @@ export const BuyPanel = ({ product }: { product: Product }) => {
             <span className={styles.badgeDot}>
               <span
                 className={styles.pulseDot}
-                // Фолбек був хардкод #1c8a37 — 4.43:1 на білому картки, нижче
-                // порогу 4.5:1 (WCAG 1.4.3). --success-green (globals.css) —
-                // той самий зелений статус-колір, що вже документовано дає
-                // 5.44:1 удень і 7.52:1 уночі.
+                // Токен замість хардкод-хексу — того вимагає проєктне правило
+                // «жодного hex у компоненті», а не контраст: крапка aria-hidden
+                // і дублює сусідній текст словами, тож поріг тут WCAG 1.4.11
+                // (нетекстовий контраст, 3:1), а не 1.4.3 для тексту. #1c8a37
+                // і так проходить 3:1 (4.43:1 удень / 3.60:1 уночі) —
+                // --success-green лишає той самий запас, тільки живе в
+                // globals.css, а не хардкодом у компоненті.
                 style={{ '--badge-color': product.badgeColor ?? 'var(--success-green)' } as CSSProperties}
                 aria-hidden="true"
               />
