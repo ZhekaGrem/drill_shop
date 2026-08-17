@@ -35,6 +35,9 @@ export const useCheckout = () => {
 
   const form = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema) as Resolver<CheckoutFormData>,
+    // Помилку показуємо одразу після виходу з поля, а не стіною з пʼяти
+    // помилок після натискання «Підтвердити замовлення».
+    mode: 'onBlur',
     defaultValues: {
       guestEmail: '',
       notes: '',

@@ -77,11 +77,9 @@ export const useCart = () => {
       return removeCartItem(cartItemId);
     },
     onSuccess: async () => {
+      // Тост із «Повернути» вже показує CartItem.handleRemove одразу після
+      // виклику removeItem — другий тост тут перекривав той, у якому лежить undo.
       await syncCart();
-      showNotification({
-        message: 'Товар видалено',
-        color: 'green',
-      });
     },
     onError: (error: any) => {
       showNotification({

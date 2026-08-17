@@ -85,16 +85,6 @@ export const calculateItemPrice = (
   return { unitPrice, totalPrice };
 };
 
-// Форматування ціни в гривнях
-export const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('uk-UA', {
-    style: 'currency',
-    currency: 'UAH',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(price);
-};
-
 // Перевірка чи товар в наявності
 export const isItemAvailable = (
   quantity: number,

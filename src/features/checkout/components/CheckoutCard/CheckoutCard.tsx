@@ -1,7 +1,8 @@
 'use client';
 
 import { Group, Text, Stack, Box } from '@mantine/core';
-import { CartItemWithProduct, formatPrice } from '@/shared/utils/cart-calculations';
+import { CartItemWithProduct } from '@/shared/utils/cart-calculations';
+import { formatPrice } from '@/shared/utils/format';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
 import { getVariantDisplayBadges } from '@/shared/utils/variant-display';
 import { memo } from 'react';

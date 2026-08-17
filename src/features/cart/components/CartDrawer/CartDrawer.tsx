@@ -9,7 +9,7 @@ import { IconCart3, IconX } from '@/shared/components/Svg';
 import { useCartDrawerState, useCartDrawerActions } from '@/shared/stores/cart';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { CartItem } from '../CartItem/CartItem';
-import { formatPrice } from '@/shared/utils/cart-calculations';
+import { formatPrice } from '@/shared/utils/format';
 import Link from 'next/link';
 import { Button } from '@/shared/components/Button/Button';
 import styles from './CartDrawer.module.scss';
