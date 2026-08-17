@@ -61,9 +61,14 @@
 
       // Фокус з клавіатури знімає маску нарівні з hover — клавіатурний
       // користувач не має втрачати зворотний зв'язок.
+      //
+      // --btn-primary-hover-fg, а не --text-primary: під текстом тут лежить
+      // --gradient-btn (пастельні шари, однакові в обох темах), а --text-primary
+      // вночі світлішає до майже білого — підпис зникав на світлому градієнті
+      // (1.23–1.63:1, globals.css має заміри).
       &:hover:not(:disabled),
       &:focus-visible {
-        color: var(--text-primary);
+        color: var(--btn-primary-hover-fg);
       }
 
       &:hover:not(:disabled)::before,
