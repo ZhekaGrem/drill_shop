@@ -11,7 +11,7 @@ export const useCreatePayment = () => {
 
   return useMutation({
     mutationFn: paymentApi.createPayment,
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       if (data.success && data.paymentId) {
         const method = data.paymentMethod || 'cash';
 
@@ -41,8 +41,13 @@ export const useCreatePayment = () => {
             });
           }
         } else {
-          // Готівка/банківський переказ - на сторінку успіху
-          router.push(`/checkout/success?orderId=${data.paymentId}`);
+          // Готівка/банківський переказ - на сторінку успіху.
+          // Без orderNumber сторінка успіху не мала що показати й крутила
+          // спінер нескінченно — передаємо його з даних запиту на платіж.
+          const orderNumberParam = variables.orderNumber
+            ? `&orderNumber=${encodeURIComponent(variables.orderNumber)}`
+            : '';
+          router.push(`/checkout/success?orderId=${data.paymentId}${orderNumberParam}`);
         }
       } else {
         showNotification({

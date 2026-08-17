@@ -1,8 +1,9 @@
-import { forwardRef, useState, useCallback } from 'react';
+import { forwardRef, useCallback } from 'react';
 import { Input } from './Input';
 
 interface PhoneInputProps {
   onChange?: (value: string) => void;
+  onBlur?: () => void;
   value?: string;
   label?: string;
   placeholder?: string;
@@ -12,50 +13,36 @@ interface PhoneInputProps {
   className?: string;
 }
 
+// Приймаємо номер у будь-якому вигляді, який показує плейсхолдер
+// (+380 (XX) XXX XX XX, з пробілами й дужками), або в короткій формі
+// 0XXXXXXXXX, і зводимо його до канонічного вигляду, який очікує валідатор
+// (checkoutSchema.shippingAddress.phone): +380XXXXXXXXX або 0XXXXXXXXX.
+// Postel's Law: чистимо ввід, а не відхиляємо номер лише через пробіли й
+// дужки, які людина набрала так само, як підказує сам плейсхолдер поля.
+const normalizePhone = (raw: string): string => {
+  const digitsOnly = raw.replace(/\D/g, '');
+
+  if (digitsOnly.startsWith('380')) {
+    return `+${digitsOnly.slice(0, 12)}`; // +380 + 9 цифр номера
+  }
+
+  if (digitsOnly.startsWith('0')) {
+    return digitsOnly.slice(0, 10); // 0 + 9 цифр номера
+  }
+
+  // Проміжний стан під час набору коду країни (наприклад, «3», «38») —
+  // повертаємо цифри як є, без вгадування форми.
+  return digitsOnly;
+};
+
 export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
   ({ onChange, value = '', placeholder = '+380 (XX) XXX XX XX', ...props }, ref) => {
-    const [isFocused, setIsFocused] = useState(false);
-    const phonePrefix = '+380';
-
-    const handleFocus = useCallback(
-      (e: React.FocusEvent<HTMLInputElement>) => {
-        setIsFocused(true);
-
-        // Якщо поле порожнє - додаємо +380
-        if (!value || value.trim() === '') {
-          onChange?.(phonePrefix);
-          // Встановлюємо курсор після +380
-          setTimeout(() => {
-            if (e.target) {
-              e.target.setSelectionRange(phonePrefix.length, phonePrefix.length);
-            }
-          }, 0);
-        }
-      },
-      [value, onChange, phonePrefix]
-    );
-
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
-        let newValue = e.target.value;
-
-        // Не дозволяємо видаляти +380
-        if (!newValue.startsWith(phonePrefix)) {
-          newValue = phonePrefix;
-        }
-
-        onChange?.(newValue);
+        onChange?.(normalizePhone(e.target.value));
       },
-      [onChange, phonePrefix]
+      [onChange]
     );
-
-    const handleBlur = useCallback(() => {
-      setIsFocused(false);
-      // Якщо залишилось тільки +380 - очищаємо
-      if (value === phonePrefix) {
-        onChange?.('');
-      }
-    }, [value, onChange, phonePrefix]);
 
     return (
       <Input
@@ -63,8 +50,6 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         type="tel"
         value={value}
         onChange={handleChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
         placeholder={placeholder}
         {...props}
       />

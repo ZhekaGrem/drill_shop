@@ -62,6 +62,7 @@ export const ContactInfoSection = ({ form, showEmail = true }: ContactInfoSectio
             error={phoneError}
             value={field.value}
             onChange={field.onChange}
+            onBlur={field.onBlur}
           />
         )}
       />

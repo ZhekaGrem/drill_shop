@@ -3,6 +3,9 @@ import { apiClient } from '@/shared/api';
 
 export interface CreatePaymentRequest {
   orderId: string;
+  // Номер замовлення (не збігається з orderId) — потрібен сторінці успіху
+  // оплати, щоб було що показати клієнту одразу після створення платежу.
+  orderNumber?: string;
   amount: number;
   currency?: string;
   paymentMethod: string;
