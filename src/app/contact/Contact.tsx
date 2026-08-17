@@ -95,8 +95,8 @@ const Contact = () => {
               <div className={styles.fields}>
                 <Input label="Імʼя" placeholder="Ваше імʼя" {...form.getInputProps('name')} />
 
-                {/* PhoneInput сам тримає префікс +380: раніше та сама логіка
-                    жила ще й тут трьома локальними хендлерами. */}
+                {/* PhoneInput сам чистить формат уводу (пробіли, дужки) — тут
+                    не потрібні локальні хендлери для цього поля. */}
                 <PhoneInput
                   label="Телефон"
                   value={form.values.phone}
