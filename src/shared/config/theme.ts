@@ -28,8 +28,15 @@ export const autoTheme = (): Theme => {
 
 export const applyTheme = (theme: Theme) => {
   const d = document.documentElement;
-  d.setAttribute('data-theme', theme);
-  d.setAttribute('data-mantine-color-scheme', theme);
+  // Без цих перевірок не можна: setAttribute з тим САМИМ значенням усе одно
+  // породжує mutation record, а на data-theme підписаний MutationObserver
+  // менеджера Mantine (mantine-color-scheme.ts), чий onUpdate знову викликає
+  // applyTheme. Холостий запис (щохвилинний тік ThemeClock) замикав це в
+  // нескінченний microtask-цикл і намертво вішав сторінку.
+  if (d.getAttribute('data-theme') !== theme) d.setAttribute('data-theme', theme);
+  if (d.getAttribute('data-mantine-color-scheme') !== theme) {
+    d.setAttribute('data-mantine-color-scheme', theme);
+  }
 };
 
 // Явний вибір лежить у localStorage; його відсутність = «авто за годинником»

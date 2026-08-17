@@ -36,8 +36,16 @@ export const siteColorSchemeManager = (): MantineColorSchemeManager => {
 
     subscribe(onUpdate) {
       if (typeof document === 'undefined') return;
+      // onUpdate — це setColorScheme Mantine, який БЕЗУМОВНО викликає manager.set
+      // (use-provider-color-scheme), тобто пише data-theme назад. Без фільтра
+      // «значення справді змінилося» кожен спрацьований запис породжував би
+      // наступний — нескінченна петля observer -> set -> observer, що вішає
+      // головний потік.
+      let last = document.documentElement.getAttribute('data-theme');
       observer = new MutationObserver(() => {
         const next = document.documentElement.getAttribute('data-theme');
+        if (next === last) return;
+        last = next;
         if (isTheme(next)) onUpdate(next);
       });
       observer.observe(document.documentElement, {
