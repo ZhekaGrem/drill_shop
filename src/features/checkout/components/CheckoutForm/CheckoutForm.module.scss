@@ -33,6 +33,12 @@
   display: grid;
   grid-template-columns: 1fr 450px;
   align-items: start;
+  // Колонки не мали проміжку взагалі (0px), поки .formColumn/.summaryColumn
+  // всередині тримають var(--spacing-lg) між своїми ж секціями — межа між
+  // формою і підсумком читалась щільніше за внутрішній ритм. --spacing-xl —
+  // те саме значення, яке нижче вже стоїть тут-таки на вужчому брейкпоінті
+  // (@media 968px), просто для однієї колонки замість двох.
+  gap: var(--spacing-xl);
 }
 
 .formColumn {
@@ -250,10 +256,10 @@
 }
 
 // ============ DIVIDER ============
+// Було `3px dotted` — залишок піксель-арт мови, як і в cart.module.scss/
+// CartItem.module.scss.
 .divider {
-  border-top: 3px dotted var(--primary);
-  height: 1px;
-
+  border-top: 1px solid var(--border-subtle);
   margin: var(--spacing-sm) 0;
 }
 
@@ -326,8 +332,13 @@
 
 .totalAmount {
   font-family: var(--font-body);
-  font-size: var(--text-2xl);
-  font-weight: var(--fw-medium);
+  // Сума раніше відрізнялась від підпису лише кольором (той самий розмір і
+  // вага) — колір-only контраст не читається як ієрархія. Ціна товару на
+  // сторінці товару (productDetails.module.scss__currentPrice) саме так і
+  // побудована: --fw-bold дозволений токеном ТІЛЬКИ для h1–h3 і ціни
+  // (globals.css) — сума замовлення це та сама роль.
+  font-size: var(--text-3xl);
+  font-weight: var(--fw-bold);
   color: var(--btn-primary);
 }
 
@@ -421,9 +432,11 @@
     margin-bottom: var(--spacing-sm);
   }
 
-  .totalAmount {
-    font-size: var(--text-2xl);
-  }
+  // .totalAmount навмисно НЕ стискається тут: раніше правило повертало його
+  // до того самого var(--text-2xl), що й .totalLabel, — тобто саме на
+  // мобільному (де сума найважливіша) вага-як-єдиний-акцент зникала. Ціна
+  // товару (productDetails.module.scss:1029) з тієї ж причини теж лишається
+  // великою на мобільному.
 }
 
 @media (max-width: 480px) {

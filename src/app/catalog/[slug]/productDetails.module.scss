@@ -331,7 +331,11 @@
     margin: 0;
     padding: var(--space-4);
     border-radius: var(--border-radius-sm);
-    background: var(--bg-secondary, #f4f6f5);
+    // Токена --bg-secondary не існує (є --background-secondary), тож правило
+    // мовчки падало на fallback-хекс. #f4f6f5 — це насправді значення
+    // --surface-muted, тож саме цей токен і малося на увазі.
+    // --text-secondary на ньому: 5.79:1 удень, 5.58:1 уночі (WCAG 1.4.3, ≥4.5:1).
+    background: var(--surface-muted);
     color: var(--text-secondary);
     font-size: var(--text-sm);
     line-height: 1.5;
@@ -855,7 +859,13 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+        // База тут — сам --surface-card (в обох темах), тож фолбек «завжди
+        // білий спалах» уночі різав очі на графітовій картці. --surface-muted
+        // на крок світліший за --surface-card саме вночі (1.17:1) — і на крок
+        // тихіший за нього ж удень (1.09:1, той самий принцип «квартальної»
+        // тиші, що й у decorative-межах проєкту), тому спалах більше не
+        // залежить від того, яка тема ввімкнена.
+        background: linear-gradient(90deg, transparent, var(--surface-muted), transparent);
         animation: skeletonShimmer 1.2s var(--ease-in-out) infinite;
       }
 

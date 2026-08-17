@@ -3,6 +3,8 @@
   color: var(--text-secondary);
 }
 
+// Було `3px dotted` — залишок піксель-арт мови, як і в cart.module.scss/
+// CartItem.module.scss.
 .divider {
-  border-top: 3px dotted var(--primary);
+  border-top: 1px solid var(--border-subtle);
 }

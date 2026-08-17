@@ -23,7 +23,17 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    // rgba(255,255,255,0.6) був хардкод-літералом кольору — компонент не має
+    // жодної теми-залежності (база .skeletonItem лишається поза токенами,
+    // окрема відома проблема), тому саму видимість спалаху не міняємо, лише
+    // прибираємо літерал: --text-white ніколи не перевизначається під
+    // [data-theme='dark'] (як і --text-inverse), тобто той самий білий колір.
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--text-white) 60%, transparent),
+      transparent
+    );
     animation: skeletonShimmer 1.2s var(--ease-in-out) infinite;
   }
 }

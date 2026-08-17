@@ -3,15 +3,22 @@
   border-radius: var(--border-radius-md);
   transition: var(--transition-fast);
   position: relative;
-  background: var(--background);
+  // --background — фон СТОРІНКИ, а не картки: в темній темі він темніший за
+  // --surface-card (#101413 проти #242b29), який тримає контейнер
+  // (CartItemsList рендериться в <Stack> усередині .orderSummaryInner,
+  // background: var(--surface-card)). Рядок «провалювався» під контейнер
+  // замість лежати всередині нього. --surface-card — той самий колір, що й у
+  // контейнера: вдень обидва вже й так білі (як і було), вночі тепер збігаються.
+  background: var(--surface-card);
   border: 1px solid var(--border-subtle);
 
+  // CartItemsList рендерить ці картки в <Stack gap={0}> — сусідні рядки
+  // стоять впритул, і спільна межа подвоювалась (нижня цього рядка +
+  // верхня наступного = 2px замість 1px). &:not(:last-child) нижче була
+  // no-op (той самий 1px, що й у базовому правилі) — забираємо верхню межу
+  // в усіх, крім першого, і подвоєння зникає.
   &:not(:first-child) {
-    border-top-width: 1px;
-  }
-
-  &:not(:last-child) {
-    border-bottom-width: 1px;
+    border-top: none;
   }
 }
 

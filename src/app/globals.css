@@ -721,8 +721,13 @@ textarea::placeholder {
   font-weight: var(--fw-light);
   opacity: 1;
 }
+/* Хардкоджений #ffffff тримав автозаповнений інпут білим в ОБОХ темах — вночі
+   поле вибивалось білою плямою серед графітових полів (--background:
+   var(--background) підставляє те саме тло, що й у базового input вище, тож
+   рамка залишається на місці, тільки фон перестає бути завжди білим).
+   --text-primary на --background: 21.00:1 удень, 16.80:1 уночі (WCAG 1.4.3). */
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--background) inset !important;
   -webkit-text-fill-color: var(--text-primary) !important;
 }
 
@@ -849,19 +854,41 @@ svg.tabler-icon {
    Mantine-компонентів живуть тут, через статичні className, а не в
    mantine-theme.ts. */
 
+/* Невибраний стан: був хардкод #ffffff (біла коробка на будь-якому фоні,
+   в темній темі — світла пляма) + --border-subtle (1.37:1 удень, 1.13:1
+   уночі — декоративна тиша межа, не для контролу). Чекбокс/радіо — це
+   операбельний контрол, тому межа — --border-control (3.09:1 удень, 3.29:1
+   уночі на --surface-card, WCAG 1.4.11), той самий принцип, що вже
+   застосований до .radioOption у CheckoutForm. Фон — --surface-card:
+   та сама поверхня, що й у текстового інпута (mantine-theme.ts), адаптується
+   до теми замість завжди-білого. */
 .mantine-Checkbox-input {
-  background-color: #ffffff;
-  border: 1px solid var(--border-subtle);
+  position: relative;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-control);
   border-radius: 4px;
   cursor: pointer;
 }
 .mantine-Checkbox-input:checked {
-  background-color: var(--text-primary);
-  border-color: var(--text-primary);
-  background-image: url('/svg/checkmark-white.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 12px;
+  background-color: var(--btn-primary);
+  border-color: var(--btn-primary);
+}
+/* Галочку малюємо маскою, а не кольоровим фоновим зображенням: статичний
+   checkmark-white.svg (stroke="white") зникав уночі, бо --btn-primary там
+   світлішає до #f2f4f3 (біле на майже-білому = 1.02:1). Маска фарбується
+   background-color'ом псевдоелемента, тож бере колір з тієї самої пари
+   фон→текст, що й кнопки: фон --btn-primary → іконка --btn-primary-fg
+   (21.00:1 удень, 16.80:1 уночі — той самий контраст, що в тексту кнопки). */
+.mantine-Checkbox-input:checked::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 12px;
+  height: 10px;
+  background-color: var(--btn-primary-fg);
+  mask: url('/svg/checkmark-white.svg') no-repeat center / contain;
+  -webkit-mask: url('/svg/checkmark-white.svg') no-repeat center / contain;
 }
 .mantine-Checkbox-input:disabled {
   opacity: 0.4;
@@ -872,13 +899,21 @@ svg.tabler-icon {
 }
 
 .mantine-Radio-radio {
-  background-color: #ffffff;
-  border: 1px solid var(--border-subtle);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-control);
   cursor: pointer;
 }
 .mantine-Radio-radio:checked {
-  background-color: var(--text-primary);
-  border-color: var(--text-primary);
+  background-color: var(--btn-primary);
+  border-color: var(--btn-primary);
+}
+/* Внутрішню крапку малює сам Mantine (.mantine-Radio-icon) кольором
+   --radio-icon-color, який за замовчуванням = --mantine-color-white — це наш
+   data-theme='dark' не перемикає (Mantine-змінна, не наш токен), тож крапка
+   лишалась білою й губилась на посвітлілому вночі --btn-primary. Той самий
+   принцип пари фон→текст, що й у чекбокса: --btn-primary-fg. */
+.mantine-Radio-radio:checked + .mantine-Radio-icon {
+  --radio-icon-color: var(--btn-primary-fg);
 }
 
 .mantine-Anchor-root:hover {

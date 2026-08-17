@@ -304,7 +304,11 @@ section + .hero {
 .storyBarDone {
   position: absolute;
   inset: 0;
-  background: var(--acid, #ccff00);
+  // Без фолбек-хексу: цей блок рендериться лише коли design === 'streetwear'
+  // (HeroTiles.tsx), а --acid оголошений саме під [data-design='streetwear']
+  // (globals.css) — токен на момент рендеру завжди є, фолбек був мертвим
+  // кодом, який лишав хардкод-hex у компоненті.
+  background: var(--acid);
 }
 
 .storyBarFill {
@@ -362,7 +366,9 @@ section + .hero {
 }
 
 .tileActive .tileSwatch {
-  border-color: var(--acid, #ccff00);
+  // Той самий випадок, що й .storyBarFill вище: --acid гарантовано в скоупі,
+  // фолбек-хекс тут був лише хардкодом, що ніколи не міг спрацювати.
+  border-color: var(--acid);
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6);
 }
 

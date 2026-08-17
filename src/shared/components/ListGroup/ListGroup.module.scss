@@ -54,8 +54,14 @@
   @include motion.press;
 
   @include motion.hoverable {
+    // --background-secondary в темній темі темніший за --surface-card
+    // (#171d1b проти #242b29, 1.18:1) — hover «занурював» рядок до кольору
+    // ґрунту сторінки замість підняти. --surface-muted навпаки: у темній
+    // темі він на крок світліший за картку (#2e3634, 1.17:1), а вдень —
+    // навпаки трохи тихіший за білу картку (1.09:1), тобто в обох темах
+    // читається однаково — легкий hover-акцент, а не провал.
     &:hover {
-      background: var(--background-secondary);
+      background: var(--surface-muted);
       color: var(--text-primary);
     }
 

@@ -4,7 +4,7 @@
 'use client';
 
 import { useState } from 'react';
-import { IconRuler } from '@tabler/icons-react';
+import { IconInfoCircle, IconRuler } from '@tabler/icons-react';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
 import { SizeGuideModal } from '@/shared/components/SizeGuideModal';
@@ -43,8 +43,16 @@ export const ProductInfoGroups = ({ product }: { product: Product }) => {
     <div className={styles.infoGroups}>
       {specs.length > 0 && (
         <ListGroup>
+          {/* media обов'язковий і тут: без нього текст характеристик стартує
+              на 40px+gap лівіше за розмірну сітку нижче — дві групи одна під
+              одною мали різну ліву вертикаль. */}
           {specs.map((spec) => (
-            <ListRow key={spec.label} title={spec.label} value={spec.value} />
+            <ListRow
+              key={spec.label}
+              media={<IconInfoCircle stroke={1.5} />}
+              title={spec.label}
+              value={spec.value}
+            />
           ))}
         </ListGroup>
       )}

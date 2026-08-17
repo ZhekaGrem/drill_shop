@@ -172,7 +172,13 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    // Хардкод rgba(255,255,255,0.6) — фіксований білий спалах, що в темній
+    // темі різав очі (плейсхолдери тут на --background-secondary, темнішому
+    // за картку), а в світлій майже губився на й так світлому фоні картки.
+    // --surface-card завжди на крок світліший за --background-secondary
+    // в обох темах (1.17:1 удень, 1.18:1 уночі) — той самий принцип
+    // «сходинки висоти», що й решта поверхонь проєкту.
+    background: linear-gradient(90deg, transparent, var(--surface-card), transparent);
     animation: skeletonShimmer 1.2s var(--ease-in-out) infinite;
   }
 

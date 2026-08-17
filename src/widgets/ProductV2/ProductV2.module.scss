@@ -70,7 +70,10 @@
 }
 
 .collectionLink {
-  align-self: flex-start;
+  // Був align-self: flex-start у .actionsRow (align-items: center) —
+  // посилання «До каталогу» прилипало до верху рядка замість центру,
+  // тоді як кнопка «Спробувати ще раз» поруч лишалась центрованою:
+  // розбіжність центрів двох сусідніх контролів в одному ряду.
   color: var(--text-secondary);
   font-size: 13px;
 }
