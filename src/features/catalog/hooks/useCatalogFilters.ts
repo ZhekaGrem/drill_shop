@@ -136,6 +136,12 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
     // (наприклад, пошук у хедері) пушить URL лише з одним параметром.
     const categoryIds = params.getAll('categoryId');
 
+    // Сміттєве значення (?promo=xyz) не має ставати "вимкнено" (false) — це
+    // теж активний фільтр за countActiveFilters і потрапляє назад в URL як
+    // `promo=false`. Сміття читається як відсутність параметра.
+    const promoParam = params.get('promo');
+    const hasPromo = promoParam === 'true' ? true : promoParam === 'false' ? false : undefined;
+
     set((state) => ({
       filters: {
         ...state.filters,
@@ -145,7 +151,7 @@ export const useCatalogFilters = create<CatalogFiltersState>((set, get) => ({
         sortOrder: (params.get('order') as ProductFilters['sortOrder']) || undefined,
         priceMin: params.get('priceMin') ? Number(params.get('priceMin')) : undefined,
         priceMax: params.get('priceMax') ? Number(params.get('priceMax')) : undefined,
-        hasPromo: params.get('promo') ? params.get('promo') === 'true' : undefined,
+        hasPromo,
       },
     }));
   },

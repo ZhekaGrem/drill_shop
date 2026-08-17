@@ -1,5 +1,5 @@
 // src/features/catalog/hooks/useCategoryProducts.ts
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { productsApi, ProductsResponse } from '@/features/catalog/api/products';
 
 interface UseCategoryProductsOptions {
@@ -21,7 +21,15 @@ export function useCategoryProducts({ categorySlug, initialData }: UseCategoryPr
     // SSG (`page.tsx`) тягне ці самі 18 товарів тим самим `categorySlug` —
     // на відміну від каталогу тут немає інших вимірів фільтрації, тож
     // підставляти initialData можна безумовно.
-    initialData: initialData ? { pages: [initialData], pageParams: [0] } : undefined,
+    //
+    // Функція з явним `| undefined`, а не пряме значення — так само, як у
+    // useCatalogProducts: без цього TS вибирає перевантаження з гарантованим
+    // `data`, яке прибирає 'pending' зі status. Тут жоден код цим ще не
+    // користується (споживач читає лише isLoading), але лишати тут "пастку"
+    // для того, хто наступним захоче статус-чесний рендер на цій сторінці, —
+    // не варто.
+    initialData: (): InfiniteData<ProductsResponse> | undefined =>
+      initialData ? { pages: [initialData], pageParams: [0] } : undefined,
     getNextPageParam: (lastPage) => {
       const currentOffset = lastPage.meta.offset;
       const currentLimit = lastPage.meta.limit;

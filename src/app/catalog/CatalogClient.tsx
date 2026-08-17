@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useLayoutEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { Loader, Center } from '@mantine/core';
 import { IconFilter, IconMoodEmpty } from '@tabler/icons-react';
@@ -40,11 +40,21 @@ export default function CatalogClient({ initialData, initialCategories, basePath
 
   const observerTarget = useRef<HTMLDivElement>(null);
 
+  // initialData тільки після initialized: до того, як useLayoutEffect нижче
+  // розбере URL, filters у сторі ще дефолтні {}. Якщо віддати SSG-дані одразу,
+  // matchesServerDefault({}) в useCatalogProducts тривіально true — і
+  // TanStack Query на мить репортує status:'success' з нефільтрованим
+  // списком під URL із `?categoryId=…`, ще до того, як реальний URL взагалі
+  // прочитаний. Це не про час фарби (для цього досить useLayoutEffect) — це
+  // про те, щоб хибний seed узагалі не стався: без initialized продукти тут
+  // ніколи не рендерились у SSR/SSG HTML (сторінка використовує
+  // useSearchParams, тому results-секція суто клієнтська), тож втрати
+  // немає, а гонка зникає архітектурно, а не лише за таймінгом.
   const { data, status, error, refetch, isFetchingNextPage, fetchNextPage, hasNextPage } = useCatalogProducts(
     {
       filters: filters,
       enabled: initialized,
-      initialData: initialData,
+      initialData: initialized ? initialData : undefined,
     }
   );
 
@@ -55,7 +65,15 @@ export default function CatalogClient({ initialData, initialCategories, basePath
   const totalCount = data?.pages[0]?.meta.total;
   const activeFilterCount = countActiveFilters(filters);
 
-  useEffect(() => {
+  // useLayoutEffect, а не useEffect: перший рендер завжди монтується з
+  // дефолтним filters={} (стор — глобальний синглтон, читає URL лише тут), і
+  // на цьому дефолті initialData від SSG одразу дає status:'success' —
+  // TanStack Query за одну фарбу встигає показати нефільтрований список як
+  // ніби це вже відповідь на `?categoryId=X`. useLayoutEffect розбирає URL і
+  // комітить правильні filters синхронно, до того як браузер намалює кадр
+  // після гідратації, тож ця хибна «завершена» відповідь ніколи не потрапляє
+  // на екран — той самий прийом, що вже є в useAuthGuard/useAdminGuard.
+  useLayoutEffect(() => {
     setFromUrlParams(searchParams);
     setInitialized(true);
   }, [searchParams, setFromUrlParams]);
