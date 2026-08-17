@@ -61,7 +61,7 @@ export const OrderSummary = ({
           label="Не дзвонити для уточнення"
           checked={doNotCall}
           onChange={(e) => onDoNotCallChange(e.currentTarget.checked)}
-          className={styles.phoneOnly}
+          className={styles.checkboxMobile}
         />
 
         <Button

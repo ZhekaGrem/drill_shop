@@ -5,7 +5,8 @@ import { Group, Text, ActionIcon, NumberInput, Stack, Badge, Box } from '@mantin
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 import { IconTrash } from '@/shared/components/Svg';
 import { useState, useCallback, memo } from 'react';
-import { CartItemWithProduct, formatPrice } from '@/shared/utils/cart-calculations';
+import { CartItemWithProduct } from '@/shared/utils/cart-calculations';
+import { formatPrice } from '@/shared/utils/format';
 import { useCart } from '../../hooks/useCart';
 import Link from 'next/link';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
@@ -126,7 +127,8 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
               <button
                 className={styles.qtyBtn}
                 onClick={() => handleQuantityChange(quantity - 1)}
-                disabled={quantity <= 1 || isUpdatingItem}>
+                disabled={quantity <= 1 || isUpdatingItem}
+                aria-label="Зменшити кількість">
                 <IconMinus size={16} />
               </button>
 
@@ -135,13 +137,14 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
               <button
                 className={styles.qtyBtn}
                 onClick={() => handleQuantityChange(quantity + 1)}
-                disabled={isUpdatingItem || isMaxReached}>
+                disabled={isUpdatingItem || isMaxReached}
+                aria-label="Збільшити кількість">
                 <IconPlus size={16} />
               </button>
             </div>
 
             <Group gap="xs" onClick={handleRemove} style={{ cursor: 'pointer' }}>
-              <ActionIcon className={styles.trashBtn} loading={isRemovingItem}>
+              <ActionIcon className={styles.trashBtn} loading={isRemovingItem} aria-label="Видалити товар">
                 <IconTrash size={16} />
               </ActionIcon>
             </Group>
@@ -210,7 +213,8 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
             <button
               className={styles.qtyBtn}
               onClick={() => handleQuantityChange(quantity - 1)}
-              disabled={quantity <= 1 || isUpdatingItem}>
+              disabled={quantity <= 1 || isUpdatingItem}
+              aria-label="Зменшити кількість">
               <IconMinus size={16} />
             </button>
 
@@ -219,13 +223,14 @@ const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemP
             <button
               className={styles.qtyBtn}
               onClick={() => handleQuantityChange(quantity + 1)}
-              disabled={isUpdatingItem || isMaxReached}>
+              disabled={isUpdatingItem || isMaxReached}
+              aria-label="Збільшити кількість">
               <IconPlus size={16} />
             </button>
           </div>
 
           <Group gap="xs" onClick={handleRemove} style={{ cursor: 'pointer' }} className={styles.deleteGroup}>
-            <ActionIcon className={styles.trashBtn} loading={isRemovingItem}>
+            <ActionIcon className={styles.trashBtn} loading={isRemovingItem} aria-label="Видалити товар">
               <IconTrash size={16} />
             </ActionIcon>
             <Text className={styles.deleteText}>Видалити</Text>

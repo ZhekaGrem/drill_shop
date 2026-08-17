@@ -380,6 +380,18 @@
   display: none;
 }
 
+// Чекбокс «Не дзвонити для уточнення» ховаємо/показуємо за шириною окремо
+// від кнопки підтвердження: раніше обидва елементи ділили один клас
+// (.desktopOnly/.phoneOnly), і правка «кнопкового» класу мовчки ламала
+// видимість чекбоксу.
+.checkboxDesktop {
+  display: block;
+  margin: 2px;
+}
+.checkboxMobile {
+  display: none;
+}
+
 .agreementNoticePhone {
   display: none;
 }
@@ -408,6 +420,12 @@
     display: none;
   }
   .phoneOnly {
+    display: block;
+  }
+  .checkboxDesktop {
+    display: none;
+  }
+  .checkboxMobile {
     display: block;
   }
   .formSection {
