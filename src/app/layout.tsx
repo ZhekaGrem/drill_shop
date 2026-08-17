@@ -13,6 +13,7 @@ import { ErrorBoundary } from '@/shared/providers/ErrorBoundary';
 import { baseMetadata, siteViewport, structuredData } from './seo';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { JsonLd } from './JsonLd';
+import { Splash } from '@/shared/components/SiteLoader/Splash';
 
 // Шрифти e-Ukraine (Diia redesign) — офіційні шрифти thedigital.gov.ua/fonts, CC BY 4.0
 //
@@ -80,6 +81,9 @@ export default function RootLayout({
         <JsonLd data={structuredData.organization()} />
         <JsonLd data={structuredData.website()} />
         <GoogleAnalytics gaId="G-2DZN3ZESDB" />
+        {/* Сплеш першого відкриття: SSR-иться в перший HTML, зникає після
+            гідрації. Живе поза Providers — йому не потрібен жоден контекст */}
+        <Splash />
         <Providers>
           <LayoutWrapper>
             <ErrorBoundary>{children}</ErrorBoundary>

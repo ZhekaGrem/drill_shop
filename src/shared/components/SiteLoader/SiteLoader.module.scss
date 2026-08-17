@@ -1,0 +1,121 @@
+// src/shared/components/SiteLoader/SiteLoader.module.scss
+// Розміри — cqi від власного контейнера (container-type на корені),
+// з clamp-стелями: на повній сторінці лого не виростає понад 96px,
+// а в рамці прев'ю /v2/loaders усе пропорційно меншає само.
+
+.loader {
+  container-type: inline-size;
+  width: 100%;
+  min-height: max(320px, 62svh);
+  display: grid;
+  place-items: center;
+}
+
+// Режим прев'ю (проп fill): без «на пів екрана», просто заповнити батька.
+// Той самий файл, що й .loader, — порядок перекриття гарантований
+.fill {
+  min-height: 0;
+  height: 100%;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(14px, 3.5cqi, 28px);
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: clamp(36px, 13cqi, 96px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: var(--gradient-brand);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: logoSlide 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes logoSlide {
+  from {
+    background-position: 0% 50%;
+  }
+
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+.track {
+  width: clamp(140px, 38cqi, 300px);
+  height: clamp(4px, 0.9cqi, 8px);
+  border-radius: var(--radius-pill);
+  background: var(--border-subtle);
+  overflow: hidden;
+}
+
+.runner {
+  display: block;
+  width: 34%;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-brand);
+  animation: runnerSlide 1.4s ease-in-out infinite;
+}
+
+@keyframes runnerSlide {
+  from {
+    transform: translateX(-110%);
+  }
+
+  to {
+    transform: translateX(320%);
+  }
+}
+
+.caption {
+  font-size: clamp(13px, 2.6cqi, 16px);
+  color: var(--text-secondary);
+}
+
+// ==== Сплеш першого відкриття (Splash.tsx) ====
+// display: block, НЕ grid: у гріда auto-трек колапсує дитину з власним
+// container-type у нуль (та сама пастка, що ловили в /v2/loaders).
+// SiteLoader з пропом fill сам розтягується на 100% фіксованого бокса.
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: var(--gradient-page);
+  // Фолбек без JS: якщо гідрація так і не сталася, сплеш зникає сам
+  animation: splashAway 0.4s ease 6s forwards;
+}
+
+.splashOut {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease; // FADE_MS у Splash.tsx
+}
+
+@keyframes splashAway {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo,
+  .runner {
+    animation: none;
+  }
+
+  // Фолбек-зникнення лишаємо: це не декор, а гарантія доступу до сайту.
+  // Плавність прибираємо — сплеш просто зникає миттєво
+  .splashOut {
+    transition: none;
+  }
+}
