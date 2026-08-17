@@ -62,7 +62,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   const [isLoading, setIsLoading] = useState(!initialProduct);
   const [error, setError] = useState<string | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
   const [isClicked, setIsClicked] = useState(false);
   const [sizeGuideOpened, setSizeGuideOpened] = useState(false);
@@ -165,10 +164,12 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
       promoEndsAt: selectedVariant?.promoEndsAt || product.promoEndsAt,
     };
 
+    // Кількість зі сторінки товару прибрана (рішення власника) — завжди 1;
+    // докупити більше можна степером у кошику
     if (selectedVariant) {
-      addItem(product.id, quantity, selectedVariant.id, productData);
+      addItem(product.id, 1, selectedVariant.id, productData);
     } else {
-      addItem(product.id, quantity, undefined, productData);
+      addItem(product.id, 1, undefined, productData);
     }
   };
 
@@ -297,15 +298,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
       : availableQuantity <= LOW_STOCK_THRESHOLD
         ? `Залишилось ${availableQuantity} шт`
         : 'Виготовлення і доставка — до 7 днів';
-
-  // Ввід поза діапазоном не ігноруємо мовчки, а підрізаємо до межі: людина
-  // друкувала «20», поле не змінювалось, і причини не було ніде на екрані
-  // (Postel's Law — приймай ліберально, віддавай зрозуміло).
-  const handleQuantityChange = (newQuantity: number) => {
-    if (!Number.isFinite(newQuantity)) return;
-    const max = Math.max(availableQuantity, 1);
-    setQuantity(Math.min(Math.max(Math.trunc(newQuantity), 1), max));
-  };
 
   const handlePreviousImage = () => {
     setSelectedImageIndex((prev) => (prev === 0 ? sortedImages.length - 1 : prev - 1));
@@ -663,7 +655,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                                   e.stopPropagation();
                                   if (!isOutOfStock) {
                                     setSelectedVariant(variant);
-                                    setQuantity(1);
                                     setVariantError(null);
                                   }
                                 }}
@@ -689,7 +680,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                           const variant = sortedVariants.find((v) => v.id === value);
                           setSelectedVariant(variant);
                         }
-                        setQuantity(1);
                         setVariantError(null);
                       }}
                       data={[
@@ -729,48 +719,8 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                   </p>
                 ) : isInStock ? (
                   <>
-                    {/* Кількість винесена з липкої панелі: це параметр товару,
-                        а не дія. Разом з двома кнопками вона робила на мобільному
-                        липкий блок ~190px — чверть екрана назавжди. */}
-                    <div className={styles.quantityRow}>
-                      <span className={styles.quantityLabel} id="qty-label">
-                        Кількість
-                      </span>
-                      <div className={styles.quantitySelector}>
-                        <button
-                          type="button"
-                          className={styles.quantitySelector__button}
-                          onClick={() => handleQuantityChange(quantity - 1)}
-                          disabled={quantity <= 1}
-                          aria-label="Зменшити кількість">
-                          −
-                        </button>
-                        <input
-                          type="number"
-                          className={styles.quantitySelector__input}
-                          value={quantity}
-                          onChange={(e) => handleQuantityChange(Number(e.target.value))}
-                          min="1"
-                          max={availableQuantity}
-                          aria-labelledby="qty-label"
-                        />
-                        <button
-                          type="button"
-                          className={styles.quantitySelector__button}
-                          onClick={() => handleQuantityChange(quantity + 1)}
-                          disabled={quantity >= availableQuantity}
-                          aria-label="Збільшити кількість">
-                          +
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Пояснення зʼявляється рівно тоді, коли лічильник упер
-                        у стелю — інакше це просто зайвий рядок під контролом */}
-                    {quantity >= availableQuantity && (
-                      <p className={styles.quantityHint}>Це все, що залишилось: {availableQuantity} шт</p>
-                    )}
-
+                    {/* Кількість зі сторінки прибрана (рішення власника):
+                        купується завжди 1 шт, докупити більше — у кошику */}
                     {/* «Купити зараз» прибрана (рішення власника) — головна
                         дія одна: «Додати в кошик» */}
                     {/* Головна дія магазину — чорна, і в липкій панелі вона одна.

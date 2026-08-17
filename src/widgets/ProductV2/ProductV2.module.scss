@@ -267,43 +267,6 @@
   }
 }
 
-.quantityRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-}
-
-.stepper {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  border: 1px solid var(--border-control);
-  border-radius: var(--radius-pill);
-  padding: 4px;
-
-  button {
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: var(--radius-pill);
-    background: none;
-    font-size: 20px;
-    cursor: pointer;
-
-    &:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-    }
-  }
-
-  span {
-    min-width: 24px;
-    text-align: center;
-    font-weight: 600;
-  }
-}
-
 .actions {
   display: flex;
   flex-direction: column;

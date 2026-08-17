@@ -30,7 +30,6 @@ export const BuyPanel = ({ product }: { product: Product }) => {
   const { addItem, isAddingItem } = useCart();
   const design = useDesign();
   const [variantId, setVariantId] = useState<string | null>(null);
-  const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   // Головна дія лежить на 292px нижче згину телефона — кнопка є, її не видно.
   // Липка панель нижче показує ту саму дію, поки інлайн-кнопка поза кадром.
@@ -57,7 +56,9 @@ export const BuyPanel = ({ product }: { product: Product }) => {
   // якого там не було.
   const handleAdd = async () => {
     try {
-      await addItem(product.id, quantity, variant?.id, buildCartSnapshot(product, variant));
+      // Кількість зі сторінки товару прибрана (рішення власника) — завжди 1;
+      // докупити більше можна степером у кошику
+      await addItem(product.id, 1, variant?.id, buildCartSnapshot(product, variant));
       setAdded(true);
       setTimeout(() => setAdded(false), 2000);
     } catch {
@@ -135,35 +136,10 @@ export const BuyPanel = ({ product }: { product: Product }) => {
                 className={styles.size}
                 aria-pressed={variant?.id === v.id}
                 disabled={stockOf(v) <= 0}
-                onClick={() => {
-                  setVariantId(v.id);
-                  setQuantity(1);
-                }}>
+                onClick={() => setVariantId(v.id)}>
                 {sizeLabel(v)}
               </button>
             ))}
-          </div>
-        </div>
-      )}
-
-      {!archived && inStock && (
-        <div className={styles.quantityRow}>
-          <span className={styles.blockLabel}>Кількість</span>
-          <div className={styles.stepper}>
-            <button
-              type="button"
-              aria-label="Зменшити кількість"
-              onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
-              −
-            </button>
-            <span>{quantity}</span>
-            <button
-              type="button"
-              aria-label="Збільшити кількість"
-              disabled={quantity >= available}
-              onClick={() => setQuantity((q) => Math.min(available, q + 1))}>
-              +
-            </button>
           </div>
         </div>
       )}

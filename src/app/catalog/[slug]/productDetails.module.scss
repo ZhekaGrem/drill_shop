@@ -618,89 +618,6 @@
     margin-bottom: var(--space-2);
   }
 
-  // Кількість — окремий рядок «підпис → контрол», а не безіменні − 5 +
-  .quantityRow {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    margin-bottom: var(--space-2);
-  }
-
-  .quantityLabel {
-    font-size: var(--text-sm);
-    font-weight: var(--fw-normal);
-    color: var(--text-secondary);
-  }
-
-  // Тихий рядок під лічильником — пояснює, чому число перестало рости.
-  // Раніше ввід поза діапазоном просто ігнорувався мовчки.
-  .quantityHint {
-    margin-bottom: var(--space-4);
-    font-size: var(--text-sm);
-    color: var(--text-secondary);
-  }
-
-  .quantitySelector {
-    height: 48px;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-pill);
-    overflow: hidden;
-    display: inline-flex;
-    align-items: center;
-    gap: 0;
-    width: fit-content;
-
-    &__button {
-      width: 48px;
-      height: 48px;
-      padding: 0;
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      font-size: var(--text-2xl);
-      font-weight: var(--fw-medium);
-      color: var(--text-primary);
-      cursor: pointer;
-      transition: background var(--transition-fast);
-
-      &:hover:not(:disabled) {
-        background: var(--background-secondary);
-      }
-
-      &:disabled {
-        color: var(--text-secondary);
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-    }
-
-    &__input {
-      width: 80px;
-      height: 48px;
-      padding: 0;
-      background: transparent;
-      border: none;
-      border-left: 1px solid var(--border-subtle);
-      border-right: 1px solid var(--border-subtle);
-      font-size: var(--text-xl);
-      font-weight: var(--fw-medium);
-      color: var(--text-primary);
-      text-align: center;
-      appearance: textfield;
-
-      &::-webkit-outer-spin-button,
-      &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-
-      &:focus {
-        outline: none;
-        background: var(--background-secondary);
-      }
-    }
-  }
-
   // Зелений фон на «Додано в кошик» прибраний: це було єдине місце на сайті,
   // де головна кнопка міняла колір на статусний, і з палітри магазину воно
   // випадало. Підтвердження несе підпис кнопки, а в липкій панелі — галочка
@@ -1076,23 +993,6 @@
     }
   }
 
-  @media (max-width: 480px) {
-    .quantitySelector {
-      height: 40px;
-    }
-
-    .quantitySelector__button {
-      width: 40px;
-      height: 40px;
-      font-size: var(--text-xl);
-    }
-
-    .quantitySelector__input {
-      width: 60px;
-      height: 40px;
-      font-size: var(--text-lg);
-    }
-  }
 }
 
 .mobileOnly {
