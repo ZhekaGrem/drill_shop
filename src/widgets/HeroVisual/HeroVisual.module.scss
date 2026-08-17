@@ -180,7 +180,10 @@
   border: 2px solid transparent;
   border-radius: var(--border-radius-sm);
   overflow: hidden;
-  background: #f4f6f5;
+  // Був хардкод #f4f6f5 — точно те саме значення, що й у --surface-muted
+  // (globals.css), тому просто переїхав на токен: у темній темі тепер теж
+  // підхоплює приглушену поверхню замість вічно світлого квадрата.
+  background: var(--surface-muted);
   cursor: pointer;
   transition: transform var(--transition-fast);
 
@@ -207,7 +210,9 @@
   }
 
   &[aria-pressed='true'] {
-    border-color: var(--text-primary, #111);
+    // --text-primary завжди визначений (globals.css) — фолбек-хекс тут був
+    // мертвим кодом, що маскував відсутність токена в темах, які його не чіпають.
+    border-color: var(--text-primary);
   }
   // Явний стекінг-контекст: на iOS композитний шар WebGL-канваса інакше
   // малюється поверх сусідів і перехоплює тапи по свотчах
@@ -256,8 +261,12 @@
   }
 
   &[aria-pressed='true']::before {
+    // --background-primary в globals.css не існує — фолбек #fff вигравав
+    // завжди, і в темній темі кільце навколо обраного свотча лишалось білим.
+    // HeroVisual завжди стоїть на --surface-card (картка товару, картка
+    // героя), тож саме цей токен і має бути «прогалиною» перед темним кільцем.
     box-shadow:
-      0 0 0 2px var(--background-primary, #fff),
-      0 0 0 4px var(--text-primary, #111);
+      0 0 0 2px var(--surface-card),
+      0 0 0 4px var(--text-primary);
   }
 }

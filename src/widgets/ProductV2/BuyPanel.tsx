@@ -76,7 +76,11 @@ export const BuyPanel = ({ product }: { product: Product }) => {
             <span className={styles.badgeDot}>
               <span
                 className={styles.pulseDot}
-                style={{ '--badge-color': product.badgeColor ?? '#1c8a37' } as CSSProperties}
+                // Фолбек був хардкод #1c8a37 — 4.43:1 на білому картки, нижче
+                // порогу 4.5:1 (WCAG 1.4.3). --success-green (globals.css) —
+                // той самий зелений статус-колір, що вже документовано дає
+                // 5.44:1 удень і 7.52:1 уночі.
+                style={{ '--badge-color': product.badgeColor ?? 'var(--success-green)' } as CSSProperties}
                 aria-hidden="true"
               />
               {product.badgeText}

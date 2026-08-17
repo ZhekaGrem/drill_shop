@@ -5,8 +5,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 import { Section } from '@/shared/components/Section/Section';
-import { otherCollections } from './collections';
+import { capsuleStyle, otherCollections } from './collections';
 import type { CollectionDef } from './collections';
 import styles from './ProductV2.module.scss';
 
@@ -41,7 +42,31 @@ export const OtherCollections = ({
             <Link key={col.key} href={col.href} className={styles.collectionCard}>
               <Image src={col.cover} alt="" width={160} height={160} loading="lazy" />
               <span className={styles.collectionCardBody}>
-                <strong>{col.title}</strong>
+                {/* Дані для капсули/крапки/архівної позначки вже приходять із
+                    GET /collections — раніше картка їх просто не малювала, і
+                    архівна колекція виглядала так само, як активна. */}
+                <span className={styles.collectionCardTitle}>
+                  <strong>{col.title}</strong>
+                  {col.labelText && (
+                    <span className={`${styles.capsule} designCapsule`} style={capsuleStyle(col.labelColor)}>
+                      {col.labelText}
+                    </span>
+                  )}
+                </span>
+                {col.badgeText && (
+                  <span className={styles.badgeDot}>
+                    <span
+                      className={styles.pulseDot}
+                      // Той самий фікс, що й на самій сторінці товару: фолбек
+                      // #1c8a37 = 4.43:1 (нижче 4.5:1), --success-green = 5.44:1
+                      // удень / 7.52:1 уночі (ratio задокументований у globals.css).
+                      style={{ '--badge-color': col.badgeColor ?? 'var(--success-green)' } as CSSProperties}
+                      aria-hidden="true"
+                    />
+                    {col.badgeText}
+                  </span>
+                )}
+                {col.archivedAt && <span className={styles.outOfStock}>Архівна колекція</span>}
                 <span className={styles.collectionCardHint}>
                   {count} {plural(count)}
                 </span>

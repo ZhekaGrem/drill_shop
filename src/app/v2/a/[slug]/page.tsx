@@ -46,6 +46,26 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
       />
 
       <div className={styles.page}>
+        {/* DOM-порядок навмисно розходиться з візуальним: h1 (назва товару,
+            нижче в BuyPanel) має стояти в розмітці ПЕРЕД h2 (назва колекції) —
+            аудит вимагає це для скрін-рідерів. Візуальне місце обох колонок
+            (медіа зліва, покупка справа/липка) тримає order у SCSS, тож
+            розмітка нижче не міняє нічого на екрані, лише порядок читання. */}
+        <div className={styles.buyColumn}>
+          <div className={styles.card}>
+            {product ? (
+              // key: зміна товару скидає вибір розміру/кількості до дефолтів
+              <BuyPanel key={product.id} product={product} />
+            ) : isError ? (
+              <ProductError slug={slug} onRetry={() => refetch()} />
+            ) : (
+              <ProductSkeleton />
+            )}
+          </div>
+
+          {product && <ProductInfoGroups product={product} />}
+        </div>
+
         {/* Галерея = жива сцена колекції; мініатюри під нею перемикають товар */}
         <div className={styles.card}>
           <div className={styles.collectionHead}>
@@ -65,7 +85,14 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
                 <p className={styles.badgeDot}>
                   <span
                     className={styles.pulseDot}
-                    style={{ '--badge-color': collection.badgeColor ?? '#1c8a37' } as React.CSSProperties}
+                    // Той самий фікс, що й у BuyPanel: #1c8a37 = 4.43:1, нижче
+                    // порогу 4.5:1. --success-green — 5.44:1 удень / 7.52:1
+                    // уночі (комент з обчисленням у globals.css).
+                    style={
+                      {
+                        '--badge-color': collection.badgeColor ?? 'var(--success-green)',
+                      } as React.CSSProperties
+                    }
                     aria-hidden="true"
                   />
                   {collection.badgeText}
@@ -93,24 +120,6 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
               <RichDescription text={collection.description} />
             </p>
           )}
-        </div>
-
-        {/* Покупка й інфогрупи — одна колонка: від 1024px вона стає правою
-            і липкою, на телефоні просто йде наступними блоками (той самий
-            порядок DOM, жодного дубля розмітки під ширини) */}
-        <div className={styles.buyColumn}>
-          <div className={styles.card}>
-            {product ? (
-              // key: зміна товару скидає вибір розміру/кількості до дефолтів
-              <BuyPanel key={product.id} product={product} />
-            ) : isError ? (
-              <ProductError slug={slug} onRetry={() => refetch()} />
-            ) : (
-              <ProductSkeleton />
-            )}
-          </div>
-
-          {product && <ProductInfoGroups product={product} />}
         </div>
 
         {/* Опис і відгуки прибрані з клієнтської сторінки (рішення власника) */}
