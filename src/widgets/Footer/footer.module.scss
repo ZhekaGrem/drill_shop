@@ -16,76 +16,13 @@
   padding: var(--space-8) var(--page-padding-x);
 }
 
-// Main footer grid — лише навігація магазину (3 колонки), за зразком
-// diia.gov.ua: верхній ярус футера там теж тільки колонки посилань.
-// Сітка живе тільки від 1024px, тому одноколонкового мобільного варіанта
-// їй більше не треба — три колонки завжди мають місце.
-.footerGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-xl);
-}
-
-.line {
-  width: 100%;
-  border-bottom: 1px solid var(--border-inverse-subtle);
-}
-
-// Нижче 1024px верхній ярус футера ховається цілком: ті самі «Доставка»,
-// «Повернення», «FAQ», «Договір» лежать на екрані «Меню» (app/menu), до якого
-// веде нижня панель. Дублювати їх — це змусити гортати ~600px темного футера
-// заради того, що є за один тап (Occam's Razor; каскад «remove → hide»).
-// Ховаємо контейнер, а не саму сітку: інакше лишились би його падінги
-// (var(--space-8) зверху й знизу) як порожня чорна смуга.
-// Роздільник теж зайвий — під ним більше нічого не відділяти.
-// Брейкпоінт той самий, що й у .mobileOnly таб-бара.
-@media (max-width: 1023px) {
-  .gridContainer,
-  .line {
-    display: none;
-  }
-}
-
-.columnTitle {
-  color: var(--text-inverse);
-  margin-bottom: var(--space-4);
-  font-family: var(--font-body);
-  font-weight: var(--fw-medium);
-  font-size: var(--text-base);
-  line-height: 1.3;
-}
-
-// Links column
-.linksColumn {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.linksColumn a {
-  font-size: var(--text-base);
-  font-weight: var(--fw-light);
-  color: var(--text-inverse-secondary);
-  text-decoration: none;
-  transition: var(--transition-fast);
-  padding: var(--spacing-xs) 0;
-  display: inline-block;
-
-  &:hover {
-    color: var(--accent);
-  }
-}
-
-.workingHours {
-  font-size: var(--text-base);
-  font-weight: var(--fw-normal);
-  color: var(--text-inverse-secondary);
-  white-space: pre-line;
-}
+// Верхній ярус посилань (3 колонки + роздільник) видалений — рішення
+// власника: ті самі сторінки доступні з екрана «Меню». Футер = одна
+// службова смуга.
 
 // Bottom section — три групи в один тихий рядок: бренд, контакти+кредити,
 // соцмережі. Мова нижнього меню diia.gov.ua: легальні посилання й
-// «Слідкуй за нами тут:» стоять поруч під роздільником, не в основній сітці.
+// «Слідкуй за нами тут:» стоять поруч, не в основній сітці.
 .bottomSection {
   display: flex;
   justify-content: space-between;
