@@ -12,27 +12,40 @@ import { StatusPage } from '@/shared/components/StatusPage/StatusPage';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 
 const REDIRECT_DELAY_MS = 3000;
+// Скільки чекаємо відповідь від сервера перед тим, як визнати перевірку
+// такою, що не вдалася. Без цього завислий запит (мертва мережа, обірваний
+// редірект) тримав би спінер вічно — isLoading ніколи сам не стає false,
+// якщо fetch просто не відповідає.
+const VERIFY_TIMEOUT_MS = 15000;
 
 const PaymentSuccessPage = () => {
   const params = useParams();
   const router = useRouter();
 
   const orderId = params?.orderId as string;
-  const [isVerifying, setIsVerifying] = useState(true);
 
   const { data: paymentData, isLoading, error } = usePaymentStatus(orderId, !!orderId);
 
+  // isLoading вмикається лише на перший фетч — якщо запит завис (не помилка,
+  // не відповідь), isLoading лишається true нескінченно. Таймаут переводить
+  // такий стан у той самий «не вдалося перевірити», що й реальна помилка.
+  const [timedOut, setTimedOut] = useState(false);
   useEffect(() => {
-    if (paymentData && !isLoading) {
-      setIsVerifying(false);
+    if (!orderId || !isLoading) return;
 
-      const timeout = setTimeout(() => {
-        const trackingId = paymentData.orderNumber || orderId;
-        router.push(trackingId ? `/orders/track/${trackingId}` : '/');
-      }, REDIRECT_DELAY_MS);
+    const timer = setTimeout(() => setTimedOut(true), VERIFY_TIMEOUT_MS);
+    return () => clearTimeout(timer);
+  }, [orderId, isLoading]);
 
-      return () => clearTimeout(timeout);
-    }
+  useEffect(() => {
+    if (!paymentData || isLoading) return;
+
+    const timeout = setTimeout(() => {
+      const trackingId = paymentData.orderNumber || orderId;
+      router.push(trackingId ? `/orders/track/${trackingId}` : '/');
+    }, REDIRECT_DELAY_MS);
+
+    return () => clearTimeout(timeout);
   }, [paymentData, isLoading, orderId, router]);
 
   if (!orderId) {
@@ -51,7 +64,7 @@ const PaymentSuccessPage = () => {
     );
   }
 
-  if (isLoading || isVerifying) {
+  if (isLoading && !timedOut) {
     return (
       <StatusPage
         icon={<Loader size="sm" />}
