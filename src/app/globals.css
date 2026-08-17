@@ -603,6 +603,13 @@ html {
   background: var(--gradient-page) fixed;
 }
 
+/* …а body мусить бути прозорим, інакше html-фон не видно: Mantine фарбує body
+   білим (background-color: var(--mantine-color-body), body 0-0-1). `html body`
+   (0-0-2) перебиває його незалежно від порядку чанків у прод-бандлі. */
+html body {
+  background: transparent;
+}
+
 main {
   font-family: var(--font-body);
   min-height: 100vh;
