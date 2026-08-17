@@ -66,21 +66,24 @@ export const mantineTheme = createTheme({
     },
     Textarea: { styles: getInputStyles },
     Select: {
-      styles: (theme: MantineTheme, props: { size?: string }) => ({
-        input: getInputStyles(theme, props).input,
-        label: getInputStyles(theme, props).label,
-        dropdown: {
-          backgroundColor: 'var(--background)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 'var(--border-radius-sm)',
-          boxShadow: 'var(--shadow-md)',
-        },
-        option: {
-          padding: 'var(--spacing-sm) var(--spacing-md)',
-          color: 'var(--text-primary)',
-          borderRadius: 'var(--border-radius-sm)',
-        },
-      }),
+      styles: (theme: MantineTheme, props: { size?: string }) => {
+        const { input, label } = getInputStyles(theme, props);
+        return {
+          input,
+          label,
+          dropdown: {
+            backgroundColor: 'var(--background)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: 'var(--border-radius-sm)',
+            boxShadow: 'var(--shadow-md)',
+          },
+          option: {
+            padding: 'var(--spacing-sm) var(--spacing-md)',
+            color: 'var(--text-primary)',
+            borderRadius: 'var(--border-radius-sm)',
+          },
+        };
+      },
     },
     Paper: {
       styles: {
