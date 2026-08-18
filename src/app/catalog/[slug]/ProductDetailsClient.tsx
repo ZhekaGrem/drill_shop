@@ -819,7 +819,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           initialIndex={selectedImageIndex}
           productName={product.name}
         />
-
       </div>
     </Page>
   );

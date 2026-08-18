@@ -38,7 +38,11 @@ export const HeroBlock = ({
   const router = useRouter();
   const design = useDesign();
   const TitleTag = titleTag;
-  const switcher = col.items.some((it) => it.design.modelUrl) ? 'thumbs' : 'dots';
+  // Свотч-кружечки для КОЖНОГО товару колекції (рішення власника). Раніше
+  // колекція з власною моделлю (худі буби у варятстві) перемикалась
+  // мініатюрами — тепер усі герої головної говорять однією мовою: кольоровий
+  // свотч (switcherSwatch з БД) на товар, а зміну моделі сцена й так уміє.
+  const switcher = 'dots';
   const activeDesign = col.designs[active] ?? col.items[0]?.design;
 
   return (
