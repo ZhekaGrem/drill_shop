@@ -72,11 +72,10 @@ export const ProductCardInfo: React.FC<ProductCardInfoProps> = ({
         <h3 className={styles.title}>{product.name}</h3>
       </AppLink>
 
-      {/* Наявність — та сама метадана, що й на сторінці товару. Крапка + текст,
-          а не тільки колір: колір не може бути єдиним носієм сенсу (WCAG 1.4.1). */}
-      <span className={`${styles.stock} ${isInStock ? '' : styles.stock_out}`}>
-        {isInStock ? 'В наявності' : 'Немає в наявності'}
-      </span>
+      {/* «В наявності» з зеленою крапкою прибрано (рішення власника):
+          наявність — дефолтний стан, картка мовчить про нього. Позначаємо
+          лише виняток — коли товару нема. */}
+      {!isInStock && <span className={`${styles.stock} ${styles.stock_out}`}>Немає в наявності</span>}
 
       <Divider className={styles.divider} />
 

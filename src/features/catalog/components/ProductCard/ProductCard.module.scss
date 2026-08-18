@@ -151,6 +151,8 @@
 // Метадана, якої на картці не було взагалі: людина дізнавалась, що товару
 // немає, тільки клацнувши. На сторінці товару такий індикатор уже є —
 // це та сама асиметрія доведеності, яку треба закривати шаром, а не латкою.
+// Рядок наявності лишився тільки для «Немає в наявності» — зелена крапка
+// «В наявності» прибрана з карток (рішення власника)
 .stock {
   display: inline-flex;
   align-items: center;
@@ -165,17 +167,12 @@
     width: 6px;
     height: 6px;
     border-radius: var(--radius-pill);
-    background: var(--success-green);
     flex-shrink: 0;
   }
 }
 
-.stock_out {
-  color: var(--text-secondary);
-
-  &::before {
-    background: var(--border-strong);
-  }
+.stock_out::before {
+  background: var(--border-strong);
 }
 
 // ============ Варіанти (розмір/колір) ============

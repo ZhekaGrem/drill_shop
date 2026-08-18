@@ -41,42 +41,26 @@ export default function MenuScreen() {
     <Page width="narrow" className={styles.page}>
       <PageHeader title="Меню" description="Замовлення, довідка та все про магазин" />
 
-      <Section>
-        {/* До ініціалізації auth не показуємо ні «Увійти», ні «Профіль»:
-            інакше рядок підміняється на очах у користувача вже після кліку. */}
-        {!isInitialized ? (
+      {/* «Увійти» та «Створити акаунт» прибрані (рішення власника) — вхід
+          лише прямими URL (/login, /profile, /admin), як і «Кабінет» у хедері.
+          Гість не бачить цієї секції взагалі; до ініціалізації auth теж не
+          показуємо нічого, щоб група профілю не зʼявлялась стрибком уже
+          після кліку. */}
+      {isInitialized && isAuthenticated && (
+        <Section>
           <ListGroup>
-            <ListRow title="Завантаження…" hint="Перевіряємо, чи ви увійшли" arrow={false} />
+            <ListRow title="Профіль" hint={userProfile?.email ?? 'Особисті дані та адреси'} href="/profile" />
+            <ListRow title="Мої замовлення" hint="Історія й статус доставки" href="/profile/orders" />
+            {isManager && <ListRow title="Адмінпанель" hint="Товари, замовлення, клієнти" href="/admin" />}
           </ListGroup>
-        ) : isAuthenticated ? (
-          <>
-            <ListGroup>
-              <ListRow
-                title="Профіль"
-                hint={userProfile?.email ?? 'Особисті дані та адреси'}
-                href="/profile"
-              />
-              <ListRow title="Мої замовлення" hint="Історія й статус доставки" href="/profile/orders" />
-              {isManager && <ListRow title="Адмінпанель" hint="Товари, замовлення, клієнти" href="/admin" />}
-            </ListGroup>
-            {/* «Вийти» окремою групою: це третинна дія іншого роду, ніж переходи
-                вище, і єдиний рядок без підпису — у власній групі він не виглядає
-                недоробленим сусідом, а читається як свідомо відділений. */}
-            <ListGroup className={styles.logoutGroup}>
-              <ListRow title="Вийти" onClick={handleLogout} arrow={false} />
-            </ListGroup>
-          </>
-        ) : (
-          <ListGroup>
-            <ListRow
-              title="Увійти"
-              hint="Замовлення, адреси та історія покупок в одному місці"
-              href="/login"
-            />
-            <ListRow title="Створити акаунт" hint="Це займе хвилину" href="/register" />
+          {/* «Вийти» окремою групою: це третинна дія іншого роду, ніж переходи
+              вище, і єдиний рядок без підпису — у власній групі він не виглядає
+              недоробленим сусідом, а читається як свідомо відділений. */}
+          <ListGroup className={styles.logoutGroup}>
+            <ListRow title="Вийти" onClick={handleLogout} arrow={false} />
           </ListGroup>
-        )}
-      </Section>
+        </Section>
+      )}
 
       <Section title="Магазин">
         <ListGroup>
