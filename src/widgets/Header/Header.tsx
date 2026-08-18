@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useCartDrawerActions, useCartCalculations, useCartStore } from '@/shared/stores/cart';
 import { CartDrawer } from '@/features/cart/components/CartDrawer/CartDrawer';
 import { Logo } from '@/shared/components/Logo';
+import { useHiddenWordmarks } from '@/shared/hooks/useTurntables';
 import { IconX, IconSearch, IconCart } from '@/shared/components/Svg';
 import { useCatalogFilters } from '@/features/catalog/hooks/useCatalogFilters';
 
@@ -32,6 +33,12 @@ const RECENT_KEY = 'recent-searches';
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
+  // Прихований розділ підмінює словомарку логотипа (є. Дріл → є. Олько):
+  // слаг товару зі шляху сторінки товару шукаємо серед товарів прихованих
+  // колекцій (мапа з /collections, спільний кеш ['collections-raw'])
+  const { data: hiddenWordmarks } = useHiddenWordmarks();
+  const productSlug = pathname.match(/^\/(?:v2\/a|catalog)\/([^/]+)$/)?.[1];
+  const wordmark = (productSlug && hiddenWordmarks?.[decodeURIComponent(productSlug)]) || undefined;
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -93,7 +100,7 @@ export function Header() {
           {/* inverse — хедер тепер чорний, як верхня панель Дії. Без цього
               ворд-марка малюється --text-primary, тобто чорним по чорному. */}
           <Link href="/" className={styles.logoLink} aria-label="ye-dril — на головну">
-            <Logo inverse className={styles.headerLogo} />
+            <Logo inverse className={styles.headerLogo} wordmark={wordmark} />
           </Link>
 
           {/* Desktop navigation */}

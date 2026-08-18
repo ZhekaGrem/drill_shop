@@ -5,6 +5,7 @@
 import type { CSSProperties } from 'react';
 import type { Design } from '@/widgets/HeroVisual/designs';
 import type { DesignId } from '@/shared/config/design';
+import { isHiddenCollection } from '@/shared/config/hidden-collections';
 
 export interface CollectionItem {
   key: string;
@@ -61,7 +62,10 @@ export const capsuleStyle = (labelColor: string | null, design?: DesignId): CSSP
   return { background, color: background.includes('gradient') ? '#101413' : '#fff' };
 };
 
+// Приховані розділи не рекламуються в «Інших колекціях» — туди ведуть
+// лише прямі лінки (на сторінці самого прихованого розділу currentKey
+// і так виключає його зі списку)
 export const otherCollections = (
   collections: CollectionDef[] | undefined,
   currentKey: string | undefined
-): CollectionDef[] => (collections ?? []).filter((c) => c.key !== currentKey);
+): CollectionDef[] => (collections ?? []).filter((c) => c.key !== currentKey && !isHiddenCollection(c.key));

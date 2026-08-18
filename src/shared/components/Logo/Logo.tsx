@@ -12,9 +12,12 @@ interface LogoProps {
   size?: 'md' | 'sm';
   /** Для темних поверхонь (напр. хедер/футер) — марка стає білою, текст світлим */
   inverse?: boolean;
+  /** Словомарка після «є.» — дефолтний «Дріл»; приховані розділи підставляють
+      свою (напр. «Олько» у «Мистецтві війни», див. config/hidden-collections) */
+  wordmark?: string;
 }
 
-export function Logo({ className, size = 'md', inverse = false }: LogoProps) {
+export function Logo({ className, size = 'md', inverse = false, wordmark = 'Дріл' }: LogoProps) {
   const sizeClass = size === 'sm' ? styles.sizeSm : '';
   const inverseClass = inverse ? styles.inverse : '';
   const classes = [styles.logo, sizeClass, inverseClass, className].filter(Boolean).join(' ');
@@ -24,7 +27,7 @@ export function Logo({ className, size = 'md', inverse = false }: LogoProps) {
       <span className={styles.mark}>
         є<span className={styles.markDot}>.</span>
       </span>
-      <span className={styles.word}>Дріл</span>
+      <span className={styles.word}>{wordmark}</span>
     </span>
   );
 }

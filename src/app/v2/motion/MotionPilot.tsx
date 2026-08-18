@@ -16,10 +16,26 @@ interface Variant {
 // Розміри файлів — фактичні, з public/assets/img/motion (див. коміт пілота)
 const VARIANTS: Variant[] = [
   { src: '/assets/img/motion/buba-poster-480.webp', title: 'Постер (як зараз)', meta: 'статичний · 15 КБ' },
-  { src: '/assets/img/motion/buba-turn-480-12fps-q80.webp', title: '480px · 12 fps', meta: '24 кадри · 295 КБ' },
-  { src: '/assets/img/motion/buba-turn-480-24fps-q80.webp', title: '480px · 24 fps', meta: '48 кадрів · 589 КБ' },
-  { src: '/assets/img/motion/buba-turn-360-12fps-q75.webp', title: '360px · 12 fps', meta: '24 кадри · 191 КБ' },
-  { src: '/assets/img/motion/buba-turn-720-12fps-q80.webp', title: '720px (retina) · 12 fps', meta: '24 кадри · 375 КБ' },
+  {
+    src: '/assets/img/motion/buba-turn-480-12fps-q80.webp',
+    title: '480px · 12 fps',
+    meta: '24 кадри · 295 КБ',
+  },
+  {
+    src: '/assets/img/motion/buba-turn-480-24fps-q80.webp',
+    title: '480px · 24 fps',
+    meta: '48 кадрів · 589 КБ',
+  },
+  {
+    src: '/assets/img/motion/buba-turn-360-12fps-q75.webp',
+    title: '360px · 12 fps',
+    meta: '24 кадри · 191 КБ',
+  },
+  {
+    src: '/assets/img/motion/buba-turn-720-12fps-q80.webp',
+    title: '720px (retina) · 12 fps',
+    meta: '24 кадри · 375 КБ',
+  },
 ];
 
 export const MotionPilot = () => (

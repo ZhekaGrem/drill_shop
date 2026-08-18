@@ -12,6 +12,7 @@ import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCa
 import { CatalogFilters } from '@/features/catalog/components/CatalogFilters/CatalogFilters';
 import { MobileFilterModal } from '@/features/catalog/components/MobileFilterModal/MobileFilterModal';
 import { useCatalogFilters, countActiveFilters } from '@/features/catalog/hooks/useCatalogFilters';
+import { useHiddenProductSlugs } from '@/shared/hooks/useTurntables';
 import { useCatalogProducts } from '@/features/catalog/hooks/useCatalogProducts';
 import { ProductsResponse } from '@/features/catalog/api/products';
 import styles from './catalog.module.scss';
@@ -58,11 +59,18 @@ export default function CatalogClient({ initialData, initialCategories, basePath
     }
   );
 
+  // Товари прихованих розділів (config/hidden-collections) з каталогу
+  // відсіюємо на фронті: лістовий /products нічого не знає про колекції,
+  // а деталка вимагає isActive=true — тож ховати можна лише тут
+  const { data: hiddenSlugs } = useHiddenProductSlugs();
+
   // Обʼєднуємо всі сторінки в один масив
-  const products = data?.pages.flatMap((page) => page.data) || [];
+  const products = (data?.pages.flatMap((page) => page.data) || []).filter((p) => !hiddenSlugs?.has(p.slug));
   // undefined, поки запит ще не осів — «Знайдено 0 товарів» не має права
-  // звучати з aria-live, доки ми не знаємо реальної кількості (крок 5)
-  const totalCount = data?.pages[0]?.meta.total;
+  // звучати з aria-live, доки ми не знаємо реальної кількості (крок 5).
+  // Мінус приховані: вони в лічильнику бекенда, але не на вітрині
+  const rawTotal = data?.pages[0]?.meta.total;
+  const totalCount = rawTotal !== undefined ? Math.max(0, rawTotal - (hiddenSlugs?.size ?? 0)) : undefined;
   const activeFilterCount = countActiveFilters(filters);
 
   // useLayoutEffect, а не useEffect: перший рендер завжди монтується з

@@ -9,6 +9,7 @@ import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
 import { HomeHeroes } from '@/widgets/HomeHeroes/HomeHeroes';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
+import { isHiddenCollection } from '@/shared/config/hidden-collections';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import { CategoriesInitializer } from '@/shared/components/CategoriesInitializer/CategoriesInitializer';
 import { content } from '@/shared/config/content';
@@ -33,14 +34,17 @@ const FAQ_PREVIEW = faqData.slice(0, 3).map((category) => category.questions[0])
 const Home = () => {
   const categories = useCategoriesStore((s) => s.categories);
   // Герої = колекції з БД (GET /collections); механіку розкладки вибирає
-  // активна дизайн-концепція (data-design, перемикач на /v2/dev)
+  // активна дизайн-концепція (data-design, перемикач на /v2/dev).
+  // Приховані розділи (hidden-collections) на головну не потрапляють —
+  // до них ведуть лише прямі лінки.
   const { data: collections } = useCollections();
+  const visibleCollections = collections?.filter((c) => !isHiddenCollection(c.key));
 
   return (
     <Page>
       <CategoriesInitializer />
 
-      <HomeHeroes collections={collections} />
+      <HomeHeroes collections={visibleCollections} />
 
       <ul className={styles.trust}>
         {content.home.trust.map((item) => (
