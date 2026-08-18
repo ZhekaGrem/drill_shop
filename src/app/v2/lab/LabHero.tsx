@@ -22,6 +22,21 @@ interface LabExample {
 
 const EXAMPLES: LabExample[] = [
   {
+    key: 'terytyi-kalach',
+    title: 'Тертий калач (тест розгортки, v5)',
+    capsule: 'тест',
+    capsuleColor: '#8fbf6e',
+    description:
+      'Тестова UV-розгортка «теритий калач тест v5.png» на бойовій моделі футболки: «КАЛАЧ» на зеленому переді, «ТЕРТИЙ» на рожевій спині, рожева окантовка коміра; рукави в файлі не зафарбовані — білі.',
+    facts: 'дефолтна tshirt.glb · своп текстури 2048² · джерело: 3d/теритий калач тест v5.png (8K)',
+    design: {
+      label: 'Тертий калач',
+      swatch: 'linear-gradient(135deg,#b6d39a 50%,#f2b8c0 50%)',
+      fallback: '/assets/img/kalach-test-fallback.webp',
+      mapUrl: '/3d/textures/terytyi-kalach-test.jpg',
+    },
+  },
+  {
     key: 'hoodie-mockup',
     title: 'Hoodie Mockup',
     capsule: 'приклад',
