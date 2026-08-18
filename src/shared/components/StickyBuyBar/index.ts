@@ -1,1 +1,0 @@
-export { StickyBuyBar } from './StickyBuyBar';

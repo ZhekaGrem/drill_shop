@@ -21,8 +21,6 @@ import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
 import { SizeGuideModal } from '@/shared/components/SizeGuideModal';
 import { IconCart3 } from '@/shared/components/Svg';
-import { StickyBuyBar } from '@/shared/components/StickyBuyBar';
-import { useActionOffscreen } from '@/shared/hooks/useActionOffscreen';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
 import { NotifyAvailabilityModal } from '@/features/notify-availability';
 import { ImageGalleryModal } from '@/shared/components/ImageGalleryModal';
@@ -126,13 +124,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
     }
   };
   const basePromoData = product ? calculatePromoPrice(product) : null;
-
-  // Липка панель показує ту саму дію, поки інлайн-кнопки не видно.
-  // Спостерігаємо за самою кнопкою, а не за позицією скролу — деталі в хуку.
-  const [addActionRef, addActionOffscreen] = useActionOffscreen<HTMLButtonElement>();
-  // Ціна для панелі: обраний варіант перекриває базовий товар — той самий
-  // порядок, що й у блоці ціни в розмітці.
-  const stickyPromo = selectedVariant ? calculateVariantPromoPrice(selectedVariant) : basePromoData;
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -723,15 +714,10 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                   <>
                     {/* Кількість зі сторінки прибрана (рішення власника):
                         купується завжди 1 шт, докупити більше — у кошику */}
-                    {/* «Купити зараз» прибрана (рішення власника) — головна
-                        дія одна: «Додати в кошик» */}
-                    {/* Головна дія магазину — чорна, і в липкій панелі вона одна.
-                        Раніше чорною була «ЗАМОВИТИ В 1 КЛІК», а додавання в
-                        кошик виглядало вторинним: дві кнопки однакового розміру
-                        билися за роль головної (Von Restorff). */}
+                    {/* «Купити зараз» і липка панель-дублер прибрані (рішення
+                        власника) — головна дія одна: «Додати в кошик» у картці */}
                     <div className={styles.actionButtons}>
                       <Button
-                        ref={addActionRef}
                         variant="primary"
                         size="lg"
                         fullWidth
@@ -834,17 +820,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           productName={product.name}
         />
 
-        {/* Липка панель дії (≤1023px) — та сама, що на /v2/a/[slug].
-            Зʼявляється, коли інлайн-кнопка «Додати в кошик» вийшла з кадру. */}
-        <StickyBuyBar
-          visible={!collectionArchived && isInStock && addActionOffscreen}
-          price={stickyPromo?.finalPrice ?? product.price}
-          oldPrice={stickyPromo?.hasDiscount ? stickyPromo.originalPrice : null}
-          sizeLabel={selectedVariant ? createVariantDisplayLabel(selectedVariant) : null}
-          disabled={isAddingItem}
-          added={isClicked}
-          onAdd={handleAddToCart}
-        />
       </div>
     </Page>
   );

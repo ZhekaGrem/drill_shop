@@ -7,11 +7,9 @@
 import { useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { Button } from '@/shared/components/Button/Button';
-import { StickyBuyBar } from '@/shared/components/StickyBuyBar';
 import { IconCart3 } from '@/shared/components/Svg';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { useDesign } from '@/shared/hooks/useDesign';
-import { useActionOffscreen } from '@/shared/hooks/useActionOffscreen';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
 import { formatPrice } from '@/shared/utils/format';
 import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/promo-calculator';
@@ -31,9 +29,6 @@ export const BuyPanel = ({ product }: { product: Product }) => {
   const design = useDesign();
   const [variantId, setVariantId] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
-  // Головна дія лежить на 292px нижче згину телефона — кнопка є, її не видно.
-  // Липка панель нижче показує ту саму дію, поки інлайн-кнопка поза кадром.
-  const [actionRef, actionOffscreen] = useActionOffscreen<HTMLButtonElement>();
 
   const variants = useMemo(() => sortVariantsBySize(product.variants ?? []), [product.variants]);
   const variant: ProductVariant | undefined = variants.find((v) => v.id === variantId) ?? variants[0];
@@ -67,8 +62,6 @@ export const BuyPanel = ({ product }: { product: Product }) => {
     }
   };
 
-  // Одна дія — один опис її стану. Липка панель показує ту саму кнопку, тож
-  // підпис і блокування живуть тут, а не двічі в розмітці.
   const actionLabel = added ? 'Додано в кошик ✓' : 'Додати в кошик';
   const actionDisabled = !inStock || isAddingItem;
 
@@ -144,34 +137,15 @@ export const BuyPanel = ({ product }: { product: Product }) => {
         </div>
       )}
 
-      {/* «Купити зараз» і сердечко-обране прибрані (рішення власника) —
-          дія одна: «Додати в кошик» */}
+      {/* «Купити зараз», сердечко-обране і липка панель-дублер прибрані
+          (рішення власника) — дія одна: «Додати в кошик» у картці */}
       <div className={styles.actions}>
         {!archived && (
-          <Button
-            ref={actionRef}
-            size="lg"
-            variant="primary"
-            fullWidth
-            disabled={actionDisabled}
-            onClick={handleAdd}>
+          <Button size="lg" variant="primary" fullWidth disabled={actionDisabled} onClick={handleAdd}>
             <IconCart3 size={20} /> {actionLabel}
           </Button>
         )}
       </div>
-
-      {/* Липка панель дії (≤1023px). Ціна тут обовʼязкова: вона теж за згином,
-          а рішення про покупку без ціни не приймається. На ≥1024px панелі
-          немає — там її роль виконує липка права колонка сторінки. */}
-      <StickyBuyBar
-        visible={!archived && actionOffscreen}
-        price={promo.finalPrice}
-        oldPrice={promo.hasDiscount ? promo.originalPrice : null}
-        sizeLabel={variant && variants.length > 0 ? sizeLabel(variant) : null}
-        disabled={actionDisabled}
-        added={added}
-        onAdd={handleAdd}
-      />
     </div>
   );
 };
