@@ -3,6 +3,8 @@ import React from 'react';
 import { ViewTransition } from 'react';
 import { Product } from '@/shared/types';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
+import { TurntableMedia } from '@/shared/components/TurntableMedia/TurntableMedia';
+import { useTurntables } from '@/shared/hooks/useTurntables';
 import { ProductBadges } from '@/features/catalog/components/ProductBadges/ProductBadges';
 import styles from './ProductCard.module.scss';
 
@@ -31,6 +33,11 @@ export const ProductCardImage: React.FC<ProductCardImageProps> = ({
   onMouseEnter,
   onMouseLeave,
 }) => {
+  // 3D-товари показують turntable-рендер (постер → оберт у вьюпорті)
+  // замість фото; решта — фото як і раніше
+  const { data: turntables } = useTurntables();
+  const turn = turntables?.[product.slug];
+
   return (
     <div className={styles.productCardImageContainer} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <div className={styles.productCardImageContainer__ImageWrapper}>
@@ -39,18 +46,27 @@ export const ProductCardImage: React.FC<ProductCardImageProps> = ({
             і default="none" потрібні обидва: без default фото крос-фейдилось би
             на КОЖНОМУ переході, без share пара мовчки перестає морфитись. */}
         <ViewTransition name={`product-${product.id}`} share="morph" default="none">
-          <CloudinaryImage
-            src={imageUrl || '/assets/img/placeholder-product.jpg'}
-            alt={
-              isImageHovered && secondaryImage
-                ? secondaryImage.altText || product.name
-                : primaryImage?.altText || product.name
-            }
-            width={400}
-            height={400}
-            className={styles.productImage}
-            loading="lazy"
-          />
+          {turn ? (
+            <TurntableMedia
+              poster={turn.poster}
+              animated={turn.animated}
+              alt={`${product.name} — 3D-оберт`}
+              className={styles.productImage}
+            />
+          ) : (
+            <CloudinaryImage
+              src={imageUrl || '/assets/img/placeholder-product.jpg'}
+              alt={
+                isImageHovered && secondaryImage
+                  ? secondaryImage.altText || product.name
+                  : primaryImage?.altText || product.name
+              }
+              width={400}
+              height={400}
+              className={styles.productImage}
+              loading="lazy"
+            />
+          )}
         </ViewTransition>
       </div>
       <ProductBadges product={product} selectedVariant={selectedVariantObject} />

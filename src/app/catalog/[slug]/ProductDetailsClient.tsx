@@ -361,7 +361,9 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
     );
   }
 
-  const images = product.images || [];
+  // Turntable-рендери (webp-оберти для карток каталогу) — не фото товару:
+  // у галереї їм не місце, тож відсіюємо за Cloudinary-папкою
+  const images = (product.images || []).filter((i) => !i.url?.includes('/turntable'));
   const sortedImages = [...images].sort((a, b) => {
     if (a.isPrimary && !b.isPrimary) return -1;
     if (!a.isPrimary && b.isPrimary) return 1;

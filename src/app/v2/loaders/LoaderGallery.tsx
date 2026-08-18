@@ -61,7 +61,10 @@ export const LoaderGallery = () => {
       </div>
 
       {fsExample && (
-        <div className={styles.overlay} role="dialog" aria-label={`Лоадер «${fsExample.title}» на весь екран`}>
+        <div
+          className={styles.overlay}
+          role="dialog"
+          aria-label={`Лоадер «${fsExample.title}» на весь екран`}>
           <div className={styles.stage}>
             <fsExample.Comp />
           </div>

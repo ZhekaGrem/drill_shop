@@ -1,0 +1,56 @@
+// src/app/v2/motion/motion.module.scss
+// Стенд пілота: картки під ширину реальної сітки каталогу (~50vw мобайл,
+// ~300px десктоп), медіа з пропорцією рендера 4:5.
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  margin: 0;
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--space-3) var(--space-4) var(--space-4);
+  }
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  // Той самий ґрунт, що в карток каталогу: прозорий рендер лягає на картку
+  background: var(--surface-card);
+
+  img {
+    object-fit: contain;
+  }
+}
+
+.cardTitle {
+  font-weight: 600;
+  font-size: var(--text-base);
+}
+
+.cardMeta {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.note {
+  margin-top: var(--space-6);
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  max-width: 60ch;
+}
