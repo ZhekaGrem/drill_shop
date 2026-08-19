@@ -83,6 +83,8 @@ export const DevPanel = () => {
     ['/v2/lab', 'Hero Lab (приклади моделей)'],
     ['/v2/loaders', 'Завантажувальні екрани (приклади)'],
     ['/v2/motion', 'Motion-пілот каталогу (turntable WebP)'],
+    ['/v2/swatches', 'Свотчі (приклади стилів)'],
+    ['/v2/switcher', 'Перемикач товарів (чипи, картки)'],
   ];
 
   return (
