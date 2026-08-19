@@ -3,14 +3,12 @@
 import { useEffect, useLayoutEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { Loader, Center } from '@mantine/core';
-import { IconFilter, IconMoodEmpty } from '@tabler/icons-react';
+import { IconMoodEmpty } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs';
 import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
-import { CatalogFilters } from '@/features/catalog/components/CatalogFilters/CatalogFilters';
-import { MobileFilterModal } from '@/features/catalog/components/MobileFilterModal/MobileFilterModal';
 import { useCatalogFilters, countActiveFilters } from '@/features/catalog/hooks/useCatalogFilters';
 import { useHiddenProductSlugs } from '@/shared/hooks/useTurntables';
 import { useCatalogProducts } from '@/features/catalog/hooks/useCatalogProducts';
@@ -22,13 +20,11 @@ const AUTO_PAGES_STEP = 2;
 
 interface CatalogProps {
   initialData?: ProductsResponse | null;
-  initialCategories?: any[];
   basePath?: string;
 }
 
-export default function CatalogClient({ initialData, initialCategories, basePath = '' }: CatalogProps) {
+export default function CatalogClient({ initialData, basePath = '' }: CatalogProps) {
   const [initialized, setInitialized] = useState(false);
-  const [filtersModalOpened, setFiltersModalOpened] = useState(false);
   // Нескінченний скрол ховав футер назавжди: сторінка довантажувалась швидше,
   // ніж людина доходила до низу, а в футері живуть єдині посилання на оферту,
   // повернення й політику. Дві автопідвантаження — далі явна кнопка.
@@ -37,7 +33,7 @@ export default function CatalogClient({ initialData, initialCategories, basePath
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const { filters, setFromUrlParams, clearFilters, updateUrl } = useCatalogFilters();
+  const { filters, setFromUrlParams, clearFilters } = useCatalogFilters();
 
   const observerTarget = useRef<HTMLDivElement>(null);
 
@@ -123,15 +119,8 @@ export default function CatalogClient({ initialData, initialCategories, basePath
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, autoLoadExhausted]);
 
-  const handleFiltersChange = useCallback(() => {
-    // Стан фільтрів іде в URL одразу після кожної зміни (крок 1) — інакше
-    // оновлення сторінки чи «назад» у браузері мовчки скидають усе, що обрав
-    // користувач.
-    updateUrl(router, basePath);
-    setAutoPagesBudget(AUTO_PAGES_STEP);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [updateUrl, router, basePath]);
-
+  // Фільтр тепер приходить лише з URL (?categoryId=… з категорій і пошуку),
+  // тож лишається єдина дія — скинути його й показати весь каталог
   const handleResetFilters = useCallback(() => {
     clearFilters();
     router.replace(pathname);
@@ -150,38 +139,10 @@ export default function CatalogClient({ initialData, initialCategories, basePath
         }
       />
 
-      {/* Кнопка фільтрів для мобільних — з лічильником активних.
-          Була ще й IconChevronDown праворуч: «шеврон вниз» обіцяє акордеон,
-          а відкривався bottom sheet. Одна іконка = одне значення (3.11). */}
-      <Button
-        variant="secondary"
-        className={styles.filtersButton}
-        onClick={() => setFiltersModalOpened(true)}
-        aria-haspopup="dialog"
-        aria-expanded={filtersModalOpened}
-        fullWidth>
-        <IconFilter size={18} stroke={1.5} />
-        <span>Фільтри</span>
-        {activeFilterCount > 0 && <span className={styles.filtersBadge}>{activeFilterCount}</span>}
-      </Button>
-
-      {/* Фільтри для десктопу */}
-      <div className={styles.desktopFilters}>
-        <CatalogFilters
-          onFiltersChange={handleFiltersChange}
-          initialCategories={initialCategories}
-          resultsCount={totalCount}
-        />
-      </div>
-
-      {/* Мобільний bottom sheet з фільтрами */}
-      <MobileFilterModal
-        opened={filtersModalOpened}
-        onClose={() => setFiltersModalOpened(false)}
-        onFiltersChange={handleFiltersChange}
-        initialCategories={initialCategories}
-        resultsCount={totalCount}
-      />
+      {/* Фільтри прибрані з каталогу (рішення власника): кнопка «Фільтри»,
+          десктопна панель і мобільний bottom sheet. Стан фільтрів у сторі
+          лишається — його читає URL (?categoryId=…), тож переходи з категорій
+          працюють, просто керувати ними зі сторінки більше не можна. */}
 
       <div className={styles.results}>
         {error && (
@@ -260,14 +221,21 @@ export default function CatalogClient({ initialData, initialCategories, basePath
             порожнім, а не поки він ще в польоті (крок 4) */}
         {status === 'success' && products.length === 0 && (
           <div className={styles.empty}>
-            {/* Була IconFilter — та сама іконка, що й на кнопці «Фільтри»:
-                один знак ніс два різні значення */}
             <IconMoodEmpty size={40} stroke={1.5} className={styles.emptyIcon} />
             <h3>Нічого не знайдено</h3>
-            <p>За обраними фільтрами товарів немає. Спробуйте змінити або скинути фільтри.</p>
-            <Button variant="secondary" onClick={handleResetFilters}>
-              Скинути фільтри
-            </Button>
+            {/* Керувати фільтрами зі сторінки більше не можна, тож про них
+                згадуємо лише тоді, коли вони справді прийшли з URL — інакше
+                порожній каталог радив би скинути те, чого людина не вмикала */}
+            {activeFilterCount > 0 ? (
+              <>
+                <p>За обраним добором товарів немає.</p>
+                <Button variant="secondary" onClick={handleResetFilters}>
+                  Показати весь каталог
+                </Button>
+              </>
+            ) : (
+              <p>Схоже, товарів поки немає. Зазирни трохи згодом.</p>
+            )}
           </div>
         )}
       </div>

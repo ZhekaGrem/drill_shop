@@ -1,5 +1,5 @@
-// src/app/catalog/page.tsx - SSG with categories
-import { productsApi, categoriesApi } from '@/features/catalog/api/products';
+// src/app/catalog/page.tsx — SSG зі списком товарів
+import { productsApi } from '@/features/catalog/api/products';
 import CatalogClient from './CatalogClient';
 import { JsonLd } from '../JsonLd';
 import { structuredData } from '../seo';
@@ -32,19 +32,11 @@ async function getInitialProducts() {
   }
 }
 
-// ✅ SSG - завантажуємо категорії
-async function getInitialCategories() {
-  try {
-    const response = await categoriesApi.getCategories();
-    return response.data || [];
-  } catch (error) {
-    console.error('Failed to fetch categories:', error);
-    return [];
-  }
-}
+// Категорії тут більше не тягнемо: єдиним їхнім споживачем були фільтри
+// каталогу, які прибрані (рішення власника). Один зайвий запит на SSG менше.
 
 export default async function CatalogPage() {
-  const [initialData, initialCategories] = await Promise.all([getInitialProducts(), getInitialCategories()]);
+  const initialData = await getInitialProducts();
 
   const itemListData = initialData?.data
     ? structuredData.itemList(
@@ -60,7 +52,7 @@ export default async function CatalogPage() {
     <>
       {itemListData && <JsonLd data={itemListData} />}
       <h1 className="hiddenTitle">Каталог мерчу Є.Дріл — футболки, худі, постери та аксесуари</h1>
-      <CatalogClient initialData={initialData} initialCategories={initialCategories} />
+      <CatalogClient initialData={initialData} />
     </>
   );
 }

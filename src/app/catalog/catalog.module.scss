@@ -22,48 +22,8 @@
   white-space: nowrap;
 }
 
-// Вигляд бере варіант `secondary` спільної кнопки. Раніше тут перевизначались
-// background і color варіанта `outline` — тобто сторінка малювала свій підвид
-// спільного компонента, що дизайн-система проєкту прямо забороняє.
-// Лишається тільки те, що стосується РОЗТАШУВАННЯ кнопки на цій сторінці.
-// Клас подвоєно навмисно: без цього селектор має ту саму специфічність 0,1,0,
-// що й .button--md, і переможець залежав би від порядку CSS-чанків у збірці
-// (техніка й пояснення — header.module.scss, .headerLogo.headerLogo).
-.filtersButton.filtersButton {
-  display: none;
-
-  @media (max-width: 768px) {
-    display: flex;
-    height: var(--control-h-md);
-    margin-bottom: var(--space-4);
-  }
-}
-
-.desktopFilters {
-  display: block;
-  margin-bottom: var(--space-6);
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-}
-
-// Лічильник активних фільтрів на мобільній кнопці
-.filtersBadge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  margin-left: var(--space-1);
-  padding: 0 6px;
-  font-size: var(--text-xs);
-  font-weight: var(--fw-medium);
-  line-height: 1;
-  color: var(--btn-primary-fg);
-  background: var(--text-primary);
-  border-radius: var(--radius-pill);
-}
+// Стилі фільтрів (кнопка, десктопна панель, лічильник) видалені разом із
+// самими фільтрами — рішення власника
 
 .results {
   min-height: 400px;

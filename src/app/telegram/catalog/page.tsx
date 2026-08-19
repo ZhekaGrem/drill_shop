@@ -1,4 +1,4 @@
-import { productsApi, categoriesApi } from '@/features/catalog/api/products';
+import { productsApi } from '@/features/catalog/api/products';
 import CatalogClient from '@/app/catalog/CatalogClient';
 
 export const revalidate = 26400; // 6 годин
@@ -23,20 +23,11 @@ async function getInitialProducts() {
   }
 }
 
-async function getInitialCategories() {
-  try {
-    const response = await categoriesApi.getCategories();
-    return response.data || [];
-  } catch (error) {
-    console.error('Failed to fetch categories:', error);
-    return [];
-  }
-}
+// Категорії тут більше не тягнемо: їх споживали лише фільтри каталогу,
+// які прибрані (рішення власника)
 
 export default async function TelegramCatalogPage() {
-  const [initialData, initialCategories] = await Promise.all([getInitialProducts(), getInitialCategories()]);
+  const initialData = await getInitialProducts();
 
-  return (
-    <CatalogClient initialData={initialData} initialCategories={initialCategories} basePath="/telegram" />
-  );
+  return <CatalogClient initialData={initialData} basePath="/telegram" />;
 }

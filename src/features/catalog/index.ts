@@ -3,7 +3,8 @@
 // Components
 export { ProductCard } from './components/ProductCard/ProductCard';
 export { ProductBadges } from './components/ProductBadges/ProductBadges';
-export { CatalogFilters } from './components/CatalogFilters/CatalogFilters';
+// CatalogFilters і MobileFilterModal видалені разом із фільтрами каталогу
+// (рішення власника). Стор useCatalogFilters лишився: його читає URL і хедер.
 
 // Hooks
 export { useCatalogFilters } from './hooks/useCatalogFilters';
