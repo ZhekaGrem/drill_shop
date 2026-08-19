@@ -51,19 +51,18 @@ export const useCartStore = create<CartState>()(
       try {
         const response = await fetchCart();
 
-        // ✅ ВИПРАВЛЕНО: правильна логіка для варіантів
-        const enrichedItems = (response.data.items || []).map((item: any) => {
-          return item;
-        });
+        const enrichedItems: CartItemWithProduct[] = response.data.items || [];
         set({
           items: enrichedItems,
-          calculations: response.data.summary || {
-            itemsCount: 0,
-            totalQuantity: 0,
-            subtotal: 0,
-            totalAmount: 0,
-            discountAmount: 0,
-          },
+          // Підсумок рахуємо з ТИХ САМИХ позицій, які показуємо, а не беремо
+          // з response.data.summary. Серверний summary не враховував промо на
+          // товарах: у кошику з однією знижкою він показував 13 984 грн там, де
+          // рядки давали 13 969,12 — і людина бачила ціну, вищу за ту, яку з неї
+          // справді спишуть (create-order.use-case рахує саме finalPrice ×
+          // кількість). Тепер список, підсумок і каса говорять одне число.
+          // Та сама функція вже рахує оптимістичні оновлення нижче — тож
+          // джерело правди в кошику одне.
+          calculations: calculateCartTotals(enrichedItems),
           appliedDiscounts: response.data.appliedDiscounts || [],
           isInitialized: true,
           isLoading: false,
