@@ -6,6 +6,7 @@ import { use, useState } from 'react';
 import { Page } from '@/shared/components/Page/Page';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs';
 import { useDesign } from '@/shared/hooks/useDesign';
+import { switcherForCollection } from '@/shared/config/collection-switcher';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import { useProduct } from '@/widgets/ProductV2/useProduct';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
@@ -109,7 +110,7 @@ export default function CollectionProductPage({ params }: { params: Promise<{ sl
           {collection ? (
             <HeroVisual
               designs={collection.designs}
-              switcher="thumbs"
+              switcher={switcherForCollection(collection.key)}
               switcherWidth="column"
               value={item?.key}
               onChange={handleDesignChange}

@@ -1,0 +1,113 @@
+// src/shared/components/CompassSwitcher/CompassSwitcher.module.scss
+// Барабан-компас: активний товар по осі симетрії, периферія меншає й гасне.
+// --tile задає компонент; усе інше рахується від нього.
+
+.compass {
+  --tile: 60px;
+  width: 100%;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--tile) * 0.18);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  // Поля рівно такі, щоб КРАЙНІ товари теж могли стати по центру
+  padding: 4px calc(50% - var(--tile) / 2);
+
+  // Стрічка тане на краях — підказка, що товарів більше, ніж видно
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: var(--border-radius-md);
+  }
+}
+
+.tile {
+  --scale: 1;
+  --dim: 1;
+
+  flex: 0 0 var(--tile);
+  width: var(--tile);
+  height: var(--tile);
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius-md);
+
+  // Оптична глибина барабана. Рахує JS (rAF на скролі) — тут лише застосування,
+  // тому анімуються рівно transform і opacity, без перерахунку розкладки.
+  transform: scale(var(--scale));
+  opacity: var(--dim);
+  transition:
+    transform 0.12s linear,
+    opacity 0.12s linear;
+
+  img {
+    position: absolute;
+    max-width: none; // інакше глобальне img{max-width:100%} зріже 250% назад
+    object-fit: contain;
+  }
+}
+
+// Кроп на груди: рендери нормалізовані (футболка займає ~80% висоти кадру,
+// старт на ~11% від верху), тож єдине зміщення влучає в принт на всіх товарах
+.cropped img {
+  width: 250%;
+  height: 250%;
+  left: -75%;
+  top: -52.5%;
+}
+
+// Повна картка-мініатюра: товар цілком, з невеликими полями
+.full {
+  background: var(--surface-muted);
+
+  img {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    padding: 2px;
+  }
+}
+
+// Кільце активного — тільки на центральному, решта без обводки
+.track .tile[aria-selected='true'] {
+  box-shadow: 0 0 0 2px var(--text-primary);
+}
+
+.needle {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  min-height: 1.3em; // місце зарезервоване: назва не смикає розкладку
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    scroll-behavior: auto;
+  }
+
+  .tile {
+    transition: none;
+  }
+}

@@ -14,6 +14,7 @@ import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
+import { CompassSwitcher } from '@/shared/components/CompassSwitcher/CompassSwitcher';
 import { useDragRotation } from './useDragRotation';
 import { DESIGNS } from './designs';
 import type { Design } from './designs';
@@ -28,8 +29,18 @@ type Props = {
   /** Контрольований режим (герой-магазин тримає вибір у себе) */
   value?: string;
   onChange?: (key: string) => void;
-  /** Вигляд перемикача: крапки-кольори або міні-фото (різнорідні предмети) */
-  switcher?: 'dots' | 'thumbs';
+  /**
+   * Вигляд перемикача:
+   *   `compass` — барабан із картками-мініатюрами, активний товар по осі
+   *               (рішення власника 2026-08-19: кольорові свотчі не розрізняли
+   *               товари, бо колекція фізично одноколірна — див. дизайн-бриф);
+   *   `dots`    — кольорові свотчі (історичний варіант);
+   *   `thumbs`  — ряд міні-фото;
+   *   `none`    — сцена без власного ряду, перемикач стоїть зовні.
+   * Сцена від цього не міняється: вона контрольована через value/onChange,
+   * і їй байдуже, хто саме викликав зміну.
+   */
+  switcher?: 'compass' | 'dots' | 'thumbs' | 'none';
   /**
    * Скільки місця на десктопі має ряд перемикачів.
    * `stage` — рівно під сценою: у герої головної праворуч від тексту ширшати
@@ -58,6 +69,9 @@ export const HeroVisual = ({
   // окремо його обробляє. Без цієї перевірки active був undefined і перший же
   // доступ до active.modelUrl нижче валив сторінку в білий екран.
   const active: Design | undefined = designs[design];
+  // Колекція з одного товару: перемикати нічого, тож ряду немає взагалі —
+  // самотня картка з підписом під сценою виглядала як недороблений контрол
+  const soloItem = Object.keys(designs).length <= 1 ? design : null;
   // Готовність памʼятаємо ЯК МОДЕЛЬ: перемкнули GLB — активна модель ще не
   // готова, канвас сам ховається за фолбек до onReady нової сцени
   const activeModel = active?.modelUrl ?? 'tshirt';
@@ -124,10 +138,31 @@ export const HeroVisual = ({
         )}
       </div>
 
+      {switcher === 'compass' && soloItem === null && (
+        <CompassSwitcher
+          items={Object.keys(designs).map((key) => ({
+            key,
+            label: designs[key].label,
+            image: designs[key].fallback,
+          }))}
+          value={design}
+          onChange={setDesign}
+          crop={false}
+        />
+      )}
+
+      {/* Ряд ховається, коли перемикати нічого (компас, зовнішній перемикач
+          або колекція з одного товару). Атрибут hidden тут не працює: власний
+          display:flex класу перебиває display:none з UA-стилів. */}
       <div
         className={`${styles.designSwitcher} ${switcherWidth === 'column' ? styles.designSwitcherColumn : ''}`}
         role="group"
-        aria-label="Товари колекції">
+        aria-label="Товари колекції"
+        style={
+          switcher === 'none' || switcher === 'compass' || soloItem !== null
+            ? { display: 'none' }
+            : undefined
+        }>
         {Object.keys(designs).map((key) => (
           <button
             key={key}

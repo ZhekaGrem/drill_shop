@@ -10,6 +10,7 @@ import { Button } from '@/shared/components/Button/Button';
 import { ArrowRight } from '@/shared/components/Svg';
 import { RichDescription } from '@/shared/components/RichDescription/RichDescription';
 import { useDesign } from '@/shared/hooks/useDesign';
+import { switcherForCollection } from '@/shared/config/collection-switcher';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import { capsuleStyle, type CollectionDef } from '@/widgets/ProductV2/collections';
 import styles from './HomeHeroes.module.scss';
@@ -38,11 +39,10 @@ export const HeroBlock = ({
   const router = useRouter();
   const design = useDesign();
   const TitleTag = titleTag;
-  // Свотч-кружечки для КОЖНОГО товару колекції (рішення власника). Раніше
-  // колекція з власною моделлю (худі буби у варятстві) перемикалась
-  // мініатюрами — тепер усі герої головної говорять однією мовою: кольоровий
-  // свотч (switcherSwatch з БД) на товар, а зміну моделі сцена й так уміє.
-  const switcher = 'dots';
+  // Механіка перемикача залежить від колекції: там, де колір і є суттю товару
+  // («Ніжна Оксана»), лишаються кольорові свотчі; де товари різняться графікою
+  // («Щільний Дріл») — компас із картками. Мапа: config/collection-switcher.
+  const switcher = switcherForCollection(col.key);
   const activeDesign = col.designs[active] ?? col.items[0]?.design;
 
   return (
