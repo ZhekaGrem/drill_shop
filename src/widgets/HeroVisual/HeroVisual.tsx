@@ -159,9 +159,7 @@ export const HeroVisual = ({
         role="group"
         aria-label="Товари колекції"
         style={
-          switcher === 'none' || switcher === 'compass' || soloItem !== null
-            ? { display: 'none' }
-            : undefined
+          switcher === 'none' || switcher === 'compass' || soloItem !== null ? { display: 'none' } : undefined
         }>
         {Object.keys(designs).map((key) => (
           <button

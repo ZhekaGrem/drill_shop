@@ -40,13 +40,7 @@ const FALLOFF = 2.2;
 const MIN_SCALE = 0.66;
 const MIN_OPACITY = 0.35;
 
-export const CompassSwitcher = ({
-  items,
-  value,
-  onChange,
-  size = 60,
-  crop = true,
-}: CompassSwitcherProps) => {
+export const CompassSwitcher = ({ items, value, onChange, size = 60, crop = true }: CompassSwitcherProps) => {
   const trackRef = useRef<HTMLDivElement>(null);
   // Останнє значення, віддане назовні: захист від зациклення
   // «скрол → onChange → проп value → програмний скрол → скрол…»
