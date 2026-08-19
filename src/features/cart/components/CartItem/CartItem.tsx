@@ -1,243 +1,133 @@
-// src/features/cart/components/CartItem.tsx
-
 'use client';
-import { Group, Text, ActionIcon, NumberInput, Stack, Badge, Box } from '@mantine/core';
-import { IconMinus, IconPlus } from '@tabler/icons-react';
-import { IconTrash } from '@/shared/components/Svg';
+// Рядок кошика за дизайн-специфікацією (v2026-08). Один компонент для сторінки
+// і для шухляди — саме тому рядок компактний (~84px замість колишніх 179px):
+// у вузьку шухляду він влазить без окремої розмітки.
+//
+// Ключові рішення дизайну, які видно в коді:
+//   • справа ЗАВЖДИ сума за позицію; ціна за штуку зʼявляється лише коли
+//     кількість > 1 і живе біля «Видалити» — так зникло дублювання ціни;
+//   • видалення не викидає тост — рядок віддає подію нагору, а CartList малює
+//     на його місці смужку «Повернути» (фокус лишається в списку);
+//   • степер оновлює число одразу, а на час запиту гасне — видно, що йде робота,
+//     але кліки не блокуються.
 import { useState, useCallback, memo } from 'react';
+import Link from 'next/link';
+import { IconMinus, IconPlus } from '@tabler/icons-react';
 import { CartItemWithProduct } from '@/shared/utils/cart-calculations';
 import { formatPrice } from '@/shared/utils/format';
-import { useCart } from '../../hooks/useCart';
-import Link from 'next/link';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
 import { getVariantDisplayBadges } from '@/shared/utils/variant-display';
 import { useDebounce } from '@/shared/hooks';
-import { showNotification, hideNotification } from '@/shared/utils/notifications';
-import { Button } from '@/shared/components/Button/Button';
+import { useCart } from '../../hooks/useCart';
 import styles from './CartItem.module.scss';
 
 interface CartItemProps {
   item: CartItemWithProduct;
+  /** Шухляда: та сама розмітка, лише трохи щільніші поля */
   compact?: boolean;
   isFirst?: boolean;
+  /** Видалення обробляє CartList — він же показує «Повернути» */
+  onRemove: () => void;
 }
 
-const CartItemComponent = ({ item, compact = false, isFirst = false }: CartItemProps) => {
-  const { updateItemQuantity, removeItem, addItem, isUpdatingItem, isRemovingItem } = useCart();
+const CartItemComponent = ({ item, compact = false, isFirst = false, onRemove }: CartItemProps) => {
+  const { updateItemQuantity } = useCart();
   const [quantity, setQuantity] = useState(item.quantity);
+  // Чи є неоформлений запит на зміну кількості саме цього рядка. Глобальний
+  // isUpdatingItem для цього не годиться: він гасив би степери всіх товарів
+  const [pending, setPending] = useState(false);
+
   const maxAvailable = item.variant?.availableQuantity ?? item.product.availableQuantity ?? 0;
   const isMaxReached = quantity >= maxAvailable;
 
-  // Debounced API call for quantity update
-  const debouncedUpdateQuantity = useDebounce((itemId: string, newQuantity: number) => {
-    updateItemQuantity(itemId, newQuantity);
+  const debouncedUpdate = useDebounce((itemId: string, next: number) => {
+    updateItemQuantity(itemId, next);
+    setPending(false);
   }, 500);
 
-  // Локальне оновлення кількості з debounce
   const handleQuantityChange = useCallback(
-    (newQuantity: number) => {
-      if (newQuantity < 1) return;
-      setQuantity(newQuantity);
-      debouncedUpdateQuantity(item.id, newQuantity);
+    (next: number) => {
+      if (next < 1 || next > maxAvailable) return;
+      setQuantity(next);
+      setPending(true);
+      debouncedUpdate(item.id, next);
     },
-    [item.id, debouncedUpdateQuantity]
+    [item.id, maxAvailable, debouncedUpdate]
   );
 
-  const handleRemove = useCallback(() => {
-    const snapshot = {
-      productId: item.product.id,
-      quantity: item.quantity,
-      variantId: item.variant?.id,
-      productData: item.product,
-    };
-    removeItem(item.id);
-    showNotification({
-      id: `undo-${item.id}`,
-      title: 'Товар видалено',
-      message: (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => {
-            addItem(snapshot.productId, snapshot.quantity, snapshot.variantId, snapshot.productData);
-            hideNotification(`undo-${item.id}`);
-          }}>
-          Повернути
-        </Button>
-      ),
-      autoClose: 5000,
-    });
-  }, [item, removeItem, addItem]);
+  const unitPrice = item.finalPrice;
+  const lineTotal = unitPrice * quantity;
+  const oldLineTotal = item.hasPromo ? item.originalPrice * quantity : null;
+  const badges = getVariantDisplayBadges(item.variant?.options || item.product.options);
+  const name = item.variant?.name || item.product.name;
 
-  const displayPrice = item.finalPrice;
-  const originalPrice = item.hasPromo ? item.originalPrice : null;
-  const imageUrl = item.product.primaryImage?.url;
-
-  if (compact) {
-    return (
-      <Group gap="sm" align="flex-start" className={styles.wrapperMini}>
-        {/* Зображення */}
-        <CloudinaryImage
-          src={imageUrl || '/assets/img/placeholder-product.jpg'}
-          alt={item.product.name}
-          width={170}
-          height={460}
-          className={`${styles.image} `}
-        />
-
-        {/* Інформація про товар */}
-        <Stack gap={4} flex={1} className={styles.info}>
-          {/* Рядок 1: Назва (зліва) | Ціна (справа) */}
-          <Group justify="space-between" align="flex-start" wrap="nowrap">
-            <Text className={styles.productName} lineClamp={2} flex={1}>
-              {item.variant?.name || item.product.name}
-            </Text>
-
-            <Box className={styles.priceContainer}>
-              {originalPrice && (
-                <Text className={styles.oldPrice}>{formatPrice(originalPrice * quantity)}</Text>
-              )}
-              <Text className={styles.currentPrice} c={originalPrice ? 'red' : undefined}>
-                {formatPrice(displayPrice * quantity)}
-              </Text>
-            </Box>
-          </Group>
-
-          {/* Рядок 2: Опції товару */}
-          {(() => {
-            const badges = getVariantDisplayBadges(item.variant?.options || item.product.options);
-
-            if (badges.length === 0) return null;
-
-            return (
-              <Group gap={4}>
-                {badges.map((badge) => (
-                  <Text key={badge.key} className={styles.variantText}>
-                    <span>{badge.label}:</span>
-                    {badge.value}
-                  </Text>
-                ))}
-              </Group>
-            );
-          })()}
-
-          {/* Рядок 3: Контрол кількості (зліва) | Видалення (справа) */}
-          <Group justify="space-between" align="center" className={styles.bottomControls}>
-            <div className={styles.quantityControl}>
-              <button
-                className={styles.qtyBtn}
-                onClick={() => handleQuantityChange(quantity - 1)}
-                disabled={quantity <= 1 || isUpdatingItem}
-                aria-label="Зменшити кількість">
-                <IconMinus size={16} />
-              </button>
-
-              <div className={styles.qtyValue}>{quantity}</div>
-
-              <button
-                className={styles.qtyBtn}
-                onClick={() => handleQuantityChange(quantity + 1)}
-                disabled={isUpdatingItem || isMaxReached}
-                aria-label="Збільшити кількість">
-                <IconPlus size={16} />
-              </button>
-            </div>
-
-            <Group gap="xs" onClick={handleRemove} style={{ cursor: 'pointer' }}>
-              <ActionIcon className={styles.trashBtn} loading={isRemovingItem} aria-label="Видалити товар">
-                <IconTrash size={16} />
-              </ActionIcon>
-            </Group>
-          </Group>
-        </Stack>
-      </Group>
-    );
-  }
-
-  // Повний вигляд для сторінки кошика (compact=false)
   return (
-    <Group align="flex-start" className={`${styles.wrapper} ${isFirst ? styles.wrapperFirst : ''}`}>
-      {/* Зображення */}
-      <CloudinaryImage
-        src={imageUrl || '/assets/img/placeholder-product.jpg'}
-        alt={item.product.name}
-        width={200}
-        height={460}
-        className={`${styles.image} ${styles.imageCartPage}`}
-      />
+    <div className={`${styles.row} ${compact ? styles.rowCompact : ''} ${isFirst ? styles.rowFirst : ''}`}>
+      <Link href={`/catalog/${item.product.slug}`} className={styles.thumb} aria-label={name}>
+        <CloudinaryImage
+          src={item.product.primaryImage?.url || '/assets/img/placeholder-product.jpg'}
+          alt=""
+          width={128}
+          height={128}
+        />
+      </Link>
 
-      {/* Інформація про товар */}
-      <Stack gap={4} flex={1} className={styles.info}>
-        {/* Рядок 1: Назва (зліва) | Ціна (справа) */}
-        <Group justify="space-between" align="flex-start" wrap="nowrap">
-          <Text className={styles.productName} lineClamp={2} flex={1}>
-            {item.variant?.name || item.product.name}
-          </Text>
-
-          <Box className={styles.priceContainer}>
-            {originalPrice && (
-              <Text className={styles.oldPrice}>{formatPrice(originalPrice * quantity)}</Text>
+      <div className={styles.body}>
+        <div className={styles.head}>
+          <div className={styles.titleBlock}>
+            <Link href={`/catalog/${item.product.slug}`} className={styles.name}>
+              {name}
+            </Link>
+            {badges.length > 0 && (
+              <p className={styles.meta}>{badges.map((b) => `${b.label}: ${b.value}`).join(' · ')}</p>
             )}
-            <Text className={styles.currentPrice} c={originalPrice ? 'red' : undefined}>
-              {formatPrice(displayPrice * quantity)}
-            </Text>
-          </Box>
-        </Group>
+          </div>
 
-        {/* Рядок 2: Опції товару */}
-        {(() => {
-          const badges = getVariantDisplayBadges(item.variant?.options || item.product.options);
+          {/* Справа — тільки сума за позицію. Ціна за штуку нижче й лише коли
+              вона справді додає інформацію (кількість > 1) */}
+          <div className={styles.priceBlock}>
+            {oldLineTotal && <s className={styles.oldPrice}>{formatPrice(oldLineTotal)}</s>}
+            <span className={`${styles.price} ${oldLineTotal ? styles.pricePromo : ''}`}>
+              {formatPrice(lineTotal)}
+            </span>
+          </div>
+        </div>
 
-          if (badges.length === 0) return null;
-
-          return (
-            <Group gap={4} className={styles.GroupVariantText}>
-              {badges.map((badge) => (
-                <Text key={badge.key} className={styles.variantText}>
-                  <span>{badge.label}:</span>
-                  {badge.value}
-                </Text>
-              ))}
-            </Group>
-          );
-        })()}
-
-        <Text className={styles.variantText}>
-          {' '}
-          <span>Ціна:</span> {formatPrice(displayPrice)}
-        </Text>
-
-        {/* Рядок 3: Контрол кількості (зліва) | Видалення (справа) */}
-        <Group justify="space-between" align="center" className={styles.bottomControlsFull}>
-          <div className={styles.quantityControl}>
+        <div className={styles.controls}>
+          <div className={`${styles.stepper} ${pending ? styles.stepperPending : ''}`}>
             <button
-              className={styles.qtyBtn}
+              type="button"
               onClick={() => handleQuantityChange(quantity - 1)}
-              disabled={quantity <= 1 || isUpdatingItem}
+              disabled={quantity <= 1}
               aria-label="Зменшити кількість">
               <IconMinus size={16} />
             </button>
-
-            <div className={styles.qtyValue}>{quantity}</div>
-
+            <span aria-live="polite">{quantity}</span>
             <button
-              className={styles.qtyBtn}
+              type="button"
               onClick={() => handleQuantityChange(quantity + 1)}
-              disabled={isUpdatingItem || isMaxReached}
+              disabled={isMaxReached}
               aria-label="Збільшити кількість">
               <IconPlus size={16} />
             </button>
           </div>
 
-          <Group gap="xs" onClick={handleRemove} style={{ cursor: 'pointer' }} className={styles.deleteGroup}>
-            <ActionIcon className={styles.trashBtn} loading={isRemovingItem} aria-label="Видалити товар">
-              <IconTrash size={16} />
-            </ActionIcon>
-            <Text className={styles.deleteText}>Видалити</Text>
-          </Group>
-        </Group>
-      </Stack>
-    </Group>
+          {/* Одне тихе пояснення на рядок: або чому «+» не тисне, або з чого
+              складається сума. Обидва разом ніколи не потрібні */}
+          {isMaxReached ? (
+            <span className={styles.note}>Більше немає в наявності</span>
+          ) : quantity > 1 ? (
+            <span className={styles.note}>
+              {quantity} × {formatPrice(unitPrice)}
+            </span>
+          ) : null}
+
+          <button type="button" className={styles.remove} onClick={onRemove}>
+            Видалити
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

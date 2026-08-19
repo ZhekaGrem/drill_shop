@@ -72,10 +72,22 @@
   color: var(--text-primary);
 }
 
-.summaryMuted {
+.summaryValue {
+  font-variant-numeric: tabular-nums;
+}
+
+// Знижка — єдиний кольоровий рядок підсумку (дизайн-специфікація v2026-08)
+.summaryDiscount {
+  color: var(--accent-red);
+}
+
+// Доставка прибрана з математики: її не порахувати, поки не обрано спосіб.
+// Замість рядка з порожнім значенням — тиха обіцянка під сумою
+.deliveryNote {
   font-size: var(--text-sm);
+  font-weight: var(--fw-light);
+  line-height: 1.45;
   color: var(--text-secondary);
-  text-align: right;
 }
 
 // Було `border-top: 3px dotted` — залишок піксель-арт мови.
@@ -138,12 +150,121 @@
   }
 }
 
-.desktopText {
-  display: inline;
+// ============ Скелет завантаження ============
+// Повторює геометрію справжнього рядка, тож поява товарів не смикає сторінку
+.skeletonRow {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-4) var(--card-padding);
+  border-top: 1px solid var(--border-subtle);
+
+  &:first-child {
+    border-top: none;
+  }
 }
 
-.mobileText {
+.skeletonThumb,
+.skeletonLine {
+  background: linear-gradient(
+    90deg,
+    var(--surface-muted) 25%,
+    var(--surface-card) 37%,
+    var(--surface-muted) 63%
+  );
+  background-size: 400% 100%;
+  animation: cartShimmer 1.4s ease infinite;
+  border-radius: var(--border-radius-sm);
+}
+
+.skeletonThumb {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+}
+
+.skeletonLines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.skeletonLine {
+  height: 14px;
+  border-radius: var(--radius-pill);
+}
+
+.skeletonLineShort {
+  width: 40%;
+}
+
+@keyframes cartShimmer {
+  from {
+    background-position: 100% 50%;
+  }
+
+  to {
+    background-position: 0 50%;
+  }
+}
+
+// ============ Мобільна липка панель ============
+// Сума й головна дія завжди на виду. Стоїть над нижньою навігацією —
+// звідси відступ на її висоту й на safe-area айфона.
+.stickyBar {
   display: none;
+}
+
+@media (max-width: 968px) {
+  .stickyBar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--page-padding-x);
+    background: var(--surface-card);
+    border-top: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .stickyTotal {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .stickyLabel {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+  }
+
+  .stickyPrice {
+    font-size: var(--text-xl);
+    font-weight: var(--fw-medium);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+  }
+
+  .stickyAction {
+    flex: 1;
+    display: block;
+  }
+
+  // Щоб липка панель не накривала останній товар і примітки
+  .pageWithBar {
+    padding-bottom: calc(var(--control-h-lg) + var(--space-8));
+  }
+
+  // Картка підсумку на мобільному лишається (там знижка й примітки),
+  // але кнопку в ній ховаємо — дія вже є в липкій панелі
+  .checkoutLink {
+    display: none;
+  }
 }
 
 // ============ Порожній кошик / помилка ============
@@ -183,14 +304,4 @@
   gap: var(--space-3);
   justify-content: center;
   margin-top: var(--space-2);
-}
-
-@media (max-width: 768px) {
-  .desktopText {
-    display: none;
-  }
-
-  .mobileText {
-    display: inline;
-  }
 }

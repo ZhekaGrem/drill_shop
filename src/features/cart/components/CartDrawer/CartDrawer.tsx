@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 import { IconCart3, IconX } from '@/shared/components/Svg';
 import { useCartDrawerState, useCartDrawerActions } from '@/shared/stores/cart';
 import { useCart } from '@/features/cart/hooks/useCart';
-import { CartItem } from '../CartItem/CartItem';
+import { CartList } from '../CartList/CartList';
 import { formatPrice } from '@/shared/utils/format';
 import Link from 'next/link';
 import { Button } from '@/shared/components/Button/Button';
@@ -84,8 +84,8 @@ export const CartDrawer = () => {
             <Center py="xl">
               <Stack align="center">
                 <IconCart3 />
-                <Text c="dimmed" ta="center" size={isMobile ? 'md' : 'sm'}>
-                  Ваш кошик порожній
+                <Text ta="center" size={isMobile ? 'md' : 'sm'}>
+                  Кошик поки що порожній
                 </Text>
                 <Link href={`${basePath}/catalog`}>
                   <Button onClick={close} size={isMobile ? 'md' : 'sm'}>
@@ -96,9 +96,7 @@ export const CartDrawer = () => {
             </Center>
           ) : (
             <Stack gap={0}>
-              {items.map((item) => (
-                <CartItem key={item.id} item={item} compact={true} />
-              ))}
+              <CartList items={items} compact />
             </Stack>
           )}
         </ScrollArea>
@@ -124,7 +122,7 @@ export const CartDrawer = () => {
                 </Button>
               </Link>
               <Link href={`${basePath}/cart`}>
-                <Button variant="primary" size="lg" fullWidth onClick={close}>
+                <Button variant="secondary" size="lg" fullWidth onClick={close}>
                   Переглянути кошик
                 </Button>
               </Link>

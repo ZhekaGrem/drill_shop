@@ -1,11 +1,16 @@
 // src/app/cart/Cart.tsx
+// Кошик за дизайн-специфікацією (v2026-08):
+//   • список — головне, підсумок вторинний до моменту рішення;
+//   • знижка окремим рядком, доставка прибрана з математики й перетворена
+//     на тиху обіцянку під сумою;
+//   • на мобільному сума й дія живуть у липкій панелі над нижньою навігацією.
 'use client';
 
 import Link from 'next/link';
 import { IconShoppingCart } from '@tabler/icons-react';
 import { ArrowLeft } from '@/shared/components/Svg';
 import { useCart } from '@/features/cart/hooks/useCart';
-import { CartItem } from '@/features/cart/components/CartItem/CartItem';
+import { CartList } from '@/features/cart/components/CartList/CartList';
 import { formatPrice, formatProducts } from '@/shared/utils/format';
 import { Button } from '@/shared/components/Button/Button';
 import { Page } from '@/shared/components/Page/Page';
@@ -16,8 +21,26 @@ interface CartPageProps {
   basePath?: string;
 }
 
+// Скелет повторює геометрію справжнього рядка (фото 64 + два текстові рядки),
+// тож поява товарів не зсуває сторінку
+const CartSkeleton = () => (
+  <div className={styles.itemsList} aria-busy="true" aria-label="Завантажуємо кошик">
+    {[0, 1, 2].map((i) => (
+      <div key={i} className={styles.skeletonRow}>
+        <span className={styles.skeletonThumb} />
+        <span className={styles.skeletonLines}>
+          <span className={styles.skeletonLine} />
+          <span className={`${styles.skeletonLine} ${styles.skeletonLineShort}`} />
+        </span>
+      </div>
+    ))}
+  </div>
+);
+
 export default function CartPage({ basePath = '' }: CartPageProps) {
   const { items, calculations, error, isLoading } = useCart();
+  const hasItems = items.length > 0;
+  const discount = calculations.discountAmount ?? 0;
 
   if (error) {
     return (
@@ -33,12 +56,10 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
   }
 
   return (
-    <Page>
+    <Page className={hasItems ? styles.pageWithBar : undefined}>
       <PageHeader
         title="Кошик"
-        description={
-          items.length > 0 ? `${formatProducts(calculations.itemsCount)} у кошику` : 'Поки що порожній'
-        }
+        description={hasItems ? `${formatProducts(calculations.itemsCount)} у кошику` : undefined}
         aside={
           <Link href={`${basePath}/catalog`} className={styles.backLink}>
             <ArrowLeft size={18} />
@@ -48,53 +69,56 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
       />
 
       {isLoading ? (
-        <div className={styles.state}>
-          <p>Завантажуємо кошик…</p>
-        </div>
-      ) : items.length === 0 ? (
+        <CartSkeleton />
+      ) : !hasItems ? (
+        // Порожній кошик — не глухий кут, а запрошення (рішення дизайну)
         <div className={styles.state}>
           <IconShoppingCart size={48} stroke={1.5} className={styles.stateIcon} />
-          <h2>Ваш кошик порожній</h2>
-          <p>Додайте товари до кошика, щоб продовжити покупки.</p>
+          <h2>Кошик поки що порожній</h2>
+          <p>Але це легко виправити. Лімітований мерч чекає на тебе.</p>
           <div className={styles.stateActions}>
-            <Button variant="primary" onClick={() => (window.location.href = `${basePath}/catalog`)}>
-              Перейти до каталогу
-            </Button>
+            <Link href={`${basePath}/catalog`}>
+              <Button variant="primary" size="lg">
+                Перейти до каталогу
+              </Button>
+            </Link>
           </div>
         </div>
       ) : (
         <div className={styles.cart}>
-          {/* Список товарів — одна біла картка, рядки розділені всередині */}
           <div className={styles.itemsList}>
-            {items.map((item, index) => (
-              <CartItem key={item.id} item={item} compact={false} isFirst={index === 0} />
-            ))}
+            <CartList items={items} />
           </div>
 
-          {/* Підсумок. Раніше це була картка з градієнтом, у яку вкладалась ще
-              одна біла картка — градієнт на градієнті сторінки. */}
           <aside className={styles.summary}>
-            <h2 className={styles.summaryTitle}>Разом</h2>
+            <h2 className={styles.summaryTitle}>Підсумок</h2>
 
             <div className={styles.summaryRow}>
               <span>Товари ({calculations.itemsCount})</span>
-              <span>{formatPrice(calculations.subtotal)}</span>
+              <span className={styles.summaryValue}>{formatPrice(calculations.subtotal)}</span>
             </div>
 
-            <div className={styles.summaryRow}>
-              <span>Доставка</span>
-              <span className={styles.summaryMuted}>За тарифами перевізника</span>
-            </div>
+            {/* Знижка зʼявляється лише коли вона є, і єдина в підсумку
+                носить акцентний колір */}
+            {discount > 0 && (
+              <div className={`${styles.summaryRow} ${styles.summaryDiscount}`}>
+                <span>Знижка</span>
+                <span className={styles.summaryValue}>− {formatPrice(discount)}</span>
+              </div>
+            )}
 
             <div className={styles.total}>
               <span>До сплати</span>
               <span className={styles.totalPrice}>{formatPrice(calculations.totalAmount)}</span>
             </div>
 
+            {/* Доставку тут не рахуємо — спосіб і адресу людина обирає далі.
+                Замість порожнього рядка в математиці — чесна обіцянка */}
+            <p className={styles.deliveryNote}>Доставка та оплата обираються на наступному кроці</p>
+
             <Link href={`${basePath}/checkout`} className={styles.checkoutLink}>
               <Button variant="primary" size="lg" fullWidth>
-                <span className={styles.desktopText}>Перейти до оформлення</span>
-                <span className={styles.mobileText}>Оформити</span>
+                Оформити замовлення
               </Button>
             </Link>
 
@@ -104,6 +128,20 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
               <li>14 днів на повернення</li>
             </ul>
           </aside>
+
+          {/* Мобільна липка панель: сума й дія завжди на виду, над нижньою
+              навігацією. На десктопі її роль виконує картка підсумку праворуч */}
+          <div className={styles.stickyBar}>
+            <div className={styles.stickyTotal}>
+              <span className={styles.stickyLabel}>До сплати</span>
+              <span className={styles.stickyPrice}>{formatPrice(calculations.totalAmount)}</span>
+            </div>
+            <Link href={`${basePath}/checkout`} className={styles.stickyAction}>
+              <Button variant="primary" size="lg" fullWidth>
+                Оформити
+              </Button>
+            </Link>
+          </div>
         </div>
       )}
     </Page>

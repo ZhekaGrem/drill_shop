@@ -1,232 +1,215 @@
-// src/features/cart/components/CartItem.module.scss
+// src/features/cart/components/CartItem/CartItem.module.scss
+// Компактний рядок кошика (дизайн-специфікація v2026-08): фото 64×64,
+// назва з ціною в один рядок, під ними степер і «Видалити». Ціль по висоті —
+// ~84px, щоб на першому екрані телефона було видно 5–6 позицій.
 
-// Кольори з картинки (приблизні)
-// Світло-зелений фон
-// Рядки лежать усередині однієї білої картки списку, тому власної рамки в них
-// бути не повинно: раніше кожен товар був окремою коробкою в коробці. Розділяє
-// їх той самий інсетнутий hairline, що й рядки <ListGroup>.
-.wrapperMini,
-.wrapper {
-  position: relative;
-  width: 100%;
-  background-color: var(--surface-card);
-  overflow: hidden;
-
-  & + & {
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: var(--card-padding);
-      right: var(--card-padding);
-      border-top: 1px solid var(--border-subtle);
-    }
-  }
-}
-
-.image {
-  object-fit: cover;
-  flex-shrink: 0;
-  border-right: 1px solid var(--border-subtle);
-  align-self: stretch;
-  height: 100%;
-}
-
-// Було 16/16/16/24 — лівий відступ не збігався з рештою й текст «плив»
-.info {
+.row {
   display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  gap: var(--space-1);
-  padding: var(--card-padding);
-}
-
-.bottomControls {
-  margin-top: auto;
-}
-
-// Було `3px dotted` — залишок піксель-арт мови
-.bottomControlsFull {
-  margin-top: auto;
-  padding-top: var(--space-3);
+  gap: var(--space-3);
+  align-items: flex-start;
+  // Поля рядка задає САМ рядок: список — це гола картка без падінгів
+  padding: var(--space-4) var(--card-padding);
   border-top: 1px solid var(--border-subtle);
 }
 
-.wrapperFirst {
+// Перший рядок у картці не малює верхню лінію — її роль виконує край картки
+.rowFirst {
   border-top: none;
 }
 
-.productName {
-  font-size: var(--text-base);
-  font-weight: var(--fw-medium);
-  line-height: 1.35;
-  color: var(--text-primary);
+// Шухляда: горизонтальні поля вже дає її власний контейнер прокрутки,
+// тож тут лишається тільки вертикальний ритм
+.rowCompact {
+  padding: var(--space-3) 0;
 }
 
-.GroupVariantText {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
+.thumb {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  background: var(--surface-muted);
+  display: block;
 
-.variantText {
-  font-size: var(--text-sm);
-  font-weight: var(--fw-medium);
-  color: var(--text-secondary);
-
-  span {
-    font-weight: var(--fw-light);
-    margin-right: var(--space-1);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
-.priceContainer {
-  text-align: right;
+.body {
+  flex: 1;
+  min-width: 0; // інакше довга назва розпирає рядок і ламає праву колонку
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.titleBlock {
+  min-width: 0;
+}
+
+.name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: var(--text-base);
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+  text-decoration: none;
+  line-height: 1.3;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.meta {
+  margin-top: 2px;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+// ---------- ціна ----------
+.priceBlock {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  white-space: nowrap;
 }
 
 .oldPrice {
-  font-size: var(--text-sm);
-  font-weight: var(--fw-light);
+  font-size: var(--text-xs);
   color: var(--text-secondary);
-  text-decoration: line-through;
 }
 
-.currentPrice {
-  font-size: var(--text-xl);
-  font-weight: var(--fw-medium);
+.price {
+  font-size: var(--text-base);
+  font-weight: var(--fw-bold); // ціна — єдине місце, де bold дозволений поза h1–h3
+  font-variant-numeric: tabular-nums;
   color: var(--text-primary);
 }
 
-// Стилізація блоку кількості (Квадратні кнопки)
-.quantityControl {
+// Промо-ціна єдина в рядку носить акцентний колір
+.pricePromo {
+  color: var(--accent-red);
+}
+
+// ---------- контроли ----------
+.controls {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--space-3);
+}
 
-  .qtyBtn {
-    width: 40px;
-    height: 40px;
-    display: flex;
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  border: 1px solid var(--border-control);
+  border-radius: var(--radius-pill);
+  padding: 2px;
+  transition: opacity 0.15s ease;
+
+  button {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--border-radius-sm);
-    background: transparent;
+    border: none;
+    background: none;
+    border-radius: var(--radius-pill);
     color: var(--text-primary);
     cursor: pointer;
-    transition: all 0.2s;
 
     &:hover:not(:disabled) {
-      background: var(--background-secondary);
+      background: var(--surface-muted);
     }
 
     &:disabled {
-      opacity: 0.5;
+      opacity: 0.35;
       cursor: not-allowed;
     }
   }
 
-  .qtyValue {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-    color: var(--text-primary);
+  span {
+    min-width: 20px;
+    text-align: center;
+    font-size: var(--text-sm);
     font-weight: var(--fw-medium);
-    font-size: var(--text-base);
+    font-variant-numeric: tabular-nums;
   }
 }
 
-// Ваги 600–800 у e-Ukraine не існує — браузер малював синтетичний жир
-.deleteText {
-  display: block;
-  padding: var(--space-1);
-  font-size: var(--text-sm);
-  font-weight: var(--fw-medium);
-  color: var(--text-secondary);
+// Запит у польоті: число вже нове, степер тихо гасне — видно, що йде робота,
+// але кліки не блокуються (дизайн-рішення проти «замороженого» UI)
+.stepperPending {
+  opacity: 0.5;
 }
 
-.trashBtn {
+// Одне тихе пояснення: або межа залишку, або з чого складається сума
+.note {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-xs);
   color: var(--text-secondary);
-  background: transparent;
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove {
+  margin-left: auto;
   border: none;
+  background: none;
+  padding: 0;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 
   &:hover {
-    background: transparent;
-    color: var(--accent-red);
+    color: var(--text-primary);
   }
 }
 
-.deleteGroup {
-  display: flex;
-  justify-content: center;
+// ---------- стан «видалено» ----------
+// Рядок лишається на місці замість тоста: фокус людини не залишає список
+.removedRow {
   align-items: center;
+  gap: var(--space-2);
+  min-height: 84px;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
 }
 
-// Mobile responsive
-@media (max-width: 768px) {
-  .wrapper,
-  .wrapperMini {
-    min-height: 160px;
+.removedText {
+  color: var(--text-secondary);
+}
 
-    // Переконуємось що Group має align-items: stretch
-    :global(.mantine-Group-root) {
-      align-items: stretch !important;
-    }
-  }
-
-  .image {
-    align-self: stretch;
-    object-fit: cover;
-    max-width: 130px;
-    height: 100%;
-  }
-
-  .info {
-    padding: var(--card-padding);
-  }
-
-  // Було 0.7rem (≈11px) на назві та 0.75rem (12px) на ціні — назву неможливо
-  // прочитати, а найважливіше число в рядку виявлялось дрібнішим за неї.
-  // Ієрархія відновлена: ціна лишається найбільшою.
-  .productName {
-    font-size: var(--text-sm);
-  }
-
-  .variantText {
-    font-size: var(--text-xs);
-  }
-
-  .currentPrice {
-    font-size: var(--text-lg);
-  }
-
-  .oldPrice {
-    font-size: var(--text-xs);
-  }
-
-  // 24px не дотягували навіть до мінімальних 24×24 разом із проміжками;
-  // тримаємо 40px — нижню межу тап-таргета за дизайн-системою
-  .quantityControl {
-    .qtyBtn,
-    .qtyValue {
-      width: 40px;
-      height: 40px;
-    }
-
-    .qtyValue {
-      font-size: var(--text-sm);
-    }
-  }
-
-  .deleteText {
-    display: none;
-  }
-
-  .imageCartPage {
-    max-width: 150px;
-  }
+.undo {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  color: var(--accent);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
