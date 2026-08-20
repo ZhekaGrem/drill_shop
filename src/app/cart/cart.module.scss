@@ -221,7 +221,7 @@
     position: fixed;
     left: 0;
     right: 0;
-    bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+    bottom: env(safe-area-inset-bottom, 0px);
     z-index: 90;
     display: flex;
     align-items: center;
@@ -253,6 +253,13 @@
   .stickyAction {
     flex: 1;
     display: block;
+  }
+
+  // Там, де знизу є панель навігації (Telegram Mini App), піднімаємось над нею.
+  // Атрибут ставить сам BottomNav, тож панель кошика не мусить знати, на якій
+  // саме поверхні вона опинилась — на сайті нижньої навігації більше немає.
+  :global(body[data-bottom-nav]) .stickyBar {
+    bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
   }
 
   // Щоб липка панель не накривала останній товар і примітки

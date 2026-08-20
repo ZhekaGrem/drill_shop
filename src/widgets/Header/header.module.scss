@@ -82,7 +82,7 @@
   min-width: 0;
 }
 
-// Right group: search + cart + account
+// Права група: каталог, меню, кошик
 .headerRight {
   display: flex;
   align-items: center;
@@ -191,6 +191,29 @@
 }
 
 // Cart button with badge
+// Кнопки-іконки праворуч (каталог, меню) — та сама геометрія, що й кошик:
+// один діаметр, одна мова, ціль 44×44 (WCAG 2.5.5)
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--hd-fg);
+  transition: background var(--dur-hover) var(--ease-out);
+
+  &:hover {
+    background: var(--hd-hover);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
 .cartButton {
   display: flex;
   align-items: center;
@@ -261,246 +284,8 @@
   }
 }
 
-// Search trigger button — icon only, mobile (< 1024px)
-.searchTrigger {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  cursor: pointer;
-  transition:
-    background var(--dur-hover) var(--ease-out),
-    color var(--dur-hover) var(--ease-out);
-  color: var(--hd-fg);
-
-  &:hover {
-    background: var(--hd-hover);
-  }
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  @media (min-width: 1024px) {
-    display: none;
-  }
-}
-
-.searchPlaceholder {
-  font-size: var(--text-base);
-  color: var(--hd-fg);
-  transition: color var(--dur-hover) var(--ease-out);
-}
-
-// Search pill — visible search field, desktop only (>= 1024px)
-// Exact diia.gov.ua search-pill values
-.searchPill {
-  display: none;
-  position: relative;
-  align-items: center;
-  min-width: 240px;
-  // Тонка межа відрізняє клікабельну пігулку від «голого» інпута (affordance)
-  border: 1px solid var(--hd-pill-border);
-  border-radius: var(--radius-pill);
-  // 44px рівно: 9 + 24 + 9 + 2px межі. Було 12/12 → 50px, тобто пошук стирчав
-  // на 6px вище за сусідні іконки-кнопки й кнопку «Кабінет» — ряд контролів
-  // у хедері не мав спільної осі.
-  height: 44px;
-  padding: 0 50px 0 25px;
-  font-weight: var(--fw-normal);
-  font-size: var(--text-base);
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  // Пігулка пошуку не конкурує з «Кабінетом» за роль головної дії: прозора,
-  // з тихою межею — вторинний контрол на будь-якій із двох смуг.
-  color: var(--hd-fg-quiet);
-  background: transparent;
-  cursor: pointer;
-  transition:
-    background var(--dur-hover) var(--ease-out),
-    color var(--dur-hover) var(--ease-out);
-  text-align: left;
-
-  &:hover {
-    background: var(--hd-hover);
-    color: var(--hd-fg);
-  }
-
-  @media (min-width: 1024px) {
-    display: flex;
-  }
-}
-
-.searchPillText {
-  flex: 1;
-}
-
-.searchPillIcon {
-  position: absolute;
-  right: 25px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  color: var(--hd-fg-quiet);
-}
-
-// Розгорнутий пошук лежить усередині .wrapper, тобто на тій самій чорній
-// смузі — власного фону йому не треба. Було var(--background): біла плита
-// під чорним хедером виглядала б як чужий блок, приклеєний знизу.
-.expandedSearchContainer {
-  width: 100%;
-  padding: 0 var(--page-padding-x) var(--spacing-md);
-}
-
-.expandedSearchForm {
-  position: relative;
-  display: flex;
-  align-items: center;
-  max-width: 100%;
-
-  // Diia-style фокус: замість суцільної синьої рамки — тонка --gradient-brand
-  // підкреслюючи лінія під полем (той самий прийом, що й на diia.gov.ua/news
-  // у полі пошуку). Ховається в спокої, зʼявляється й «дотягується» на фокусі.
-  &::after {
-    content: '';
-    position: absolute;
-    left: var(--spacing-lg);
-    right: var(--spacing-lg);
-    bottom: 0;
-    height: 2px;
-    border-radius: 1px;
-    background: var(--gradient-brand);
-    opacity: 0;
-    transform: scaleX(0.7);
-    transform-origin: center;
-    transition:
-      opacity 0.25s ease,
-      transform 0.35s ease;
-  }
-
-  &:focus-within::after {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-}
-
-.expandedSearchInput {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  flex: 1;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--hd-border);
-  font-size: var(--text-base);
-  font-weight: var(--fw-normal);
-  color: var(--hd-fg);
-  background: var(--hd-hover);
-  transition:
-    border-color var(--dur-hover) var(--ease-out),
-    background var(--dur-hover) var(--ease-out);
-
-  &:focus {
-    outline: none;
-    border-color: transparent;
-  }
-
-  // На темній підкладці (#1a1a1a) --hd-fg-quiet = #9a9a9a → 6.18:1; на світлій
-  // (#e7eef3) — #606060 → 4.64:1. Плейсхолдер — звичайний текст, йому потрібні
-  // ті самі 4.5:1 (WCAG 1.4.3) на обох смугах.
-  &::placeholder {
-    color: var(--hd-fg-quiet);
-  }
-}
-
-.expandedSearchClear {
-  position: absolute;
-  right: var(--spacing-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  cursor: pointer;
-  transition:
-    background var(--dur-hover) var(--ease-out),
-    color var(--dur-hover) var(--ease-out);
-  color: var(--hd-fg);
-
-  &:hover {
-    background: var(--hd-hover);
-  }
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-// Підказки пошуку лишаються в межах смуги хедера — це продовження поля,
-// а не спливаючий шар над сторінкою. Поверхню відділяє підкладка + тонка межа
-// (тінь на чорному не працює, тому нею не користуємось на жодній зі смуг).
-.searchSuggestions {
-  display: flex;
-  flex-direction: column;
-  background: var(--hd-hover);
-  border: 1px solid var(--hd-border);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-sm);
-  margin-top: var(--spacing-xs);
-}
-
-.suggestionsLabel {
-  font-size: var(--text-xs);
-  color: var(--hd-fg-quiet);
-  padding: var(--spacing-xs) var(--spacing-sm);
-}
-
-.suggestionItem {
-  text-align: left;
-  border: none;
-  background: transparent;
-  padding: var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  font-size: var(--text-base);
-  color: var(--hd-fg);
-  transition: background var(--dur-hover) var(--ease-out);
-
-  &:hover {
-    background: var(--hd-border);
-  }
-}
-
 // Mobile styles
 @media (max-width: 768px) {
-  // Тут стояло `padding: var(--spacing-y-m) var(--spacing-x)` одразу на .header
-  // і на .expandedSearchInput: (1) .header уже має мобільний падінг вище в
-  // файлі — два конкурентні правила на один елемент; (2) полю пошуку діставались
-  // ПОЛЯ СТОРІНКИ, від чого його висота їхала тільки на мобільному;
-  // (3) --spacing-x/--spacing-y-m у globals.css позначені DEPRECATED.
-  .expandedSearchContainer {
-    padding: 0 var(--page-padding-x) var(--spacing-sm);
-  }
-
-  // Був 40×40 з іконкою 20×20 поруч із .cartButton 44×44 і іконкою 24×24:
-  // два сусідні круглі контроли різного діаметра, до того ж нижче 44px
-  // (WCAG 2.5.5). Тепер обидва на одній осі й одного розміру.
-  .searchTrigger {
-    width: 44px;
-    height: 44px;
-
-    svg {
-      width: 24px;
-      height: 24px;
-    }
-  }
 
   .headerLeft,
   .headerRight {
