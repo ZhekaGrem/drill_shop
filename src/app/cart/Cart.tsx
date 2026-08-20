@@ -123,8 +123,8 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
             </Link>
 
             <ul className={styles.notes}>
-              <li>Відправка за 1–2 робочі дні</li>
-              <li>Оплата карткою або при отриманні</li>
+              <li>Відправка за 3-7 днів</li>
+              <li>З оплатою розберемся легесенько</li>
               <li>14 днів на повернення</li>
             </ul>
           </aside>
