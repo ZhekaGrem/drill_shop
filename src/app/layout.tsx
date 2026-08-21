@@ -14,6 +14,35 @@ import { baseMetadata, siteViewport, structuredData } from './seo';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { JsonLd } from './JsonLd';
 import { Splash } from '@/shared/components/SiteLoader/Splash';
+import { DesignClock } from '@/shared/components/DesignClock/DesignClock';
+import { DESIGN_IDS } from '@/shared/config/design';
+import { rotationSnippet } from '@/shared/config/design-rotation';
+
+// Дизайн і тема ДО першого кадру (без блимання). Скрипт — рядок, імпортів у
+// нього не занести, тож правила теми тут дослівно дублюють theme.ts: міняєш
+// там — онови і тут. А от ДАНІ дизайну не дублюються: список id приходить з
+// DESIGN_IDS, порядок і крок ротації — з rotationSnippet(), обидва зібрані з
+// тих самих констант, що їх читає React. Розʼїхатись їм нема на чому.
+//
+// Порядок гілок важливий: спершу ds отримує значення (явний вибір → 'diia' →
+// ротація), і лише потім за ним рахується авто-тема, бо правило теми залежить
+// від дизайну.
+const bootScript =
+  `(function(){try{var d=document.documentElement;` +
+  `var IDS=${JSON.stringify(DESIGN_IDS)};` +
+  `var ds=localStorage.getItem('design');` +
+  // Немає явного вибору (або сміття у сховищі) — вмикається календар.
+  // 'diia' присвоюється ПЕРЕД ротацією, щоб при вимкненому рубильнику
+  // (rotationSnippet() порожній) ds лишався валідним, а не null.
+  `if(IDS.indexOf(ds)<0){ds='diia';${rotationSnippet()}}` +
+  `if(ds!=='diia'){d.setAttribute('data-design',ds);}` +
+  `var t=localStorage.getItem('theme');` +
+  `if(t!=='dark'&&t!=='light'){` +
+  `if(ds==='streetwear'){t='dark';}` +
+  `else if(ds==='cupertino'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}` +
+  `else{var h=new Date().getHours();t=h>=18||h<6?'dark':'light';}}` +
+  `d.setAttribute('data-theme',t);d.setAttribute('data-mantine-color-scheme',t);` +
+  `}catch(e){}})();`;
 
 // Шрифти e-Ukraine (Diia redesign) — офіційні шрифти thedigital.gov.ua/fonts, CC BY 4.0
 //
@@ -58,16 +87,9 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-        {/* Дизайн-концепція і тема ДО першого кадру (без блимання). Дзеркало
-            правил shared/config/design.ts + theme.ts: явний вибір теми
-            перекриває автоматику; авто залежить від дизайну — стрітвір завжди
-            темний, Cupertino за системою, решта за годинником 18:00–6:00 */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "(function(){try{var d=document.documentElement;var ds=localStorage.getItem('design');if(ds==='cupertino'||ds==='streetwear'||ds==='tactile'){d.setAttribute('data-design',ds);}else{ds=null;}var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){if(ds==='streetwear'){t='dark';}else if(ds==='cupertino'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}else{var h=new Date().getHours();t=h>=18||h<6?'dark':'light';}}d.setAttribute('data-theme',t);d.setAttribute('data-mantine-color-scheme',t);}catch(e){}})();",
-          }}
-        />
+        {/* Явний вибір перекриває автоматику — і для теми, і для дизайну.
+            Складено вище, поруч із константами, з яких збирається. */}
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
       <body
         className={`${eUkraine.variable} ${eUkraineHead.variable}`}
@@ -84,6 +106,10 @@ export default function RootLayout({
         {/* Сплеш першого відкриття: SSR-иться в перший HTML, зникає після
             гідрації. Живе поза Providers — йому не потрібен жоден контекст */}
         <Splash />
+        {/* Доглядач ротації. Живе тут, а не в LayoutWrapper, бо той віддає
+            /telegram раннім return-ом — а сторінки телеграма мають ротуватись
+            так само. Контексту йому не треба */}
+        <DesignClock />
         <Providers>
           <LayoutWrapper>
             <ErrorBoundary>{children}</ErrorBoundary>

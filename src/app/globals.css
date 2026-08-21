@@ -1488,6 +1488,569 @@ svg.tabler-icon {
   --btn-danger-fg: #101413; /* 6.00:1 на --btn-danger */
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   КОЛЬОРИСТИКИ 2026-08-20 (варіанти В1–В3 від дизайн-команди)
+
+   На відміну від концепцій К1–К3 вище, це ЧИСТІ ПАЛІТРИ: механіку героя,
+   скіни капсул і правило авто-теми вони не міняють. Обидві теми задані
+   повністю, тож тема лишається за годинником (18:00–06:00).
+
+   Токени, яких у специфікації дизайну НЕ БУЛО, дописані тут за логікою самої
+   палітри й позначені коментарем «дописано». Дизайн має їх підтвердити або
+   замінити: межі, база primary-кнопки, підпис на hover, поверхні чорних смуг
+   (хедер/футер), бренд-градієнт, підкреслення інпута, danger.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ---------- В1 · Індустріальна студія ----------
+   Бетон, сталь, електрик.
+
+   Ґрунт з переливом — це свідоме відхилення від специфікації В1, де стояло
+   «Повна відмова від кольорового переливу, сторінка матова». Замовник попросив
+   перелив повернути (2026-08-21). Щоб не з'їхати в пастель Дії, перелив
+   зроблено з ВЛАСНИХ кольорів палітри: сталь → електрик → холодний сірий, під
+   щільною накладкою — на екрані це радше протяжка по шліфованому бетону, ніж
+   веселка. Механіка та сама, що в базовій темі: накладка над бренд-градієнтом. */
+[data-design='monolith'] {
+  /* Накладка 0.90. Найсиніша точка ґрунту виходить #e1e8fa, і --text-secondary
+     (#5c6673) дає на ній 4.75:1 при потрібних 4.5:1 (WCAG 1.4.3 AA).
+     Нижче 0.88 сірий текст на синьому кінці провалюється — не опускай. */
+  --gradient-page:
+    linear-gradient(rgba(244, 246, 249, 0.9), rgba(244, 246, 249, 0.9)),
+    linear-gradient(35.8deg, #5c6673 -4.77%, #3366ff 60%, #8b96a5 100%);
+  --background: #ffffff;
+  --background-secondary: #d5dbe2;
+  --background-light: #f4f6f9;
+  --background-dark: #08090a;
+  --foreground: #0f1115;
+  --surface-card: #ffffff;
+  --surface-muted: #e2e6eb;
+
+  --text-primary: #0f1115;
+  --text-secondary: #5c6673; /* 5.2:1 на ґрунті */
+  --text-tertiary: #828c99;
+
+  --accent: #3366ff;
+  --accent-deep: #1f47cc;
+  --accent-red: #d92635;
+  --success: #178a48;
+  --success-green: #178a48;
+  --warning: #cc8500;
+  --info: #3366ff;
+  --error: #d92635; /* дописано: = accent-red */
+
+  --accent-red-fg: #ffffff;
+  --success-fg: #ffffff;
+  --warning-fg: #0f1115;
+
+  /* дописано: база чорної pill-кнопки з палітри */
+  --btn-primary: #0f1115;
+  --btn-primary-hover: #333942;
+  --btn-primary-fg: #ffffff;
+  --primary: var(--btn-primary);
+  --btn-danger: #d92635;
+  --btn-danger-fg: #ffffff;
+
+  /* Металевий відблиск замість пастелі Дії. Градієнт темний, тож підпис
+     на hover лишається білим (дописано: у специфікації пари не було) */
+  --gradient-btn: linear-gradient(90deg, #1f2329, #333942, #1f2329);
+  --btn-primary-hover-fg: #ffffff;
+  --gradient-btn-mask-floor: 0;
+
+  /* дописано: бренд-градієнт (капсула «новинка» бере його з БД) */
+  --gradient-brand: linear-gradient(35.8deg, #5c6673 -4.77%, #3366ff 60%, #8b96a5 100%);
+  --gradient-underline: linear-gradient(90deg, #3366ff 0%, #8b96a5 100%);
+
+  /* дописано: межі */
+  --border-subtle: #d5dbe2;
+  --border-control: #7a8593; /* 3.4:1 на білому */
+  --border-strong: #b6bfca;
+
+  /* дописано: поверхні чорних смуг (хедер, футер) */
+  --text-inverse-secondary: #9aa3ad;
+  --text-inverse-tertiary: #79828d;
+  --border-inverse-subtle: #23262b;
+  --surface-inverse-hover: #1a1d21;
+
+  --shadow-card: 0 4px 16px rgba(13, 15, 18, 0.06);
+  --shadow-xs: var(--shadow-card);
+  --shadow-sm: var(--shadow-card);
+  --shadow-md: 0 6px 20px rgba(13, 15, 18, 0.1);
+  --shadow-lg: 0 10px 28px rgba(13, 15, 18, 0.14);
+  --shadow-xl: 0 14px 36px rgba(13, 15, 18, 0.18);
+}
+
+[data-design='monolith'][data-theme='dark'] {
+  /* Накладка аж 0.95, бо картка В1 уночі дуже темна (#16191d). При 0.90
+     найсиніша точка ґрунту виходила #141a28 — СВІТЛІШОЮ за картку, тобто
+     елевація перевертається і картки розчиняються у фоні (та сама пастка, що
+     була в базовій темі при 0.84). Тепер найсвітліша точка #0d1119, картка
+     світліша за неї на 1.07:1 — як і при матовому #0d0f12 до цієї правки.
+     Ціна: уночі перелив ледь помітний. Це стеля, а не недоробка: щоб зробити
+     його виразнішим, довелось би підняти --surface-card, а це вже значення
+     зі специфікації В1. */
+  --gradient-page:
+    linear-gradient(rgba(8, 10, 13, 0.95), rgba(8, 10, 13, 0.95)),
+    linear-gradient(35.8deg, #8b96a5 -4.77%, #668cff 60%, #292e36 100%);
+  --background: #16191d;
+  --background-secondary: #292e36;
+  --background-light: #1c2025;
+  --background-dark: #000000;
+  --foreground: #f0f2f5;
+  --surface-card: #16191d;
+  --surface-muted: #1f2329;
+
+  --text-primary: #f0f2f5;
+  --text-secondary: #8b96a5; /* 5.8:1 на ґрунті */
+  --text-tertiary: #636d78;
+
+  --accent: #668cff;
+  --accent-deep: #85a3ff;
+  --accent-red: #ff4d5e;
+  --success: #2bba6a;
+  --success-green: #2bba6a;
+  --warning: #ffb833;
+  --info: #668cff;
+  --error: #ff4d5e;
+
+  /* Уночі текст на кольорі темний — крім червоного й синього, де
+     специфікація лишає білий */
+  --accent-red-fg: #ffffff;
+  --success-fg: #0f1115;
+  --warning-fg: #0f1115;
+  --btn-danger-fg: #ffffff;
+
+  --btn-primary: #f0f2f5;
+  --btn-primary-hover: #d5dbe2;
+  --btn-primary-fg: #0f1115;
+  --btn-danger: #ff4d5e;
+
+  /* Уночі відблиск світлий, тож підпис на hover темний */
+  --gradient-btn: linear-gradient(90deg, #f0f2f5, #d5dbe2, #f0f2f5);
+  --btn-primary-hover-fg: #0f1115;
+  --gradient-btn-mask-floor: 0;
+
+  --gradient-brand: linear-gradient(35.8deg, #8b96a5 -4.77%, #668cff 60%, #292e36 100%);
+  --gradient-underline: linear-gradient(90deg, #668cff 0%, #8b96a5 100%);
+
+  --border-subtle: #292e36;
+  --border-control: #6b7683; /* 3.2:1 на картці */
+  --border-strong: #3b424c;
+
+  --text-inverse-secondary: #9aa3ad;
+  --text-inverse-tertiary: #79828d;
+  --border-inverse-subtle: #1a1d21;
+  --surface-inverse-hover: #14171a;
+
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.8);
+  --shadow-xs: var(--shadow-card);
+  --shadow-sm: var(--shadow-card);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.85);
+  --shadow-lg: 0 10px 28px rgba(0, 0, 0, 0.9);
+  --shadow-xl: 0 14px 36px rgba(0, 0, 0, 0.95);
+}
+
+/* ---------- В1 · фонова анімація «Структурна течія» ----------
+   Спека дизайн-команди «Gemini Industrial», 2026-08-21. Два шари поверх
+   ґрунту: A — кристалічна ґратка (жорстка геометрія), B — потік акценту.
+
+   Три речі зроблено НЕ так, як у прикладі коду зі спеки, і кожна з причини:
+
+   1. `[data-theme='dark'] :root` з прикладу не спрацьовує ніколи. `:root` — це
+      сам <html>, і data-theme висить на ньому ж, тобто селектор вимагає, щоб
+      html був НАЩАДКОМ самого себе. Тут скрізь `[data-design='monolith']`
+      плюс `[data-theme='dark']` на одному елементі.
+
+   2. `position: absolute` + `overflow-x: hidden` на body з прикладу зламали б
+      липкий хедер: overflow робить body скрол-контейнером, і sticky всередині
+      перестає прилипати (те саме вже ловили 2026-08-17). Шари фіксовані до
+      вікна — body чіпати не треба.
+
+   3. Рух — тільки transform і opacity, які браузер віддає композитору.
+      background-position із прикладу вимагає перемальовування ВСЬОГО шару
+      кожен кадр; на повний екран у телеграм-вебв'ю це помітно дорого.
+
+   Обидві анімації — alternate, тому шов не потрібно вираховувати: шар плавно
+   вертається у вихідну точку. Зсув ґратки при цьому дорівнює РІВНО двом її
+   періодам (19.6299px = 34/√3 по X, 34px по Y — вектор, що переводить усі три
+   сімейства ліній самі в себе), тож у момент розвороту решітка виглядає
+   тотожно початковій і сам розворот непомітний. */
+
+[data-design='monolith'] body::before,
+[data-design='monolith'] body::after {
+  content: '';
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Шар A — ґратка у ДВА масштаби: дрібна 34px і поверх неї груба 68px, у
+   рівно ті самі три кути. 68 = 2 × 34, тож груба лінія лягає точно на кожну
+   другу дрібну — виходить ієрархія «основні / допоміжні риски», як на
+   кресленні, а не рівний килим.
+
+   Щільність тут майже безкоштовна, і це не здогад: найгіршу точку задає
+   ділянка БЕЗ лінії, на яку ґратка не впливає взагалі. Тому пік 0.55 дає
+   ті самі 4.62:1 удень і 1.051:1 елевації вночі, що й 0.30 (заміряно).
+   Умова лише одна — лінія мусить рухати яскравість у безпечний бік:
+   удень ТІЛЬКИ світліша за ґрунт, уночі ТІЛЬКИ темніша.
+   Через це денна «глибина» тепер #f4f6f9, а не #e2e6eb: попередній тон був
+   темнішим за ґрунт і сам собою валив сірий текст до 4.19:1.
+
+   Спека просила opacity 0.1–0.3 — тут свідомо більше, бо власник попросив
+   інтенсивнішу анімацію, а заміри показують, що ця вісь нічого не коштує.
+   Маска гасить ґратку в центрі: там стоїть 3D-модель мерчу. */
+[data-design='monolith'] body::before {
+  inset: -140px;
+  opacity: 0.55;
+  background-image:
+    repeating-linear-gradient(60deg, #ffffff 0 2px, transparent 2px 68px),
+    repeating-linear-gradient(-60deg, #ffffff 0 2px, transparent 2px 68px),
+    repeating-linear-gradient(0deg, #ffffff 0 2px, transparent 2px 68px),
+    repeating-linear-gradient(60deg, #ffffff 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(-60deg, #ffffff 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, #f4f6f9 0 1px, transparent 1px 34px);
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 40%, transparent 0%, rgba(0, 0, 0, 0.5) 44%, #000 76%);
+  mask-image: radial-gradient(120% 100% at 50% 40%, transparent 0%, rgba(0, 0, 0, 0.5) 44%, #000 76%);
+  animation:
+    monolithLattice 13s ease-in-out infinite alternate,
+    monolithBreathe 9s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+/* Уночі ґратка ГРАВІЙОВАНА, а не підсвічена. Спека пропонувала й світлу
+   лінію #1f2329, але картка В1 уночі всього на 1.072:1 світліша за ґрунт, і
+   будь-яке підсвічування тла з'їдає цю сходинку: з #1f2329 вона падала до
+   1.027:1. Чорна лінія тло тільки притемнює — елевація навіть росте до
+   1.121:1 на самій лінії, тож саме вночі ґратку можна вантажити найсміливіше. */
+[data-design='monolith'][data-theme='dark'] body::before {
+  background-image:
+    repeating-linear-gradient(60deg, #000000 0 2px, transparent 2px 68px),
+    repeating-linear-gradient(-60deg, #000000 0 2px, transparent 2px 68px),
+    repeating-linear-gradient(0deg, #000000 0 2px, transparent 2px 68px),
+    repeating-linear-gradient(60deg, #000000 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(-60deg, #000000 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, #000000 0 1px, transparent 1px 34px);
+}
+
+/* Шар B — потік акценту по кутах, центр лишається чистим. Бере var(--accent),
+   тому вночі сам перемикається на #668cff без окремого правила.
+
+   Ось ЄДИНА вісь, яку підняти не вийшло. 10% від акценту × opacity 0.2 =
+   ефективні 2% над ґрунтом; на 3% одночасно валяться денний текст (4.42:1)
+   і нічна елевація (1.040:1). Спека давала вилку 2–5% — робочий лише
+   нижній край. Тому інтенсивність тут набрана не альфою, а рухом і формою:
+   плями стягнуті (спад до прозорого на 46/44% замість 62/58%, тобто край
+   помітно різкіший) і сильніше возять по екрану.
+
+   Плям навмисно дві, у протилежних кутах. Третя дала б перекриття, а альфи
+   перекритих плям складаються: 10% + 8% в одній точці = 17%, тобто ефективні
+   3.4% — і стеля вище пробита. */
+[data-design='monolith'] body::after {
+  inset: -22%;
+  opacity: 0.2;
+  background-image:
+    radial-gradient(
+      46% 34% at 80% 14%,
+      color-mix(in srgb, var(--accent) 10%, transparent) 0%,
+      transparent 46%
+    ),
+    radial-gradient(40% 46% at 12% 90%, color-mix(in srgb, var(--accent) 8%, transparent) 0%, transparent 44%);
+  animation: monolithFlow 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes monolithLattice {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(39.2598px, 68px, 0);
+  }
+}
+
+/* Розмах дихання ширший (0.55↔0.26 замість 0.30↔0.18): це та сама
+   «безпечна вісь», що й щільність ґратки, — пік нічого не коштує. */
+@keyframes monolithBreathe {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 0.26;
+  }
+}
+
+@keyframes monolithFlow {
+  from {
+    transform: scale(1) rotate(0deg) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.28) rotate(14deg) translate3d(5%, -6%, 0);
+  }
+}
+
+/* 13/9/16 секунд попарно взаємно прості — шари ніколи не синхронізуються,
+   і саме з їхнього розходження виникає той інтерференційний візерунок, якого
+   просила спека. Було 27/19/23; прискорено вдвічі на прохання власника.
+   Зсув ґратки лишився тим самим (39.2598px = 68/√3, 68px) — це спільний
+   період ОБОХ решіток, 34px і 68px, тож розворот далі непомітний, а
+   коробки шарів не виросли: inset -140px і -22% тримають ту саму памʼять
+   відеокарти, що й до прискорення.
+   Кому рух заважає — лишається статична структура. */
+@media (prefers-reduced-motion: reduce) {
+  [data-design='monolith'] body::before,
+  [data-design='monolith'] body::after {
+    animation: none;
+  }
+}
+
+/* ---------- В2 · Аналоговий перегруз ----------
+   Крафтовий папір, вінтажне обладнання, мідь. Ґрунт теплий діагональний. */
+[data-design='overdrive'] {
+  --gradient-page: linear-gradient(145deg, #f7f5f0, #eae6dd);
+  --background: #ffffff;
+  --background-secondary: #e6e1d8;
+  --background-light: #faf8f4; /* дописано */
+  --background-dark: #1f1c1b;
+  --foreground: #292524;
+  --surface-card: #ffffff;
+  --surface-muted: #f0ece4;
+
+  --text-primary: #292524; /* кавовий чорний */
+  --text-secondary: #6b625d; /* 5.4:1 */
+  --text-tertiary: #8c827c;
+
+  --accent: #b34700; /* мідь */
+  --accent-deep: #8a3700;
+  --accent-red: #c92a2a;
+  --success: #2b8a3e;
+  --success-green: #2b8a3e;
+  --warning: #e67700;
+  --info: #b34700; /* дописано: = accent */
+  --error: #c92a2a; /* дописано */
+
+  --accent-red-fg: #ffffff;
+  --success-fg: #ffffff;
+  --warning-fg: #ffffff;
+
+  /* Кнопка лишається чорною (за специфікацією), але чорний тут теплий */
+  --btn-primary: #292524;
+  --btn-primary-hover: #3f3a38; /* дописано */
+  --btn-primary-fg: #ffffff;
+  --primary: var(--btn-primary);
+  --btn-danger: #c92a2a;
+  --btn-danger-fg: #ffffff;
+
+  /* Мідний перелив на hover; градієнт темний → підпис лишається білим */
+  --gradient-btn: linear-gradient(45deg, #b34700, #d95e00, #b34700);
+  --btn-primary-hover-fg: #ffffff; /* дописано */
+  --gradient-btn-mask-floor: 0;
+
+  /* дописано: теплий бренд-градієнт замість пастелі Дії */
+  --gradient-brand: linear-gradient(35.8deg, #eae6dd -4.77%, #f0a868 55%, #d95e00 100%);
+  --gradient-underline: linear-gradient(90deg, #b34700 0%, #e67700 100%);
+
+  /* дописано: межі в теплому ряду, інакше сіро-блакитна база бʼється з ґрунтом */
+  --border-subtle: #e0dad0;
+  --border-control: #8c827c; /* 3.6:1 на білому */
+  --border-strong: #c4bbb0;
+
+  /* дописано: теплі поверхні хедера/футера */
+  --text-inverse-secondary: #a49a94;
+  --text-inverse-tertiary: #857c77;
+  --border-inverse-subtle: #322d2b;
+  --surface-inverse-hover: #2a2624;
+
+  --shadow-card: 0 2px 12px rgba(41, 37, 36, 0.08);
+  --shadow-xs: var(--shadow-card);
+  --shadow-sm: var(--shadow-card);
+  --shadow-md: 0 4px 16px rgba(41, 37, 36, 0.12);
+  --shadow-lg: 0 8px 24px rgba(41, 37, 36, 0.16);
+  --shadow-xl: 0 12px 32px rgba(41, 37, 36, 0.2);
+}
+
+[data-design='overdrive'][data-theme='dark'] {
+  --gradient-page: linear-gradient(145deg, #1c1a19, #141312);
+  --background: #262322;
+  --background-secondary: #383432;
+  --background-light: #1c1a19;
+  --background-dark: #0d0c0c;
+  --foreground: #e8e4df;
+  --surface-card: #262322;
+  --surface-muted: #332f2e;
+
+  --text-primary: #e8e4df;
+  --text-secondary: #9e948f; /* 5.6:1 */
+  --text-tertiary: #7a726e;
+
+  --accent: #ff7b24;
+  --accent-deep: #ff9b57;
+  --accent-red: #ff5c5c;
+  --success: #51cf66;
+  --success-green: #51cf66;
+  --warning: #fcc419;
+  --info: #ff7b24;
+  --error: #ff5c5c;
+
+  /* Уночі текст на кольорі темний — крім червоного (за специфікацією) */
+  --accent-red-fg: #ffffff;
+  --success-fg: #1f1c1b;
+  --warning-fg: #1f1c1b;
+  --btn-danger-fg: #ffffff;
+
+  --btn-primary: #e8e4df;
+  --btn-primary-hover: #d3cec8;
+  --btn-primary-fg: #1f1c1b;
+  --btn-danger: #ff5c5c;
+
+  /* Уночі перелив світло-мідний → підпис темний */
+  --gradient-btn: linear-gradient(45deg, #ff7b24, #ff9b57, #ff7b24);
+  --btn-primary-hover-fg: #1f1c1b;
+  --gradient-btn-mask-floor: 0;
+
+  --gradient-brand: linear-gradient(35.8deg, #332f2e -4.77%, #b34700 55%, #ff9b57 100%);
+  --gradient-underline: linear-gradient(90deg, #ff7b24 0%, #fcc419 100%);
+
+  --border-subtle: #38332f;
+  --border-control: #7a726e; /* 3.3:1 на картці */
+  --border-strong: #4a4441;
+
+  --text-inverse-secondary: #a49a94;
+  --text-inverse-tertiary: #857c77;
+  --border-inverse-subtle: #211e1d;
+  --surface-inverse-hover: #191716;
+
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.5);
+  --shadow-xs: var(--shadow-card);
+  --shadow-sm: var(--shadow-card);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.7);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.8);
+}
+
+/* ---------- В3 · Сценічне світло ----------
+   Радіальний софіт зверху по центру: картки в центрі виштовхуються вперед,
+   краї екрана згущуються. */
+[data-design='spotlight'] {
+  --gradient-page: radial-gradient(circle at 50% 0%, #ffffff 0%, #e8ecf2 100%);
+  --background: #ffffff;
+  --background-secondary: #e3e8ee;
+  --background-light: #f6f8fb; /* дописано */
+  --background-dark: #0d1117;
+  --foreground: #0f141a;
+  --surface-card: #ffffff;
+  --surface-muted: #f1f4f8;
+
+  --text-primary: #0f141a;
+  --text-secondary: #576370; /* 5.1:1 на краях ґрунту */
+  --text-tertiary: #818e9b;
+
+  --accent: #8a2be2; /* сценічний фіолет */
+  --accent-deep: #6a1cb3;
+  --accent-red: #e32437;
+  --success: #1a8f4c;
+  --success-green: #1a8f4c;
+  --warning: #d48806;
+  --info: #8a2be2; /* дописано */
+  --error: #e32437; /* дописано */
+
+  --accent-red-fg: #ffffff;
+  --success-fg: #ffffff;
+  --warning-fg: #ffffff;
+
+  --btn-primary: #0f141a; /* дописано */
+  --btn-primary-hover: #2a313a;
+  --btn-primary-fg: #ffffff;
+  --primary: var(--btn-primary);
+  --btn-danger: #e32437;
+  --btn-danger-fg: #ffffff;
+
+  /* Неоновий перелив фіолет→ціан. ЦІАН ДУЖЕ СВІТЛИЙ: білий підпис на ньому
+     дає ~1.6:1. Тому підлога маски 0.5 — під підписом лишається половина базового
+     майже-чорного, і білий тримає ≈4.6:1 навіть у найсвітлішій точці.
+     Дописано: у специфікації підлоги не було, без неї підпис зникав. */
+  --gradient-btn: linear-gradient(45deg, #8a2be2, #00d2ff, #8a2be2);
+  --btn-primary-hover-fg: #ffffff;
+  --gradient-btn-mask-floor: 0.5;
+
+  --gradient-brand: linear-gradient(35.8deg, #8a2be2 -4.77%, #00d2ff 100%);
+  --gradient-underline: linear-gradient(90deg, #8a2be2 0%, #00d2ff 100%);
+
+  --border-subtle: #dde3ea;
+  --border-control: #818e9b; /* 3.1:1 на білому */
+  --border-strong: #b6c0cb;
+
+  --text-inverse-secondary: #8b949e;
+  --text-inverse-tertiary: #6e7681;
+  --border-inverse-subtle: #21262d;
+  --surface-inverse-hover: #1c222a;
+
+  --shadow-card: 0 2px 12px rgba(13, 17, 23, 0.07);
+  --shadow-xs: var(--shadow-card);
+  --shadow-sm: var(--shadow-card);
+  --shadow-md: 0 4px 16px rgba(13, 17, 23, 0.11);
+  --shadow-lg: 0 8px 24px rgba(13, 17, 23, 0.15);
+  --shadow-xl: 0 12px 32px rgba(13, 17, 23, 0.2);
+}
+
+[data-design='spotlight'][data-theme='dark'] {
+  --gradient-page: radial-gradient(circle at 50% 0%, #22272e 0%, #0d1117 100%);
+  --background: #161b22;
+  --background-secondary: #30363d;
+  --background-light: #1c222a;
+  --background-dark: #010409;
+  --foreground: #f0f6fc;
+  --surface-card: #161b22;
+  --surface-muted: #21262d;
+
+  --text-primary: #f0f6fc;
+  --text-secondary: #8b949e; /* 5.3:1 */
+  --text-tertiary: #6e7681;
+
+  --accent: #b366ff;
+  --accent-deep: #c48cff;
+  --accent-red: #ff4d5e;
+  --success: #2ea043;
+  --success-green: #2ea043;
+  --warning: #d29922;
+  --info: #b366ff;
+  --error: #ff4d5e;
+
+  /* Білий на фіолеті й червоному, темний на решті — за специфікацією */
+  --accent-red-fg: #ffffff;
+  --success-fg: #010409;
+  --warning-fg: #010409;
+  --btn-danger-fg: #ffffff;
+
+  --btn-primary: #f0f6fc;
+  --btn-primary-hover: #d5dde6;
+  --btn-primary-fg: #010409;
+  --btn-danger: #ff4d5e;
+
+  /* Уночі і градієнт, і база світлі → темний підпис читається без маски */
+  --gradient-btn: linear-gradient(45deg, #b366ff, #4ddbff, #b366ff);
+  --btn-primary-hover-fg: #010409;
+  --gradient-btn-mask-floor: 0;
+
+  --gradient-brand: linear-gradient(35.8deg, #b366ff -4.77%, #4ddbff 100%);
+  --gradient-underline: linear-gradient(90deg, #b366ff 0%, #4ddbff 100%);
+
+  --border-subtle: #21262d;
+  --border-control: #6e7681; /* 3.2:1 на картці */
+  --border-strong: #3a424b;
+
+  --text-inverse-secondary: #8b949e;
+  --text-inverse-tertiary: #6e7681;
+  --border-inverse-subtle: #161b22;
+  --surface-inverse-hover: #0d1117;
+
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.6);
+  --shadow-xs: var(--shadow-card);
+  --shadow-sm: var(--shadow-card);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.8);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.85);
+}
+
 /* ---------- Скіни капсул-лейблів ----------
    Демо-приближення без нових полів БД: колір капсули приходить інлайном
    (label_color з БД, через capsuleStyle() у widgets/ProductV2/collections.ts).
