@@ -18,6 +18,7 @@ import { formatPrice } from '@/shared/utils/format';
 import { CloudinaryImage } from '@/shared/components/CloudinaryImage/CloudinaryImage';
 import { getVariantDisplayBadges } from '@/shared/utils/variant-display';
 import { useDebounce } from '@/shared/hooks';
+import { useCartDrawerActions } from '@/shared/stores/cart';
 import { useCart } from '../../hooks/useCart';
 import styles from './CartItem.module.scss';
 
@@ -32,6 +33,15 @@ interface CartItemProps {
 
 const CartItemComponent = ({ item, compact = false, isFirst = false, onRemove }: CartItemProps) => {
   const { updateItemQuantity } = useCart();
+  // Перехід на товар мусить ЗАКРИТИ шухляду. Сама вона цього не робить:
+  // usePathname у CartDrawer потрібен лише для телеграм-префікса, реакції на
+  // зміну маршруту там немає, тож кошик лишався розкритим поверх щойно
+  // відкритого товару. Кнопки всередині шухляди («До каталогу», «Оформити»)
+  // закривають її явно — тут той самий прийом для рядка товару.
+  //
+  // На сторінці /cart шухляда й так закрита, і виклик стає холостим: селектор
+  // повертає те саме false, тож React навіть не перемальовує.
+  const { close: closeDrawer } = useCartDrawerActions();
   const [quantity, setQuantity] = useState(item.quantity);
   // Чи є неоформлений запит на зміну кількості саме цього рядка. Глобальний
   // isUpdatingItem для цього не годиться: він гасив би степери всіх товарів
@@ -63,7 +73,11 @@ const CartItemComponent = ({ item, compact = false, isFirst = false, onRemove }:
 
   return (
     <div className={`${styles.row} ${compact ? styles.rowCompact : ''} ${isFirst ? styles.rowFirst : ''}`}>
-      <Link href={`/catalog/${item.product.slug}`} className={styles.thumb} aria-label={name}>
+      <Link
+        href={`/catalog/${item.product.slug}`}
+        className={styles.thumb}
+        aria-label={name}
+        onClick={closeDrawer}>
         <CloudinaryImage
           src={item.product.primaryImage?.url || '/assets/img/placeholder-product.jpg'}
           alt=""
@@ -75,7 +89,7 @@ const CartItemComponent = ({ item, compact = false, isFirst = false, onRemove }:
       <div className={styles.body}>
         <div className={styles.head}>
           <div className={styles.titleBlock}>
-            <Link href={`/catalog/${item.product.slug}`} className={styles.name}>
+            <Link href={`/catalog/${item.product.slug}`} className={styles.name} onClick={closeDrawer}>
               {name}
             </Link>
             {badges.length > 0 && (
