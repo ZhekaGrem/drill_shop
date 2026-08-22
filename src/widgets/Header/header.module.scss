@@ -90,6 +90,11 @@
   align-items: center;
   flex: 1 1 auto;
   min-width: 0;
+  // Панелі всередині позиціоновані абсолютно, тож самі висоти не дають.
+  // stretch забирає висоту в розкладки хедера (її задає права група з
+  // іконками), інакше вікно доріжки схлопнулось би в нуль.
+  align-self: stretch;
+  position: relative;
   // Підкреслення активного пункту стоїть bottom: 0, тобто всередині коробки
   // посилання, — вертикально різати нічого. Тому саме overflow, а не
   // overflow-x: за специфікацією друга вісь тоді стала б auto, і група
@@ -97,13 +102,14 @@
   overflow: hidden;
 }
 
-// Доріжка розділів. gap тут і GAP у Header.tsx — одне число: крок доріжки
-// рахується як ширина панелі плюс цей проміжок.
+// Доріжка розділів. Не потік, а полотно: панелі стоять абсолютно на своїх
+// слотах (--slot), а доріжка лише зсувається на -pos·крок. Через це кільце
+// обходиться без стрибків — після останнього розділу pos просто росте далі,
+// і наступна панель приїжджає справа, як усі попередні.
 .headerTrack,
 .headerTrackSnap {
-  display: flex;
-  align-items: center;
-  gap: 24px;
+  position: absolute;
+  inset: 0;
   will-change: transform;
 }
 
@@ -114,7 +120,11 @@
 }
 
 .headerPanel {
-  flex: none;
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  // Крок слоту (ширина панелі + 24px проміжку) рахує Header.tsx і кладе сюди
+  transform: translate3d(var(--slot, 0px), 0, 0);
   display: flex;
   align-items: center;
   // Той самий проміжок лого↔навігація, що був у .headerLeft до свайпу
@@ -137,27 +147,30 @@
   animation: headerPeek 9s ease-in-out 1.2s infinite;
 }
 
+// Зсув рахується ВІД слоту панелі, а не від нуля: панель тепер стоїть на
+// власній координаті, і голий translate3d(-46px) висмикнув би її на початок
+// доріжки замість того, щоб визирнути з-за краю.
 @keyframes headerPeek {
   // Довга пауза між появами навмисно: смуга висить на кожній сторінці, і
   // безперервний рух у хромі швидко стає дратівливим.
   0%,
   100% {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(var(--slot, 0px), 0, 0);
   }
   // Швидко висунулась…
   5% {
-    transform: translate3d(-52px, 0, 0);
+    transform: translate3d(calc(var(--slot, 0px) - 52px), 0, 0);
   }
   // …трохи осіла, наче зазирнула й роздивляється…
   9% {
-    transform: translate3d(-46px, 0, 0);
+    transform: translate3d(calc(var(--slot, 0px) - 46px), 0, 0);
   }
   16% {
-    transform: translate3d(-46px, 0, 0);
+    transform: translate3d(calc(var(--slot, 0px) - 46px), 0, 0);
   }
   // …і шаснула назад
   24% {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(var(--slot, 0px), 0, 0);
   }
 }
 
@@ -177,7 +190,7 @@
   // Інакше в цьому режимі свайп не мав би жодного натяку на існування.
   .headerPanelPeek {
     animation: none;
-    transform: translate3d(-46px, 0, 0);
+    transform: translate3d(calc(var(--slot, 0px) - 46px), 0, 0);
   }
 }
 

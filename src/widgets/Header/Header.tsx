@@ -33,13 +33,31 @@ import { NAV_WORLDS, worldIndexByWordmark } from '@/shared/config/nav-worlds';
 import { IconCart, IconCatalog, MenuIcon } from '@/shared/components/Svg';
 
 /**
- * Підказка живе, поки нею не скористались. Щойно людина гортнула (пальцем,
- * мишею чи стрілками) — механіку знайдено, і визирати більше нема чого.
- * Так підказка вчить і йде з дороги, замість набридати вічно.
+ * Підказка живе, поки нею не скористались PEEK_USES разів.
+ *
+ * Спершу тут стояла одиниця — і це виявилось замало: одне випадкове
+ * спрацювання (а воно було, скрол по шапці зараховувався як гортання)
+ * вимикало підказку назавжди, ще до того, як людина взагалі зрозуміла, що
+ * смуга гортається. Пʼять разів — це вже не випадковість, а звичка.
+ *
+ * Рахуються ТІЛЬКИ справжні переходи: свайп по горизонталі або стрілки.
+ * Вертикальний скрол у лічильник не потрапляє — за це відповідає замок осі
+ * в useSwipePager.
  */
-const SWIPE_USED_KEY = 'nav-swipe-used';
-/** Проміжок між панелями доріжки; дзеркалить gap у .headerTrack */
+const PEEK_USES_KEY = 'nav-swipe-uses';
+const PEEK_USES = 5;
+
+/** Скільки разів уже гортали. Сміття у сховищі читається як нуль. */
+const readUses = (): number => {
+  const n = Number(localStorage.getItem(PEEK_USES_KEY));
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+};
+/** Проміжок між панелями доріжки; дзеркалить крок у .headerPanel */
 const GAP = 24;
+
+/** Скільки розділів у кільці, і як позиція доріжки лягає на розділ */
+const WORLDS = NAV_WORLDS.length;
+const modWorld = (p: number) => ((p % WORLDS) + WORLDS) % WORLDS;
 
 /** Порівнюємо ТІЛЬКИ pathname, свідомо: щоб врахувати query, потрібен
  *  `useSearchParams()`, а він у Next вимагає Suspense і вибиває сторінку зі
@@ -59,16 +77,22 @@ export function Header() {
   const wordmark = (productSlug && hiddenWordmarks?.[decodeURIComponent(productSlug)]) || undefined;
   const routeIndex = worldIndexByWordmark(wordmark);
 
-  // Свайп має зрушити доріжку ОДРАЗУ, не чекаючи, поки завершиться перехід,
-  // тому індекс тримається локально. А коли маршрут змінився сам (звичайний
-  // лінк, «назад» у браузері, підвантажена мапа словомарок) — синхронізуємо.
-  // Це правка стану під час рендера, документований прийом React: ефект тут
-  // дав би зайвий кадр зі старим розділом.
-  const [index, setIndex] = useState(routeIndex);
+  // Позиція доріжки — БЕЗМЕЖНЕ ціле, а не індекс 0..N-1. У цьому вся кільцевість:
+  // після Сєріка pos просто стає 3, доріжка їде далі вправо, а показує вона
+  // знову Дріл (pos % 3). Якби позиція була індексом, перехід з останнього на
+  // перший означав би стрибок з -2·крок на 0 — тобто смуга проїхала б назад
+  // через усі розділи замість того, щоб винести наступний справа.
+  const [pos, setPos] = useState(routeIndex);
   const [seenRoute, setSeenRoute] = useState(routeIndex);
   if (seenRoute !== routeIndex) {
     setSeenRoute(routeIndex);
-    setIndex(routeIndex);
+    // Маршрут змінився сам (звичайний лінк, «назад» у браузері, підвантажена
+    // мапа словомарок) — доганяємо НАЙКОРОТШИМ шляхом по колу, інакше з
+    // третього розділу на перший смуга котилася б через увесь список.
+    let d = (routeIndex - modWorld(pos)) % WORLDS;
+    if (d > WORLDS / 2) d -= WORLDS;
+    if (d < -WORLDS / 2) d += WORLDS;
+    setPos(pos + d);
   }
 
   const leftRef = useRef<HTMLDivElement>(null);
@@ -103,28 +127,38 @@ export function Header() {
   // хедера смикався б сам по собі. А так «є. Дріл» стоїть нерухомо, і з-за
   // правого краю визирає та ховається сусідня марка.
   useEffect(() => {
-    if (localStorage.getItem(SWIPE_USED_KEY)) return;
-    const next = trackRef.current?.children[index + 1] as HTMLElement | undefined;
-    if (!next) return; // на останньому розділі визирати нема чому
+    if (readUses() >= PEEK_USES) return;
+    // Вікно [pos-1, pos, pos+1], тож наступна панель — третя. Перевірки «а чи
+    // є наступна» більше не треба: у кільці наступна є завжди. А от до першого
+    // заміру сусідів ще не рендеримо — тому panelW у залежностях.
+    const next = trackRef.current?.children[2] as HTMLElement | undefined;
+    if (!next) return;
     next.classList.add(styles.headerPanelPeek);
     return () => next.classList.remove(styles.headerPanelPeek);
-  }, [index]);
+  }, [pos, panelW]);
 
   const step = panelW + GAP;
-  const goTo = (next: number) => {
-    // Скористались — підказку прибираємо назавжди. Ефект вище перезапуститься
-    // від зміни index, зніме клас у cleanup і більше його не поверне.
-    localStorage.setItem(SWIPE_USED_KEY, '1');
-    setIndex(next);
-    router.push(NAV_WORLDS[next].href);
+  /**
+   * Сусідні панелі зʼявляються ЛИШЕ після заміру ширини.
+   *
+   * Панелі стоять абсолютно на слотах pos·крок, а крок рахується з panelW.
+   * Поки заміру немає, крок дорівнює одному лише проміжку — і три словомарки
+   * лягають одна на одну з інтервалом 24px. Заміряно: x панелей −24/0/+24.
+   * Поточна панель завжди на слоті 0, тож сама по собі малюється правильно
+   * з першого кадру. До абсолютних слотів цього не було видно: flex розкладав
+   * панелі послідовно, і нульовий крок лише зсував доріжку, а не накладав її.
+   */
+  const slots = panelW > 0 ? [pos - 1, pos, pos + 1] : [pos];
+  const goStep = (dir: -1 | 1) => {
+    // Кожен справжній перехід — плюс один до лічильника. Ефект вище
+    // перезапуститься від зміни pos і на пʼятому разі вже не поверне клас.
+    localStorage.setItem(PEEK_USES_KEY, String(readUses() + 1));
+    const next = pos + dir;
+    setPos(next);
+    router.push(NAV_WORLDS[modWorld(next)].href);
   };
 
-  const { dx, dragging, handlers } = useSwipePager({
-    count: NAV_WORLDS.length,
-    index,
-    step,
-    onChange: goTo,
-  });
+  const { dx, dragging, handlers } = useSwipePager({ step, onStep: goStep });
 
   return (
     <Box className={styles.wrapper}>
@@ -135,10 +169,8 @@ export function Header() {
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-          const next = index + (e.key === 'ArrowRight' ? 1 : -1);
-          if (next < 0 || next >= NAV_WORLDS.length) return;
           e.preventDefault();
-          goTo(next);
+          goStep(e.key === 'ArrowRight' ? 1 : -1);
         }}
         {...handlers}>
         {/* Ліва група: вікно доріжки. Панелі всередині — те саме, що стояло
@@ -147,42 +179,51 @@ export function Header() {
           <div
             ref={trackRef}
             className={dragging ? styles.headerTrack : styles.headerTrackSnap}
-            style={{ transform: `translate3d(${-index * step + dx}px, 0, 0)` }}>
-            {NAV_WORLDS.map((world, i) => (
-              <div
-                key={world.id}
-                className={styles.headerPanel}
-                style={{ width: panelW || undefined }}
-                aria-hidden={i !== index}>
-                {/* inverse — хедер чорний, як верхня панель Дії. Без цього
+            style={{ transform: `translate3d(${-pos * step + dx}px, 0, 0)` }}>
+            {slots.map((slot) => {
+              const world = NAV_WORLDS[modWorld(slot)];
+              const current = slot === pos;
+              return (
+                <div
+                  key={slot}
+                  className={styles.headerPanel}
+                  // Панелі стоять абсолютно на своїх слотах, а не потоком: у
+                  // потоці вікно з трьох завжди лежало б поспіль, і кільце
+                  // вимагало б стрибка доріжки після кожного переходу. Слот
+                  // у змінній, бо анімація визирання мусить додаватись ДО
+                  // нього, а не замість.
+                  style={{ width: panelW || undefined, '--slot': `${slot * step}px` } as React.CSSProperties}
+                  aria-hidden={!current}>
+                  {/* inverse — хедер чорний, як верхня панель Дії. Без цього
                     ворд-марка малюється --text-primary, тобто чорним по чорному.
                     Від 1024px смуга світла — там колір перекриває .headerLogo */}
-                <Link
-                  href={world.href}
-                  className={styles.logoLink}
-                  tabIndex={i === index ? 0 : -1}
-                  aria-label={`є. ${world.wordmark} — на головну`}>
-                  <Logo inverse className={styles.headerLogo} wordmark={world.wordmark} />
-                </Link>
+                  <Link
+                    href={world.href}
+                    className={styles.logoLink}
+                    tabIndex={current ? 0 : -1}
+                    aria-label={`є. ${world.wordmark} — на головну`}>
+                    <Logo inverse className={styles.headerLogo} wordmark={world.wordmark} />
+                  </Link>
 
-                <nav className={styles.desktopNav} aria-label={`Навігація: ${world.wordmark}`}>
-                  {world.navItems.map((item) => {
-                    const active = i === index && isNavItemActive(item.href, pathname);
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
-                        aria-current={active ? 'page' : undefined}
-                        tabIndex={i === index ? 0 : -1}
-                        draggable={false}>
-                        {item.label}
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </div>
-            ))}
+                  <nav className={styles.desktopNav} aria-label={`Навігація: ${world.wordmark}`}>
+                    {world.navItems.map((item) => {
+                      const active = current && isNavItemActive(item.href, pathname);
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
+                          aria-current={active ? 'page' : undefined}
+                          tabIndex={current ? 0 : -1}
+                          draggable={false}>
+                          {item.label}
+                        </Link>
+                      );
+                    })}
+                  </nav>
+                </div>
+              );
+            })}
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-// src/shared/components/SwipeNav/useSwipePager.ts
+// src/shared/hooks/useSwipePager.ts
 // Жест горизонтального пейджера для навбару.
 //
 // Pointer Events, а не touch: один код на палець, мишу і стилус, і
@@ -18,90 +18,134 @@ import { useCallback, useRef, useState } from 'react';
 const COMMIT_RATIO = 0.28;
 /** Різкий кидок комітить навіть на короткій дистанції, px/мс */
 const FLICK = 0.45;
-/** Опір за краями списку: далі не пускає, але дає зрозуміти, що край є */
-const RESIST = 0.35;
+/**
+ * Але не на БУДЬ-ЯКІЙ короткій. Швидкість рахується з крихітних дельт за
+ * крихітний час, тож пара пікселів дрейфу за 8 мс уже дає «кидок». Кидку
+ * потрібен ще й мінімальний пройдений шлях.
+ */
+const MIN_FLICK_DIST = 24;
+/**
+ * Абсолютна нижня межа дистанції коміту, хоч би яким малим виявився крок.
+ * Крок рахується з виміряної ширини панелі, а вимір може бути ще не готовий:
+ * ResizeObserver не працює у невидимій вкладці, тож там ширина лишається
+ * нулем. Заміряно: при кроці 24px поріг падав до 6.7px, і будь-який
+ * мікрорух пальця перекидав на інший розділ.
+ */
+const MIN_COMMIT_DIST = 40;
 /** Менший зсув — це тап, а не свайп (гасимо клік по посиланню) */
 const TAP = 6;
+/** Після якого зсуву вирішуємо, жест горизонтальний чи вертикальний */
+const AXIS_LOCK = 8;
 /** Скільки після жесту клік ще вважається його відлунням, мс */
 const CLICK_WINDOW = 350;
 
 interface Args {
-  count: number;
-  index: number;
-  onChange: (next: number) => void;
-  /** Ширина одного кроку доріжки в пікселях */
+  /** Крок доріжки в пікселях (ширина панелі + проміжок) */
   step: number;
+  /** Куди зсунутись: -1 назад, +1 вперед. Кільце/межі — справа викликача */
+  onStep: (dir: -1 | 1) => void;
 }
 
-export const useSwipePager = ({ count, index, onChange, step }: Args) => {
+export const useSwipePager = ({ step, onStep }: Args) => {
   const [dx, setDx] = useState(0);
   const [dragging, setDragging] = useState(false);
 
   const active = useRef(false);
-  const startX = useRef(0);
+  const start = useRef({ x: 0, y: 0 });
   const dxRef = useRef(0);
   const last = useRef({ x: 0, t: 0 });
   const velocity = useRef(0);
+  /**
+   * Вісь жесту. Поки null — ще вирішуємо; 'y' означає, що людина гортає
+   * СТОРІНКУ, просто почала з хедера, і чіпати доріжку не можна взагалі.
+   *
+   * Без цього замка вертикальний скрол пальцем по шапці перекидав на сторінку
+   * іншого розділу: у нього завжди є кілька пікселів горизонтального дрейфу,
+   * а поділені на 8 мс вони дають швидкість вище порогу кидка. Заміряно:
+   * 16px дрейфу вистачало, щоб піти з головної на /v2/a/olko.
+   */
+  const axis = useRef<null | 'x' | 'y'>(null);
   /** Чи був рух — читає onClickCapture, щоб свайп не спрацював як клік */
   const moved = useRef(false);
   /** Коли жест завершився — щоб гасити лише той клік, що йде слідом за ним */
   const endedAt = useRef(0);
+
+  const reset = useCallback(() => {
+    active.current = false;
+    axis.current = null;
+    dxRef.current = 0;
+    setDx(0);
+    setDragging(false);
+  }, []);
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     // Праву й середню кнопки миші ігноруємо — це не жест
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     active.current = true;
+    axis.current = null;
     moved.current = false;
-    startX.current = e.clientX;
+    start.current = { x: e.clientX, y: e.clientY };
     dxRef.current = 0;
     velocity.current = 0;
     last.current = { x: e.clientX, t: e.timeStamp };
-    setDragging(true);
+    // dragging вмикаємо не тут, а коли вісь виявиться горизонтальною: інакше
+    // на час вертикального скролу знімався б перехід доріжки
+    setDragging(false);
   }, []);
 
-  const onPointerMove = useCallback(
-    (e: React.PointerEvent) => {
-      if (!active.current) return;
-      let d = e.clientX - startX.current;
-      if (Math.abs(d) > TAP) moved.current = true;
-      // За краєм списку доріжка йде вʼязко — жест не блокується, але видно,
-      // що далі нічого немає
-      const beyondStart = index === 0 && d > 0;
-      const beyondEnd = index === count - 1 && d < 0;
-      if (beyondStart || beyondEnd) d *= RESIST;
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!active.current) return;
+    const rawX = e.clientX - start.current.x;
+    const rawY = e.clientY - start.current.y;
 
-      const dt = e.timeStamp - last.current.t;
-      if (dt > 0) velocity.current = (e.clientX - last.current.x) / dt;
-      last.current = { x: e.clientX, t: e.timeStamp };
+    if (axis.current === null) {
+      const ax = Math.abs(rawX);
+      const ay = Math.abs(rawY);
+      if (Math.max(ax, ay) < AXIS_LOCK) return; // ще зарано вирішувати
+      axis.current = ax > ay ? 'x' : 'y';
+      if (axis.current === 'x') setDragging(true);
+    }
+    if (axis.current !== 'x') return; // це скрол сторінки, не наш жест
 
-      dxRef.current = d;
-      setDx(d);
-    },
-    [count, index]
-  );
+    const d = rawX;
+    if (Math.abs(d) > TAP) moved.current = true;
+
+    const dt = e.timeStamp - last.current.t;
+    if (dt > 0) velocity.current = (e.clientX - last.current.x) / dt;
+    last.current = { x: e.clientX, t: e.timeStamp };
+
+    dxRef.current = d;
+    setDx(d);
+  }, []);
 
   const finish = useCallback(() => {
     if (!active.current) return;
-    active.current = false;
     endedAt.current = performance.now();
-    setDragging(false);
-
+    const horizontal = axis.current === 'x';
     const d = dxRef.current;
-    const far = step > 0 && Math.abs(d) > step * COMMIT_RATIO;
-    const flick = Math.abs(velocity.current) > FLICK;
-    let next = index;
-    if (far || flick) {
-      // Напрям беремо з того сигналу, який спрацював: при короткому різкому
-      // кидку зміщення ще майже нульове і його знак нічого не означає
-      const dir = (far ? d : velocity.current) < 0 ? 1 : -1;
-      next = Math.min(count - 1, Math.max(0, index + dir));
-    }
+    reset();
+    if (!horizontal) return; // вертикальний жест нічого не комітить
 
-    dxRef.current = 0;
-    setDx(0);
-    if (next !== index) onChange(next);
-  }, [count, index, onChange, step]);
+    const far = Math.abs(d) > Math.max(step * COMMIT_RATIO, MIN_COMMIT_DIST);
+    const flick = Math.abs(velocity.current) > FLICK && Math.abs(d) > MIN_FLICK_DIST;
+    if (!far && !flick) return;
+
+    // Напрям беремо з того сигналу, який спрацював: при короткому різкому
+    // кидку зміщення ще майже нульове і його знак нічого не означає
+    onStep((far ? d : velocity.current) < 0 ? 1 : -1);
+  }, [onStep, reset, step]);
+
+  /**
+   * Скасування — це НЕ завершення. Браузер шле pointercancel, коли забирає
+   * жест собі (найчастіше під скрол сторінки), і зараховувати такий жест як
+   * гортання не можна: саме через це скрол по хедеру відкривав інший розділ.
+   */
+  const abort = useCallback(() => {
+    if (!active.current) return;
+    endedAt.current = performance.now();
+    reset();
+  }, [reset]);
 
   /**
    * Свайп по смузі не має спрацьовувати як клік по логотипу чи посиланню.
@@ -132,7 +176,7 @@ export const useSwipePager = ({ count, index, onChange, step }: Args) => {
       onPointerDown,
       onPointerMove,
       onPointerUp: finish,
-      onPointerCancel: finish,
+      onPointerCancel: abort,
       onClickCapture,
     },
   };
