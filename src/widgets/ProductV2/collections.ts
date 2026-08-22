@@ -5,7 +5,6 @@
 import type { CSSProperties } from 'react';
 import type { Design } from '@/widgets/HeroVisual/designs';
 import type { DesignId } from '@/shared/config/design';
-import { isHiddenCollection } from '@/shared/config/hidden-collections';
 
 export interface CollectionItem {
   key: string;
@@ -62,10 +61,18 @@ export const capsuleStyle = (labelColor: string | null, design?: DesignId): CSSP
   return { background, color: background.includes('gradient') ? '#101413' : '#fff' };
 };
 
-// Приховані розділи не рекламуються в «Інших колекціях» — туди ведуть
-// лише прямі лінки (на сторінці самого прихованого розділу currentKey
-// і так виключає його зі списку)
+/**
+ * ВСІ колекції системи, крім поточної — включно з прихованими.
+ *
+ * Раніше приховані розділи звідси відсіювались, і Олько з Сєріком не мали
+ * жодного входу, крім свайпу навбару й прямого лінка. Рішення власника
+ * (2026-08-22): «Іньчі колекції» показують усе, що є в системі, і саме ця
+ * секція стає для прихованих розділів дверима.
+ *
+ * Прихованість лишається чинною там, де вона й була задумана: на головній
+ * (герої) і в каталозі. Тут вона свідомо не діє.
+ */
 export const otherCollections = (
   collections: CollectionDef[] | undefined,
   currentKey: string | undefined
-): CollectionDef[] => (collections ?? []).filter((c) => c.key !== currentKey && !isHiddenCollection(c.key));
+): CollectionDef[] => (collections ?? []).filter((c) => c.key !== currentKey);

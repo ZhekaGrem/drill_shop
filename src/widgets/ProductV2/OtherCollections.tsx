@@ -36,7 +36,7 @@ export const OtherCollections = ({
   if (others.length === 0) return null;
 
   return (
-    <Section title="Інші колекції" action={{ href: '/catalog', label: 'Весь каталог' }}>
+    <Section title="Іньчі колекції" action={{ href: '/catalog', label: 'Весь каталог' }}>
       <div className={styles.collectionCards}>
         {others.map((col) => {
           const count = col.items.length;
