@@ -23,6 +23,15 @@ const DRIL_NAV = [
   { label: 'Контакти', href: '/contact' },
 ];
 
+/** Навігація розділу серії «Мистецтво з війни»: у кожного автора своя сторінка */
+const seriesNav = (href: string) => [
+  // «Каталог», а не «Колекція», тут був би обманом: товари прихованого
+  // розділу каталог не показує (див. hidden-collections і CatalogClient)
+  { label: 'Колекція', href },
+  { label: 'Про нас', href: '/about' },
+  { label: 'Контакти', href: '/contact' },
+];
+
 export const NAV_WORLDS: NavWorld[] = [
   { id: 'dril', wordmark: 'Дріл', href: '/', navItems: DRIL_NAV },
   {
@@ -31,13 +40,13 @@ export const NAV_WORLDS: NavWorld[] = [
     // Своєї головної в розділу немає — веде на сторінку єдиного товару.
     // Зʼявиться власна сторінка розділу — міняється тільки цей рядок.
     href: '/v2/a/olko',
-    navItems: [
-      // «Каталог», а не «Колекція», тут був би обманом: товари прихованого
-      // розділу каталог не показує (див. hidden-collections і CatalogClient)
-      { label: 'Колекція', href: '/v2/a/olko' },
-      { label: 'Про нас', href: '/about' },
-      { label: 'Контакти', href: '/contact' },
-    ],
+    navItems: seriesNav('/v2/a/olko'),
+  },
+  {
+    id: 'mystetstvo-viyny-serik',
+    wordmark: HIDDEN_COLLECTION_WORDMARK['mystetstvo-viyny-serik'],
+    href: '/v2/a/privitonchyk',
+    navItems: seriesNav('/v2/a/privitonchyk'),
   },
 ];
 

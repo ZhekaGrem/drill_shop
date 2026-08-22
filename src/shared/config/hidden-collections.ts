@@ -6,11 +6,16 @@
 //
 // Бонус прихованого розділу: на його сторінках словомарка логотипа в хедері
 // змінюється (є. Дріл → є. Олько) — розділ живе під власним «брендом».
-export const HIDDEN_COLLECTION_SLUGS: readonly string[] = ['mystetstvo-viyny'];
+// «Мистецтво з війни» — серія, і кожен її автор живе під своєю словомаркою.
+// Тому колекцій дві з однаковою назвою, але різними слагами: словомарка
+// прив'язана саме до слага, і без окремого запису обидва автори ділили б
+// один бренд у хедері.
+export const HIDDEN_COLLECTION_SLUGS: readonly string[] = ['mystetstvo-viyny', 'mystetstvo-viyny-serik'];
 
 // Словомарка хедера для прихованого розділу (дефолтна — «Дріл»)
 export const HIDDEN_COLLECTION_WORDMARK: Record<string, string> = {
   'mystetstvo-viyny': 'Олько',
+  'mystetstvo-viyny-serik': 'Сєрік',
 };
 
 export const isHiddenCollection = (slug: string | null | undefined): boolean =>
