@@ -10,6 +10,7 @@ import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
 import { HomeHeroes } from '@/widgets/HomeHeroes/HomeHeroes';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
 import { isHiddenCollection } from '@/shared/config/hidden-collections';
+import { orderForHome } from '@/shared/config/home-collections';
 import { useCategoriesStore } from '@/shared/stores/categories';
 import { CategoriesInitializer } from '@/shared/components/CategoriesInitializer/CategoriesInitializer';
 import { content } from '@/shared/config/content';
@@ -35,10 +36,13 @@ const Home = () => {
   const categories = useCategoriesStore((s) => s.categories);
   // Герої = колекції з БД (GET /collections); механіку розкладки вибирає
   // активна дизайн-концепція (data-design, перемикач на /v2/dev).
-  // Приховані розділи (hidden-collections) на головну не потрапляють —
-  // до них ведуть лише прямі лінки.
+  //
+  // Приховані розділи (hidden-collections) на головну не потрапляють: у
+  // «Мистецтво з війни» ведуть свайп навбару на «є. Олько» і прямий лінк.
+  // Порядок бекенда тут не діє: черга задана слагами в home-collections.
   const { data: collections } = useCollections();
-  const visibleCollections = collections?.filter((c) => !isHiddenCollection(c.key));
+  const visibleCollections =
+    collections && orderForHome(collections.filter((c) => !isHiddenCollection(c.key)));
 
   return (
     <Page>
