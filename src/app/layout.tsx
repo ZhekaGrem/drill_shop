@@ -102,7 +102,7 @@ export default function RootLayout({
         }>
         <JsonLd data={structuredData.organization()} />
         <JsonLd data={structuredData.website()} />
-        <GoogleAnalytics gaId="G-2DZN3ZESDB" />
+        <GoogleAnalytics gaId="G-RSSDBTX25H" />
         {/* Сплеш першого відкриття: SSR-иться в перший HTML, зникає після
             гідрації. Живе поза Providers — йому не потрібен жоден контекст */}
         <Splash />
