@@ -11,15 +11,6 @@
   // контейнера: вдень обидва вже й так білі (як і було), вночі тепер збігаються.
   background: var(--surface-card);
   border: 1px solid var(--border-subtle);
-
-  // CartItemsList рендерить ці картки в <Stack gap={0}> — сусідні рядки
-  // стоять впритул, і спільна межа подвоювалась (нижня цього рядка +
-  // верхня наступного = 2px замість 1px). &:not(:last-child) нижче була
-  // no-op (той самий 1px, що й у базовому правилі) — забираємо верхню межу
-  // в усіх, крім першого, і подвоєння зникає.
-  &:not(:first-child) {
-    border-top: none;
-  }
 }
 
 // ============ IMAGE ============
@@ -44,7 +35,16 @@
   font-weight: var(--fw-medium);
   color: var(--text-primary);
   line-height: 1.3;
-  word-break: break-word;
+  // overflow-wrap (не word-break): переносить по пробілу і ріже сам символ
+  // лише коли ціле слово довше за рядок — на вузькій мобільній колонці
+  // word-break: break-word різав звичайні короткі слова («Чорний») посеред
+  // літер щоразу, коли назва+ціна на 480px ділили один рядок.
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.titleRow {
+  min-width: 0;
 }
 
 // ============ PRICE CONTAINER ============
@@ -98,8 +98,11 @@
 // ============ RESPONSIVE ============
 @media (max-width: 480px) {
   .image {
-    width: 120px;
-    height: 120px;
+    // Було 120×120 — на вузькому екрані це лишало назві товару ~90px і
+    // текст ламався посеред слова (word-break). 84px — компактна мініатюра,
+    // яка звільняє колонку під текст.
+    width: 84px;
+    height: 84px;
   }
 
   .productName {
@@ -108,5 +111,14 @@
 
   .currentPrice {
     font-size: var(--text-sm);
+  }
+
+  // Назва й ціна ділили один рядок (wrap="nowrap") — ціна забирала своє
+  // місце першою, і на назву лишалась катастрофічно вузька колонка. На
+  // мобільному ціна падає під назву; на десктопі рядок лишається як був.
+  .titleRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
   }
 }

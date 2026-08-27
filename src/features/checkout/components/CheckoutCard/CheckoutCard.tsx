@@ -31,7 +31,7 @@ const CheckoutCardComponent = ({ item }: CheckoutCardProps) => {
       {/* Інформація про товар */}
       <Stack gap={4} flex={1} className={styles.info}>
         {/* Рядок 1: Назва (зліва) | Ціна (справа) */}
-        <Group justify="space-between" align="flex-start" wrap="nowrap">
+        <Group justify="space-between" align="flex-start" wrap="nowrap" className={styles.titleRow}>
           <Text className={styles.productName} lineClamp={2} flex={1}>
             {item.variant?.name || item.product.name}
           </Text>

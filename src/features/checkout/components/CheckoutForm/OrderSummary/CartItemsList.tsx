@@ -7,7 +7,7 @@ interface CartItemsListProps {
 
 export const CartItemsList = ({ items }: CartItemsListProps) => {
   return (
-    <Stack gap={0}>
+    <Stack gap="sm">
       {items.map((item) => (
         <CheckoutCard key={item.id} item={item} />
       ))}
