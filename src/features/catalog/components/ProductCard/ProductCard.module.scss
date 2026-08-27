@@ -58,7 +58,11 @@
   }
 }
 
-// Фото «вставлене» в картку з відступом — деталь паспорт-картки Дії
+// Фото впритул до країв картки (без --card-inset і без власної підкладки) —
+// раніше відступ + сіро-блакитна --background-secondary під вирізаними
+// (без фону) фото товару читались як рамка навколо картинки. Заокруглення
+// верхніх кутів бере на себе .card (border-radius + overflow: hidden), тому
+// власного border-radius контейнеру задавати не треба.
 //
 // Пропорція, а не три фіксовані висоти (450 / 280 / 260px). Фіксована висота
 // при доріжці сітки `minmax(300px, 1fr)` означала, що кадрування фото залежало
@@ -66,9 +70,8 @@
 // з реальною карткою — при заміні сторінка стрибала. Тепер обидва 3:4.
 .productCardImageContainer {
   position: relative;
-  width: calc(100% - var(--card-inset) * 2);
+  width: 100%;
   aspect-ratio: 3 / 4;
-  margin: var(--card-inset) var(--card-inset) 0;
   overflow: visible;
 
   @media (max-width: 768px) {
@@ -81,9 +84,9 @@
     position: relative;
     width: 100%;
     height: 100%;
-    // Нейтральна підкладка, поки фото вантажиться / якщо не вписалось
-    background: var(--background-secondary);
-    border-radius: var(--border-radius-md);
+    // Той самий колір, що й картка: підкладка більше не видно як рамку
+    // навколо вирізаних (прозорих) фото товару.
+    background: var(--surface-card);
     overflow: hidden;
   }
 }
