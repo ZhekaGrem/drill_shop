@@ -18,6 +18,8 @@ export const useCart = () => {
   const error = useCartStore((state) => state.error);
   const syncCart = useCartStore((state) => state.syncCart);
   const addOptimisticItem = useCartStore((state) => state.addOptimisticItem);
+  const removeOptimisticItem = useCartStore((state) => state.removeOptimisticItem);
+  const setOptimisticQuantity = useCartStore((state) => state.setOptimisticQuantity);
   const rollback = useCartStore((state) => state.rollback);
 
   // Додавання з оптимістичним UI
@@ -55,7 +57,10 @@ export const useCart = () => {
     },
   });
 
-  // Оновлення кількості
+  // Оновлення кількості. Нове число вже стоїть у сторі (степер ставить його
+  // в мить кліку), тому тут лишається тільки запит і відкат при помилці:
+  // знімок робити нема з чого — оптимістичне значення записали на 500 мс
+  // раніше, до debounce.
   const updateItemMutation = useMutation({
     mutationFn: async ({ cartItemId, quantity }: any) => {
       return updateCartItem(cartItemId, { quantity });
@@ -63,23 +68,37 @@ export const useCart = () => {
     onSuccess: async () => {
       await syncCart();
     },
-    onError: (error: any) => {
+    onError: async (error: any) => {
       showNotification({
         message: error.message || 'Не вдалося оновити кількість',
         color: 'red',
       });
+      // Правду про кількість знає сервер — забираємо її звідти
+      await syncCart();
     },
   });
 
-  // Видалення
+  // Видалення з оптимістичним UI
   const removeItemMutation = useMutation({
     mutationFn: async (cartItemId: string) => {
-      return removeCartItem(cartItemId);
-    },
-    onSuccess: async () => {
-      // Тост із «Повернути» вже показує CartItem.handleRemove одразу після
-      // виклику removeItem — другий тост тут перекривав той, у якому лежить undo.
-      await syncCart();
+      const previousState = {
+        items: useCartStore.getState().items,
+        calculations: useCartStore.getState().calculations,
+      };
+
+      // Рядок зникає одразу — CartList на його місці малює «Повернути»
+      removeOptimisticItem(cartItemId);
+
+      try {
+        const response = await removeCartItem(cartItemId);
+        // Тост із «Повернути» вже показує CartList.handleRemove одразу після
+        // виклику removeItem — другий тост тут перекривав той, у якому лежить undo.
+        await syncCart();
+        return response;
+      } catch (error) {
+        rollback(previousState);
+        throw error;
+      }
     },
     onError: (error: any) => {
       showNotification({
@@ -124,6 +143,9 @@ export const useCart = () => {
     updateItemQuantity: (cartItemId: string, quantity: number) => {
       updateItemMutation.mutate({ cartItemId, quantity });
     },
+    // Викликає степер у мить кліку, ще до debounce, щоб підсумок кошика
+    // не відставав від числа в рядку
+    setItemQuantity: setOptimisticQuantity,
     removeItem: (cartItemId: string) => {
       removeItemMutation.mutate(cartItemId);
     },

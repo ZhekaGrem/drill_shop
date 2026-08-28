@@ -75,8 +75,11 @@ export const CartDrawer = () => {
           }}>
           {/* isLoading перевіряємо ПЕРШИМ. Стор кошика ініціалізується
               асинхронно, тож items спершу порожній — і власник повного кошика
-              бачив «Ваш кошик порожній» щоразу, коли відкривав шухляду. */}
-          {isLoading ? (
+              бачив «Ваш кошик порожній» щоразу, коли відкривав шухляду.
+              Але спінер має право заступати ЛИШЕ порожній екран: коли товари
+              вже на місці (злиття гостьового кошика при вході), список
+              лишається на екрані й тихо оновлюється. */}
+          {isLoading && !hasItems ? (
             <Center py="xl">
               <Loader size="sm" />
             </Center>
@@ -101,8 +104,10 @@ export const CartDrawer = () => {
           )}
         </ScrollArea>
 
-        {/* Footer with total and checkout */}
-        {hasItems && !isLoading && (
+        {/* Footer with total and checkout. Тримається на самих товарах:
+            прив'язка до isLoading змушувала підсумок і кнопки зникати й
+            вискакувати назад після кожної зміни кошика */}
+        {hasItems && (
           <Stack gap="md" pt="md">
             <Divider className={styles.divider} />
 

@@ -32,7 +32,7 @@ interface CartItemProps {
 }
 
 const CartItemComponent = ({ item, compact = false, isFirst = false, onRemove }: CartItemProps) => {
-  const { updateItemQuantity } = useCart();
+  const { updateItemQuantity, setItemQuantity } = useCart();
   // Перехід на товар мусить ЗАКРИТИ шухляду. Сама вона цього не робить:
   // usePathname у CartDrawer потрібен лише для телеграм-префікса, реакції на
   // зміну маршруту там немає, тож кошик лишався розкритим поверх щойно
@@ -59,10 +59,13 @@ const CartItemComponent = ({ item, compact = false, isFirst = false, onRemove }:
     (next: number) => {
       if (next < 1 || next > maxAvailable) return;
       setQuantity(next);
+      // Підсумок кошика рухається разом із числом у рядку, а не через
+      // 500 мс debounce і відповідь сервера
+      setItemQuantity(item.id, next);
       setPending(true);
       debouncedUpdate(item.id, next);
     },
-    [item.id, maxAvailable, debouncedUpdate]
+    [item.id, maxAvailable, debouncedUpdate, setItemQuantity]
   );
 
   const unitPrice = item.finalPrice;

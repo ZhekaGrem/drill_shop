@@ -20,6 +20,8 @@ interface CartState {
 
   // Оптимістичні оновлення (тільки для UI)
   addOptimisticItem: (productData: any, quantity: number, variantId?: string) => void;
+  removeOptimisticItem: (cartItemId: string) => void;
+  setOptimisticQuantity: (cartItemId: string, quantity: number) => void;
   rollback: (previousState: { items: CartItemWithProduct[]; calculations: CartCalculations }) => void;
 
   // UI методи
@@ -46,7 +48,12 @@ export const useCartStore = create<CartState>()(
 
     // Завантажити з сервера (отримує реальні ID)
     syncCart: async () => {
-      set({ isLoading: true, error: null });
+      // isLoading вмикаємо ТІЛЬКИ на першому завантаженні. Кожна мутація
+      // (видалення, зміна кількості) добиває syncCart, а споживачі малюють по
+      // isLoading спінер замість усього кошика — через це список, підсумок і
+      // кнопки блимали після кожного кліку. Кошик, який людині вже показали,
+      // більше не зникає: дані просто підмінюються на свіжі.
+      set(get().isInitialized ? { error: null } : { isLoading: true, error: null });
 
       try {
         const response = await fetchCart();
@@ -163,6 +170,21 @@ export const useCartStore = create<CartState>()(
 
       const calculations = calculateCartTotals(newItems);
       set({ items: newItems, calculations });
+    },
+
+    // Оптимістичне видалення: рядок зникає в мить кліку, запит іде слідом
+    removeOptimisticItem: (cartItemId: string) => {
+      const items = get().items.filter((item) => item.id !== cartItemId);
+      set({ items, calculations: calculateCartTotals(items) });
+    },
+
+    // Оптимістична кількість: степер у рядку і підсумок кошика рухаються
+    // разом, а не через debounce + відповідь сервера
+    setOptimisticQuantity: (cartItemId: string, quantity: number) => {
+      const items = get().items.map((item) =>
+        item.id === cartItemId ? { ...item, quantity, totalPrice: item.finalPrice * quantity } : item
+      );
+      set({ items, calculations: calculateCartTotals(items) });
     },
 
     // Злиття гостьового кошика при авторизації
