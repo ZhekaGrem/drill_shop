@@ -94,7 +94,8 @@ export default function CollectionProductClient({ params }: { params: Promise<{ 
                 {/* Назва зліва, пульсуюча крапка колекції — у правому куті рядка */}
                 <div className={styles.collectionTitleRow}>
                   <h2>
-                    {collection?.title ?? (collectionsError ? 'Колекція недоступна' : 'Завантажуємо колекцію…')}
+                    {collection?.title ??
+                      (collectionsError ? 'Колекція недоступна' : 'Завантажуємо колекцію…')}
                     {collection?.labelText && (
                       <span
                         className={`${styles.capsule} designCapsule`}

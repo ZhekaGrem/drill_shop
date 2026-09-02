@@ -49,7 +49,13 @@ export const StaticGallery = ({ images, name }: { images: ProductImage[]; name: 
               aria-label={`Фото ${index + 1}`}
               aria-pressed={index === active}
               onClick={() => setActive(index)}>
-              <Image src={getImageUrl(image.url || image.publicId)} alt="" width={56} height={56} loading="lazy" />
+              <Image
+                src={getImageUrl(image.url || image.publicId)}
+                alt=""
+                width={56}
+                height={56}
+                loading="lazy"
+              />
             </button>
           ))}
         </div>
