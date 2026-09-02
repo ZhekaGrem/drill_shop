@@ -46,15 +46,18 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // /v2/a/[slug] — та сама ISR-сторінка товару, лише в розкладці колекцій
   const paths = new Set<string>([
     `/catalog/${slug}`,
     `/telegram/catalog/${slug}`,
+    `/v2/a/${slug}`,
     '/catalog',
     '/telegram/catalog',
   ]);
   if (oldSlug && oldSlug !== slug) {
     paths.add(`/catalog/${oldSlug}`);
     paths.add(`/telegram/catalog/${oldSlug}`);
+    paths.add(`/v2/a/${oldSlug}`);
   }
 
   for (const path of paths) {

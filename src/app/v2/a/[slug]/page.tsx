@@ -12,6 +12,13 @@ import { JsonLd } from '../../../JsonLd';
 import { structuredData } from '../../../seo';
 import CollectionProductClient from './CollectionProductClient';
 
+// ISR, як на /catalog/[slug]: без цього серверний запит до бекенда в
+// generateMetadata/page робив сторінку повністю динамічною (no-store,
+// x-vercel-cache: MISS на кожен візит = виклик функції + запит до API на
+// кожного відвідувача). Оновлення товару додатково ревалідує /v2/a/[slug]
+// через /api/revalidate, тож година — верхня межа застарілості.
+export const revalidate = 3600;
+
 // Дедуплікація запиту між generateMetadata і самою сторінкою (той самий
 // прийом, що на /catalog/[slug])
 const getProduct = cache(async (slug: string) => {
