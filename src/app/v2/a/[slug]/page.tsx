@@ -19,6 +19,26 @@ import CollectionProductClient from './CollectionProductClient';
 // через /api/revalidate, тож година — верхня межа застарілості.
 export const revalidate = 3600;
 
+// Сам по собі revalidate тут не спрацював: без generateStaticParams Next
+// лишає динамічний сегмент повністю динамічним (перевірено на проді після
+// деплою: cache-control no-store, x-vercel-cache MISS на кожен хіт). Тому
+// список slug-ів збираємо на білді так само, як /catalog/[slug]; невідомий
+// slug рендериться на вимогу і кешується (dynamicParams).
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  try {
+    const response = await productsApi.getProducts(
+      { sortBy: 'created', sortOrder: 'desc' },
+      { limit: 1000, offset: 0 }
+    );
+    return response.data.map((product) => ({ slug: product.slug }));
+  } catch (error) {
+    console.error('Failed to generate static params for /v2/a:', error);
+    return [];
+  }
+}
+
 // Дедуплікація запиту між generateMetadata і самою сторінкою (той самий
 // прийом, що на /catalog/[slug])
 const getProduct = cache(async (slug: string) => {
