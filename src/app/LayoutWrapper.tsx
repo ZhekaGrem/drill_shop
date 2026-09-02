@@ -7,7 +7,6 @@ import { Footer } from '@/widgets/Footer/Footer';
 import { EmailVerificationBanner } from '@/shared/components/EmailVerificationBanner';
 import { ThemeClock } from '@/shared/components/ThemeClock/ThemeClock';
 import { useRandomGradientPhase } from '@/shared/hooks';
-import { DEV_MODE } from '@/shared/config/dev-mode';
 import styles from './LayoutWrapper.module.scss';
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -24,26 +23,14 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  // Десктоп відкритий не всьому сайту, а поіменному списку (рішення власника,
-  // 2026-08-16): головна і все під /v2 мають власну широку розкладку, решта
-  // лишається мобільною і бачить заглушку. DEV_MODE відкриває все одразу.
-  //
-  // Головна звіряється на ТОЧНИЙ збіг: startsWith('/') відкрив би геть усе.
-  const isDesktopAllowed = DEV_MODE || pathname === '/' || pathname?.startsWith('/v2');
-
-  // Решта сторінок на широкому екрані бачить заглушку (копі власника,
-  // дослівно) — вони досі мобільні.
+  // Десктопна заглушка-ґейт (поіменний список сторінок, рішення власника
+  // 2026-08-16) знята повністю: десктоп відкритий усьому сайту, а не лише
+  // головній і /v2/*. DEV_MODE лишається — він і далі керує /v2/dev,
+  // /v2/lab та іншими внутрішніми dev-сторінками окремо від цього рішення.
   return (
     <>
       <ThemeClock />
-      {!isDesktopAllowed && (
-        <div className={styles.plug} role="status">
-          <h1 className={styles.plugTitle}>Вибачте, у нас проблеми з підключенням</h1>
-          <p className={styles.plugHint}>але з телефона може запрацює...</p>
-          <p className={styles.plugHint}>(Якщо сайт не робе, не пишіт мені)</p>
-        </div>
-      )}
-      <div className={isDesktopAllowed ? styles.siteAlways : styles.site}>
+      <div className={styles.siteAlways}>
         {/* viewTransitionName вилучає хедер зі знімка сторінки, щоб він не їхав
           разом із контентом. Правило анімації — в globals.css. Inline-стиль —
           варіант C правил стилізації: це унікальний ідентифікатор ділянки,

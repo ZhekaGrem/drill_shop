@@ -1,33 +1,39 @@
 // src/widgets/ProductV2/ProductV2.module.scss
 // Стилі сторінки товару в колекції: 3D-сцена як галерея + повна картка
 // покупки, інфогрупи, інші колекції.
-// Телефон — один стовпчик, як і був. Від 1024px сторінка стає двоколонковою:
+// Телефон — один стовпчик, як і був. Від 1024px .mainRow стає двоколонковим:
 // медіа зліва, покупка справа (див. .buyColumn).
 // DOM-порядок ← → візуальний порядок тепер РІЗНІ навмисно: h1 (назва товару,
 // .buyColumn) у розмітці йде перед h2 (назва колекції, медіа-картка) заради
 // скрін-рідерів, а order нижче лишає медіа зліва / зверху, як і раніше, в
 // обох розкладках — властивість не залежить від брейкпоінта.
 .page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+// .mainRow — окремий грід-контейнер лише для медіа-картки й .buyColumn.
+// Виділений навмисно, а не як прямий грід .page: sticky-елемент бере
+// containing block у СВОГО грід-контейнера-БАТЬКА (не власного грід-ряду),
+// тож якби .buyColumn лишався прямим дитям .page разом із .fullWidth
+// нижче, sticky «плавав» би по всій висоті .page і заїжджав на карусель
+// «Інші колекції» — саме так це й було зламано.
+.mainRow {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
 }
 
-// Прямі діти .page: order фіксує видиме місце незалежно від DOM-порядку
+// Прямі діти .mainRow: order фіксує видиме місце незалежно від DOM-порядку
 // (grid враховує order і в auto-placement, не лише в малюванні — на відміну
 // від flex, тут це впливає й на те, в яку колонку/рядок потрапить елемент).
-.page > .card {
+.mainRow > .card {
   order: 1;
 }
 
-.page > .buyColumn {
+.mainRow > .buyColumn {
   order: 2;
-}
-
-.page > .fullWidth {
-  // Без явного значення order за замовчуванням 0 — нижче за .card/.buyColumn
-  // (1/2), і «Інші колекції» вискочили б над обома колонками.
-  order: 3;
 }
 
 // Права колонка: картка покупки + інфогрупи одним блоком, щоб на телефоні між
@@ -39,7 +45,7 @@
 }
 
 @media (min-width: 1024px) {
-  .page {
+  .mainRow {
     // 400px — міра, під яку рахована мова списків і блок покупки; ліва колонка
     // забирає решту. minmax(0, …) обов'язковий: без нього 3D-полотно з власною
     // шириною роздуває доріжку й ламає грид.
@@ -54,14 +60,11 @@
   // цього колонка виїжджала б з-під нього і перші рядки ховались би позаду.
   // --header-height-desktop — єдиний власник числа (globals.css), той самий
   // токен читає й сам хедер (header.module.scss, min-height).
+  // Containing block для sticky тепер .mainRow (див. коментар вище), тож
+  // низ прилипання — низ .mainRow, а не низ усієї сторінки.
   .buyColumn {
     position: sticky;
     top: calc(var(--header-height-desktop) + var(--space-4));
-  }
-
-  // Секція «Інші колекції» — на всю ширину, під обома колонками
-  .fullWidth {
-    grid-column: 1 / -1;
   }
 }
 
@@ -84,15 +87,25 @@
   // h2 (назва колекції) стоїть у .collectionTitleRow (align-items: center)
   // поруч із пульсуючою крапкою. Нижній відступ там був би зайвим —
   // він трохи опускає рядок тексту нижче центру відносно бейджа поряд.
+  //
+  // Кегль і колір навмисно ТИХІШІ за .productName (BuyPanel): раніше обидва
+  // мали однаковий clamp(22px, 5vw, 30px) і на екрані читались як два h1 —
+  // назва колекції (тут) і назва товару конкурували за увагу, хоча головна
+  // дія сторінки — купити конкретний товар. Вага лишається --fw-bold (те
+  // саме правило h1–h3 з globals.css), ієрархія — через кегль і колір
+  // (--text-secondary, той самий токен, що й решта другорядних підписів),
+  // а не другий-третій сірий поза системою.
   h2 {
     margin: 0;
-    font-size: clamp(22px, 5vw, 30px);
+    font-size: clamp(18px, 3.5vw, 22px);
+    color: var(--text-secondary);
+    text-wrap: balance;
   }
 
   p {
     margin: 0;
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: var(--text-sm);
   }
 }
 
@@ -165,6 +178,7 @@
   margin: 0;
   font-size: clamp(22px, 5vw, 30px);
   line-height: 1.15;
+  text-wrap: balance;
 }
 
 .meta {
@@ -190,6 +204,7 @@
   color: var(--text-secondary);
   font-size: 15px;
   line-height: 1.5;
+  text-wrap: pretty;
 }
 
 .priceRow {
@@ -233,8 +248,14 @@
 }
 
 .size {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  // 44px — комфортний тап-таргет (WCAG 2.5.5 AAA / Fitts's Law), а не голий
+  // естетичний відступ: попередній padding: 11px 15px давав ~40px висоти.
   min-width: 54px;
-  padding: 11px 15px;
+  min-height: 44px;
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--border-control);
   border-radius: var(--radius-pill);
   background: none;
@@ -376,6 +397,9 @@
   overflow-x: auto;
   padding-bottom: var(--space-2);
   scrollbar-width: none;
+  // Картки зупиняються рівно одна під одною замість вільного «дрейфу» —
+  // той самий чіткий, дисциплінований свайп, що й у карток-послуг Дії.
+  scroll-snap-type: x proximity;
 
   &::-webkit-scrollbar {
     display: none;
@@ -389,6 +413,7 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     overflow-x: visible;
     padding-bottom: 0;
+    scroll-snap-type: none;
   }
 }
 
@@ -403,6 +428,7 @@
   color: inherit;
   text-decoration: none;
   transition: transform var(--transition-fast);
+  scroll-snap-align: start;
 
   // У сітці ширину задає доріжка, а не картка (DESIGN_SYSTEM, «картка товару»)
   @media (min-width: 1024px) {
@@ -432,7 +458,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: 14px;
+  font-size: var(--text-sm);
 }
 
 // Назва картки + капсула-лейбл (якщо є) в одному рядку
@@ -445,7 +471,7 @@
 
 .collectionCardHint {
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: var(--text-xs);
 }
 
 // Рядок шапки колекції: назва зліва, пульсуюча крапка в правому куті
@@ -462,4 +488,5 @@
   font-size: 14px;
   line-height: 1.5;
   color: var(--text-secondary);
+  text-wrap: pretty;
 }
