@@ -18,6 +18,19 @@
   gap: var(--spacing-sm);
   border: none;
 
+  // Текст і іконка («До колекції <ArrowRight/>») лежать не в самій кнопці, а в
+  // Mantine-обгортках .mantine-Button-inner (block) → .mantine-Button-label
+  // (inline). `unstyled` ці статичні класи не прибирає, а стилів їм не дає,
+  // тож svg стояв на базовій лінії тексту — на ~3.5px вище його центру
+  // (заміряно: центр svg 448.9, центр тексту 452.4). Flex-центрування на
+  // самому .button до них не доходило: у нього одна дитина — inner.
+  :global(.mantine-Button-inner),
+  :global(.mantine-Button-label) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
   // Diia-style "живий" hover — механіка кнопки «Більше новин» на diia.gov.ua/news:
   // під суцільно чорною маскою ::before безперервно крутиться ТРИШАРОВИЙ
   // --gradient-btn. На hover маска ховається, і оскільки анімація ніколи не
