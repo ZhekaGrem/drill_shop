@@ -32,8 +32,6 @@ const MIN_FLICK_DIST = 24;
  * мікрорух пальця перекидав на інший розділ.
  */
 const MIN_COMMIT_DIST = 40;
-/** Менший зсув — це тап, а не свайп (гасимо клік по посиланню) */
-const TAP = 6;
 /** Після якого зсуву вирішуємо, жест горизонтальний чи вертикальний */
 const AXIS_LOCK = 8;
 /** Скільки після жесту клік ще вважається його відлунням, мс */
@@ -65,8 +63,18 @@ export const useSwipePager = ({ step, onStep }: Args) => {
    * 16px дрейфу вистачало, щоб піти з головної на /v2/a/olko.
    */
   const axis = useRef<null | 'x' | 'y'>(null);
-  /** Чи був рух — читає onClickCapture, щоб свайп не спрацював як клік */
-  const moved = useRef(false);
+  /**
+   * Чи жест РЕАЛЬНО перемкнув розділ (onStep викликано) — читає
+   * onClickCapture, щоб гасити клік лише тоді, коли доріжка справді поїхала.
+   *
+   * Раніше тут стояв «чи був рух далі 6px» — а комітиться перехід лише після
+   * 40px (MIN_COMMIT_DIST) чи різкого кидка. Між 6 і 40px лежала мертва зона:
+   * природний дрож миші під час звичайного кліку (а він завжди на кілька
+   * пікселів більший за 6) гасив клік МОВЧКИ, доріжка при цьому нікуди не
+   * переїжджала — посилання просто переставало працювати. Заміряно на
+   * живому хедері: клік по «Каталог» на десктопі не реагував узагалі.
+   */
+  const committed = useRef(false);
   /** Коли жест завершився — щоб гасити лише той клік, що йде слідом за ним */
   const endedAt = useRef(0);
 
@@ -78,13 +86,16 @@ export const useSwipePager = ({ step, onStep }: Args) => {
     setDragging(false);
   }, []);
 
+  // Хто саме тримає жест — потрібен пізніше, коли вісь щойно визначилась
+  // горизонтальною: capture свідомо переїхав із onPointerDown сюди.
+  const pointer = useRef<{ id: number; target: Element } | null>(null);
+
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     // Праву й середню кнопки миші ігноруємо — це не жест
     if (e.pointerType === 'mouse' && e.button !== 0) return;
-    e.currentTarget.setPointerCapture(e.pointerId);
     active.current = true;
     axis.current = null;
-    moved.current = false;
+    pointer.current = { id: e.pointerId, target: e.currentTarget };
     start.current = { x: e.clientX, y: e.clientY };
     dxRef.current = 0;
     velocity.current = 0;
@@ -104,12 +115,20 @@ export const useSwipePager = ({ step, onStep }: Args) => {
       const ay = Math.abs(rawY);
       if (Math.max(ax, ay) < AXIS_LOCK) return; // ще зарано вирішувати
       axis.current = ax > ay ? 'x' : 'y';
-      if (axis.current === 'x') setDragging(true);
+      if (axis.current === 'x') {
+        setDragging(true);
+        // Capture беремо ЛИШЕ тепер, коли жест уже підтверджено горизонтальним
+        // — не на кожен pointerdown. Раніше capture хапався одразу на будь-
+        // який тап, і клік по звичайному посиланню (без жодного свайпу) міг
+        // губитись разом із ним: click — окрема, вже НЕ pointer-подія, і
+        // capture, узятий на порожньому місці, зайвий раз втручався в те, як
+        // браузер її синтезує з пари down/up.
+        pointer.current?.target.setPointerCapture(pointer.current.id);
+      }
     }
     if (axis.current !== 'x') return; // це скрол сторінки, не наш жест
 
     const d = rawX;
-    if (Math.abs(d) > TAP) moved.current = true;
 
     const dt = e.timeStamp - last.current.t;
     if (dt > 0) velocity.current = (e.clientX - last.current.x) / dt;
@@ -131,6 +150,7 @@ export const useSwipePager = ({ step, onStep }: Args) => {
     const flick = Math.abs(velocity.current) > FLICK && Math.abs(d) > MIN_FLICK_DIST;
     if (!far && !flick) return;
 
+    committed.current = true;
     // Напрям беремо з того сигналу, який спрацював: при короткому різкому
     // кидку зміщення ще майже нульове і його знак нічого не означає
     onStep((far ? d : velocity.current) < 0 ? 1 : -1);
@@ -162,8 +182,8 @@ export const useSwipePager = ({ step, onStep }: Args) => {
    * Тому ще й вікно часу — поза ним ознака просто скидається.
    */
   const onClickCapture = useCallback((e: React.MouseEvent) => {
-    if (!moved.current) return;
-    moved.current = false;
+    if (!committed.current) return;
+    committed.current = false;
     if (performance.now() - endedAt.current > CLICK_WINDOW) return;
     e.preventDefault();
     e.stopPropagation();
