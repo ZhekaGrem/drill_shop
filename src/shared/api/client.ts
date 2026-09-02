@@ -19,6 +19,27 @@ let tempAccessToken: string | null = null;
 let cachedToken: { token: string | null; expiresAt: number } | null = null;
 const TOKEN_CACHE_TTL = 60000; // 1 хвилина
 
+/**
+ * Id гостьової сесії. Він же ключ до кошика на бекенді, тому має бути
+ * непередбачуваним: із Math.random() чужу сесію можна підібрати.
+ *
+ * randomUUID доступний лише в secure context (https або localhost), а дев-сервер
+ * відкривають ще й по LAN-адресі з телефона — там лишається getRandomValues,
+ * який працює і без secure context.
+ */
+function generateGuestSessionId(): string {
+  const c = globalThis.crypto;
+
+  if (typeof c?.randomUUID === 'function') {
+    return `guest_${c.randomUUID()}`;
+  }
+
+  const bytes = new Uint8Array(16);
+  c.getRandomValues(bytes);
+  const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+  return `guest_${hex}`;
+}
+
 export const apiClient = axios.create({
   baseURL: API_BASE,
   timeout: 15000,
@@ -122,7 +143,7 @@ apiClient.interceptors.request.use(
         // Для гостей (створюємо один раз, тільки на клієнті)
         let sessionId = localStorage.getItem('guestSessionId');
         if (!sessionId) {
-          sessionId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+          sessionId = generateGuestSessionId();
           localStorage.setItem('guestSessionId', sessionId);
         }
         config.headers['X-Session-ID'] = sessionId;
