@@ -5,16 +5,19 @@ import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCa
 import { productsApi, ProductResponse } from '@/features/catalog/api/products';
 import { Product, ProductWithRelations } from '@/shared/types';
 import { Select } from '@mantine/core';
-import { IconChevronDown, IconChevronUp, IconRuler } from '@tabler/icons-react';
+import { IconRuler } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
 import { Page } from '@/shared/components/Page/Page';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs';
 import { Section } from '@/shared/components/Section/Section';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
-import { ArrowLeft, ArrowRight } from '@/shared/components/Svg';
 import { useCart } from '@/features/cart/hooks/useCart';
 import styles from './productDetails.module.scss';
+// Той самий стиль сцени й ряду мініатюр, що на /v2/a/[slug] (HeroVisual /
+// StaticGallery): картинка по центру, фото знизу — без бічної колонки й
+// стрілок гортання, які були тут раніше.
+import heroStyles from '@/widgets/HeroVisual/HeroVisual.module.scss';
 import { getImageUrl } from '@/shared/utils/image';
 import { ProductBadges } from '@/features/catalog/components/ProductBadges/ProductBadges';
 import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/promo-calculator';
@@ -64,10 +67,8 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   const [isClicked, setIsClicked] = useState(false);
   const [sizeGuideOpened, setSizeGuideOpened] = useState(false);
   const [notifyModalOpened, setNotifyModalOpened] = useState(false);
-  const [showScrollArrows, setShowScrollArrows] = useState(false);
   const [galleryOpened, setGalleryOpened] = useState(false);
   const [variantError, setVariantError] = useState<string | null>(null);
-  const thumbnailsRef = useRef<HTMLDivElement>(null);
   const variantsRef = useRef<HTMLDivElement>(null);
 
   const params = useParams();
@@ -89,25 +90,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
       setSelectedVariant(null);
     }
   }, [product?.hasVariants, product?.variants]);
-
-  // Стрілки скролу потрібні рівно тоді, коли список мініатюр справді не влазить
-  // у свою колонку. Раніше порогом було «більше 6 фото», хоча висота колонки
-  // вміщала 3–4: на 5 фото частина списку була невидима, скролбар прихований
-  // css-ом, стрілок немає — і жодного натяку, що там ще щось є.
-  useEffect(() => {
-    const list = thumbnailsRef.current;
-    if (!list) {
-      setShowScrollArrows(false);
-      return;
-    }
-
-    const update = () => setShowScrollArrows(list.scrollHeight > list.clientHeight + 1);
-    update();
-
-    const observer = new ResizeObserver(update);
-    observer.observe(list);
-    return () => observer.disconnect();
-  }, [product?.images]);
 
   const fetchProduct = async () => {
     setIsLoading(true);
@@ -290,20 +272,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
         ? `Залишилось ${availableQuantity} шт`
         : 'Виготовлення і доставка — до 7 днів';
 
-  const handlePreviousImage = () => {
-    setSelectedImageIndex((prev) => (prev === 0 ? sortedImages.length - 1 : prev - 1));
-  };
-
-  const handleNextImage = () => {
-    setSelectedImageIndex((prev) => (prev === sortedImages.length - 1 ? 0 : prev + 1));
-  };
-
-  // Крок скролу = мініатюра (88px) + проміжок (8px), тобто рівно одна картка.
-  // Через ref, а не document.querySelector по згенерованому класу.
-  const scrollThumbnails = (direction: 1 | -1) => {
-    thumbnailsRef.current?.scrollBy({ top: direction * 96, behavior: 'smooth' });
-  };
-
   const getCurrentWeight = () => {
     return selectedVariant ? selectedVariant.unitValue : product?.unitValue;
   };
@@ -389,147 +357,42 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
 
         {/* Product Details */}
         <div className={styles.productDetails}>
-          {/* Images */}
+          {/* Images: та сама сцена й ряд мініатюр знизу, що на /v2/a/[slug]
+              (HeroVisual.module.scss) — картинка по центру, фото знизу, без
+              бічної колонки й стрілок гортання, які були тут раніше. */}
           <div className={styles.productDetails__images}>
-            <div className={styles.productGallery}>
-              {/* Thumbnails - тепер зліва */}
-              {sortedImages.length > 1 && (
-                <div className={styles.productGallery__thumbnailsWrapper}>
-                  <div className={styles.productGallery__thumbnails} ref={thumbnailsRef}>
-                    {sortedImages.map((image, index) => (
-                      <button
-                        key={image.id}
-                        type="button"
-                        className={`${styles.productGallery__thumbnail} ${
-                          index === selectedImageIndex ? styles.productGallery__thumbnailActive : ''
-                        }`}
-                        aria-label={`Показати зображення ${index + 1}`}
-                        aria-current={index === selectedImageIndex}
-                        onClick={() => setSelectedImageIndex(index)}>
-                        <CloudinaryImage
-                          src={getImageUrl(image.url || image.publicId)}
-                          alt={image.altText || product.name}
-                          width={88}
-                          height={88}
-                        />
-                      </button>
-                    ))}
-                  </div>
+            <div className={heroStyles.visual}>
+              <div
+                className={heroStyles.stage}
+                role="button"
+                tabIndex={0}
+                aria-label="Відкрити фото на весь екран"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setGalleryOpened(true);
+                  }
+                }}
+                onClick={() => setGalleryOpened(true)}>
+                <span className={heroStyles.spotlight} aria-hidden="true" />
+                <span className={heroStyles.shadow} aria-hidden="true" />
 
-                  {showScrollArrows && (
-                    <>
-                      <button
-                        type="button"
-                        className={`${styles.productGallery__scrollArrow} ${styles.productGallery__scrollArrowUp}`}
-                        onClick={() => scrollThumbnails(-1)}
-                        aria-label="Прокрутити мініатюри вгору">
-                        <IconChevronUp size={20} stroke={1.5} />
-                      </button>
-                      <button
-                        type="button"
-                        className={`${styles.productGallery__scrollArrow} ${styles.productGallery__scrollArrowDown}`}
-                        onClick={() => scrollThumbnails(1)}
-                        aria-label="Прокрутити мініатюри вниз">
-                        <IconChevronDown size={20} stroke={1.5} />
-                      </button>
-                    </>
-                  )}
-                </div>
-              )}
-
-              {/* Main Image справа від thumbnails */}
-              <div className={styles.productGallery__main}>
-                <div
-                  className={styles.productGallery__mainImageWrapper}
-                  role="button"
-                  tabIndex={0}
-                  aria-label="Відкрити фото на весь екран"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setGalleryOpened(true);
-                    }
-                  }}
-                  onClick={() => setGalleryOpened(true)}>
-                  {/* Пара до фото в ProductCard (однаковий name) — фото картки
-                      перетікає сюди при переході з каталогу. */}
-                  <ViewTransition name={`product-${product.id}`} share="morph" default="none">
-                    <CloudinaryImage
-                      src={getImageUrl(
-                        sortedImages[selectedImageIndex]?.url ||
-                          sortedImages[selectedImageIndex]?.publicId ||
-                          primaryImage?.url ||
-                          primaryImage?.publicId
-                      )}
-                      alt={product.name}
-                      className={styles.productGallery__mainImage}
-                      width={390}
-                      height={580}
-                    />
-                  </ViewTransition>
-
-                  {/* Іконка збільшення */}
-                  <div className={styles.productGallery__zoomIcon}>
-                    <svg
-                      width="20"
-                      height="16"
-                      viewBox="0 0 20 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M0 0H20V16H0V0ZM2 14H18V2H2V14ZM6 4H8V6H6V8H4V4H6ZM14 12H12V10H14V8H16V12H14Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </div>
-
-                  {/* Navigation arrows - показуємо тільки якщо є більше 1 зображення */}
-                  {sortedImages.length > 1 && (
-                    <>
-                      <button
-                        className={`${styles.productGallery__arrow} ${styles.productGallery__arrowLeft}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handlePreviousImage();
-                        }}
-                        aria-label="Попереднє зображення">
-                        <ArrowLeft size={20} />
-                      </button>
-                      <button
-                        className={`${styles.productGallery__arrow} ${styles.productGallery__arrowRight}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleNextImage();
-                        }}
-                        aria-label="Наступне зображення">
-                        <ArrowRight size={20} />
-                      </button>
-                    </>
-                  )}
-
-                  {/* Крапки — навігація для екранів, де мініатюр не видно.
-                      CSS показує їх тільки на мобільному: на десктопі вони були
-                      четвертим способом гортати ту саму галерею. */}
-                  {sortedImages.length > 1 && (
-                    <div className={styles.productGallery__dots}>
-                      {sortedImages.map((_, index) => (
-                        <button
-                          key={index}
-                          type="button"
-                          className={`${styles.productGallery__dot} ${
-                            index === selectedImageIndex ? styles.productGallery__dotActive : ''
-                          }`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedImageIndex(index);
-                          }}
-                          aria-label={`Зображення ${index + 1}`}
-                          aria-current={index === selectedImageIndex}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
+                {/* Пара до фото в ProductCard (однаковий name) — фото картки
+                    перетікає сюди при переході з каталогу. */}
+                <ViewTransition name={`product-${product.id}`} share="morph" default="none">
+                  <CloudinaryImage
+                    src={getImageUrl(
+                      sortedImages[selectedImageIndex]?.url ||
+                        sortedImages[selectedImageIndex]?.publicId ||
+                        primaryImage?.url ||
+                        primaryImage?.publicId
+                    )}
+                    alt={product.name}
+                    className={heroStyles.still}
+                    width={880}
+                    height={880}
+                  />
+                </ViewTransition>
 
                 {/* Бейджі й обране — один ряд, вирівняний по центру. Кожен з
                     них раніше був приклеєний до свого кута окремо, тож плашка
@@ -543,6 +406,27 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                   {/* Сердечко-обране прибране з клієнтської сторінки (рішення власника) */}
                 </div>
               </div>
+
+              {sortedImages.length > 1 && (
+                <div className={heroStyles.designSwitcher} role="group" aria-label="Фото товару">
+                  {sortedImages.map((image, index) => (
+                    <button
+                      key={image.id}
+                      type="button"
+                      className={heroStyles.thumb}
+                      aria-label={`Показати зображення ${index + 1}`}
+                      aria-pressed={index === selectedImageIndex}
+                      onClick={() => setSelectedImageIndex(index)}>
+                      <CloudinaryImage
+                        src={getImageUrl(image.url || image.publicId)}
+                        alt={image.altText || product.name}
+                        width={56}
+                        height={56}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
