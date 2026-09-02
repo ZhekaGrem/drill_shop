@@ -194,15 +194,15 @@ export function Header() {
                   // нього, а не замість.
                   style={{ width: panelW || undefined, '--slot': `${slot * step}px` } as React.CSSProperties}
                   aria-hidden={!current}>
-                  {/* inverse — хедер чорний, як верхня панель Дії. Без цього
-                    ворд-марка малюється --text-primary, тобто чорним по чорному.
-                    Від 1024px смуга світла — там колір перекриває .headerLogo */}
+                  {/* inverse — хедер чорний на будь-якій ширині, як верхня панель
+                    Дії. Без цього ворд-марка малюється --text-primary, тобто
+                    чорним по чорному. */}
                   <Link
                     href={world.href}
                     className={styles.logoLink}
                     tabIndex={current ? 0 : -1}
                     aria-label={`є. ${world.wordmark} — на головну`}>
-                    <Logo inverse className={styles.headerLogo} wordmark={world.wordmark} />
+                    <Logo inverse wordmark={world.wordmark} />
                   </Link>
 
                   <nav className={styles.desktopNav} aria-label={`Навігація: ${world.wordmark}`}>
