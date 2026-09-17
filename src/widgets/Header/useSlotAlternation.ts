@@ -24,9 +24,12 @@ export const SLOT_PERIOD_MS = 5000;
 
 export const useSlotAlternation = (paused: boolean) => {
   const [phase, setPhase] = useState<SlotPhase>('menu');
-  // Ref, а не стан: зміна утримання не має перерендерювати хедер,
-  // вона лише впливає на наступний тік.
-  const heldRef = useRef(false);
+  // Дві модальності утримання окремо: зі спільним прапорцем blur після Tab
+  // знімав би утримання, поки курсор досі на слоті (і навпаки). Ref, а не
+  // стан: зміна утримання не має перерендерювати хедер, вона лише впливає
+  // на наступний тік.
+  const pointerHeldRef = useRef(false);
+  const focusHeldRef = useRef(false);
   // Інкремент перезапускає інтервал (повернення у вкладку)
   const [epoch, setEpoch] = useState(0);
 
@@ -39,7 +42,7 @@ export const useSlotAlternation = (paused: boolean) => {
   useEffect(() => {
     if (paused) return;
     const id = window.setInterval(() => {
-      if (heldRef.current) return;
+      if (pointerHeldRef.current || focusHeldRef.current) return;
       setPhase((p) => (p === 'menu' ? 'chat' : 'menu'));
     }, SLOT_PERIOD_MS);
     return () => window.clearInterval(id);
@@ -55,15 +58,21 @@ export const useSlotAlternation = (paused: boolean) => {
     return () => document.removeEventListener('visibilitychange', onVisibility);
   }, []);
 
-  const hold = () => {
-    heldRef.current = true;
-  };
-  const release = () => {
-    heldRef.current = false;
-  };
-
   return {
     phase,
-    holdHandlers: { onPointerEnter: hold, onPointerLeave: release, onFocus: hold, onBlur: release },
+    holdHandlers: {
+      onPointerEnter: () => {
+        pointerHeldRef.current = true;
+      },
+      onPointerLeave: () => {
+        pointerHeldRef.current = false;
+      },
+      onFocus: () => {
+        focusHeldRef.current = true;
+      },
+      onBlur: () => {
+        focusHeldRef.current = false;
+      },
+    },
   };
 };
