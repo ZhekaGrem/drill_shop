@@ -13,8 +13,9 @@ import Link from 'next/link';
 import styles from './header.module.scss';
 import { IconChat, MenuIcon } from '@/shared/components/Svg';
 import { content } from '@/shared/config/content';
+import { useSlotAlternation, type SlotPhase } from './useSlotAlternation';
 
-export type SlotPhase = 'menu' | 'chat';
+export type { SlotPhase };
 
 interface MenuSlotProps {
   /** Шторка побажань відкрита — такт стоїть на паузі */
@@ -22,14 +23,12 @@ interface MenuSlotProps {
   onOpenWishes: () => void;
 }
 
-// paused поки не читається: Task 2 передає його в useSlotAlternation
-export function MenuSlot({ onOpenWishes }: MenuSlotProps) {
-  // Task 2 замінює цей рядок на виклик useSlotAlternation(paused)
-  const phase: SlotPhase = 'menu';
+export function MenuSlot({ paused, onOpenWishes }: MenuSlotProps) {
+  const { phase, holdHandlers } = useSlotAlternation(paused);
   const menuShown = phase === 'menu';
 
   return (
-    <div className={styles.slot}>
+    <div className={styles.slot} {...holdHandlers}>
       <Link
         href="/menu"
         className={`${styles.iconButton} ${styles.slotItem}`}
