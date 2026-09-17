@@ -313,6 +313,25 @@ export const content = {
     },
   },
 
+  // ===== ПОБАЖАННЯ (шторка «Що нам ще розробити?») =====
+  wishes: {
+    triggerLabel: 'Запропонувати ідею',
+    title: 'Що нам ще розробити?',
+    hint: 'Розкажи, чого бракує. Читаємо все.',
+    messageLabel: 'Побажання',
+    messagePlaceholder: 'Я би хотів, щоб ви розробили штани',
+    messageError: 'Напиши хоч кілька слів',
+    contactLabel: 'Телефон або Telegram',
+    contactPlaceholder: '+380… або @нік',
+    submit: 'Надіслати',
+    close: 'Закрити',
+    sentTitle: 'Дякуємо!',
+    sentText: 'Ми прочитаємо і подумаємо.',
+    done: 'Готово',
+    errorText: 'Не надіслалось. Спробуй ще раз або напиши нам у ',
+    errorLink: 'Telegram',
+  },
+
   // ===== КНОПКИ =====
   buttons: {
     catalog: 'Каталог',

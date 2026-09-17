@@ -17,3 +17,4 @@ export { IconClock } from './IconClock';
 export { IconInstagram } from './IconInstagram';
 export { IconInstagramColor } from './IconInstagramColor';
 export { IconTelegram } from './IconTelegram';
+export { IconChat } from './IconChat';

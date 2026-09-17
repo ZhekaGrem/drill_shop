@@ -328,6 +328,52 @@
   }
 }
 
+// Слот меню/чат (MenuSlot): дві кнопки одна на одній, видима — одна, за
+// фазою такту useSlotAlternation. Медіа-правило те саме, що в .iconButton,
+// інакше від 1024px лишився б порожній 44px проміжок перед кошиком.
+.slot {
+  position: relative;
+  width: 44px;
+  height: 44px;
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+// «Тане в блюрі»: стара кнопка розмивається і зникає, нова приходить
+// зворотним шляхом, обидві одночасно. --dur-modal — це «поява шару», не
+// морфінг на екрані. Blur на 44×44 дешевий: застереження DESIGN_SYSTEM.md
+// стосується blur-пульсу скелетонів на весь блок.
+// border/padding: другий елемент слота — <button>, .iconButton писався під <a>.
+.slotItem {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    opacity var(--dur-modal) var(--ease-in-out),
+    filter var(--dur-modal) var(--ease-in-out),
+    transform var(--dur-modal) var(--ease-in-out),
+    background var(--dur-hover) var(--ease-out);
+
+  &[data-shown='false'] {
+    opacity: 0;
+    filter: blur(6px);
+    transform: scale(0.9);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: opacity var(--dur-modal) var(--ease-in-out);
+
+    &[data-shown='false'] {
+      filter: none;
+      transform: none;
+    }
+  }
+}
+
 .cartButton {
   display: flex;
   align-items: center;

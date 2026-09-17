@@ -30,7 +30,8 @@ import { Logo } from '@/shared/components/Logo';
 import { useHiddenWordmarks } from '@/shared/hooks/useTurntables';
 import { useSwipePager } from '@/shared/hooks/useSwipePager';
 import { NAV_WORLDS, worldIndexByWordmark } from '@/shared/config/nav-worlds';
-import { IconCart, IconCatalog, MenuIcon } from '@/shared/components/Svg';
+import { IconCart, IconCatalog } from '@/shared/components/Svg';
+import { MenuSlot } from './MenuSlot';
 
 /**
  * Підказка живе, поки нею не скористались PEEK_USES разів.
@@ -234,9 +235,8 @@ export function Header() {
             <IconCatalog />
           </Link>
 
-          <Link href="/menu" className={styles.iconButton} aria-label="Меню">
-            <MenuIcon />
-          </Link>
+          {/* Слот меню/чат: paused і onOpenWishes отримують стан шторки в Task 5 */}
+          <MenuSlot paused={false} onOpenWishes={() => undefined} />
 
           <button className={styles.cartButton} onClick={toggleCartDrawer} aria-label="Кошик">
             <IconCart />
