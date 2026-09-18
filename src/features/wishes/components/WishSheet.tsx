@@ -8,7 +8,7 @@
 // клавіатуру і смикає шторку.
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { Sheet } from '@/shared/components/Sheet';
 import { Input, TextareaField } from '@/shared/components/Input';
 import { Button } from '@/shared/components/Button/Button';
@@ -34,8 +34,15 @@ export function WishSheet({ opened, onClose }: WishSheetProps) {
   const [website, setWebsite] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [messageError, setMessageError] = useState<string | null>(null);
+  // Лічильник запиту: закриття шторки (Escape, оверлей, ручка) можливе
+  // посеред надсилання, і відповідь, що прийде пізніше, не має
+  // перезаписати вже скинутий стан. Кожен submit і кожне закриття
+  // збільшують лічильник; результат застосовується, лише якщо він ще
+  // належить поточному запиту.
+  const requestRef = useRef(0);
 
   const close = () => {
+    requestRef.current += 1;
     setMessage('');
     setContact('');
     setWebsite('');
@@ -53,6 +60,7 @@ export function WishSheet({ opened, onClose }: WishSheetProps) {
     }
     setMessageError(null);
     setStatus('sending');
+    const requestId = ++requestRef.current;
     try {
       await wishesApi.sendWish({
         message: text,
@@ -60,9 +68,9 @@ export function WishSheet({ opened, onClose }: WishSheetProps) {
         page: window.location.pathname,
         website,
       });
-      setStatus('sent');
+      if (requestId === requestRef.current) setStatus('sent');
     } catch {
-      setStatus('error');
+      if (requestId === requestRef.current) setStatus('error');
     }
   };
 
