@@ -31,7 +31,10 @@ export const Sheet = ({ opened, onClose, title, children, returnFocus = true }: 
       size="auto"
       returnFocus={returnFocus}
       transitionProps={{ duration: 0 }}>
-      <Drawer.Overlay className={styles.overlay} data-opened={opened || undefined} />
+      {/* Фон за карткою розмивається і трохи темніє (рішення власника
+          2026-09-18): blur → backdrop-filter з обома префіксами, затемнення
+          мʼякше за Mantine-ові 0.6, щоб розмиття було видно, а не чорноту. */}
+      <Drawer.Overlay className={styles.overlay} blur={12} backgroundOpacity={0.4} />
       {/* classNames/styles, а не className/style: Mantine 8.3 віддає className
           і style ще й обгортці .inner (DrawerContent → innerProps), і тоді наш
           .content робив із повноекранної обгортки колонку на 88vh із білим

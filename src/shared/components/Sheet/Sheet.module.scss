@@ -1,14 +1,35 @@
 // src/shared/components/Sheet/Sheet.module.scss
-.overlay {
-  opacity: 0;
-  transition: opacity var(--dur-sheet) var(--ease-sheet);
 
-  &[data-opened] {
+// Вхід: обидва шари анімуються ключовими кадрами, а не переходом Mantine —
+// його transform бився б із нашим translateY перетягування. fill-mode
+// backwards: до старту діє `from`, після завершення анімація не тримає
+// нічого, тож інлайновий transform перетягування знову господар.
+// Reduced-motion глушить усі анімації глобально (globals.css), окремої
+// гілки тут не треба. Блюр фону задає Mantine Overlay (проп blur у Sheet.tsx).
+@keyframes sheetOverlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
     opacity: 1;
   }
 }
 
+@keyframes sheetContentIn {
+  from {
+    transform: translateY(calc(100% + var(--space-4)));
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.overlay {
+  animation: sheetOverlayIn var(--dur-sheet) var(--ease-sheet) backwards;
+}
+
 .content {
+  animation: sheetContentIn var(--dur-sheet) var(--ease-sheet) backwards;
   display: flex;
   flex-direction: column;
   // height: auto — інакше Mantine тягне нижню шторку на всю задану висоту
