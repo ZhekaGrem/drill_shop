@@ -42,13 +42,26 @@ check('контакт обрізається до 100 символів', () => {
 check('page без / або довший за 200 ігнорується, коректний лишається', () => {
   assert.equal(validateWish({ message: 'штани', page: 'http://x' }).wish.page, undefined);
   assert.equal(validateWish({ message: 'штани', page: '/' + 'a'.repeat(200) }).wish.page, undefined);
+  assert.equal(
+    validateWish({ message: 'штани', page: '/' + 'a'.repeat(199) }).wish.page,
+    '/' + 'a'.repeat(199)
+  );
   assert.equal(validateWish({ message: 'штани', page: '/catalog' }).wish.page, '/catalog');
 });
 
 check('не-рядки і порожнє тіло не валять', () => {
   assert.equal(validateWish({ message: 42 }).ok, false);
   assert.equal(validateWish(null).ok, false);
-  assert.equal(validateWish({ message: 'штани', contact: 7, page: 9 }).ok, true);
+  const r = validateWish({ message: 'штани', contact: 7, page: 9 });
+  assert.equal(r.ok, true);
+  assert.equal(r.ok && r.wish.contact, undefined);
+  assert.equal(r.ok && r.wish.page, undefined);
+});
+
+check('переноси рядків у контакті й сторінці згортаються в пробіл', () => {
+  const r = validateWish({ message: 'штани', contact: 'a\nb', page: '/x\ny' });
+  assert.equal(r.ok && r.wish.contact, 'a b');
+  assert.equal(r.ok && r.wish.page, '/x y');
 });
 
 check('формат повідомлення з контактом і сторінкою', () => {

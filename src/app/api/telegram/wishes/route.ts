@@ -52,7 +52,9 @@ export async function POST(request: NextRequest) {
     }
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Wishes: send failed', error);
+    // Сирий error не логуємо: ланцюжок помилок undici може нести URL
+    // запиту, а в ньому — токен бота.
+    console.error('Wishes: send failed', error instanceof Error ? error.name : 'unknown');
     return NextResponse.json({ success: false, message: 'Помилка відправлення' }, { status: 500 });
   }
 }

@@ -27,8 +27,16 @@ export const validateWish = (body: unknown): WishValidation => {
   if (message.length < WISH_MESSAGE_MIN || message.length > WISH_MESSAGE_MAX) {
     return { ok: false, error: 'Напиши хоч кілька слів' };
   }
-  const contact = asString(raw.contact).trim().slice(0, WISH_CONTACT_MAX);
-  const page = asString(raw.page);
+  // \r/\n у контакті чи сторінці зводимо до пробілу до решти правил — це
+  // тримає рядки «Контакт:»/«Сторінка:»/«Час:» у повідомленні машиночитними
+  // (текст побажання переноси зберігає — це вільний текст за задумом).
+  const contact = asString(raw.contact)
+    .replace(/[\r\n]+/g, ' ')
+    .trim()
+    .slice(0, WISH_CONTACT_MAX);
+  const page = asString(raw.page)
+    .replace(/[\r\n]+/g, ' ')
+    .trim();
   const pageOk = page.startsWith('/') && page.length <= WISH_PAGE_MAX;
   return { ok: true, wish: { message, contact: contact || undefined, page: pageOk ? page : undefined } };
 };

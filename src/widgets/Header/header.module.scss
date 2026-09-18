@@ -335,6 +335,16 @@
   position: relative;
   width: 44px;
   height: 44px;
+  // Слот сам отримує програмний фокус після закриття шторки побажань
+  // (useSlotAlternation.ts) — кнопка, що відкрила шторку, до того часу вже
+  // inert, і Drawer інакше повернув би фокус на body.
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--hd-fg);
+    outline-offset: 2px;
+    border-radius: var(--radius-pill);
+  }
 
   @media (min-width: 1024px) {
     display: none;
@@ -346,6 +356,8 @@
 // морфінг на екрані. Blur на 44×44 дешевий: застереження DESIGN_SYSTEM.md
 // стосується blur-пульсу скелетонів на весь блок.
 // border/padding: другий елемент слота — <button>, .iconButton писався під <a>.
+// Свідомо нема :active/motion.press: канал transform тут зайнятий кросфейдом
+// (той самий компроміс, що й у сусідніх .iconButton/.cartButton — F7).
 .slotItem {
   position: absolute;
   inset: 0;
@@ -362,6 +374,11 @@
     opacity: 0;
     filter: blur(6px);
     transform: scale(0.9);
+    // inert не підтримують старі браузери (iOS Safari < 15.5, Chrome < 102,
+    // Firefox < 112) — без цього пізніший у DOM вузол (кнопка чату) малюється
+    // поверх посилання /menu і краде його тапи. inert лишається заради дерева
+    // доступності, pointer-events закриває хіт-тестинг усюди.
+    pointer-events: none;
   }
 
   @media (prefers-reduced-motion: reduce) {

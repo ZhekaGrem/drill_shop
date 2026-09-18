@@ -14,6 +14,7 @@ import { Input, TextareaField } from '@/shared/components/Input';
 import { Button } from '@/shared/components/Button/Button';
 import { content } from '@/shared/config/content';
 import { wishesApi } from '../api/wishes-api';
+import { WISH_MESSAGE_MIN, WISH_MESSAGE_MAX, WISH_CONTACT_MAX } from '../lib/wish-message';
 import { WishError, WishSent } from './WishSheetResult';
 import styles from './WishSheet.module.scss';
 
@@ -23,10 +24,6 @@ interface WishSheetProps {
 }
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
-
-const MESSAGE_MIN = 3;
-const MESSAGE_MAX = 1000;
-const CONTACT_MAX = 100;
 
 export function WishSheet({ opened, onClose }: WishSheetProps) {
   const [message, setMessage] = useState('');
@@ -54,7 +51,7 @@ export function WishSheet({ opened, onClose }: WishSheetProps) {
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     const text = message.trim();
-    if (text.length < MESSAGE_MIN) {
+    if (text.length < WISH_MESSAGE_MIN) {
       setMessageError(content.wishes.messageError);
       return;
     }
@@ -77,7 +74,9 @@ export function WishSheet({ opened, onClose }: WishSheetProps) {
   const busy = status === 'sending';
 
   return (
-    <Sheet opened={opened} onClose={close} title={content.wishes.title}>
+    // returnFocus=false: тригер — кнопка чату в MenuSlot — на момент
+    // закриття вже inert (такт слота), фокус після шторки веде сам слот.
+    <Sheet opened={opened} onClose={close} title={content.wishes.title} returnFocus={false}>
       {status === 'sent' ? (
         <WishSent onDone={close} />
       ) : (
@@ -92,7 +91,7 @@ export function WishSheet({ opened, onClose }: WishSheetProps) {
             autosize
             minRows={3}
             maxRows={6}
-            maxLength={MESSAGE_MAX}
+            maxLength={WISH_MESSAGE_MAX}
             disabled={busy}
           />
           <Input
@@ -100,7 +99,7 @@ export function WishSheet({ opened, onClose }: WishSheetProps) {
             placeholder={content.wishes.contactPlaceholder}
             value={contact}
             onChange={(e) => setContact(e.currentTarget.value)}
-            maxLength={CONTACT_MAX}
+            maxLength={WISH_CONTACT_MAX}
             autoComplete="tel"
             disabled={busy}
           />

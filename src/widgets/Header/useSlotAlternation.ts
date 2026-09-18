@@ -51,6 +51,11 @@ export const useSlotAlternation = (paused: boolean) => {
   useEffect(() => {
     const onVisibility = () => {
       if (document.visibilityState !== 'visible') return;
+      // pointerleave не гарантований, коли вікно втрачає фокус із курсором,
+      // що лежить на слоті, — застигле утримання інакше заморозило б слот
+      // після повернення у вкладку.
+      pointerHeldRef.current = false;
+      focusHeldRef.current = false;
       setPhase('menu');
       setEpoch((e) => e + 1);
     };
@@ -58,8 +63,25 @@ export const useSlotAlternation = (paused: boolean) => {
     return () => document.removeEventListener('visibilitychange', onVisibility);
   }, []);
 
+  // Після закриття шторки фокус повертаємо на обгортку слота: кнопка, що
+  // її відкрила, на цей момент уже inert, і Drawer повернув би фокус на
+  // body. Програмний фокус — не утримання, тож focusHeldRef одразу знімаємо.
+  const slotRef = useRef<HTMLDivElement>(null);
+  const wasPausedRef = useRef(false);
+  useEffect(() => {
+    if (paused) {
+      wasPausedRef.current = true;
+      return;
+    }
+    if (!wasPausedRef.current) return;
+    wasPausedRef.current = false;
+    slotRef.current?.focus({ preventScroll: true });
+    focusHeldRef.current = false;
+  }, [paused]);
+
   return {
     phase,
+    slotRef,
     holdHandlers: {
       onPointerEnter: () => {
         pointerHeldRef.current = true;

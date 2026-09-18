@@ -24,11 +24,11 @@ interface MenuSlotProps {
 }
 
 export function MenuSlot({ paused, onOpenWishes }: MenuSlotProps) {
-  const { phase, holdHandlers } = useSlotAlternation(paused);
+  const { phase, slotRef, holdHandlers } = useSlotAlternation(paused);
   const menuShown = phase === 'menu';
 
   return (
-    <div className={styles.slot} {...holdHandlers}>
+    <div ref={slotRef} className={styles.slot} tabIndex={-1} {...holdHandlers}>
       <Link
         href="/menu"
         className={`${styles.iconButton} ${styles.slotItem}`}

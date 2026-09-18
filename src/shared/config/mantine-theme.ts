@@ -66,16 +66,28 @@ export const mantineTheme = createTheme({
     },
     Textarea: {
       // Поле з autosize (react-textarea-autosize під капотом) у dev-режимі
-      // кидає, якщо в інлайновому стилі є ключ minHeight — навіть із
-      // undefined, перевірка на наявність ключа. Висоту такого поля ведуть
-      // minRows/maxRows, тож для нього minHeight з теми знімаємо. Інші
-      // текстові поля (без minRows) отримують той самий стиль, що й раніше.
+      // кидає, якщо в інлайновому стилі є ключ minHeight — перевірка на
+      // наявність ключа, навіть із undefined. Висоту такого поля ведуть
+      // minRows/maxRows, тож для autosize minHeight з теми знімаємо.
+      //
+      // Чому гейт не на props.autosize: компонент Mantine Textarea знімає
+      // цей проп ще ДО того, як віддати рештку в InputBase/Input, — styles-
+      // функція теми його не бачить ніколи (props.autosize тут завжди
+      // undefined, перевірено рантаймом-логом). Єдиний слід autosize, що
+      // сюди доходить, — ключ minRows: Mantine додає його (разом із
+      // maxRows) лише коли autosize && НЕ test-середовище, і додає
+      // завжди — навіть якщо викликач не передав власний minRows (тоді
+      // значення undefined, але ключ є). Тому перевіряємо саме наявність
+      // ключа ('minRows' in props), а не props.minRows === undefined:
+      // остання хибно трактувала б autosize-поле без явного minRows як
+      // не-autosize. TextareaField у Input.tsx гейтується на сам autosize
+      // напряму — там цієї проблеми нема, проп ще не знятий.
       styles: (theme: MantineTheme, props: { size?: string; minRows?: number }) => {
-        const styles = getInputStyles(theme, props);
-        if (props.minRows === undefined) return styles;
-        const input: Partial<typeof styles.input> = { ...styles.input };
+        const base = getInputStyles(theme, props);
+        if (!('minRows' in props)) return base;
+        const input: Partial<typeof base.input> = { ...base.input };
         delete input.minHeight;
-        return { ...styles, input };
+        return { ...base, input };
       },
     },
     Select: {

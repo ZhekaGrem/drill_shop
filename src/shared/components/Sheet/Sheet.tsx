@@ -14,9 +14,13 @@ interface SheetProps {
   onClose: () => void;
   title?: ReactNode;
   children: ReactNode;
+  /** За замовчуванням true (поведінка Mantine Drawer). Постав false, якщо
+   *  тригер шторки може стати нефокусованим (напр. inert) до її закриття —
+   *  тоді Drawer повернув би фокус на body, і викликач керує фокусом сам. */
+  returnFocus?: boolean;
 }
 
-export const Sheet = ({ opened, onClose, title, children }: SheetProps) => {
+export const Sheet = ({ opened, onClose, title, children, returnFocus = true }: SheetProps) => {
   const drag = useSheetDrag(onClose);
 
   return (
@@ -25,6 +29,7 @@ export const Sheet = ({ opened, onClose, title, children }: SheetProps) => {
       onClose={onClose}
       position="bottom"
       size="auto"
+      returnFocus={returnFocus}
       transitionProps={{ duration: 0 }}>
       <Drawer.Overlay className={styles.overlay} data-opened={opened || undefined} />
       <Drawer.Content
