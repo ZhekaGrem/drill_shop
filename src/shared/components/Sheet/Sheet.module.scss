@@ -16,8 +16,16 @@
   height: auto;
   max-height: 88vh;
   background: var(--surface-card);
-  border-top-left-radius: var(--radius-sheet);
-  border-top-right-radius: var(--radius-sheet);
+  // Картка, відірвана від країв (рішення власника 2026-09-18): відступи з
+  // боків і знизу, знизу ще й safe-area під індикатор «додому». Mantine дає
+  // контенту flex: 0 0 100% і margin: var(--drawer-offset) — з відступами
+  // така основа переливалась би за екран, тому ширина гнучка.
+  flex: 1 1 auto;
+  max-width: none;
+  margin: 0 var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  // Радіус усіх чотирьох кутів — var(--radius-sheet) — стоїть у Sheet.tsx
+  // через styles.content: тема кладе Paper border-radius інлайном, і класом
+  // його не перебити.
   transition: transform var(--dur-sheet) var(--ease-sheet);
 
   // Під час перетягування transform веде палець, а не анімація:

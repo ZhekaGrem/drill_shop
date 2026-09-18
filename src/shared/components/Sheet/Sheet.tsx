@@ -40,7 +40,14 @@ export const Sheet = ({ opened, onClose, title, children, returnFocus = true }: 
       <Drawer.Content
         data-sheet-content
         classNames={{ content: styles.content }}
-        styles={{ content: { transform: `translateY(${drag.offset}px)` } }}
+        styles={{
+          content: {
+            transform: `translateY(${drag.offset}px)`,
+            // Інлайн, бо тема ставить Paper border-radius інлайном (16px), а
+            // шторка-картка має свій токен на всіх чотирьох кутах.
+            borderRadius: 'var(--radius-sheet)',
+          },
+        }}
         data-opened={opened || undefined}
         data-dragging={drag.isDragging || undefined}>
         <div
