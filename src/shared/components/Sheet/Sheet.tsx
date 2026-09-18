@@ -32,12 +32,17 @@ export const Sheet = ({ opened, onClose, title, children, returnFocus = true }: 
       returnFocus={returnFocus}
       transitionProps={{ duration: 0 }}>
       <Drawer.Overlay className={styles.overlay} data-opened={opened || undefined} />
+      {/* classNames/styles, а не className/style: Mantine 8.3 віддає className
+          і style ще й обгортці .inner (DrawerContent → innerProps), і тоді наш
+          .content робив із повноекранної обгортки колонку на 88vh із білим
+          фоном — шторка липла до верху і зʼїжджала вбік, а translateY під час
+          перетягування застосовувався двічі. Ключ `content` адресує лише вміст. */}
       <Drawer.Content
         data-sheet-content
-        className={styles.content}
+        classNames={{ content: styles.content }}
+        styles={{ content: { transform: `translateY(${drag.offset}px)` } }}
         data-opened={opened || undefined}
-        data-dragging={drag.isDragging || undefined}
-        style={{ transform: `translateY(${drag.offset}px)` }}>
+        data-dragging={drag.isDragging || undefined}>
         <div
           className={styles.handleZone}
           onPointerDown={drag.onPointerDown}
