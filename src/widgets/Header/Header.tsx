@@ -32,6 +32,7 @@ import { useSwipePager } from '@/shared/hooks/useSwipePager';
 import { NAV_WORLDS, worldIndexByWordmark } from '@/shared/config/nav-worlds';
 import { IconCart, IconCatalog } from '@/shared/components/Svg';
 import { MenuSlot } from './MenuSlot';
+import { WishSheet } from '@/features/wishes';
 
 /**
  * Підказка живе, поки нею не скористались PEEK_USES разів.
@@ -99,6 +100,8 @@ export function Header() {
   const leftRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [panelW, setPanelW] = useState(0);
+  // Шторка побажань: поки відкрита, такт слота меню/чат стоїть
+  const [wishesOpened, setWishesOpened] = useState(false);
 
   const calculations = useCartCalculations();
   const { toggle: toggleCartDrawer } = useCartDrawerActions();
@@ -235,8 +238,8 @@ export function Header() {
             <IconCatalog />
           </Link>
 
-          {/* Слот меню/чат: paused і onOpenWishes отримують стан шторки в Task 5 */}
-          <MenuSlot paused={false} onOpenWishes={() => undefined} />
+          {/* Слот меню/чат: бургер і кнопка побажань по черзі, 5/5 с */}
+          <MenuSlot paused={wishesOpened} onOpenWishes={() => setWishesOpened(true)} />
 
           <button className={styles.cartButton} onClick={toggleCartDrawer} aria-label="Кошик">
             <IconCart />
@@ -256,6 +259,7 @@ export function Header() {
 
       {/* Cart Drawer */}
       <CartDrawer />
+      <WishSheet opened={wishesOpened} onClose={() => setWishesOpened(false)} />
     </Box>
   );
 }
