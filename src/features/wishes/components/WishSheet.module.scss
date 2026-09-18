@@ -10,6 +10,13 @@
   padding-bottom: var(--space-4);
 }
 
+// Демо-набір у полі побажання — приглушений, щоб читався як підказка, а не
+// як уже введене. opacity, а не color: колір поля тримає Input.module
+// (.root .input) вищою вагою, а opacity там ніхто не задає.
+.form textarea[data-demo] {
+  opacity: 0.65;
+}
+
 .hint {
   margin: 0;
   font-size: var(--text-sm);

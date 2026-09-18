@@ -68,6 +68,9 @@
   height: 28px;
   cursor: grab;
   touch-action: none;
+  // Стартова точка фокуса шторки (data-autofocus у Sheet.tsx), не контрол:
+  // обвід фокуса тут читався б як рамка навколо ручки.
+  outline: none;
 }
 
 .handle {

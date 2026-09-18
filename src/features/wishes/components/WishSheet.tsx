@@ -4,17 +4,19 @@
 // тостів нема. Єдина клієнтська перевірка — непорожній текст; решту лімітів
 // тримає сервер. Закриття в будь-якому стані очищає форму: при наступному
 // відкритті — знову idle (чернетки поза межами).
-// Автофокусу на текстове поле нема: на телефоні він одразу підіймає
-// клавіатуру і смикає шторку.
+// Автофокусу на текстове поле нема (стартовий фокус Sheet веде на ручку):
+// на телефоні він одразу підіймав би клавіатуру, а в полі йде демо-набір
+// (WishMessageField), поки людина сама не торкнеться поля.
 'use client';
 
 import { FormEvent, useRef, useState } from 'react';
 import { Sheet } from '@/shared/components/Sheet';
-import { Input, TextareaField } from '@/shared/components/Input';
+import { Input } from '@/shared/components/Input';
 import { Button } from '@/shared/components/Button/Button';
 import { content } from '@/shared/config/content';
 import { wishesApi } from '../api/wishes-api';
-import { WISH_MESSAGE_MIN, WISH_MESSAGE_MAX, WISH_CONTACT_MAX } from '../lib/wish-message';
+import { WISH_MESSAGE_MIN, WISH_CONTACT_MAX } from '../lib/wish-message';
+import { WishMessageField } from './WishMessageField';
 import { WishError, WishSent } from './WishSheetResult';
 import styles from './WishSheet.module.scss';
 
@@ -82,17 +84,12 @@ export function WishSheet({ opened, onClose }: WishSheetProps) {
       ) : (
         <form className={styles.form} onSubmit={submit} noValidate>
           <p className={styles.hint}>{content.wishes.hint}</p>
-          <TextareaField
-            label={content.wishes.messageLabel}
-            placeholder={content.wishes.messagePlaceholder}
+          <WishMessageField
             value={message}
-            onChange={(e) => setMessage(e.currentTarget.value)}
+            onChange={setMessage}
             error={messageError}
-            autosize
-            minRows={1}
-            maxRows={6}
-            maxLength={WISH_MESSAGE_MAX}
             disabled={busy}
+            demoEnabled={opened && status === 'idle'}
           />
           <Input
             label={content.wishes.contactLabel}

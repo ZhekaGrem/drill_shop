@@ -53,8 +53,14 @@ export const Sheet = ({ opened, onClose, title, children, returnFocus = true }: 
         }}
         data-opened={opened || undefined}
         data-dragging={drag.isDragging || undefined}>
+        {/* data-autofocus: фокус-пастка Mantine бере перший [data-autofocus],
+            інакше фокусує перше поле форми — на телефоні це клавіатура одразу
+            при відкритті й курсор у полі, де може йти демо-набір. Ручка з
+            tabIndex -1 не в порядку Tab, пастка далі веде по контролах шторки. */}
         <div
           className={styles.handleZone}
+          tabIndex={-1}
+          data-autofocus
           onPointerDown={drag.onPointerDown}
           onPointerMove={drag.onPointerMove}
           onPointerUp={drag.onPointerUp}
