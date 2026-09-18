@@ -205,7 +205,7 @@
 
 ```
 --dur-press 120   --dur-hover 160   --dur-pop 180
---dur-modal 220   --dur-sheet 300   --dur-exit 150
+--dur-modal 220   --dur-sheet 300   --dur-exit 150   --dur-swap 420
 ```
 
 `--dur-exit` менший за вхід навмисно: старе має піти швидко, щоб не конкурувати

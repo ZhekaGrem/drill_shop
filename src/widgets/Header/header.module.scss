@@ -364,16 +364,23 @@
   border: 0;
   padding: 0;
   cursor: pointer;
+  // Підміна довша за модалку (--dur-swap) і розведена в часі: стара іконка
+  // йде одразу, нова приходить із затримкою --swap-lead, коли стара вже
+  // майже розчинилась — так нема кадру з двома напівпрозорими іконками,
+  // який читався як ривок. Затримку тримає custom property: перехід бере
+  // її зі стилю ПІСЛЯ зміни, тож на вході вона 90 мс, на виході 0.
+  --swap-lead: 90ms;
   transition:
-    opacity var(--dur-modal) var(--ease-in-out),
-    filter var(--dur-modal) var(--ease-in-out),
-    transform var(--dur-modal) var(--ease-in-out),
+    opacity var(--dur-swap) var(--ease-sheet) var(--swap-lead),
+    filter var(--dur-swap) var(--ease-sheet) var(--swap-lead),
+    transform var(--dur-swap) var(--ease-sheet) var(--swap-lead),
     background var(--dur-hover) var(--ease-out);
 
   &[data-shown='false'] {
+    --swap-lead: 0ms;
     opacity: 0;
-    filter: blur(6px);
-    transform: scale(0.9);
+    filter: blur(8px);
+    transform: scale(0.86);
     // inert не підтримують старі браузери (iOS Safari < 15.5, Chrome < 102,
     // Firefox < 112) — без цього пізніший у DOM вузол (кнопка чату) малюється
     // поверх посилання /menu і краде його тапи. inert лишається заради дерева
@@ -382,7 +389,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    transition: opacity var(--dur-modal) var(--ease-in-out);
+    transition: opacity var(--dur-swap) var(--ease-sheet) var(--swap-lead);
 
     &[data-shown='false'] {
       filter: none;
