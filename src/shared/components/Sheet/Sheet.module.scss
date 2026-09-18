@@ -17,7 +17,7 @@
 
 @keyframes sheetContentIn {
   from {
-    transform: translateY(calc(100% + var(--space-4)));
+    transform: translateY(calc(100% + var(--sheet-inset-bottom)));
   }
   to {
     transform: translateY(0);
@@ -41,9 +41,13 @@
   // боків і знизу, знизу ще й safe-area під індикатор «додому». Mantine дає
   // контенту flex: 0 0 100% і margin: var(--drawer-offset) — з відступами
   // така основа переливалась би за екран, тому ширина гнучка.
+  // Відступи в змінних: стартовий кадр sheetContentIn читає нижній, щоб
+  // картка починала виїзд повністю за екраном, скільки б відступ не був.
+  --sheet-inset-x: var(--space-4);
+  --sheet-inset-bottom: calc(var(--space-8) + env(safe-area-inset-bottom, 0px));
   flex: 1 1 auto;
   max-width: none;
-  margin: 0 var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  margin: 0 var(--sheet-inset-x) var(--sheet-inset-bottom);
   // Радіус усіх чотирьох кутів — var(--radius-sheet) — стоїть у Sheet.tsx
   // через styles.content: тема кладе Paper border-radius інлайном, і класом
   // його не перебити.
