@@ -319,7 +319,7 @@ export const content = {
     title: 'Що нам ще розробити?',
     hint: 'Розкажи, чого бракує. Читаємо все.',
     messageLabel: 'Побажання',
-    messagePlaceholder: 'Я би хотів, щоб ви розробили штани',
+    messagePlaceholder: 'Хочу від вас штани',
     messageError: 'Напиши хоч кілька слів',
     contactLabel: 'Телефон або Telegram',
     contactPlaceholder: '+380… або @нік',

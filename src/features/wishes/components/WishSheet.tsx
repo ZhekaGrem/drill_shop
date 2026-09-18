@@ -89,7 +89,7 @@ export function WishSheet({ opened, onClose }: WishSheetProps) {
             onChange={(e) => setMessage(e.currentTarget.value)}
             error={messageError}
             autosize
-            minRows={3}
+            minRows={1}
             maxRows={6}
             maxLength={WISH_MESSAGE_MAX}
             disabled={busy}
