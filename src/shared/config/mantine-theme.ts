@@ -64,7 +64,20 @@ export const mantineTheme = createTheme({
         innerInput: { backgroundColor: 'transparent' },
       }),
     },
-    Textarea: { styles: getInputStyles },
+    Textarea: {
+      // Поле з autosize (react-textarea-autosize під капотом) у dev-режимі
+      // кидає, якщо в інлайновому стилі є ключ minHeight — навіть із
+      // undefined, перевірка на наявність ключа. Висоту такого поля ведуть
+      // minRows/maxRows, тож для нього minHeight з теми знімаємо. Інші
+      // текстові поля (без minRows) отримують той самий стиль, що й раніше.
+      styles: (theme: MantineTheme, props: { size?: string; minRows?: number }) => {
+        const styles = getInputStyles(theme, props);
+        if (props.minRows === undefined) return styles;
+        const input: Partial<typeof styles.input> = { ...styles.input };
+        delete input.minHeight;
+        return { ...styles, input };
+      },
+    },
     Select: {
       styles: (theme: MantineTheme, props: { size?: string }) => {
         const { input, label } = getInputStyles(theme, props);

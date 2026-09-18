@@ -44,6 +44,17 @@ const TEXTAREA_RESET = {
   resize: 'vertical',
 } as const;
 
+// autosize (react-textarea-autosize під Mantine Textarea) у dev-режимі
+// кидає на інлайновому minHeight/maxHeight: висоту тоді задають
+// minRows/maxRows, а не стиль. Тому для autosize — той самий скид, але
+// без minHeight і без ручки resize (висоту веде бібліотека).
+const TEXTAREA_AUTOSIZE_RESET = {
+  ...RESET,
+  height: 'auto',
+  padding: '8px 0',
+  resize: 'none',
+} as const;
+
 // Опис має стояти ПІД полем: місце над полем зайняте лейблом, який туди спливає.
 const ORDER: TextInputProps['inputWrapperOrder'] = ['label', 'input', 'description', 'error'];
 
@@ -116,15 +127,16 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordInputProps>(
 PasswordField.displayName = 'PasswordField';
 
 export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ classNames, placeholder, error, ...props }, ref) => (
+  ({ classNames, placeholder, error, autosize, ...props }, ref) => (
     <Textarea
       {...props}
+      autosize={autosize}
       ref={ref}
       error={error}
       placeholder={withPlaceholder(placeholder)}
       inputWrapperOrder={ORDER}
       classNames={{ ...WRAPPER_CLASSES, input: styles.input, ...classNames }}
-      styles={{ input: TEXTAREA_RESET, label: label(error) }}
+      styles={{ input: autosize ? TEXTAREA_AUTOSIZE_RESET : TEXTAREA_RESET, label: label(error) }}
     />
   )
 );
