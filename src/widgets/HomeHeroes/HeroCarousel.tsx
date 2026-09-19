@@ -15,9 +15,11 @@ interface HeroCarouselProps {
   collections: CollectionDef[];
   activeOf: (col: CollectionDef) => string;
   pick: (colKey: string) => (slug: string) => void;
+  /** «Про бренд» у першої картки (на сторінці автора — ні) */
+  showAbout?: boolean;
 }
 
-export const HeroCarousel = ({ collections, activeOf, pick }: HeroCarouselProps) => {
+export const HeroCarousel = ({ collections, activeOf, pick, showAbout = true }: HeroCarouselProps) => {
   const trackRef = useRef<HTMLUListElement>(null);
   const [centered, setCentered] = useState(0);
 
@@ -47,7 +49,7 @@ export const HeroCarousel = ({ collections, activeOf, pick }: HeroCarouselProps)
               titleTag={i === 0 ? 'h1' : 'h2'}
               active={activeOf(col)}
               onPick={pick(col.key)}
-              showAbout={i === 0}
+              showAbout={showAbout && i === 0}
               live={i === centered}
             />
           </li>

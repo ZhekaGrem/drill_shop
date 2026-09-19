@@ -65,6 +65,9 @@ const COLLECTIONS = [
   {
     slug: 'polamav-futbolky',
     title: 'Поламав · Футболки',
+    // Підзаголовок героя на /polamav і текст під сценою на сторінці товару
+    description:
+      'Сім футболок Поламава: вінки, змії, ножі й куля у вогні. Оверсайз, чорні, розміри M, L, XL.',
     sortOrder: 100,
     garment: 'tee',
     price: 1000,
@@ -81,6 +84,7 @@ const COLLECTIONS = [
   {
     slug: 'polamav-hudi',
     title: 'Поламав · Худі',
+    description: 'Шість худі на тих самих мотивах. Чорні, розміри M, L, XL.',
     sortOrder: 101,
     garment: 'hoodie',
     price: 2000,
@@ -240,12 +244,13 @@ async function create(prisma) {
         const col = await tx.collection.upsert({
           where: { slug: c.slug },
           // update НЕ чіпає isActive: повторний create після activate нічого не ховає
-          update: { title: c.title, sortOrder: c.sortOrder, heroEnabled: true },
+          update: { title: c.title, description: c.description, sortOrder: c.sortOrder, heroEnabled: true },
           // heroEnabled=true ЗАВЖДИ: прихований розділ мусить бути в GET /collections
           // (hidden-collections.ts). «Темноту» дає isActive=false, а не heroEnabled.
           create: {
             slug: c.slug,
             title: c.title,
+            description: c.description,
             sortOrder: c.sortOrder,
             heroEnabled: true,
             isActive: false,

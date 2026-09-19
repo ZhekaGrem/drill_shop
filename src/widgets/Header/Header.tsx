@@ -80,7 +80,11 @@ export function Header() {
   const { data: hiddenWordmarks } = useHiddenWordmarks();
   const productSlug = pathname.match(/^\/(?:v2\/a|catalog)\/([^/]+)$/)?.[1];
   const wordmark = (productSlug && hiddenWordmarks?.[decodeURIComponent(productSlug)]) || undefined;
-  const routeIndex = worldIndexByWordmark(wordmark);
+  // Адреса самого розділу (/polamav, /v2/a/olko) впізнається одразу за шляхом,
+  // без очікування /collections: словомарка стоїть уже в серверному HTML.
+  // Решта сторінок розділу (інші товари) — за словомаркою товару, як і було.
+  const pathWorld = NAV_WORLDS.findIndex((w) => w.href !== '/' && w.href === pathname);
+  const routeIndex = pathWorld !== -1 ? pathWorld : worldIndexByWordmark(wordmark);
 
   // Позиція доріжки — БЕЗМЕЖНЕ ціле, а не індекс 0..N-1. У цьому вся кільцевість:
   // після Сєріка pos просто стає 3, доріжка їде далі вправо, а показує вона

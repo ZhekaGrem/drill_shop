@@ -15,9 +15,11 @@ interface HeroTabsProps {
   collections: CollectionDef[];
   activeOf: (col: CollectionDef) => string;
   pick: (colKey: string) => (slug: string) => void;
+  /** «Про бренд» у героя (на сторінці автора — ні) */
+  showAbout?: boolean;
 }
 
-export const HeroTabs = ({ collections, activeOf, pick }: HeroTabsProps) => {
+export const HeroTabs = ({ collections, activeOf, pick, showAbout = true }: HeroTabsProps) => {
   const [activeKey, setActiveKey] = useState(collections[0]?.key);
   const col = collections.find((c) => c.key === activeKey) ?? collections[0];
   if (!col) return null;
@@ -38,7 +40,13 @@ export const HeroTabs = ({ collections, activeOf, pick }: HeroTabsProps) => {
           </button>
         ))}
       </div>
-      <HeroBlock col={col} titleTag="h1" active={activeOf(col)} onPick={pick(col.key)} showAbout />
+      <HeroBlock
+        col={col}
+        titleTag="h1"
+        active={activeOf(col)}
+        onPick={pick(col.key)}
+        showAbout={showAbout}
+      />
     </section>
   );
 };

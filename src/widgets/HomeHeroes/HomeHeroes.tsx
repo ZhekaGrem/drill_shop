@@ -17,7 +17,16 @@ import { HeroTabs } from './HeroTabs';
 import { HeroTiles } from './HeroTiles';
 import styles from './HomeHeroes.module.scss';
 
-export const HomeHeroes = ({ collections }: { collections?: CollectionDef[] }) => {
+interface HomeHeroesProps {
+  collections?: CollectionDef[];
+  /** Кнопка «Про бренд» у першого героя. Веде на сторінку Дріла, тож
+   *  на сторінці автора (/polamav) її нема. */
+  showAbout?: boolean;
+  /** Текст скелетона, поки колекції вантажаться */
+  intro?: { title: string; description: string };
+}
+
+export const HomeHeroes = ({ collections, showAbout = true, intro = content.home.hero }: HomeHeroesProps) => {
   const design = useDesign();
   const [selected, setSelected] = useState<Record<string, string>>({});
 
@@ -26,8 +35,8 @@ export const HomeHeroes = ({ collections }: { collections?: CollectionDef[] }) =
     return (
       <section className={styles.hero}>
         <div className={styles.heroText}>
-          <h1 className={styles.heroTitle}>{content.home.hero.title}</h1>
-          <p className={styles.heroSubtitle}>{content.home.hero.description}</p>
+          <h1 className={styles.heroTitle}>{intro.title}</h1>
+          <p className={styles.heroSubtitle}>{intro.description}</p>
           <div className={styles.heroActions}>
             <Button size="lg" variant="primary" disabled>
               До колекції <ArrowRight size={20} />
@@ -42,10 +51,10 @@ export const HomeHeroes = ({ collections }: { collections?: CollectionDef[] }) =
   const activeOf = (col: CollectionDef) => selected[col.key] ?? col.items[0]?.slug;
   const pick = (colKey: string) => (slug: string) => setSelected((prev) => ({ ...prev, [colKey]: slug }));
 
-  if (design === 'cupertino')
-    return <HeroCarousel collections={collections} activeOf={activeOf} pick={pick} />;
+  const mechanics = { collections, activeOf, pick, showAbout };
+  if (design === 'cupertino') return <HeroCarousel {...mechanics} />;
   if (design === 'streetwear') return <HeroTiles collections={collections} activeOf={activeOf} pick={pick} />;
-  if (design === 'tactile') return <HeroTabs collections={collections} activeOf={activeOf} pick={pick} />;
+  if (design === 'tactile') return <HeroTabs {...mechanics} />;
 
   return (
     <>
@@ -56,7 +65,7 @@ export const HomeHeroes = ({ collections }: { collections?: CollectionDef[] }) =
           titleTag={i === 0 ? 'h1' : 'h2'}
           active={activeOf(col)}
           onPick={pick(col.key)}
-          showAbout={i === 0}
+          showAbout={showAbout && i === 0}
         />
       ))}
     </>
