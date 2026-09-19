@@ -48,6 +48,14 @@ export const NAV_WORLDS: NavWorld[] = [
     href: '/v2/a/privitonchyk',
     navItems: seriesNav('/v2/a/privitonchyk'),
   },
+  {
+    // Дві колекції (футболки й худі) — один світ. Веде на першу футболку:
+    // вона ж обкладинка колекції і ціль її картки в «Іньчі колекції».
+    id: 'polamav',
+    wordmark: HIDDEN_COLLECTION_WORDMARK['polamav-futbolky'],
+    href: '/v2/a/polamav-tee-01',
+    navItems: seriesNav('/v2/a/polamav-tee-01'),
+  },
 ];
 
 /** Індекс розділу за словомаркою, яку віддала мапа прихованих розділів */

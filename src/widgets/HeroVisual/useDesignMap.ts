@@ -43,6 +43,18 @@ export const useDesignMap = (scene: Group, mapUrl?: string) => {
         texture.flipY = false;
         texture.colorSpace = SRGBColorSpace;
         texture.anisotropy = Math.min(16, gl.capabilities.getMaxAnisotropy());
+        // Моделі після gltfpack квантують UV і тримають масштаб у
+        // KHR_texture_transform запеченої мапи (у hoodie.glb scale ≈15.7).
+        // Без перенесення нова текстура бере лише лівий верхній кут 1/16 —
+        // принта не видно. Для моделей без трансформації це дефолти, нуль змін.
+        const base = material.userData.originalMap as Texture | null;
+        if (base) {
+          texture.offset.copy(base.offset);
+          texture.repeat.copy(base.repeat);
+          texture.rotation = base.rotation;
+          texture.center.copy(base.center);
+          texture.channel = base.channel;
+        }
         cache.current.set(mapUrl, texture);
         // Guard гонки: застосовуємо, лише якщо вибір не змінився за час запиту
         if (wanted.current === mapUrl) material.map = texture;

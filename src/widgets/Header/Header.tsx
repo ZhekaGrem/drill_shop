@@ -56,6 +56,9 @@ const readUses = (): number => {
 };
 /** Проміжок між панелями доріжки; дзеркалить крок у .headerPanel */
 const GAP = 24;
+/** Вільне місце праворуч від словомарки, потрібне підказці: визирає 22px
+ *  марки (зсув 46px мінус GAP, header.module.scss) плюс 8px повітря */
+const PEEK_ROOM = 30;
 
 /** Скільки розділів у кільці, і як позиція доріжки лягає на розділ */
 const WORLDS = NAV_WORLDS.length;
@@ -137,8 +140,20 @@ export function Header() {
     // заміру сусідів ще не рендеримо — тому panelW у залежностях.
     const next = trackRef.current?.children[2] as HTMLElement | undefined;
     if (!next) return;
-    next.classList.add(styles.headerPanelPeek);
-    return () => next.classList.remove(styles.headerPanelPeek);
+    // Довга словомарка («є. Поламав» на 360–390px) лишає справа менше місця,
+    // ніж визирає сусідня марка, і плитка «є.» наїжджала б на останню літеру.
+    // Тоді на цьому розділі підказки нема. Міряємо після шрифтів: із
+    // запасним шрифтом слово інакшої ширини.
+    const logo = trackRef.current?.children[1]?.firstElementChild;
+    let live = true;
+    document.fonts.ready.then(() => {
+      if (!live || !logo || panelW - logo.getBoundingClientRect().width < PEEK_ROOM) return;
+      next.classList.add(styles.headerPanelPeek);
+    });
+    return () => {
+      live = false;
+      next.classList.remove(styles.headerPanelPeek);
+    };
   }, [pos, panelW]);
 
   const step = panelW + GAP;
@@ -187,6 +202,12 @@ export function Header() {
             {slots.map((slot) => {
               const world = NAV_WORLDS[modWorld(slot)];
               const current = slot === pos;
+              // Сторінка належить авторському розділу цієї панелі. Тоді пункт,
+              // що веде на адресу розділу («Колекція»), підкреслений на БУДЬ-ЯКОМУ
+              // товарі розділу: компас міняє адресу через replaceState, і в
+              // розділі з кількома товарами підкреслення інакше зникало б на
+              // другому ж кліку.
+              const inWorld = world.href !== '/' && modWorld(slot) === routeIndex;
               return (
                 <div
                   key={slot}
@@ -211,7 +232,9 @@ export function Header() {
 
                   <nav className={styles.desktopNav} aria-label={`Навігація: ${world.wordmark}`}>
                     {world.navItems.map((item) => {
-                      const active = current && isNavItemActive(item.href, pathname);
+                      const active =
+                        current &&
+                        (isNavItemActive(item.href, pathname) || (inWorld && item.href === world.href));
                       return (
                         <Link
                           key={item.href}

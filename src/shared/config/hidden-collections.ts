@@ -13,12 +13,23 @@
 // слага, тож без окремого запису обидва автори ділили б один бренд у хедері.
 // Назви колекцій спершу збігалися — і щойно приховані розділи пустили в
 // «Іньчі колекції», у списку зʼявилось дві однакові картки. Звідси й імена.
-export const HIDDEN_COLLECTION_SLUGS: readonly string[] = ['mystetstvo-viyny', 'mystetstvo-viyny-serik'];
+//
+// Один розділ може мати КІЛЬКА колекцій: у «Поламава» футболки й худі живуть
+// окремо (кожна зі своїм перемикачем на своїй 3D-моделі), але словомарка в
+// обох одна — це один світ хедера.
+export const HIDDEN_COLLECTION_SLUGS: readonly string[] = [
+  'mystetstvo-viyny',
+  'mystetstvo-viyny-serik',
+  'polamav-futbolky',
+  'polamav-hudi',
+];
 
 // Словомарка хедера для прихованого розділу (дефолтна — «Дріл»)
 export const HIDDEN_COLLECTION_WORDMARK: Record<string, string> = {
   'mystetstvo-viyny': 'Олько',
   'mystetstvo-viyny-serik': 'Сєрік',
+  'polamav-futbolky': 'Поламав',
+  'polamav-hudi': 'Поламав',
 };
 
 export const isHiddenCollection = (slug: string | null | undefined): boolean =>
