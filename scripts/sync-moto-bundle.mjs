@@ -30,7 +30,7 @@ import {
   resolveBundleRoot,
 } from './lib/moto-bundle.mjs';
 
-const REPO = 'ZhekaGrem/drill-moto';
+const REPO = 'levkovych67/dril-moto';
 const TAG_RE = /^v\d+\.\d+\.\d+$/;
 const SITE_ROOT = fileURLToPath(new URL('..', import.meta.url));
 const TARGET = join(SITE_ROOT, 'public/moto');
