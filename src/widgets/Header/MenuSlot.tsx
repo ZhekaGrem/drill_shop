@@ -1,5 +1,5 @@
 // src/widgets/Header/MenuSlot.tsx
-// Слот правої групи хедера: кнопки меню, чату і новин лежать одна на одній,
+// Слот правої групи хедера: меню, чат, гра і новини лежать одна на одній,
 // видима — одна, за фазою такту (useSlotAlternation, спеки
 // 2026-09-17-wishes-chat-slot-design.md і 2026-09-20-news-bell-slot-design.md).
 //
@@ -15,7 +15,7 @@
 
 import Link from 'next/link';
 import styles from './header.module.scss';
-import { IconBell, IconChat, MenuIcon } from '@/shared/components/Svg';
+import { IconBell, IconChat, IconMoto, MenuIcon } from '@/shared/components/Svg';
 import { content } from '@/shared/config/content';
 import { useSlotAlternation, type SlotPhase } from './useSlotAlternation';
 
@@ -54,6 +54,15 @@ export function MenuSlot({ paused, hasNews, unreadNews, onOpenWishes, onOpenNews
         onClick={onOpenWishes}>
         <IconChat />
       </button>
+      <Link
+        href="/moto"
+        className={`${styles.iconButton} ${styles.slotItem}`}
+        data-shown={phase === 'moto'}
+        inert={phase !== 'moto'}
+        aria-label={content.moto.openGameLabel}
+        title={content.moto.openGameLabel}>
+        <IconMoto />
+      </Link>
       <button
         type="button"
         className={`${styles.iconButton} ${styles.slotItem}`}

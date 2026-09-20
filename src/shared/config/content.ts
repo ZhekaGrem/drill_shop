@@ -349,6 +349,7 @@ export const content = {
 
   // ===== ГРА «ДРІЛ МОТО» (/moto) =====
   moto: {
+    openGameLabel: 'Відкрити гру Дріл Мото',
     frameTitle: 'Дріл Мото',
     loadError: 'Не вдалося завантажити гру',
     retry: 'Спробувати ще раз',
