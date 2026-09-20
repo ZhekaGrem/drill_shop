@@ -1,0 +1,63 @@
+// src/features/news/components/NewsSheet.module.scss
+// Горизонтальний падінг дає Sheet.body (--card-padding); тут лише вертикаль,
+// відступи між новинами й розділювач. Прокрутка довгого списку теж на Sheet:
+// .body має overflow-y: auto, а картка — стелю 88vh.
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+
+  // Лінія між новинами, а не рамка навколо: стрічка читається як один
+  // потік, а не як набір карток у картці шторки
+  & + .item {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+  }
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.date {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+// Та сама пігулка, що біля назв колекцій: розміри й форма звідти, колір
+// приходить із даних новини інлайном (у компоненті хекси заборонені)
+.capsule {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: var(--fw-medium);
+  color: #fff;
+  text-transform: lowercase;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+.text {
+  margin: 0;
+  font-size: var(--text-md);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}

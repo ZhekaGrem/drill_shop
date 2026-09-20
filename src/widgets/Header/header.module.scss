@@ -490,3 +490,18 @@
     gap: var(--space-1);
   }
 }
+
+// Крапка «є нове» на дзвіночку новин. Сидить на самій кнопці слота, тож
+// разом із нею гасне й розмивається при підміні фаз — окремої анімації не
+// треба. Обведення кольором смуги відрізає крапку від контуру іконки.
+.slotDot {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--hd-cta-bg);
+  border: 2px solid var(--hd-bg);
+  pointer-events: none;
+}

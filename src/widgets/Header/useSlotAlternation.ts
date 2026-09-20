@@ -1,6 +1,13 @@
 // src/widgets/Header/useSlotAlternation.ts
-// Такт слота меню/чат: 5 с меню, 5 с чат, по колу, без зупинки (рішення
-// власника, спека 2026-09-17-wishes-chat-slot-design.md).
+// Такт слота: 5 с на фазу, по колу, без зупинки (рішення власника, спека
+// 2026-09-17-wishes-chat-slot-design.md).
+//
+// Кіл два, і вибирає між ними непрочитана новина (рішення власника 2026-09-20):
+//   без новин      меню → чат            (як було)
+//   є непрочитане  меню → чат → меню → дзвіночок
+// Меню лишається «домом» і в довшому колі займає половину часу. Щойно новину
+// прочитали, дзвіночок зникає з такту сам: hasNews стає false, а індекс фази
+// береться за модулем нової довжини.
 //
 // Стартова фаза 'menu' однакова на сервері й клієнті, таймер живе лише
 // в useEffect — гідрація не розходиться. Три правила поверх такту:
@@ -18,12 +25,20 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-export type SlotPhase = 'menu' | 'chat';
+export type SlotPhase = 'menu' | 'chat' | 'news';
+
+const CYCLE_PLAIN: SlotPhase[] = ['menu', 'chat'];
+const CYCLE_NEWS: SlotPhase[] = ['menu', 'chat', 'menu', 'news'];
 
 export const SLOT_PERIOD_MS = 5000;
 
-export const useSlotAlternation = (paused: boolean) => {
-  const [phase, setPhase] = useState<SlotPhase>('menu');
+export const useSlotAlternation = (paused: boolean, hasNews = false) => {
+  // Фаза — це ІНДЕКС у колі, а не сама назва: коло міняє довжину разом із
+  // hasNews, і зберігати треба позицію, інакше після зникнення дзвіночка
+  // такт стрибав би з середини.
+  const [step, setStep] = useState(0);
+  const cycle = hasNews ? CYCLE_NEWS : CYCLE_PLAIN;
+  const phase: SlotPhase = cycle[step % cycle.length];
   // Дві модальності утримання окремо: зі спільним прапорцем blur після Tab
   // знімав би утримання, поки курсор досі на слоті (і навпаки). Ref, а не
   // стан: зміна утримання не має перерендерювати хедер, вона лише впливає
@@ -36,14 +51,14 @@ export const useSlotAlternation = (paused: boolean) => {
   const [seenPaused, setSeenPaused] = useState(paused);
   if (seenPaused !== paused) {
     setSeenPaused(paused);
-    if (!paused) setPhase('menu');
+    if (!paused) setStep(0);
   }
 
   useEffect(() => {
     if (paused) return;
     const id = window.setInterval(() => {
       if (pointerHeldRef.current || focusHeldRef.current) return;
-      setPhase((p) => (p === 'menu' ? 'chat' : 'menu'));
+      setStep((i) => i + 1);
     }, SLOT_PERIOD_MS);
     return () => window.clearInterval(id);
   }, [paused, epoch]);
@@ -56,7 +71,7 @@ export const useSlotAlternation = (paused: boolean) => {
       // після повернення у вкладку.
       pointerHeldRef.current = false;
       focusHeldRef.current = false;
-      setPhase('menu');
+      setStep(0);
       setEpoch((e) => e + 1);
     };
     document.addEventListener('visibilitychange', onVisibility);

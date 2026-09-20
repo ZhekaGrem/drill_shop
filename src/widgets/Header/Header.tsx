@@ -33,6 +33,7 @@ import { NAV_WORLDS, worldIndexByWordmark } from '@/shared/config/nav-worlds';
 import { IconCart, IconCatalog } from '@/shared/components/Svg';
 import { MenuSlot } from './MenuSlot';
 import { WishSheet } from '@/features/wishes';
+import { NewsSheet, markNewsSeen, useUnreadNews } from '@/features/news';
 
 /**
  * Підказка живе, поки нею не скористались PEEK_USES разів.
@@ -107,8 +108,11 @@ export function Header() {
   const leftRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [panelW, setPanelW] = useState(0);
-  // Шторка побажань: поки відкрита, такт слота меню/чат стоїть
+  // Шторки слота: поки якась відкрита, такт стоїть
   const [wishesOpened, setWishesOpened] = useState(false);
+  const [newsOpened, setNewsOpened] = useState(false);
+  // На сервері завжди false (див. useNewsSeen) — гідрація сходиться
+  const unreadNews = useUnreadNews();
 
   const calculations = useCartCalculations();
   const { toggle: toggleCartDrawer } = useCartDrawerActions();
@@ -266,7 +270,17 @@ export function Header() {
           </Link>
 
           {/* Слот меню/чат: бургер і кнопка побажань по черзі, 5/5 с */}
-          <MenuSlot paused={wishesOpened} onOpenWishes={() => setWishesOpened(true)} />
+          <MenuSlot
+            paused={wishesOpened || newsOpened}
+            unreadNews={unreadNews}
+            onOpenWishes={() => setWishesOpened(true)}
+            onOpenNews={() => {
+              // Позначаємо прочитаним одразу на тапі: дзвіночок має зникнути
+              // з такту ще до того, як шторка доїде
+              markNewsSeen();
+              setNewsOpened(true);
+            }}
+          />
 
           <button className={styles.cartButton} onClick={toggleCartDrawer} aria-label="Кошик">
             <IconCart />
@@ -287,6 +301,7 @@ export function Header() {
       {/* Cart Drawer */}
       <CartDrawer />
       <WishSheet opened={wishesOpened} onClose={() => setWishesOpened(false)} />
+      <NewsSheet opened={newsOpened} onClose={() => setNewsOpened(false)} />
     </Box>
   );
 }

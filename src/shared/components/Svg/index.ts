@@ -18,3 +18,4 @@ export { IconInstagram } from './IconInstagram';
 export { IconInstagramColor } from './IconInstagramColor';
 export { IconTelegram } from './IconTelegram';
 export { IconChat } from './IconChat';
+export { IconBell } from './IconBell';
