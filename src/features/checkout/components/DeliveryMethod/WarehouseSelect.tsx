@@ -1,9 +1,35 @@
 'use client';
 
 import { Select, Loader, Text, Group, Badge } from '@mantine/core';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { IconBuilding, IconMailbox } from '@tabler/icons-react';
 import styles from './DeliveryMethod.module.scss';
+
+// Нова Пошта змішує п'ять кодпоінтів апострофа в адресах (46% київських точок:
+// U+0027, U+2019, U+2018, U+0060, U+02BC), тож порівнювати їх як різні символи
+// означає ховати від клієнта половину списку. Прибираємо апостроф зовсім - тоді
+// збігається і той, хто набрав «В'ячеслава», і той, хто набрав «вячеслава».
+const APOSTROPHES = /['’‘`ʼ´]/g;
+
+// Латинські двійники кирилиці: промах розкладкою не має обнуляти пошук.
+// Обидві сторони проходять одне й те саме перетворення, тому латиниця в назвах
+// магазинів (MOYO, БРСМ) далі знаходиться.
+const HOMOGLYPHS: Record<string, string> = {
+  a: 'а',
+  c: 'с',
+  e: 'е',
+  i: 'і',
+  o: 'о',
+  p: 'р',
+  x: 'х',
+  y: 'у',
+};
+
+const normalize = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(APOSTROPHES, '')
+    .replace(/[aceiopxy]/g, (char) => HOMOGLYPHS[char]);
 
 export interface Warehouse {
   ref: string;
@@ -103,25 +129,27 @@ export const WarehouseSelect = ({
     }
   }, [value, warehouses]);
 
+  // Нормалізуємо один раз на завантаження міста, а не на кожне натискання:
+  // у Києві це 7988 точок по три поля.
+  const searchIndex = useMemo(
+    () =>
+      warehouses.map((warehouse) => ({
+        warehouse,
+        haystack: normalize(
+          `${warehouse.name} ${warehouse.shortAddress} ${warehouse.number} ${warehouse.number.padStart(3, '0')}`
+        ),
+      })),
+    [warehouses]
+  );
+
   // Filter warehouses by search value
   const getFilteredWarehouses = () => {
     if (!searchValue || !searchValue.trim()) {
       return warehouses;
     }
 
-    const query = searchValue.toLowerCase().trim();
-    return warehouses.filter((warehouse) => {
-      const name = warehouse.name.toLowerCase();
-      const address = warehouse.shortAddress.toLowerCase();
-      const number = warehouse.number.toString();
-
-      return (
-        name.includes(query) ||
-        address.includes(query) ||
-        number.includes(query) ||
-        number.padStart(3, '0').includes(query)
-      );
-    });
+    const query = normalize(searchValue.trim());
+    return searchIndex.filter((entry) => entry.haystack.includes(query)).map((entry) => entry.warehouse);
   };
 
   // Convert to Mantine Select format
@@ -269,6 +297,10 @@ export const WarehouseSelect = ({
         searchable
         searchValue={searchValue}
         onSearchChange={setSearchValue}
+        // Список уже відфільтровано вище. Власний фільтр Mantine дивиться лише
+        // на label (`№123 - адреса`), тому відкидав збіги, знайдені в назві -
+        // «Позняки» чи «Поштомат» давали «не знайдено» при живих точках.
+        filter={({ options }) => options}
         nothingFoundMessage="Відділення не знайдено за вашим запитом"
         disabled={disabled}
         error={'Вкажіть адресу доставки'}
