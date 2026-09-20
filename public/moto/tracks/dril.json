@@ -1,0 +1,56 @@
+[
+  {
+    "league": 0,
+    "index": 0,
+    "name": "Перший дріл",
+    "slug": "pershyi-dril"
+  },
+  {
+    "league": 0,
+    "index": 1,
+    "name": "Горби",
+    "slug": "horby"
+  },
+  {
+    "league": 0,
+    "index": 2,
+    "name": "Яр",
+    "slug": "yar"
+  },
+  {
+    "league": 1,
+    "index": 0,
+    "name": "Сходи",
+    "slug": "skhody"
+  },
+  {
+    "league": 1,
+    "index": 1,
+    "name": "Трамплін",
+    "slug": "tramplin"
+  },
+  {
+    "league": 1,
+    "index": 2,
+    "name": "Хвилі",
+    "slug": "khvyli"
+  },
+  {
+    "league": 2,
+    "index": 0,
+    "name": "Зубці",
+    "slug": "zubtsi"
+  },
+  {
+    "league": 2,
+    "index": 1,
+    "name": "Кручі",
+    "slug": "kruchi"
+  },
+  {
+    "league": 2,
+    "index": 2,
+    "name": "Стіна",
+    "slug": "stina"
+  }
+]
