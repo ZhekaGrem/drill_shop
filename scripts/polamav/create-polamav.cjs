@@ -121,7 +121,7 @@ const rows = () =>
           collectionOrder: i + 1,
           // Футболка: null = дефолтна tshirt.glb у фронті (прецедент Олька)
           model3dPath: c.garment === 'hoodie' ? HOODIE_MODEL : null,
-          texture3dUrl: `/3d/textures/${c.garment === 'tee' ? 'tshirt' : 'hoodie'}-polamav-${n}.jpg`,
+          texture3dUrl: `/3d/textures/polamav/${c.garment === 'tee' ? 'tshirt' : 'hoodie'}-${n}.jpg`,
           switcherSwatch: p.swatch,
           ...BADGE,
           labelText: null,
@@ -135,7 +135,7 @@ const rows = () =>
           options: { size },
           sortOrder: k + 1, // M першим: легасі /catalog/[slug] автообирає variants[0]
         })),
-        src: path.join(FRONT, '3d/єПоламав', c.garment === 'tee' ? 'футболки' : 'худі', p.src),
+        src: path.join(FRONT, '3d/artists/polamav', c.garment === 'tee' ? 'футболки' : 'худі', p.src),
       };
     })
   );

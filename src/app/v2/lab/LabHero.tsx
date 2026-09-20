@@ -28,27 +28,13 @@ const EXAMPLES: LabExample[] = [
     capsuleColor: '#8fbf6e',
     description:
       'Тестова UV-розгортка «теритий калач тест v5.png» на бойовій моделі футболки: «КАЛАЧ» на зеленому переді, «ТЕРТИЙ» на рожевій спині, рожева окантовка коміра; рукави в файлі не зафарбовані — білі.',
-    facts: 'дефолтна tshirt.glb · своп текстури 2048² · джерело: 3d/теритий калач тест v5.png (8K)',
+    facts:
+      'дефолтна tshirt.glb · своп текстури 2048² · джерело: 3d/artists/varyatstvo/теритий калач тест v5.png (8K)',
     design: {
       label: 'Тертий калач',
       swatch: 'linear-gradient(135deg,#b6d39a 50%,#f2b8c0 50%)',
       fallback: '/assets/img/kalach-test-fallback.webp',
-      mapUrl: '/3d/textures/terytyi-kalach-test.jpg',
-    },
-  },
-  {
-    key: 'hoodie-mockup',
-    title: 'Hoodie Mockup',
-    capsule: 'приклад',
-    capsuleColor: '#2ea8e0',
-    description:
-      '«Hoodie Mockup Final Template» у живому 3D: драпірована поза з Alembic-кешу, шаблонний принт FRONT. Покрути пальцем або мишею.',
-    facts: '96k полігонів · 0.87 МБ GLB (meshopt+квантизація) · текстури 2048² · джерело в 3d/ (поза git)',
-    design: {
-      label: 'Hoodie Mockup',
-      swatch: '#2ea8e0',
-      fallback: '/assets/img/hoodie-mockup-fallback.webp',
-      modelUrl: '/3d/models/hoodie-mockup.glb',
+      mapUrl: '/3d/textures/lab/tshirt-kalach-test.jpg',
     },
   },
   {
@@ -57,7 +43,7 @@ const EXAMPLES: LabExample[] = [
     capsule: 'вже в проді',
     capsuleColor: '#101413',
     description:
-      'Другий мокап з 3d/ — «Hoodie Mockup BrockCreative»: стояча A-pose, принт BROCK CREATIVE. Ця сама модель вже живе на головній як худі колекції «Гонорове варʼятство».',
+      'Мокап з 3d/source/Hoodie Mockup BrockCreative: стояча A-pose, принт BROCK CREATIVE. Ця сама модель вже живе на головній як худі колекції «Гонорове варʼятство».',
     facts: '84k полігонів · 0.8 МБ GLB · чинний public/3d/models/hoodie.glb — без дубля файла',
     design: {
       label: 'BrockCreative',

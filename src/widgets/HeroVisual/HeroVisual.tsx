@@ -16,7 +16,6 @@ import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import { CompassSwitcher } from '@/shared/components/CompassSwitcher/CompassSwitcher';
 import { useDragRotation } from './useDragRotation';
-import { DESIGNS } from './designs';
 import type { Design } from './designs';
 import styles from './HeroVisual.module.scss';
 
@@ -24,8 +23,8 @@ import styles from './HeroVisual.module.scss';
 const TshirtScene = lazy(() => import('./TshirtScene'));
 
 type Props = {
-  /** Власний набір дизайнів (герой колекції); без нього — основний DESIGNS */
-  designs?: Record<string, Design>;
+  /** Набір дизайнів колекції (з GET /collections) */
+  designs: Record<string, Design>;
   /** Контрольований режим (герой-магазин тримає вибір у себе) */
   value?: string;
   onChange?: (key: string) => void;
@@ -53,7 +52,7 @@ type Props = {
 };
 
 export const HeroVisual = ({
-  designs = DESIGNS,
+  designs,
   value,
   onChange,
   switcher = 'dots',
