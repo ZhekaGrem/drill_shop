@@ -347,6 +347,14 @@ export const content = {
     errorLink: 'Telegram',
   },
 
+  // ===== ГРА «ДРІЛ МОТО» (/moto) =====
+  moto: {
+    frameTitle: 'Дріл Мото',
+    loadError: 'Не вдалося завантажити гру',
+    retry: 'Спробувати ще раз',
+    exit: 'Вийти',
+  },
+
   // ===== КНОПКИ =====
   buttons: {
     catalog: 'Каталог',

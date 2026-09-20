@@ -16,10 +16,13 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   // мають кнопки. Слухач один на весь документ.
   useRandomGradientPhase();
 
-  // Telegram сторінки - БЕЗ Header і Footer (свій окремий layout)
-  const isTelegramPage = pathname?.startsWith('/telegram');
+  // Telegram сторінки - БЕЗ Header і Footer (свій окремий layout).
+  // Гра /moto — теж: iframe на весь вʼюпорт, вихід — кнопкою самої гри (спека
+  // 2026-09-18-drill-moto-game-design, секція 3). Точний збіг, а не startsWith:
+  // під /moto/* лежать статичні файли бандла, а не сторінки застосунку.
+  const isBareRoute = pathname?.startsWith('/telegram') || pathname === '/moto';
 
-  if (isTelegramPage) {
+  if (isBareRoute) {
     return <>{children}</>;
   }
 

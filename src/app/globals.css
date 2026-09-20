@@ -234,7 +234,8 @@ p {
 /* === CSS ЗМІННІ З FIGMA "ЩІЛЬНИЙ ДРІЛ" === */
 :root {
   /* Фони */
-  --background: #ffffff;
+  --background-base: #ffffff;
+  --background: var(--background-base);
   --background-secondary: #e7eef3; /* фірмовий фон секцій Дії */
   --background-light: #f6f9fc;
   --background-dark: #000000;
@@ -1221,7 +1222,8 @@ svg.tabler-icon {
 [data-theme='dark'] {
   color-scheme: dark;
 
-  --background: #101413;
+  --background-base: #101413;
+  --background: var(--background-base);
   --background-secondary: #171d1b;
   --background-light: #151a18;
   --foreground: #f2f4f3;

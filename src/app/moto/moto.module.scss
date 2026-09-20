@@ -1,0 +1,55 @@
+// Екран гри: рівно динамічний вʼюпорт (100dvh — адресний рядок iOS не ріже
+// низ), сторінка не скролиться і не зумиться жестами — усі жести належать грі.
+.screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  // globals.css дає main { min-height: 100vh }; на iOS 100vh вищий за видиму
+  // область, і низ гри (тач-кнопки) сховався б під адресний рядок
+  min-height: 0;
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+  // Фон базової теми тримається сталим, коли DesignClock змінює data-design.
+  --background: var(--background-base);
+  background: var(--background);
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  touch-action: none;
+}
+
+// Скелетон поверх iframe, поки гра не сказала ready. display: block, не grid:
+// SiteLoader з fill сам розтягується на 100% (пастка з container-type описана
+// в SiteLoader.module.scss)
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--background);
+}
+
+.failed {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  background: var(--background);
+  text-align: center;
+}
+
+.failedText {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+}
