@@ -39,6 +39,10 @@ const readSeen = (): string | null => {
 /** Знімок для сервера: рядок (стабільний за значенням), який дає «прочитано» */
 const serverSeen = (): string | null => latestNews()?.id ?? null;
 
+/** Чи є новини взагалі: від цього залежить, чи стоїть дзвіночок у такті.
+ *  Константа, а не хук: список статичний і на клієнті не міняється. */
+export const hasAnyNews = NEWS.length > 0;
+
 /** Є непрочитана новина. На сервері завжди false. */
 export const useUnreadNews = (): boolean =>
   hasUnreadNews(useSyncExternalStore(subscribe, readSeen, serverSeen), NEWS);

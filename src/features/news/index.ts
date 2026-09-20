@@ -1,2 +1,2 @@
 export { NewsSheet } from './components/NewsSheet';
-export { useUnreadNews, markNewsSeen } from './hooks/useNewsSeen';
+export { useUnreadNews, markNewsSeen, hasAnyNews } from './hooks/useNewsSeen';

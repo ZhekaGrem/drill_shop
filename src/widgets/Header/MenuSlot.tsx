@@ -3,9 +3,9 @@
 // видима — одна, за фазою такту (useSlotAlternation, спеки
 // 2026-09-17-wishes-chat-slot-design.md і 2026-09-20-news-bell-slot-design.md).
 //
-// Дзвіночок узагалі не бере участі в такті, поки всі новини прочитані:
-// коло тоді коротше (меню ↔ чат), а сама кнопка лишається в розмітці
-// прихованою — так не треба ані ремоунтити слот, ані ловити стрибок.
+// Дзвіночок стоїть у такті, поки новини взагалі є. Прочитаність міняє не
+// такт, а лише червону крапку на кнопці й підпис для читалки: прочитане
+// теж має бути як перечитати (рішення власника 2026-09-20).
 //
 // Прихована кнопка отримує inert: випадає з табу й дерева доступності і не
 // ловить кліки, тож тап у перехідні 220 мс не потрапляє в «привида».
@@ -24,14 +24,16 @@ export type { SlotPhase };
 interface MenuSlotProps {
   /** Шторка (побажання або новини) відкрита — такт стоїть на паузі */
   paused: boolean;
-  /** Є непрочитана новина: дзвіночок входить у такт і світить крапкою */
+  /** Новини взагалі є: дзвіночок входить у коло фаз */
+  hasNews: boolean;
+  /** Серед них є непрочитана: на дзвіночку червона крапка */
   unreadNews: boolean;
   onOpenWishes: () => void;
   onOpenNews: () => void;
 }
 
-export function MenuSlot({ paused, unreadNews, onOpenWishes, onOpenNews }: MenuSlotProps) {
-  const { phase, slotRef, holdHandlers } = useSlotAlternation(paused, unreadNews);
+export function MenuSlot({ paused, hasNews, unreadNews, onOpenWishes, onOpenNews }: MenuSlotProps) {
+  const { phase, slotRef, holdHandlers } = useSlotAlternation(paused, hasNews);
 
   return (
     <div ref={slotRef} className={styles.slot} tabIndex={-1} {...holdHandlers}>
@@ -60,8 +62,8 @@ export function MenuSlot({ paused, unreadNews, onOpenWishes, onOpenNews }: MenuS
         aria-label={unreadNews ? content.news.triggerUnreadLabel : content.news.triggerLabel}
         onClick={onOpenNews}>
         <IconBell />
-        {/* Крапка дублює те, що вже сказано в aria-label кнопки, тож для
-            читалки вона зайва */}
+        {/* Крапка — єдиний візуальний знак «є нове»; для читалки те саме
+            сказано в aria-label, тож сама крапка від неї схована */}
         {unreadNews && <span className={styles.slotDot} aria-hidden="true" />}
       </button>
     </div>

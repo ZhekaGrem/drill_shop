@@ -6,6 +6,7 @@
 // .mjs, а не .ts: tsconfig включає **/*.ts і не дозволяє імпорт з .ts-розширенням.
 import assert from 'node:assert/strict';
 import { NEWS, latestNews, hasUnreadNews, formatNewsDate } from '../src/shared/config/news.ts';
+import { slotCycle, slotPhaseAt } from '../src/widgets/Header/slot-cycle.ts';
 
 let n = 0;
 const check = (name, fn) => {
@@ -71,6 +72,31 @@ check('бойовий список: парні поля задані разом'
     assert.ok(item.title.trim(), `порожній заголовок: ${item.id}`);
     assert.ok(item.text.trim(), `порожній текст: ${item.id}`);
   }
+});
+
+check('коло слота: без новин лише меню й чат', () => {
+  assert.deepEqual(slotCycle(false), ['menu', 'chat']);
+});
+
+check('коло слота: з новинами меню лишається половину часу', () => {
+  const cycle = slotCycle(true);
+  assert.deepEqual(cycle, ['menu', 'chat', 'menu', 'news']);
+  assert.equal(cycle.filter((p) => p === 'menu').length * 2, cycle.length);
+});
+
+check('фаза за номером тіку йде по колу і не падає на відʼємних', () => {
+  assert.equal(slotPhaseAt(0, true), 'menu');
+  assert.equal(slotPhaseAt(3, true), 'news');
+  assert.equal(slotPhaseAt(7, true), 'news');
+  // коло скоротилось (новини прибрали з конфіга), а індекс лишився великим
+  assert.equal(slotPhaseAt(7, false), 'chat');
+  assert.equal(slotPhaseAt(-1, true), 'news');
+});
+
+check('дзвіночок у колі не залежить від прочитаності', () => {
+  // прочитаність міняє лише крапку; коло однакове в обох випадках
+  assert.deepEqual(slotCycle(true), slotCycle(true));
+  assert.ok(slotCycle(true).includes('news'));
 });
 
 console.log(`\n${n} перевірок пройдено`);

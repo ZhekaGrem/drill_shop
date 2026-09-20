@@ -33,7 +33,7 @@ import { NAV_WORLDS, worldIndexByWordmark } from '@/shared/config/nav-worlds';
 import { IconCart, IconCatalog } from '@/shared/components/Svg';
 import { MenuSlot } from './MenuSlot';
 import { WishSheet } from '@/features/wishes';
-import { NewsSheet, markNewsSeen, useUnreadNews } from '@/features/news';
+import { NewsSheet, hasAnyNews, markNewsSeen, useUnreadNews } from '@/features/news';
 
 /**
  * Підказка живе, поки нею не скористались PEEK_USES разів.
@@ -272,6 +272,7 @@ export function Header() {
           {/* Слот меню/чат: бургер і кнопка побажань по черзі, 5/5 с */}
           <MenuSlot
             paused={wishesOpened || newsOpened}
+            hasNews={hasAnyNews}
             unreadNews={unreadNews}
             onOpenWishes={() => setWishesOpened(true)}
             onOpenNews={() => {
