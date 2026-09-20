@@ -269,7 +269,7 @@ export function Header() {
             <IconCatalog />
           </Link>
 
-          {/* Слот меню/чат: бургер і кнопка побажань по черзі, 5/5 с */}
+          {/* Слот меню/чат/мото/новини: кожна фаза триває 5 с. */}
           <MenuSlot
             paused={wishesOpened || newsOpened}
             hasNews={hasAnyNews}
