@@ -1,6 +1,8 @@
 // Екран гри: рівно динамічний вʼюпорт (100dvh — адресний рядок iOS не ріже
 // низ), сторінка не скролиться і не зумиться жестами — усі жести належать грі.
 .screen {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   top: 0;
   left: 0;
@@ -15,6 +17,32 @@
   // Фон базової теми тримається сталим, коли DesignClock змінює data-design.
   --background: var(--background-base);
   background: var(--background);
+}
+
+.counter {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  min-height: 34px;
+  padding: calc(6px + env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) 6px
+    max(10px, env(safe-area-inset-left, 0px));
+  color: var(--text-primary);
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+
+  output {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.stage {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
 }
 
 .frame {

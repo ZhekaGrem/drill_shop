@@ -7,7 +7,15 @@ export type MotoTheme = 'light' | 'dark';
 export type MotoMessage =
   | { source: 'dril-moto'; type: 'ready'; version: string }
   | { source: 'dril-moto'; type: 'exit' }
-  | { source: 'dril-moto'; type: 'finished'; league: number; track: number; timeMs: number; best: boolean };
+  | {
+      source: 'dril-moto';
+      type: 'finished';
+      finishId?: string;
+      league: number;
+      track: number;
+      timeMs: number;
+      best: boolean;
+    };
 
 /** Пак треків сайту (scripts/build-moto-tracks.mjs) і простір ключів localStorage гри. */
 export const MOTO_TRACKS_URL = '/moto/tracks/dril.mrg';
@@ -41,5 +49,18 @@ export const parseMotoMessage = (data: unknown): MotoMessage | null => {
   if (data.type !== 'finished') return null;
   const { league, track, timeMs, best } = data;
   if (!isInt(league) || !isInt(track) || !isFiniteNumber(timeMs) || typeof best !== 'boolean') return null;
-  return { source: 'dril-moto', type: 'finished', league, track, timeMs, best };
+  const finishId =
+    typeof data.finishId === 'string' &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(data.finishId)
+      ? data.finishId
+      : undefined;
+  return {
+    source: 'dril-moto',
+    type: 'finished',
+    league,
+    track,
+    timeMs,
+    best,
+    ...(finishId ? { finishId } : {}),
+  };
 };

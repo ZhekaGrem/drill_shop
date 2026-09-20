@@ -10,6 +10,7 @@ import { Button } from '@/shared/components/Button/Button';
 import { SiteLoader } from '@/shared/components/SiteLoader/SiteLoader';
 import { content } from '@/shared/config/content';
 import { buildMotoSrc, parseMotoMessage, readSiteTheme } from './moto-bridge';
+import { useMotoCounter } from './useMotoCounter';
 import styles from './moto.module.scss';
 
 type Status = 'loading' | 'ready' | 'failed';
@@ -35,6 +36,7 @@ const leaveGame = (router: AppRouter) => {
 
 export function MotoScreen() {
   const router = useRouter();
+  const { total, record } = useMotoCounter();
   const frameRef = useRef<HTMLIFrameElement>(null);
   const openSentRef = useRef(false);
   const hydrated = useSyncExternalStore(
@@ -69,11 +71,12 @@ export function MotoScreen() {
       } else if (message?.type === 'finished') {
         const { league, track, timeMs, best } = message;
         sendGAEvent('event', 'moto_finish', { league, track, time_ms: timeMs, best });
+        if (message.finishId) record({ id: message.finishId, league, track, timeMs: Math.round(timeMs) });
       }
     };
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
-  }, [router]);
+  }, [router, record]);
 
   useEffect(() => {
     if (!hydrated || status !== 'loading') return;
@@ -88,32 +91,40 @@ export function MotoScreen() {
 
   return (
     <main className={styles.screen}>
-      {hydrated && (
-        <iframe
-          key={attempt}
-          ref={frameRef}
-          className={styles.frame}
-          src={src}
-          title={content.moto.frameTitle}
-          allow="fullscreen"
-        />
-      )}
-      {status === 'loading' && (
-        <div className={styles.overlay}>
-          <SiteLoader fill />
-        </div>
-      )}
-      {status === 'failed' && (
-        <div className={styles.failed} role="alert">
-          <p className={styles.failedText}>{content.moto.loadError}</p>
-          <Button variant="primary" onClick={retry}>
-            {content.moto.retry}
-          </Button>
-          <Button variant="ghost" onClick={() => leaveGame(router)}>
-            {content.moto.exit}
-          </Button>
-        </div>
-      )}
+      <div className={styles.counter} title={content.moto.counterDescription}>
+        <span>{content.moto.counterLabel}</span>
+        <output aria-live="polite" aria-atomic="true" aria-label={content.moto.counterDescription}>
+          {total === null ? '…' : BigInt(total).toLocaleString('uk-UA')}
+        </output>
+      </div>
+      <div className={styles.stage}>
+        {hydrated && (
+          <iframe
+            key={attempt}
+            ref={frameRef}
+            className={styles.frame}
+            src={src}
+            title={content.moto.frameTitle}
+            allow="fullscreen"
+          />
+        )}
+        {status === 'loading' && (
+          <div className={styles.overlay}>
+            <SiteLoader fill />
+          </div>
+        )}
+        {status === 'failed' && (
+          <div className={styles.failed} role="alert">
+            <p className={styles.failedText}>{content.moto.loadError}</p>
+            <Button variant="primary" onClick={retry}>
+              {content.moto.retry}
+            </Button>
+            <Button variant="ghost" onClick={() => leaveGame(router)}>
+              {content.moto.exit}
+            </Button>
+          </div>
+        )}
+      </div>
     </main>
   );
 }

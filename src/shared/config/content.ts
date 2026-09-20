@@ -349,6 +349,8 @@ export const content = {
 
   // ===== ГРА «ДРІЛ МОТО» (/moto) =====
   moto: {
+    counterLabel: 'Скільки барабончиків катнуло:',
+    counterDescription: 'Загальна кількість завершених трас усіма гравцями',
     openGameLabel: 'Відкрити гру Дріл Мото',
     frameTitle: 'Дріл Мото',
     loadError: 'Не вдалося завантажити гру',
