@@ -79,6 +79,17 @@ const nextConfig: NextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
         ],
       },
+      // Бандл гри «Дріл Мото»: файли в assets/ Vite називає за хешем вмісту,
+      // тож вони незмінні — кеш назавжди (решту public/ Next віддає з max-age=0)
+      {
+        source: '/moto/assets/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      // Сирий документ гри — лише вміст iframe; в індекс іде сторінка /moto
+      {
+        source: '/moto/index.html',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex' }],
+      },
     ];
   },
 };

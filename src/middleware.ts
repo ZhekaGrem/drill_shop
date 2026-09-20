@@ -52,8 +52,11 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
+// moto/ — бандл гри «Дріл Мото» (public/moto/: html, js, css, mrg, json, woff2):
+// статика, якій сесія Supabase не потрібна. Сама сторінка /moto (без слеша)
+// лишається під middleware, як і решта сторінок сайту.
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf)).*)',
+    '/((?!api|moto/|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf)).*)',
   ],
 };
