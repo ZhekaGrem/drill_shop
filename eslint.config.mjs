@@ -11,7 +11,8 @@ const eslintConfig = [
   ...nextCoreWebVitals,
   ...nextTypescript,
   {
-    ignores: ['.next/**', 'node_modules/**'],
+    // public/moto/** — зібраний бандл гри «Дріл Мото» (мініфікований Vite-код форку drill-moto)
+    ignores: ['.next/**', 'node_modules/**', 'public/moto/**'],
   },
   {
     files: ['**/*.{js,mjs,cjs,jsx,mjsx,ts,mts,tsx,mtsx}'],

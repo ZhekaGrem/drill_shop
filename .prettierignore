@@ -2,3 +2,7 @@
 # а багатогігабайтні .abc валили pre-commit («Invalid string length»)
 3d/
 model/
+# Бандл гри «Дріл Мото» (зібраний Vite-ом у форку drill-moto) і пак треків,
+# який генерує scripts/build-moto-tracks.mjs: форматувати нічого, а мініфікований
+# JS хук переписував би в робочому дереві після кожного коміту
+public/moto/
