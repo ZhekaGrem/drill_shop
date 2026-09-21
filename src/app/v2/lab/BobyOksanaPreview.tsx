@@ -1,6 +1,6 @@
 'use client';
 // Приміряння колекції «Боби Оксана» поза БД: той самий hero, що на головній,
-// спільний крій hoodie-3.glb і пʼять текстур, які міняються свопом (texture3dUrl).
+// спільний крій hoodie-3.glb і шість текстур, які міняються свопом (texture3dUrl).
 // Назви, свотчі й порядок — як у scripts/boby-oksana/create-boby-oksana.cjs.
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import type { Design } from '@/widgets/HeroVisual/designs';
@@ -14,6 +14,7 @@ const SERIES: [name: string, file: string, swatch: string][] = [
   ['Боба Філовето Оксана', 'fioletova', '#8b2fc9'],
   ['Боба Зелена Оксана', 'zelena', '#35d221'],
   ['Боба Жовта Оксана', 'zhovta', '#f5d800'],
+  ['Боба Білонька Оксана', 'bilonka', '#f4f2f7'],
   ['Боба Рунічна Оксана', 'runichna', '#74ad40'],
 ];
 
@@ -39,7 +40,7 @@ export function BobyOksanaPreview() {
           Боби Оксана
         </h2>
         <p className={heroStyles.heroSubtitle}>
-          Пʼять худі з принтами «Ніжної Оксани» і «Батятичі Блек Метал Туром» на всю спину.
+          Шість худі з принтами «Ніжної Оксани» і «Батятичі Блек Метал Туром» на всю спину.
         </p>
         <p className={styles.facts}>
           hoodie-3.glb · своп текстури 2048² WebP без втрат · джерело: 3d/серія боб ніжна оксана /дизайни.pdf

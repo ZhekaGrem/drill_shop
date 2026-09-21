@@ -12,7 +12,7 @@
 //                  з --probe=https://ye-dril.com ще й HEAD до асетів на проді.
 //   create         «темна» вставка: колекції й товари isActive=false (невидимі всюди).
 //   images         Cloudinary + ProductImage з --dir=<тека> (<slug>-front.jpg,
-//                  <slug>-back.jpg, <slug>-render3d.webp).
+//                  <slug>-back.jpg, <slug>-render3d.webp); --only=slug1,slug2 — лише ці.
 //   activate       ПІСЛЯ деплою фронта. Гейт (асети 200 з правильним типом, фото й
 //                  рендери на місці, модель і розміри рівно ті) → одна транзакція
 //                  isActive=true. Потребує --probe.
@@ -253,6 +253,10 @@ const imageRows = (productId, name, up) =>
     },
   ].map((row) => ({ productId, ...row }));
 
+/** --only=slug1,slug2 → масив; без прапорця — порожній (фаза бере всі товари конфігу) */
+const onlySlugs = (ctx) =>
+  typeof ctx.args.only === 'string' ? ctx.args.only.split(',').filter(Boolean) : [];
+
 async function images(ctx, prisma) {
   const dir = typeof ctx.args.dir === 'string' ? ctx.args.dir : null;
   if (!dir) throw new Error('--dir=<тека з <slug>-front.jpg, <slug>-back.jpg, <slug>-render3d.webp>');
@@ -264,7 +268,8 @@ async function images(ctx, prisma) {
   });
   const upload = (file, public_id) =>
     cloudinary.uploader.upload(file, { public_id, overwrite: true, resource_type: 'image' });
-  for (const { product } of ctx.rows) {
+  const only = onlySlugs(ctx);
+  for (const { product } of ctx.rows.filter((r) => !only.length || only.includes(r.product.slug))) {
     const s = product.slug;
     const files = { front: `${s}-front.jpg`, back: `${s}-back.jpg`, render3d: `${s}-render3d.webp` };
     const missing = Object.values(files).filter((f) => !fs.existsSync(path.join(dir, f)));
@@ -411,7 +416,7 @@ async function retire(ctx, prisma) {
 }
 
 async function purge(ctx, prisma) {
-  const only = typeof ctx.args.only === 'string' ? ctx.args.only.split(',').filter(Boolean) : [];
+  const only = onlySlugs(ctx);
   if (!only.length) throw new Error('purge вимагає --only=slug1,slug2 — усе підряд не видаляється');
   const owned = ctx.config.collections.map((c) => c.slug);
   const found = await prisma.product.findMany({
