@@ -14,9 +14,12 @@ import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
+import { useDesign } from '@/shared/hooks/useDesign';
+import { animationForDesign } from '@/shared/config/animation';
 import { CompassSwitcher } from '@/shared/components/CompassSwitcher/CompassSwitcher';
 import { useDragRotation } from './useDragRotation';
 import type { Design } from './designs';
+import type { MotionPreview } from './motionPresets';
 import styles from './HeroVisual.module.scss';
 
 // Окремий чанк: three і drei не потрапляють у бандл головної сторінки
@@ -25,6 +28,7 @@ const TshirtScene = lazy(() => import('./TshirtScene'));
 type Props = {
   /** Набір дизайнів колекції (з GET /collections) */
   designs: Record<string, Design>;
+  motionPreview?: MotionPreview;
   /** Контрольований режим (герой-магазин тримає вибір у себе) */
   value?: string;
   onChange?: (key: string) => void;
@@ -57,7 +61,11 @@ export const HeroVisual = ({
   onChange,
   switcher = 'dots',
   switcherWidth = 'stage',
+  motionPreview,
 }: Props) => {
+  const siteDesign = useDesign();
+  // DesignClock owns the schedule; the gallery can still pin a specific animation.
+  const motion = motionPreview ?? { preset: animationForDesign(siteDesign), paused: false };
   // Рішення власника (2026-08-12): 3D показуємо всім, ігноруючи
   // prefers-reduced-motion. Компромісний режим (статична 3D + drag) — в історії.
   const [inner, setInner] = useState(() => Object.keys(designs)[0]);
@@ -131,6 +139,7 @@ export const HeroVisual = ({
                 mapUrl={active.mapUrl}
                 modelUrl={active.modelUrl}
                 dragRef={dragRef}
+                motionPreview={motion}
               />
             </Suspense>
           </div>

@@ -19,6 +19,7 @@ import { useWind } from './useWind';
 import { useIdleMotion } from './useIdleMotion';
 import { useDesignMap } from './useDesignMap';
 import { useSceneClone } from './useSceneClone';
+import { sampleMotion, type MotionPreview } from './motionPresets';
 import type { RefObject } from 'react';
 import type { DragState } from './useDragRotation';
 
@@ -36,25 +37,39 @@ type Props = {
   modelUrl?: string;
   /** Ref драг-обертання зі stage; сцена лише читає його покадрово */
   dragRef?: RefObject<DragState | null>;
+  /** Resolved site animation, or an explicit dev-gallery override. */
+  motionPreview?: MotionPreview;
 };
 
-const Tshirt = ({ onReady, interactive = false, mapUrl, modelUrl = MODEL_URL, dragRef }: Props) => {
+const Tshirt = ({
+  onReady,
+  interactive = false,
+  mapUrl,
+  modelUrl = MODEL_URL,
+  dragRef,
+  motionPreview,
+}: Props) => {
   const { scene, animations } = useGLTF(modelUrl);
   const group = useRef<Group>(null);
   const jumpRef = useRef<Group>(null);
   const [hovered, setHovered] = useState(false);
+  const previewTime = useRef(0);
+  const previewDrag = useRef(0);
   const { actions } = useAnimations(animations, group);
 
   // Курсор-pointer над футболкою: підказка «мене можна натиснути»
   useCursor(interactive && hovered);
 
-  const hasBakedRotation = animations.length > 0;
+  const hasBakedRotation = animations.length > 0 && !motionPreview;
 
   // Запечена в Blender анімація — задум автора моделі: граємо її, а не дублюємо
   useEffect(() => {
     if (!hasBakedRotation) return;
     const [firstAction] = Object.values(actions);
     firstAction?.reset().play();
+    return () => {
+      firstAction?.stop();
+    };
   }, [actions, hasBakedRotation]);
 
   // Своя копія кешованої сцени (два герої на сторінці) + анізотропія на мапах
@@ -74,6 +89,26 @@ const Tshirt = ({ onReady, interactive = false, mapUrl, modelUrl = MODEL_URL, dr
 
   // Стрибок — внутрішня група, idle/drag — зовнішня; baked-анімація вимикає idle
   useFrame((state, delta) => {
+    if (motionPreview && group.current) {
+      const dt = Math.min(delta, 1 / 15);
+      const drag = dragRef?.current;
+      if (!motionPreview.paused && !drag?.active) previewTime.current += dt;
+      if (motionPreview.preset === 'current') {
+        idleStep(group.current, motionPreview.paused ? 0 : dt, previewTime.current);
+      } else {
+        if (drag) {
+          previewDrag.current += drag.pendingAngle;
+          // Consume the same shared drag channel as useIdleMotion.
+          // eslint-disable-next-line react-hooks/immutability
+          drag.pendingAngle = 0;
+        }
+        const pose = sampleMotion(motionPreview.preset, previewTime.current);
+        group.current.rotation.set(pose.x, pose.y + previewDrag.current, pose.z);
+        group.current.position.y = pose.lift * box.height;
+      }
+      windStep(previewTime.current, 0);
+      return;
+    }
     if (interactive) jump.step(delta);
     if (hasBakedRotation || !group.current) {
       windStep(state.clock.elapsedTime, 0);
@@ -133,7 +168,10 @@ const TshirtScene = (props: Props) => {
       <Suspense fallback={null}>
         {/* Запас у кадрі: силует міняє ширину в оберті — без запасу торкався б країв */}
         <Bounds fit clip observe margin={1.15}>
-          <Tshirt {...props} />
+          <Tshirt
+            key={`${props.modelUrl ?? MODEL_URL}:${props.motionPreview?.preset ?? 'original'}`}
+            {...props}
+          />
         </Bounds>
       </Suspense>
     </Canvas>

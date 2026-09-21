@@ -30,6 +30,7 @@ import {
   designForTime,
 } from '@/shared/config/design-rotation';
 import { applyTheme, autoTheme, readThemeChoice } from '@/shared/config/theme';
+import { ANIMATION_LABELS, animationForDesign } from '@/shared/config/animation';
 import { useDesign, useDesignChoice, useNextRotationAt } from '@/shared/hooks';
 import styles from './dev.module.scss';
 
@@ -73,6 +74,8 @@ export const DesignSection = () => {
             <strong>{option.label}</strong>
             <span>
               {option.hint}
+              {' · рух: '}
+              {ANIMATION_LABELS[animationForDesign(option.id)]}
               {live ? ' · зараз на екрані' : ''}
             </span>
           </button>
@@ -111,10 +114,29 @@ export const DesignSection = () => {
         {rows(ROTATION_ORDER)}
         <p className={styles.mono}>
           Порядок кнопок = порядок ротації. «Авто» віддає вибір календарю: палітра міняється кожні{' '}
-          {ROTATION_SLOT_DAYS} дні й однакова для всіх відвідувачів, бо рахується з часу, а не зі сховища.
-          Натиснута палітра закріплюється й ротацію ігнорує — це лише для тебе, у чужих браузерах далі
-          крутиться. Обидві теми задані повністю, тож день/ніч далі за годинником.
+          {ROTATION_SLOT_DAYS} дні й однакова для всіх відвідувачів, бо рахується з часу, а не зі сховища.{' '}
+          Анімація 3D змінюється разом із палітрою за тим самим розкладом. Натиснута палітра закріплюється й
+          ротацію ігнорує — це лише для тебе, у чужих браузерах далі крутиться. Обидві теми задані повністю,
+          тож день/ніч далі за годинником.
         </p>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Анімація разом із дизайном</h2>
+        <p>
+          Зараз: <strong>{ANIMATION_LABELS[animationForDesign(design)]}</strong>.
+        </p>
+        {choice === DESIGN_CHOICE_AUTO && nextDesign ? (
+          <p>
+            Наступна: {ANIMATION_LABELS[animationForDesign(nextDesign)]} · {whenLabel(nextAt)}.
+          </p>
+        ) : (
+          <p>
+            Анімація відповідає вибраному дизайну. Режим «Авто» змінює їх разом кожні {ROTATION_SLOT_DAYS}{' '}
+            дні, якщо ротація увімкнена.
+          </p>
+        )}
+        <p className={styles.mono}>Щоб перевірити іншу анімацію на сайті, вибери відповідну палітру вище.</p>
       </section>
 
       <section className={styles.section}>

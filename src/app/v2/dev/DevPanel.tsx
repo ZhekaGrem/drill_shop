@@ -81,6 +81,7 @@ export const DevPanel = () => {
     ['/catalog', 'Каталог'],
     ['/v2/audit', 'Аудит колекцій'],
     ['/v2/lab', 'Hero Lab (приклади моделей)'],
+    ['/v2/animations', 'Анімації 3D (футболка та худі)'],
     ['/v2/loaders', 'Завантажувальні екрани (приклади)'],
     ['/v2/motion', 'Motion-пілот каталогу (turntable WebP)'],
     ['/v2/swatches', 'Свотчі (приклади стилів)'],
@@ -92,6 +93,11 @@ export const DevPanel = () => {
       <PageHeader title="Dev mode" description="Налаштування застосунку. Сторінка існує лише в DEV_MODE." />
 
       <DesignSection />
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Анімації 3D</h2>
+        <p>Чистий оберт, перед і спина, маятник, зависання та поточний рух — на футболці й худі.</p>
+        <Link href="/v2/animations">Відкрити лабораторію анімацій →</Link>
+      </section>
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Тема</h2>
