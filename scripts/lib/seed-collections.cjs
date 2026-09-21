@@ -21,6 +21,10 @@
 //   deactivate     миттєво сховати назад (isActive=false), зворотно.
 //   stock          --qty=N на кожен розмір (відкрити продаж).
 //   retire         мʼяке видалення за конвенцією ProductRepository.delete.
+//   purge          ЖОРСТКЕ видалення з бази, лише для --only=slug1,slug2. Варіанти, фото,
+//                  позиції кошиків, відгуки й категорії зникають каскадом; товар, що є
+//                  хоч в одному замовленні, не видаляється (OrderItem без каскаду).
+//                  Файли в Cloudinary лишаються.
 //
 // Залежності (@prisma/client, cloudinary, dotenv) і .env беруться з теки бекенда:
 // BACKEND_DIR, за замовчуванням ../drill-shop-backend поруч із цим репо.
@@ -406,6 +410,39 @@ async function retire(ctx, prisma) {
   console.log('мʼяко видалено');
 }
 
+async function purge(ctx, prisma) {
+  const only = typeof ctx.args.only === 'string' ? ctx.args.only.split(',').filter(Boolean) : [];
+  if (!only.length) throw new Error('purge вимагає --only=slug1,slug2 — усе підряд не видаляється');
+  const owned = ctx.config.collections.map((c) => c.slug);
+  const found = await prisma.product.findMany({
+    where: { slug: { in: only } },
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+      collection: { select: { slug: true } },
+      _count: { select: { variants: true, images: true, cartItems: true, orderItems: true, reviews: true } },
+    },
+  });
+  console.log(
+    JSON.stringify(
+      found.map(({ id, ...rest }) => rest),
+      null,
+      2
+    )
+  );
+  const missing = only.filter((slug) => !found.some((p) => p.slug === slug));
+  const foreign = found.filter((p) => !owned.includes(p.collection?.slug)).map((p) => p.slug);
+  const ordered = found.filter((p) => p._count.orderItems > 0).map((p) => p.slug);
+  if (missing.length) throw new Error(`нема в БД: ${missing.join(', ')}`);
+  if (foreign.length) throw new Error(`не з колекцій цього скрипта: ${foreign.join(', ')}`);
+  if (ordered.length)
+    throw new Error(`є в замовленнях, жорстко не видаляється (є retire): ${ordered.join(', ')}`);
+  if (!ctx.apply) return console.log(`DRY: жорстко видалило б ${found.length} товар(и) з усім каскадом`);
+  await prisma.$transaction(found.map((p) => prisma.product.delete({ where: { id: p.id } })));
+  console.log(`видалено назавжди: ${found.map((p) => p.slug).join(', ')}`);
+}
+
 const DB_PHASES = {
   check,
   create,
@@ -413,6 +450,7 @@ const DB_PHASES = {
   activate,
   stock,
   retire,
+  purge,
   deactivate: (ctx, prisma) => setActive(ctx, prisma, false),
 };
 
