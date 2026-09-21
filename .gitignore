@@ -53,7 +53,8 @@ next-env.d.ts
 /3d/
 /model/
 /*.glb
-public/3d/models/
+/public/3d/models/*
+!/public/3d/models/lab/
 
 # Тимчасові діагностичні сторінки 3D
 public/3d-test.html

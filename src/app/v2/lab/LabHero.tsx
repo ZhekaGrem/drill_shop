@@ -2,6 +2,7 @@
 // Лабораторія героїв: приклади карток героя (стилі HomeHeroes) з 3D-моделями
 // поза БД. Кожен запис EXAMPLES — окремий hero зі своєю сценою (сцени
 // вантажаться ліниво самим HeroVisual при попаданні у вʼюпорт).
+import { HoodieComparison } from './HoodieComparison';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import { useDesign } from '@/shared/hooks/useDesign';
@@ -65,23 +66,16 @@ export const LabHero = () => {
   return (
     <Page>
       <PageHeader
-        title="Hero Lab"
-        description="Приклади героїв з моделями поза колекціями БД. Сторінка існує лише в DEV_MODE."
+        title="Hero Lab · худі №3"
+        description="Обрана модель худі та два твої дизайни на ній — у hero магазину. Сторінка доступна лише в DEV_MODE."
       />
 
-      {EXAMPLES.map((ex, i) => (
-        <section key={ex.key} className={heroStyles.hero}>
-          <div className={heroStyles.heroText}>
-            {i === 0 ? (
-              <h1 className={heroStyles.heroTitle}>
-                {ex.title}
-                <span
-                  className={`${heroStyles.capsule} designCapsule`}
-                  style={skinOwnsCapsule ? undefined : { background: ex.capsuleColor }}>
-                  {ex.capsule}
-                </span>
-              </h1>
-            ) : (
+      <HoodieComparison />
+      <details className={styles.legacy}>
+        <summary>Попередні тести: футболка й чинне худі</summary>
+        {EXAMPLES.map((ex) => (
+          <section key={ex.key} className={heroStyles.hero}>
+            <div className={heroStyles.heroText}>
               <h2 className={heroStyles.heroTitle}>
                 {ex.title}
                 <span
@@ -90,15 +84,15 @@ export const LabHero = () => {
                   {ex.capsule}
                 </span>
               </h2>
-            )}
-            <p className={heroStyles.heroSubtitle}>{ex.description}</p>
-            <p className={styles.facts}>{ex.facts}</p>
-          </div>
-          <div className={heroStyles.heroVisualWrap}>
-            <HeroVisual designs={{ [ex.key]: ex.design }} switcher="dots" />
-          </div>
-        </section>
-      ))}
+              <p className={heroStyles.heroSubtitle}>{ex.description}</p>
+              <p className={styles.facts}>{ex.facts}</p>
+            </div>
+            <div className={heroStyles.heroVisualWrap}>
+              <HeroVisual designs={{ [ex.key]: ex.design }} switcher="dots" />
+            </div>
+          </section>
+        ))}
+      </details>
     </Page>
   );
 };

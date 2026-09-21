@@ -1,0 +1,14 @@
+[
+  {
+    "id": 3,
+    "url": "/3d/models/lab/hoodie-3.glb?v=7baaf8dd6ba1",
+    "poster": "/assets/img/lab/hoodie-3.webp?v=e828faa40655",
+    "bytes": 1067904,
+    "triangles": 59996,
+    "vertices": 35066,
+    "materials": 1,
+    "primitives": 1,
+    "textures": 3,
+    "originalTriangles": 1569280
+  }
+]
