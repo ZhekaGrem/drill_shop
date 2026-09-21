@@ -64,6 +64,11 @@ python scripts/3d/make-boby-oksana-unwraps.py "3d/серія боб ніжна �
 (фази й запобіжники — `scripts/lib/seed-collections.cjs`). Фото й постери товарів —
 `render-hoodie.py … КУТ 2000`, обрізка 4:5 до 960×1200 на білому.
 
+Turntable для карток каталогу — 48 кадрів `render-hoodie.py` із кроком 7.5° у
+`КАДРИ/<slug>/frame_NNN.png`, далі
+`python scripts/3d/encode-hoodie-turntable.py КАДРИ ВИХІД` (480×600, 83 мс, q80 — формат
+`buba.webp`) і заливка `3d/pipeline/upload-turntables.mjs ВИХІД` з теки бекенда.
+
 ## Запекти новий принт
 
 Розгортка — 2048×2048 під UV худі №3 (`3d/hoodie-comparison/hoodie-3-textures/`,
