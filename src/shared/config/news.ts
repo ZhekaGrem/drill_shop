@@ -28,6 +28,16 @@ export interface NewsItem {
 
 export const NEWS: NewsItem[] = [
   {
+    id: '2026-09-21-boby-oksana',
+    date: '2026-09-21',
+    title: 'Боби Оксана',
+    text: 'Йоу, шо ви барабончики, ми додали боби Ніжна Оксана шоб ви не товово.',
+    label: 'новинка',
+    labelColor: '#2b9ad9',
+    href: '/v2/a/boba-oksana-01',
+    hrefLabel: 'Подивитись',
+  },
+  {
     id: '2026-09-20-notifications',
     date: '2026-09-20',
     title: 'Нотифікації',
