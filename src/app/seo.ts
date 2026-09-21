@@ -1,3 +1,4 @@
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 // src/app/seo.ts
 import { Metadata, Viewport } from 'next';
 
@@ -48,14 +49,24 @@ export const baseMetadata: Metadata = {
 
   icons: {
     icon: [
-      { url: '/assets/favicon/android-chrome-192x192.png', type: 'image/png', sizes: '192x192' },
+      {
+        url: withStorefrontPath('/assets/favicon/android-chrome-192x192.png'),
+        type: 'image/png',
+        sizes: '192x192',
+      },
       { url: 'https://www.ye-dril.com/assets/favicon/favicon.ico' },
-      { url: '/assets/favicon/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
-      { url: '/assets/favicon/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
-      { url: '/assets/favicon/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
+      { url: withStorefrontPath('/assets/favicon/favicon-16x16.png'), type: 'image/png', sizes: '16x16' },
+      { url: withStorefrontPath('/assets/favicon/favicon-32x32.png'), type: 'image/png', sizes: '32x32' },
+      { url: withStorefrontPath('/assets/favicon/favicon-96x96.png'), type: 'image/png', sizes: '96x96' },
     ],
-    apple: [{ url: '/assets/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
-    shortcut: '/assets/favicon/android-chrome-192x192.png',
+    apple: [
+      {
+        url: withStorefrontPath('/assets/favicon/apple-touch-icon.png'),
+        sizes: '180x180',
+        type: 'image/png',
+      },
+    ],
+    shortcut: withStorefrontPath('/assets/favicon/android-chrome-192x192.png'),
     other: [
       {
         rel: 'mask-icon',
@@ -64,7 +75,7 @@ export const baseMetadata: Metadata = {
     ],
   },
 
-  manifest: '/manifest.json',
+  manifest: withStorefrontPath('/manifest.json'),
 
   alternates: {
     canonical: 'https://www.ye-dril.com',

@@ -4,7 +4,7 @@
 // стек Дії, карусель К1, плитки К2, таби К3 лише розставляють ці блоки.
 'use client';
 
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/components/Button/Button';
 import { ArrowRight } from '@/shared/components/Svg';

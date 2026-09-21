@@ -4,7 +4,7 @@
 // (6 товарів). Під кожним рядом — порахована ширина: скільки пікселів
 // займе ряд і чи влізе він у 390px екран без скролу.
 import { useState } from 'react';
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import { useCollections } from '@/widgets/ProductV2/useCollections';

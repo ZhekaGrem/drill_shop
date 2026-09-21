@@ -18,7 +18,7 @@ registerHooks({
 });
 const { appearanceBootScript } = await import('../src/shared/config/appearance-boot.ts');
 const design = await import('../src/shared/config/design.ts');
-const { autoTheme } = await import('../src/shared/config/theme.ts');
+const { autoTheme, THEME_KEY } = await import('../src/shared/config/theme.ts');
 let checked = 0;
 for (const savedDesign of [null, 'invalid', ...design.DESIGN_IDS]) {
   for (const savedTheme of [null, 'invalid', 'light', 'dark']) {
@@ -31,7 +31,15 @@ for (const savedDesign of [null, 'invalid', ...design.DESIGN_IDS]) {
           getAttribute: (name) => attrs.get(name) ?? null,
         },
       };
-      const localStorage = { getItem: (key) => (key === 'design' ? savedDesign : savedTheme) };
+      const localStorage = {
+        getItem: (key) =>
+          ({
+            [design.DESIGN_KEY]: savedDesign,
+            [THEME_KEY]: savedTheme,
+            design: 'streetwear',
+            theme: 'dark',
+          })[key] ?? null,
+      };
       const matchMedia = () => ({ matches: systemDark });
       const context = { document, localStorage, matchMedia, Date };
       vm.runInNewContext(appearanceBootScript, context);

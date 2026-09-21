@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import styles from './about.module.scss';

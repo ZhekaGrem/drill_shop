@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import Link from 'next/link';
 import { ArrowRight } from '@/shared/components/Svg';
 import { Button } from '@/shared/components/Button/Button';

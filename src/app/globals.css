@@ -929,8 +929,8 @@ svg.tabler-icon {
   width: 12px;
   height: 10px;
   background-color: var(--btn-primary-fg);
-  mask: url('/svg/checkmark-white.svg') no-repeat center / contain;
-  -webkit-mask: url('/svg/checkmark-white.svg') no-repeat center / contain;
+  mask: var(--checkmark-mask) no-repeat center / contain;
+  -webkit-mask: var(--checkmark-mask) no-repeat center / contain;
 }
 .mantine-Checkbox-input:disabled {
   opacity: 0.4;

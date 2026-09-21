@@ -1,6 +1,7 @@
 // src/shared/components/PlaceholderImage/PlaceholderImage.tsx
 'use client';
 
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { useState } from 'react';
 import { Image } from '@mantine/core';
 
@@ -62,7 +63,7 @@ export const PlaceholderImage = ({
       return `${baseUrl}${src}`;
     }
 
-    return src;
+    return withStorefrontPath(src);
   };
 
   const handleError = () => {

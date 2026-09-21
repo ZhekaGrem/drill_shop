@@ -3,6 +3,7 @@
 // за повідомленнями гри (контракт — moto-bridge.ts; спека, секції 1 і 3).
 'use client';
 
+import { STOREFRONT_BASE_PATH } from '@/shared/config/storefront-path';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useRouter } from 'next/navigation';
 import { sendGAEvent } from '@next/third-parties/google';
@@ -44,7 +45,7 @@ export function MotoScreen() {
     () => true,
     () => false
   );
-  const [src] = useState(() => buildMotoSrc(readSiteTheme()));
+  const [src] = useState(() => buildMotoSrc(readSiteTheme(), STOREFRONT_BASE_PATH));
   const [status, setStatus] = useState<Status>('loading');
   // Ключ iframe: «Спробувати ще раз» монтує новий елемент. Зміна src того ж
   // iframe додала б запис в історію, і «Вийти» повертало б у гру, а не назад.

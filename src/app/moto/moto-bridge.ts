@@ -25,8 +25,8 @@ export const MOTO_NS = 'dril-moto';
 export const readSiteTheme = (): MotoTheme =>
   typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
 
-export const buildMotoSrc = (theme: MotoTheme): string =>
-  `/moto/index.html?tracks=${MOTO_TRACKS_URL}&ns=${MOTO_NS}&theme=${theme}`;
+export const buildMotoSrc = (theme: MotoTheme, basePath = ''): string =>
+  `${basePath}/moto/index.html?tracks=${basePath}${MOTO_TRACKS_URL}&ns=${MOTO_NS}&theme=${theme}`;
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;

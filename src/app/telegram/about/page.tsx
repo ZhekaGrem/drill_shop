@@ -1,6 +1,6 @@
 // app/telegram/about/page.tsx
 import { Box, Container, Title, Text } from '@mantine/core';
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import styles from '../../about/about.module.scss';
 
 export const metadata = {

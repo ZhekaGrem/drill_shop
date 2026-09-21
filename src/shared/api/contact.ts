@@ -1,3 +1,4 @@
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 // src/shared/api/contact.ts
 interface ContactFormData {
   name: string;
@@ -12,7 +13,7 @@ interface ContactResponse {
 
 export const sendContactMessage = async (data: ContactFormData): Promise<ContactResponse> => {
   try {
-    const response = await fetch('/api/telegram', {
+    const response = await fetch(withStorefrontPath('/api/telegram'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

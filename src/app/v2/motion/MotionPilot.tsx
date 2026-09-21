@@ -2,7 +2,7 @@
 // Порівняльний стенд: той самий turntable у різних варіантах кодування
 // поруч зі статичним постером (те, що в картках зараз). Кожен варіант —
 // у макеті картки каталогу з реальною шириною сітки.
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import styles from './motion.module.scss';

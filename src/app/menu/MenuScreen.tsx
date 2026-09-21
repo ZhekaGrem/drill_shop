@@ -14,6 +14,7 @@
 // читалась як недороблена.
 'use client';
 
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import { Section } from '@/shared/components/Section/Section';
@@ -34,7 +35,7 @@ export default function MenuScreen() {
 
   const handleLogout = async () => {
     await logout();
-    window.location.href = '/';
+    window.location.href = withStorefrontPath('/');
   };
 
   return (

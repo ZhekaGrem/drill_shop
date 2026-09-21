@@ -5,7 +5,7 @@
 // Анімація стартує з того ж кадру, що постер, тож підміна безшовна.
 // prefers-reduced-motion: анімація не вмикається взагалі.
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 
 interface TurntableMediaProps {
   poster: string;

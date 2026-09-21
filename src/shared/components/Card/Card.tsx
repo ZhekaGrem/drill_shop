@@ -1,4 +1,5 @@
 // src/features/catalog/components/ProductCard/ProductCard.tsx - СПРОЩЕНО
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { Product } from '@/shared/types';
@@ -45,7 +46,7 @@ export const Card: React.FC<ProductCardProps> = ({
     e.stopPropagation();
 
     if (hasVariants) {
-      window.location.href = `${basePath}/catalog/${product.slug}`;
+      window.location.href = withStorefrontPath(`${basePath}/catalog/${product.slug}`);
       return;
     }
 

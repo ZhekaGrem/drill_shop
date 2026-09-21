@@ -1,7 +1,7 @@
 // src/shared/components/CloudinaryImage/CloudinaryImage.tsx
 'use client';
 
-import Image, { ImageProps } from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import { useState } from 'react';
 
 interface CloudinaryImageProps {

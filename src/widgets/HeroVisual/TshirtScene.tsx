@@ -8,6 +8,7 @@
 // а не transform на батьківському контейнері.
 'use client';
 
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Bounds, useAnimations, useCursor, useGLTF } from '@react-three/drei';
@@ -24,7 +25,7 @@ import type { DragState } from './useDragRotation';
 
 const MODEL_URL = '/3d/models/tshirt.glb?v=2';
 
-useGLTF.preload(MODEL_URL);
+useGLTF.preload(withStorefrontPath(MODEL_URL));
 
 type Props = {
   onReady: () => void;
@@ -39,7 +40,7 @@ type Props = {
 };
 
 const Tshirt = ({ onReady, interactive = false, mapUrl, modelUrl = MODEL_URL, dragRef }: Props) => {
-  const { scene, animations } = useGLTF(modelUrl);
+  const { scene, animations } = useGLTF(withStorefrontPath(modelUrl));
   const group = useRef<Group>(null);
   const jumpRef = useRef<Group>(null);
   const [hovered, setHovered] = useState(false);

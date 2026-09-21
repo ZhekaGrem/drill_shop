@@ -1,4 +1,5 @@
 // src/shared/api/client.ts - OPTIMIZED
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { supabase } from '@/shared/utils/supabase/client';
@@ -11,7 +12,7 @@ import { supabase } from '@/shared/utils/supabase/client';
 // сервера, CORS не діє. Сервер-рендер і прод — прямий абсолютний URL.
 export const API_BASE =
   process.env.NODE_ENV === 'development' && typeof window !== 'undefined'
-    ? '/api/v1'
+    ? withStorefrontPath('/api/v1')
     : process.env.NEXT_PUBLIC_API_URL;
 let tempAccessToken: string | null = null;
 

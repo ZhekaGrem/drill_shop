@@ -14,7 +14,7 @@ export type DesignId =
   | 'overdrive'
   | 'spotlight';
 
-export const DESIGN_KEY = 'design';
+export const DESIGN_KEY = 'drill-v3-design';
 export const DESIGN_FALLBACK: DesignId = 'editorial';
 
 /** Палітри-кольористики (на відміну від концепцій, механіку не міняють) */

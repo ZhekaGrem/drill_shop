@@ -1,5 +1,6 @@
 'use client';
 
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { Modal, Image, Text, Stack } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import '@mantine/carousel/styles.css';
@@ -40,7 +41,7 @@ export const SizeGuideModal = ({ opened, onClose, categories }: SizeGuideModalPr
           {category.imageUrl && (
             <div className={styles.imageWrapper}>
               <Image
-                src={category.imageUrl}
+                src={withStorefrontPath(category.imageUrl)}
                 alt={`Інформація ${category.categoryName}`}
                 fit="contain"
                 className={styles.sizeGuideImage}
@@ -83,7 +84,7 @@ export const SizeGuideModal = ({ opened, onClose, categories }: SizeGuideModalPr
               {category.imageUrl && (
                 <div className={styles.imageWrapper}>
                   <Image
-                    src={category.imageUrl}
+                    src={withStorefrontPath(category.imageUrl)}
                     alt={`Інформація ${category.categoryName}`}
                     fit="contain"
                     className={styles.sizeGuideImage}

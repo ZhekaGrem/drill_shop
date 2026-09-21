@@ -6,7 +6,7 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import type { ProductImage } from '@/shared/types';
 import { getImageUrl } from '@/shared/utils/image';
 import heroStyles from '@/widgets/HeroVisual/HeroVisual.module.scss';

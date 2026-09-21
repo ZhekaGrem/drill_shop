@@ -90,10 +90,8 @@ export const CartDrawer = () => {
                 <Text ta="center" size={isMobile ? 'md' : 'sm'}>
                   Кошик поки що порожній
                 </Text>
-                <Link href={`${basePath}/catalog`}>
-                  <Button onClick={close} size={isMobile ? 'md' : 'sm'}>
-                    Перейти до каталогу
-                  </Button>
+                <Link href={`${basePath}/catalog`} onClick={close}>
+                  <Button size={isMobile ? 'md' : 'sm'}>Перейти до каталогу</Button>
                 </Link>
               </Stack>
             </Center>
@@ -121,13 +119,13 @@ export const CartDrawer = () => {
             </Group>
 
             <Stack gap="xs" p="md">
-              <Link href={`${basePath}/checkout`}>
-                <Button size="lg" fullWidth onClick={close}>
+              <Link href={`${basePath}/checkout`} onClick={close}>
+                <Button size="lg" fullWidth>
                   Оформити замовлення
                 </Button>
               </Link>
-              <Link href={`${basePath}/cart`}>
-                <Button variant="secondary" size="lg" fullWidth onClick={close}>
+              <Link href={`${basePath}/cart`} onClick={close}>
+                <Button variant="secondary" size="lg" fullWidth>
                   Переглянути кошик
                 </Button>
               </Link>

@@ -2,33 +2,35 @@
   "name": "Є.Дріл",
   "short_name": "Є.Дріл",
   "description": "Drill shop - офіційний магазин стильного мерчу. Якісний одяг, футболки, худі та аксесуари з доставкою по Україні. Щільний Drill для справжніх цінителів.",
-  "start_url": "/",
+  "id": "./",
+  "scope": "./",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#FFB800",
   "icons": [
     {
-      "src": "https://www.ye-dril.com/assets/favicon/favicon.ico",
+      "src": "./assets/favicon/favicon.ico",
       "sizes": "48x48",
       "type": "image/x-icon"
     },
     {
-      "src": "/assets/favicon/favicon-96x96.png",
+      "src": "./assets/favicon/favicon-96x96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "/assets/favicon/android-chrome-192x192.png",
+      "src": "./assets/favicon/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/assets/favicon/android-chrome-512x512.png",
+      "src": "./assets/favicon/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/assets/favicon/apple-touch-icon.png",
+      "src": "./assets/favicon/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
     }

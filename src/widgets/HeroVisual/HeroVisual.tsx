@@ -10,9 +10,10 @@
 // менше руху. Статичне фото — не «заглушка на час», а повноцінний фолбек.
 'use client';
 
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import { useInView } from 'react-intersection-observer';
 import { CompassSwitcher } from '@/shared/components/CompassSwitcher/CompassSwitcher';
 import { useDragRotation } from './useDragRotation';
@@ -91,8 +92,8 @@ export const HeroVisual = ({
   useEffect(() => {
     if (!readyModel) return;
     for (const { mapUrl, modelUrl } of Object.values(designs)) {
-      if (mapUrl) new window.Image().src = mapUrl;
-      if (modelUrl) fetch(modelUrl).catch(() => undefined);
+      if (mapUrl) new window.Image().src = withStorefrontPath(mapUrl);
+      if (modelUrl) fetch(withStorefrontPath(modelUrl)).catch(() => undefined);
     }
   }, [readyModel, designs]);
 

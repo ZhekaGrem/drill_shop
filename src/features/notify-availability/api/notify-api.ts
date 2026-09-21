@@ -1,3 +1,4 @@
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 // src/features/notify-availability/api/notify-api.ts
 export interface NotifyAvailabilityRequest {
   productName: string;
@@ -15,7 +16,7 @@ export interface NotifyAvailabilityResponse {
 export const notifyAvailabilityApi = {
   sendNotification: async (data: NotifyAvailabilityRequest): Promise<NotifyAvailabilityResponse> => {
     try {
-      const response = await fetch('/api/telegram/notify-availability', {
+      const response = await fetch(withStorefrontPath('/api/telegram/notify-availability'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

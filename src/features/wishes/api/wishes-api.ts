@@ -1,3 +1,4 @@
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 // src/features/wishes/api/wishes-api.ts
 // Той самий контракт { success, message }, що в notify-availability.
 export interface WishRequest {
@@ -16,7 +17,7 @@ export interface WishResponse {
 
 export const wishesApi = {
   sendWish: async (data: WishRequest): Promise<WishResponse> => {
-    const response = await fetch('/api/telegram/wishes', {
+    const response = await fetch(withStorefrontPath('/api/telegram/wishes'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),

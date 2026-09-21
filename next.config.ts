@@ -1,6 +1,12 @@
+import { STOREFRONT_BASE_PATH } from './src/shared/config/storefront-path';
 import type { NextConfig } from 'next';
 
+if (!['', '/v3'].includes(STOREFRONT_BASE_PATH)) {
+  throw new Error('NEXT_PUBLIC_STOREFRONT_BASE_PATH must be /v3 or empty');
+}
+
 const nextConfig: NextConfig = {
+  basePath: STOREFRONT_BASE_PATH,
   poweredByHeader: false,
   // Дев-доступ із локальної мережі (телефон тощо): без цього Next 16 мовчки
   // блокує cross-origin запити до чанків — сторінка вантажиться, а lazy-сцена
@@ -72,8 +78,9 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: '/:path*',
         headers: [
+          ...(STOREFRONT_BASE_PATH ? [{ key: 'X-Robots-Tag', value: 'noindex, follow' }] : []),
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },

@@ -15,7 +15,7 @@ import { Section } from '@/shared/components/Section/Section';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import styles from './contact.module.scss';
 import { siteConfig } from '@/shared/config/site';
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);

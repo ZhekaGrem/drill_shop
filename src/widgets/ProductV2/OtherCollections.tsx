@@ -3,7 +3,7 @@
 // Дані — з GET /collections; коли колекція одна, секція не рендериться.
 'use client';
 
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { Section } from '@/shared/components/Section/Section';

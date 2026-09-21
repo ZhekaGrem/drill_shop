@@ -1,5 +1,6 @@
 // src/app/public-offer/PublicOffer.tsx
 
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { Box } from '@mantine/core';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
@@ -418,7 +419,7 @@ const PublicOffer = () => {
 
             <p className={styles.textBlock}>
               Детальна інформація про обробку персональних даних викладена в{' '}
-              <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
+              <a href={withStorefrontPath('/privacy-policy')} target="_blank" rel="noopener noreferrer">
                 Політиці конфіденційності
               </a>
               .

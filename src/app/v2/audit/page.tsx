@@ -2,7 +2,8 @@
 // Контрольний лист колекцій перед дропом: для кожного товару поруч рендер,
 // текстура, свотч, бейдж і модель — усе живцем із GET /collections, щоб
 // звірити звʼязки БД одним екраном. Внутрішня сторінка, у навігації її нема.
-import Image from 'next/image';
+import { withStorefrontPath } from '@/shared/config/storefront-path';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import { useQuery } from '@tanstack/react-query';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
@@ -55,7 +56,7 @@ const useAudit = () =>
 const Visual = ({ label, url }: { label: string; url?: string }) => (
   <figure className={styles.visual}>
     {url ? (
-      <a href={url} target="_blank" rel="noreferrer">
+      <a href={withStorefrontPath(url)} target="_blank" rel="noreferrer">
         <Image src={url} alt={label} width={160} height={160} loading="lazy" />
       </a>
     ) : (

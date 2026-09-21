@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import { IconBuildingStore, IconCashBanknote, IconCreditCard, IconTruck } from '@tabler/icons-react';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';

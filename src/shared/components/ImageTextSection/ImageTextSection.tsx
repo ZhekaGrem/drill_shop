@@ -1,4 +1,5 @@
 // src/shared/components/ImageTextSection/ImageTextSection.tsx
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { Title, Text, Image } from '@mantine/core';
 import { Button } from '@/shared/components/Button/Button';
 import styles from './imageTextSection.module.scss';
@@ -54,7 +55,7 @@ export const ImageTextSection = ({
         {/* Image Container */}
         <div className={styles.imageContainer}>
           <Image
-            src={imageSrc}
+            src={withStorefrontPath(imageSrc)}
             alt={imageAlt}
             className={styles.image}
             fallbackSrc="https://via.placeholder.com/600x500/ff6b6b/ffffff?text=Image"

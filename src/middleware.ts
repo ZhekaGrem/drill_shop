@@ -1,3 +1,4 @@
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 
@@ -39,7 +40,7 @@ export async function middleware(request: NextRequest) {
   // 3. Перевірка доступу до адмінки
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!user) {
-      const redirectUrl = new URL('/login', request.url);
+      const redirectUrl = new URL(withStorefrontPath('/login'), request.url);
       redirectUrl.searchParams.set('from', request.nextUrl.pathname);
       return NextResponse.redirect(redirectUrl);
     }

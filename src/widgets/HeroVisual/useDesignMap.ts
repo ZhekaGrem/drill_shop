@@ -5,6 +5,7 @@
 // повтори миттєві.
 'use client';
 
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { useEffect, useRef } from 'react';
 import { useThree } from '@react-three/fiber';
 import { SRGBColorSpace, TextureLoader } from 'three';
@@ -36,7 +37,7 @@ export const useDesignMap = (scene: Group, mapUrl?: string) => {
       return;
     }
     new TextureLoader().load(
-      mapUrl,
+      withStorefrontPath(mapUrl),
       (texture) => {
         // Класичні граблі glTF-мап: без цих трьох рядків текстура догори
         // дриґом, у неправильному колірному просторі й чорніє під кутом

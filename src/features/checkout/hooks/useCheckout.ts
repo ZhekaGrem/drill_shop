@@ -1,6 +1,7 @@
 // src/features/checkout/hooks/useCheckout.ts - FIXED RESPONSE HANDLING
 'use client';
 
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -139,7 +140,7 @@ export const useCheckout = () => {
             amount: totalAmount,
             paymentMethod: formData.paymentMethod as 'liqpay' | 'monobank' | 'bank_transfer',
             customerEmail: formData.guestEmail,
-            returnUrl: `${window.location.origin}/payment/success/${orderData.id}?orderId=${orderData.id}`,
+            returnUrl: `${window.location.origin}${withStorefrontPath(`/payment/success/${orderData.id}?orderId=${orderData.id}`)}`,
           });
 
           if (paymentResponse.paymentMethod === 'liqpay' && paymentResponse.html) {

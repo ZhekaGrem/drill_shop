@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import styles from './productGallery.module.scss';
 
 interface ImageNavigationProps {

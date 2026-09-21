@@ -1,3 +1,4 @@
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 // Порядок цих двох рядків має значення. Mantine має власне глобальне правило
@@ -73,6 +74,7 @@ export default function RootLayout({
             '--font-condensed': 'var(--font-body)',
             '--font-price': 'var(--font-body)',
             '--font-mono': 'var(--font-body)',
+            '--checkmark-mask': `url("${withStorefrontPath('/svg/checkmark-white.svg')}")`,
           } as React.CSSProperties
         }>
         <JsonLd data={structuredData.organization()} />

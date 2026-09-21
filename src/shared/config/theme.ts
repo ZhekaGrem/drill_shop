@@ -8,7 +8,7 @@ import { readDesignAttr } from './design';
 export type Theme = 'dark' | 'light';
 export type ThemeChoice = Theme | 'auto';
 
-export const THEME_KEY = 'theme';
+export const THEME_KEY = 'drill-v3-theme';
 
 export const themeByClock = (): Theme => {
   const h = new Date().getHours();

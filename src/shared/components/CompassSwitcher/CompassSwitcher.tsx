@@ -13,7 +13,7 @@
 //   • наскільки елемент зменшений і згаслий — rAF на скролі (візуал, потребує
 //     плавності кожного кадру, тому лише transform/opacity).
 import { useCallback, useEffect, useRef } from 'react';
-import Image from 'next/image';
+import Image from '@/shared/components/StoreImage/StoreImage';
 import styles from './CompassSwitcher.module.scss';
 
 export interface CompassItem {

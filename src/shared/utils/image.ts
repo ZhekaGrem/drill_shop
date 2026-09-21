@@ -1,7 +1,8 @@
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 // src/shared/utils/image.ts - ВИПРАВЛЕНО
 export function getImageUrl(imageUrl?: string | null): string {
   if (!imageUrl) {
-    return '/assets/img/placeholder-product.jpg';
+    return withStorefrontPath('/assets/img/placeholder-product.jpg');
   }
 
   // Якщо це вже повний URL (Cloudinary, інший CDN)
@@ -11,7 +12,7 @@ export function getImageUrl(imageUrl?: string | null): string {
 
   // Якщо це відносний шлях
   if (imageUrl.startsWith('/')) {
-    return imageUrl;
+    return withStorefrontPath(imageUrl);
   }
 
   // Якщо це тільки publicId від Cloudinary
@@ -24,7 +25,7 @@ export function getImageUrl(imageUrl?: string | null): string {
   }
 
   // Fallback на placeholder
-  return '/assets/img/placeholder-product.jpg';
+  return withStorefrontPath('/assets/img/placeholder-product.jpg');
 }
 
 // Для кошика

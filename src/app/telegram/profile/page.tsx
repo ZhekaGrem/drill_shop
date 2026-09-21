@@ -1,5 +1,6 @@
 'use client';
 
+import { withStorefrontPath } from '@/shared/config/storefront-path';
 import { Container, Title, Stack, Text, Card, Group, Avatar, Box } from '@mantine/core';
 import { IconUser, IconShoppingBag, IconHeart, IconLogout } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -25,7 +26,7 @@ export default function TelegramProfilePage() {
 
   const handleLogout = async () => {
     await logout();
-    window.location.href = '/telegram';
+    window.location.href = withStorefrontPath('/telegram');
   };
 
   return (
