@@ -33,6 +33,9 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
     <>
       <ThemeClock />
+      <a className={styles.skipLink} href="#main-content">
+        До вмісту
+      </a>
       <div className={styles.siteAlways}>
         {/* viewTransitionName вилучає хедер зі знімка сторінки, щоб він не їхав
           разом із контентом. Правило анімації — в globals.css. Inline-стиль —
@@ -51,7 +54,9 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
           <Header />
         </div>
         <EmailVerificationBanner />
-        <main>{children}</main>
+        <main id="main-content" tabIndex={-1}>
+          {children}
+        </main>
         <div style={{ viewTransitionName: 'site-footer' }}>
           <Footer />
         </div>

@@ -383,3 +383,84 @@ section + .hero {
 .tileActive .tileLabel {
   color: var(--text-primary);
 }
+
+// v3 keeps the existing product selection and 3D interaction in one stage.
+:global(html[data-design='editorial']) {
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: var(--space-10);
+    min-height: 520px;
+    padding: var(--space-8) 0;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .heroText {
+    min-width: 0;
+    max-width: 620px;
+    gap: var(--space-6);
+  }
+  .heroTitle {
+    font-size: clamp(40px, 5.4vw, 72px);
+    line-height: 1.08;
+    overflow-wrap: anywhere;
+  }
+  .heroSubtitle {
+    max-width: 40ch;
+    font-weight: var(--fw-normal);
+  }
+  .heroVisualWrap {
+    min-width: 0;
+    padding: var(--space-6);
+    background: var(--surface-card);
+    border-radius: var(--radius-card);
+  }
+  .heroActions {
+    margin-top: var(--space-4);
+  }
+  .capsule {
+    display: block;
+    width: fit-content;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: var(--fw-normal);
+  }
+  .heroBadgeOnStage {
+    position: static;
+    margin-bottom: var(--space-3);
+    font-weight: var(--fw-normal);
+  }
+  .heroPulseDot {
+    animation: none;
+    width: 6px;
+    height: 6px;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      min-height: auto;
+      padding: 0;
+    }
+    .heroText {
+      max-width: none;
+    }
+    .heroTitle {
+      font-size: clamp(36px, 7vw, 60px);
+    }
+    .heroActions {
+      width: auto;
+      padding-top: 0;
+      margin-top: 0;
+    }
+    .heroVisualWrap {
+      width: 100%;
+    }
+  }
+}

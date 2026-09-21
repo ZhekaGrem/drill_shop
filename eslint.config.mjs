@@ -1,4 +1,3 @@
-import next from 'eslint-config-next';
 import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
 import nextTypescript from 'eslint-config-next/typescript';
 // eslint.config.mjs
@@ -7,7 +6,6 @@ import tsParser from '@typescript-eslint/parser';
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 const eslintConfig = [
-  ...next,
   ...nextCoreWebVitals,
   ...nextTypescript,
   {
@@ -15,7 +13,8 @@ const eslintConfig = [
     ignores: ['.next/**', 'node_modules/**', 'public/moto/**'],
   },
   {
-    files: ['**/*.{js,mjs,cjs,jsx,mjsx,ts,mts,tsx,mtsx}'],
+    // Match Next's plugin scope; CJS scripts do not load React plugins.
+    files: ['**/*.{js,jsx,mjs,ts,tsx,mts,cts}'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {

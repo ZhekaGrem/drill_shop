@@ -17,6 +17,7 @@
 
 import {
   DESIGN_CHOICE_AUTO,
+  DESIGN_FALLBACK,
   DESIGN_OPTIONS,
   PALETTE_IDS,
   setDesignChoice,
@@ -98,10 +99,10 @@ export const DesignSection = () => {
             className={choice === DESIGN_CHOICE_AUTO ? styles.designRowActive : styles.designRow}
             aria-pressed={choice === DESIGN_CHOICE_AUTO}
             onClick={() => pick(DESIGN_CHOICE_AUTO)}>
-            <strong>Авто · ротація</strong>
+            <strong>{ROTATION_ENABLED ? 'Авто · ротація' : 'Авто · DRILL v3'}</strong>
             <span>
               {!ROTATION_ENABLED
-                ? 'ротацію вимкнено рубильником — сайт лишається на Дії'
+                ? `стабільний дизайн ${labelOf(DESIGN_FALLBACK)}`
                 : !rotating
                   ? `кожні ${ROTATION_SLOT_DAYS} дні за календарем`
                   : `зараз ${labelOf(design)} · далі ${labelOf(nextDesign as DesignId)} з ${whenLabel(nextAt)}`}
@@ -110,10 +111,9 @@ export const DesignSection = () => {
         </div>
         {rows(ROTATION_ORDER)}
         <p className={styles.mono}>
-          Порядок кнопок = порядок ротації. «Авто» віддає вибір календарю: палітра міняється кожні{' '}
-          {ROTATION_SLOT_DAYS} дні й однакова для всіх відвідувачів, бо рахується з часу, а не зі сховища.
-          Натиснута палітра закріплюється й ротацію ігнорує — це лише для тебе, у чужих браузерах далі
-          крутиться. Обидві теми задані повністю, тож день/ніч далі за годинником.
+          {ROTATION_ENABLED
+            ? `«Авто» змінює палітру кожні ${ROTATION_SLOT_DAYS} дні. Явний вибір зберігається для твого браузера.`
+            : '«Авто» використовує DRILL v3. Інші варіанти можна вибрати для порівняння; вибір зберігається лише у твоєму браузері.'}
         </p>
       </section>
 

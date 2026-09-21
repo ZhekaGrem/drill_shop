@@ -7,6 +7,7 @@ import localFont from 'next/font/local';
 // чорний текст на графітовому фоні. Наші стилі мають іти останніми.
 import '@mantine/core/styles.css';
 import './globals.css';
+import './v3.css';
 import { Providers } from '@/shared/providers/Providers';
 import { LayoutWrapper } from './LayoutWrapper';
 import { ErrorBoundary } from '@/shared/providers/ErrorBoundary';
@@ -15,34 +16,8 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { JsonLd } from './JsonLd';
 import { Splash } from '@/shared/components/SiteLoader/Splash';
 import { DesignClock } from '@/shared/components/DesignClock/DesignClock';
-import { DESIGN_IDS } from '@/shared/config/design';
-import { rotationSnippet } from '@/shared/config/design-rotation';
-
-// Дизайн і тема ДО першого кадру (без блимання). Скрипт — рядок, імпортів у
-// нього не занести, тож правила теми тут дослівно дублюють theme.ts: міняєш
-// там — онови і тут. А от ДАНІ дизайну не дублюються: список id приходить з
-// DESIGN_IDS, порядок і крок ротації — з rotationSnippet(), обидва зібрані з
-// тих самих констант, що їх читає React. Розʼїхатись їм нема на чому.
-//
-// Порядок гілок важливий: спершу ds отримує значення (явний вибір → 'diia' →
-// ротація), і лише потім за ним рахується авто-тема, бо правило теми залежить
-// від дизайну.
-const bootScript =
-  `(function(){try{var d=document.documentElement;` +
-  `var IDS=${JSON.stringify(DESIGN_IDS)};` +
-  `var ds=localStorage.getItem('design');` +
-  // Немає явного вибору (або сміття у сховищі) — вмикається календар.
-  // 'diia' присвоюється ПЕРЕД ротацією, щоб при вимкненому рубильнику
-  // (rotationSnippet() порожній) ds лишався валідним, а не null.
-  `if(IDS.indexOf(ds)<0){ds='diia';${rotationSnippet()}}` +
-  `if(ds!=='diia'){d.setAttribute('data-design',ds);}` +
-  `var t=localStorage.getItem('theme');` +
-  `if(t!=='dark'&&t!=='light'){` +
-  `if(ds==='streetwear'){t='dark';}` +
-  `else if(ds==='cupertino'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}` +
-  `else{var h=new Date().getHours();t=h>=18||h<6?'dark':'light';}}` +
-  `d.setAttribute('data-theme',t);d.setAttribute('data-mantine-color-scheme',t);` +
-  `}catch(e){}})();`;
+import { DESIGN_FALLBACK } from '@/shared/config/design';
+import { appearanceBootScript } from '@/shared/config/appearance-boot';
 
 // Шрифти e-Ukraine (Diia redesign) — офіційні шрифти thedigital.gov.ua/fonts, CC BY 4.0
 //
@@ -83,13 +58,13 @@ export default function RootLayout({
   // suppressHydrationWarning: інлайн-скрипт у <head> ставить data-theme ДО
   // гідрації, тож атрибути <html> на клієнті свідомо інші, ніж у SSR-HTML
   return (
-    <html lang="uk" dir="ltr" suppressHydrationWarning>
+    <html lang="uk" dir="ltr" data-design={DESIGN_FALLBACK} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         {/* Явний вибір перекриває автоматику — і для теми, і для дизайну.
-            Складено вище, поруч із константами, з яких збирається. */}
-        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
+            Скрипт збирається зі спільних констант appearance-boot.ts. */}
+        <script dangerouslySetInnerHTML={{ __html: appearanceBootScript }} />
       </head>
       <body
         className={`${eUkraine.variable} ${eUkraineHead.variable}`}

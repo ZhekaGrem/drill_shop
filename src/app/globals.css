@@ -2105,3 +2105,18 @@ svg.tabler-icon {
   background: var(--gradient-brand);
   color: #101413;
 }
+
+/* Global Mantine input sections belong in global CSS, not a pure CSS module. */
+.mantine-TextInput-section,
+.mantine-PasswordInput-section,
+.mantine-Textarea-section {
+  color: var(--text-secondary);
+  width: 40px;
+  justify-content: center;
+}
+
+.mantine-TextInput-section svg,
+.mantine-PasswordInput-section svg,
+.mantine-Textarea-section svg {
+  display: block;
+}

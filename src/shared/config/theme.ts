@@ -16,11 +16,11 @@ export const themeByClock = (): Theme => {
 };
 
 // «Авто» залежить від активної дизайн-концепції: стрітвір живе в темній,
-// Cupertino слухає систему, Дія і мінімалізм — годинник 18:00–6:00
+// Cupertino та editorial слухають систему, Дія і мінімалізм — годинник 18:00–6:00
 export const autoTheme = (): Theme => {
   const design = readDesignAttr();
   if (design === 'streetwear') return 'dark';
-  if (design === 'cupertino') {
+  if (design === 'cupertino' || design === 'editorial') {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
   return themeByClock();

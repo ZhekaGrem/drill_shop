@@ -18,7 +18,7 @@
 import type { DesignId } from './design';
 
 /** Головний рубильник. false — сайт назавжди лишається на DESIGN_FALLBACK. */
-export const ROTATION_ENABLED = true;
+export const ROTATION_ENABLED = false;
 
 /**
  * Порядок ротації. Рішення власника (2026-08-21): Дія → Перегруз →

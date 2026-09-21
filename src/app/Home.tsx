@@ -7,6 +7,8 @@ import { Page } from '@/shared/components/Page/Page';
 import { Section } from '@/shared/components/Section/Section';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { ServicesGroup } from '@/shared/components/ServicesGroup/ServicesGroup';
+import { useDesign } from '@/shared/hooks/useDesign';
+import { EditorialShowcase } from '@/widgets/HomeHeroes/EditorialShowcase';
 import { HomeHeroes } from '@/widgets/HomeHeroes/HomeHeroes';
 import { useCollections } from '@/widgets/ProductV2/useCollections';
 import { isHiddenCollection } from '@/shared/config/hidden-collections';
@@ -40,7 +42,8 @@ const Home = () => {
   // Приховані розділи (hidden-collections) на головну не потрапляють: у
   // «Олько Вуйна» ведуть свайп навбару на «є. Олько» і прямий лінк.
   // Порядок бекенда тут не діє: черга задана слагами в home-collections.
-  const { data: collections } = useCollections();
+  const design = useDesign();
+  const { data: collections, isPending, isError, isFetching, refetch } = useCollections();
   const visibleCollections =
     collections && orderForHome(collections.filter((c) => !isHiddenCollection(c.key)));
 
@@ -48,7 +51,17 @@ const Home = () => {
     <Page>
       <CategoriesInitializer />
 
-      <HomeHeroes collections={visibleCollections} />
+      {design === 'editorial' ? (
+        <EditorialShowcase
+          collections={visibleCollections}
+          isPending={isPending}
+          isError={isError}
+          isFetching={isFetching}
+          onRetry={() => void refetch()}
+        />
+      ) : (
+        <HomeHeroes collections={visibleCollections} />
+      )}
 
       <ul className={styles.trust}>
         {content.home.trust.map((item) => (
@@ -98,11 +111,14 @@ const Home = () => {
         </Section>
 
         <Section title="Часті питання" action={{ href: '/faq', label: 'Усі питання' }}>
-          <ListGroup>
+          <div className={styles.faq}>
             {FAQ_PREVIEW.map((item) => (
-              <ListRow key={item.question} href="/faq" title={item.question} hint={item.answer} />
+              <details key={item.question} className={styles.faqItem}>
+                <summary>{item.question}</summary>
+                <p>{item.answer}</p>
+              </details>
             ))}
-          </ListGroup>
+          </div>
         </Section>
       </div>
 

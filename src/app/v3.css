@@ -1,0 +1,81 @@
+/* DRILL v3: one stable identity. Legacy concepts retain their own tokens. */
+html[data-design='editorial'] {
+  --background-base: #f4f2ed;
+  --background: var(--background-base);
+  --background-secondary: #e9e6de;
+  --background-light: #faf9f6;
+  --foreground: #20211e;
+  --gradient-page: linear-gradient(#f4f2ed, #f4f2ed);
+  --surface-card: #faf9f6;
+  --surface-muted: #e9e6de;
+  --text-primary: #20211e;
+  --text-secondary: #5c5e56;
+  --text-tertiary: #686a61;
+  --primary: #20211e;
+  --secondary: #faf9f6;
+  --accent: #375b28;
+  --accent-deep: #29461e;
+  --border-subtle: #d7d7cd;
+  --border: #d7d7cd;
+  --border-strong: #898c80;
+  --btn-primary: #20211e;
+  --btn-primary-fg: #faf9f6;
+  --btn-primary-hover: #34372e;
+  --btn-primary-hover-fg: #20211e;
+  --gradient-brand: linear-gradient(120deg, #d8dfc7, #e9e6de);
+  --gradient-btn: linear-gradient(#d9ed92, #d9ed92);
+  --gradient-underline: linear-gradient(#375b28, #375b28);
+  --gradient-btn-mask-floor: 0;
+  --shadow-card: none;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --radius-card: 12px;
+  --radius-pill: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --page-max-width: 1320px;
+  --section-gap: clamp(40px, 6vw, 80px);
+  --page-padding-y: 32px;
+}
+
+html[data-design='editorial'][data-theme='dark'] {
+  --background-base: #171915;
+  --background-secondary: #252821;
+  --background-light: #20231d;
+  --foreground: #f4f2ed;
+  --gradient-page: linear-gradient(#171915, #171915);
+  --surface-card: #20231d;
+  --surface-muted: #2c3027;
+  --text-primary: #f4f2ed;
+  --text-secondary: #babeb0;
+  --text-tertiary: #a7ac9d;
+  --primary: #d9ed92;
+  --secondary: #20231d;
+  --accent: #d9ed92;
+  --accent-deep: #e7f5b8;
+  --border-subtle: #393e32;
+  --border: #393e32;
+  --border-strong: #737d65;
+  --btn-primary: #d9ed92;
+  --btn-primary-fg: #20211e;
+  --btn-primary-hover: #e7f5b8;
+  --gradient-brand: linear-gradient(120deg, #454e32, #252821);
+  --gradient-btn: linear-gradient(#e7f5b8, #e7f5b8);
+  --gradient-underline: linear-gradient(#d9ed92, #d9ed92);
+}
+
+html[data-design='editorial'] :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+html[data-design='editorial'] [data-gradient-btn] {
+  animation: none;
+}
+
+@media (max-width: 768px) {
+  html[data-design='editorial'] {
+    --page-padding-x: 20px;
+    --page-padding-y: 20px;
+  }
+}

@@ -56,7 +56,7 @@ export const itemBySlug = (
  *  не класти інлайн узагалі, коли скін і так візьме капсулу на себе: тоді
  *  нема з чим битись, і звичайна специфічність класу вирішує сама. */
 export const capsuleStyle = (labelColor: string | null, design?: DesignId): CSSProperties | undefined => {
-  if (design === 'streetwear' || design === 'tactile') return undefined;
+  if (design === 'streetwear' || design === 'tactile' || design === 'editorial') return undefined;
   const background = labelColor ?? '#3b6ff5';
   return { background, color: background.includes('gradient') ? '#101413' : '#fff' };
 };

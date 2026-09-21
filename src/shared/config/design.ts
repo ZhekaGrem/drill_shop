@@ -1,16 +1,9 @@
-// src/shared/config/design.ts
-//
-// Імпорт лише типу назад із design-rotation не буває: там `import type`,
-// який стирається при компіляції, тож циклу під час виконання нема.
-// Дизайн-концепції (спеки в docs/superpowers/specs/2026-08-16-concept-*):
-// перемикаються на дев-панелі /v2/dev через атрибут data-design на <html>
-// (палітри — блоки [data-design='…'] у globals.css) і localStorage.design.
-// 'diia' — чинний дизайн: без атрибута і без запису в сховищі.
-// Інлайн-скрипт у layout.tsx ставить атрибут ДО першого кадру — дублює
-// це правило дослівно; міняєш тут — онови і його.
+// Design preferences: v3 defaults to editorial; saved legacy choices remain valid.
+// Diia is the only concept represented by an absent data-design attribute.
 import { ROTATION_ENABLED, designForTime } from './design-rotation';
 
 export type DesignId =
+  | 'editorial'
   | 'diia'
   | 'cupertino'
   | 'streetwear'
@@ -22,14 +15,15 @@ export type DesignId =
   | 'spotlight';
 
 export const DESIGN_KEY = 'design';
-export const DESIGN_FALLBACK: DesignId = 'diia';
+export const DESIGN_FALLBACK: DesignId = 'editorial';
 
 /** Палітри-кольористики (на відміну від концепцій, механіку не міняють) */
 export const PALETTE_IDS: DesignId[] = ['monolith', 'overdrive', 'spotlight'];
 
 // Метадані для перемикача на дев-панелі
 export const DESIGN_OPTIONS: { id: DesignId; label: string; hint: string }[] = [
-  { id: 'diia', label: 'Дія', hint: 'чинний · стек героїв · тема за годинником' },
+  { id: 'editorial', label: 'DRILL v3', hint: 'редакційна вітрина · одна 3D-сцена · системна тема' },
+  { id: 'diia', label: 'Дія', hint: 'v2 · стек героїв · тема за годинником' },
   { id: 'monolith', label: 'Індустріальна студія', hint: 'В1 · бетон і сталь · електрик у ґрунті' },
   { id: 'overdrive', label: 'Аналоговий перегруз', hint: 'В2 · тепла крафтова база, мідь' },
   { id: 'spotlight', label: 'Сценічне світло', hint: 'В3 · радіальний софіт, фіолет-ціан' },
@@ -64,7 +58,7 @@ export const DESIGN_CHOICE_EVENT = 'design-choice-change';
 /** Що зараз на екрані (джерело правди — атрибут, його ставить пре-пейнт скрипт) */
 export const readDesignAttr = (): DesignId => {
   const attr = document.documentElement.getAttribute('data-design');
-  return isDesignId(attr) ? attr : DESIGN_FALLBACK;
+  return isDesignId(attr) ? attr : attr === null ? 'diia' : DESIGN_FALLBACK;
 };
 
 /**
@@ -92,7 +86,7 @@ export const applyDesign = (design: DesignId) => {
   // useDesign. Той самий урок уже виписаний в applyTheme (theme.ts), де
   // холостий тік ThemeClock замикав Mantine в нескінченний microtask-цикл.
   // DesignClock тікає рідше, але пастка та сама.
-  if (design === DESIGN_FALLBACK) {
+  if (design === 'diia') {
     if (current !== null) d.removeAttribute('data-design');
   } else if (current !== design) {
     d.setAttribute('data-design', design);

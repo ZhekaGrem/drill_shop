@@ -170,21 +170,6 @@ $lifted: '&:has(:is(input, textarea):is(:focus, :not(:placeholder-shown), :disab
   color: var(--text-secondary);
 }
 
-// ============ SECTIONS (leftSection / rightSection) ============
-// Правило глобальне навмисно: воно існувало до Diia-полів і тримає іконки
-// в полях по всьому проєкту. Звужувати його тут — означає зачепити чужі форми.
-:global(.mantine-TextInput-section),
-:global(.mantine-PasswordInput-section),
-:global(.mantine-Textarea-section) {
-  color: var(--text-secondary);
-  width: 40px;
-  justify-content: center;
-
-  svg {
-    display: block;
-  }
-}
-
 .section {
   color: var(--text-tertiary);
 }

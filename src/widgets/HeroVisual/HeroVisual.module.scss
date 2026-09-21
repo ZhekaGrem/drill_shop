@@ -276,3 +276,26 @@
       0 0 0 4px var(--text-primary);
   }
 }
+
+:global(html[data-design='editorial']) {
+  .visual {
+    --stage-size: min(100%, 440px);
+    width: 100%;
+  }
+  .stage {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    max-height: 440px;
+  }
+  .spotlight {
+    opacity: 0.12;
+  }
+
+  @media (max-width: 768px) {
+    .stage {
+      height: clamp(220px, 38svh, 320px);
+      aspect-ratio: auto;
+    }
+  }
+}
