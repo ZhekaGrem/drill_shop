@@ -11,11 +11,14 @@ models/                 спільні крої, пласким списком: 
   hoodie-buba.glb       «Культурний Фронт»: худі №3 із запеченим принтом
                         (3d/боба.png, scripts/3d/bake-hoodie-print.mjs; docs/hoodie-lab.md)
   hoodie-polamav.glb    худі Поламава: UV-трансформація запечена, свопи працюють
+  hoodie-3.glb          спільний крій худі №3 з однотонною чорною основою: принт
+                        приходить свопом через texture3dUrl («Боби Оксана»)
   hoodie.glb            мокап BrockCreative — лише дев-сторінка /v2/lab
   sticker-pack-a5.glb   аркуш стікерів; колекція зараз прихована (heroEnabled=false)
 
 textures/<світ>/        текстура належить світу, а не крою
-  dril/                 «Гонорове варʼятство»: tshirt-apex, tshirt-kalach
+  dril/                 «Гонорове варʼятство»: tshirt-apex, tshirt-kalach;
+                        «Боби Оксана»: hoodie-oksana-<дизайн>.webp (WebP без втрат)
   olko/                 «є. Олько»
   serik/                «є. Сєрік»
   polamav/              «є. Поламав»: tshirt-01..07, hoodie-01..06

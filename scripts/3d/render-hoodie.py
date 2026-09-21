@@ -1,7 +1,7 @@
-"""Render a true model fallback. Args: uncompressed.glb output.png [angle degrees]."""
+"""Render a true model fallback. Args: uncompressed.glb output.png [angle degrees] [frame px, default 1000]."""
 import bpy,sys,math
 from mathutils import Vector
-args=sys.argv[sys.argv.index('--')+1:];src,out=args[:2];angle=float(args[2]) if len(args)>2 else 0
+args=sys.argv[sys.argv.index('--')+1:];src,out=args[:2];angle=float(args[2]) if len(args)>2 else 0;frame=int(args[3]) if len(args)>3 else 1000
 bpy.ops.wm.read_factory_settings(use_empty=True);bpy.ops.import_scene.gltf(filepath=src)
 scene=bpy.context.scene
 pivot=bpy.data.objects.new('Turntable',None);scene.collection.objects.link(pivot)
@@ -16,7 +16,7 @@ for name,loc,power,size in [('Key',(3,-4,5),450,4),('Fill',(-4,-2,1),220,3),('Ri
 world=bpy.data.worlds.new('World');world.use_nodes=True;world.node_tree.nodes['Background'].inputs['Strength'].default_value=0.45;scene.world=world
 scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=16;scene.cycles.use_denoising=True
 scene.render.threads_mode='FIXED';scene.render.threads=6
-scene.render.film_transparent=True;scene.render.resolution_x=1000;scene.render.resolution_y=1000;scene.render.resolution_percentage=100
+scene.render.film_transparent=True;scene.render.resolution_x=frame;scene.render.resolution_y=frame;scene.render.resolution_percentage=100
 scene.render.image_settings.file_format='PNG';scene.render.image_settings.color_mode='RGBA';scene.render.filepath=out
 scene.view_settings.view_transform='AgX'
 bpy.ops.render.render(write_still=True)

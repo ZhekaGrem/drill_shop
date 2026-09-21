@@ -18,6 +18,8 @@ export type CollectionSwitcher = 'dots' | 'compass';
 /** Колекція → механіка. Кого немає в мапі, той отримує DEFAULT_SWITCHER */
 const BY_COLLECTION: Record<string, CollectionSwitcher> = {
   'nizhna-oksana': 'dots',
+  // «Боби Оксана» — ті самі принти на худі, названі тими самими кольорами
+  'boby-oksana': 'dots',
 };
 
 /** Дефолт для нових колекцій: показуємо сам товар, а не його колір */

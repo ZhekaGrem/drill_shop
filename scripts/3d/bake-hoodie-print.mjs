@@ -1,5 +1,7 @@
-// node scripts/3d/bake-hoodie-print.mjs <tools-dir> <texture.png> <output.glb> <render.glb>
+// node scripts/3d/bake-hoodie-print.mjs <tools-dir> <texture.png | #rrggbb> <output.glb> <render.glb>
 // Bakes a 2048² print into the base colour of hoodie №3 and packs it like optimize-hoodie.mjs.
+// A hex colour instead of a file bakes a plain cloth: the shared cut whose print is swapped
+// at runtime through texture3dUrl (the baked map only shows until the swap arrives).
 // tools-dir contains @gltf-transform/{core,extensions,functions}, meshoptimizer and sharp.
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
@@ -19,10 +21,20 @@ await Promise.all([MeshoptDecoder.ready, MeshoptEncoder.ready]);
 const io = new NodeIO()
   .registerExtensions(ALL_EXTENSIONS)
   .registerDependencies({ 'meshopt.decoder': MeshoptDecoder, 'meshopt.encoder': MeshoptEncoder });
-const { width, height, hasAlpha } = await sharp(texture).metadata();
-if (width !== 2048 || height !== 2048) throw new Error(`Unexpected texture size: ${width}×${height}`);
+const plainCloth = /^#[0-9a-f]{6}$/i.test(texture);
+let source = sharp(texture);
+let hasAlpha = false;
+if (plainCloth) {
+  // A plain cloth needs no resolution: 16 px keeps the throwaway map out of GPU memory.
+  source = sharp({ create: { width: 16, height: 16, channels: 3, background: texture } });
+} else {
+  const metadata = await source.metadata();
+  if (metadata.width !== 2048 || metadata.height !== 2048)
+    throw new Error(`Unexpected texture size: ${metadata.width}×${metadata.height}`);
+  hasAlpha = metadata.hasAlpha;
+}
 // Lossless packaging preserves the supplied artwork and UV placement; the garment is opaque.
-const image = await sharp(texture).removeAlpha().webp({ lossless: true }).toBuffer();
+const image = await source.removeAlpha().webp({ lossless: true }).toBuffer();
 const doc = await io.read(SOURCE);
 const materials = doc.getRoot().listMaterials();
 if (materials.length !== 1) throw new Error(`Expected one material, got ${materials.length}`);

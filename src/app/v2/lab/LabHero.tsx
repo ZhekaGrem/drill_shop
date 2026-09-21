@@ -2,6 +2,7 @@
 // Лабораторія героїв: приклади карток героя (стилі HomeHeroes) з 3D-моделями
 // поза БД. Кожен запис EXAMPLES — окремий hero зі своєю сценою (сцени
 // вантажаться ліниво самим HeroVisual при попаданні у вʼюпорт).
+import { BobyOksanaPreview } from './BobyOksanaPreview';
 import { HoodieComparison } from './HoodieComparison';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
@@ -67,9 +68,10 @@ export const LabHero = () => {
     <Page>
       <PageHeader
         title="Hero Lab · худі №3"
-        description="Обрана модель худі та два твої дизайни на ній — у hero магазину. Сторінка доступна лише в DEV_MODE."
+        description="Приміряння колекції «Боби Оксана», обрана модель худі та два твої дизайни на ній — у hero магазину. Сторінка доступна лише в DEV_MODE."
       />
 
+      <BobyOksanaPreview />
       <HoodieComparison />
       <details className={styles.legacy}>
         <summary>Попередні тести: футболка й чинне худі</summary>
