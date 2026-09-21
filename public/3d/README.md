@@ -8,7 +8,8 @@ models/                 спільні крої, пласким списком: 
                         жодному світу, а tshirt.glb прописаний у двох десятках
                         товарів і в коді — тека під нього тільки додала б змін
   tshirt.glb            дефолтний крій (TshirtScene, useCollections)
-  hoodie-buba.glb       «Культурний Фронт», текстура запечена
+  hoodie-buba.glb       «Культурний Фронт»: худі №3 із запеченим принтом
+                        (3d/боба.png, scripts/3d/bake-hoodie-print.mjs; docs/hoodie-lab.md)
   hoodie-polamav.glb    худі Поламава: UV-трансформація запечена, свопи працюють
   hoodie.glb            мокап BrockCreative — лише дев-сторінка /v2/lab
   sticker-pack-a5.glb   аркуш стікерів; колекція зараз прихована (heroEnabled=false)
