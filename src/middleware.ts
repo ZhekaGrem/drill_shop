@@ -2,6 +2,10 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 
 export async function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname === '/v3' || request.nextUrl.pathname.startsWith('/v3/')) {
+    return NextResponse.next();
+  }
+
   // 1. Створюємо відповідь одразу, щоб мати змогу писати в неї куки
   let response = NextResponse.next({
     request: {

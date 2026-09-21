@@ -64,10 +64,16 @@ const nextConfig: NextConfig = {
   // /api/v1/* запит іде з дев-сервера, тож CORS не застосовується.
   // На проді не діє: там фронт ходить на API напряму (NEXT_PUBLIC_API_URL).
   async rewrites() {
-    if (process.env.NODE_ENV !== 'development') return [];
+    // The v3 deployment owns its pages, API routes and assets under /v3.
+    // Set only after the v3 production deployment is publicly accessible.
+    const v3Origin = process.env.V3_STOREFRONT_ORIGIN?.replace(/\/$/, '');
     const target = process.env.NEXT_PUBLIC_API_URL;
-    if (!target) return [];
-    return [{ source: '/api/v1/:path*', destination: `${target}/:path*` }];
+    return [
+      ...(v3Origin ? [{ source: '/v3/:path*', destination: `${v3Origin}/v3/:path*` }] : []),
+      ...(process.env.NODE_ENV === 'development' && target
+        ? [{ source: '/api/v1/:path*', destination: `${target}/:path*` }]
+        : []),
+    ];
   },
   async headers() {
     return [
