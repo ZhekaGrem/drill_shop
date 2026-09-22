@@ -1,5 +1,5 @@
 // src/widgets/Header/MenuSlot.tsx
-// Слот правої групи хедера: меню, чат, гра і новини лежать одна на одній,
+// Слот правої групи хедера: меню, чат, гра, Галичина і новини лежать одна на одній,
 // видима — одна, за фазою такту (useSlotAlternation, спеки
 // 2026-09-17-wishes-chat-slot-design.md і 2026-09-20-news-bell-slot-design.md).
 //
@@ -18,6 +18,7 @@ import styles from './header.module.scss';
 import { IconBell, IconChat, IconMoto, MenuIcon } from '@/shared/components/Svg';
 import { content } from '@/shared/config/content';
 import { useSlotAlternation, type SlotPhase } from './useSlotAlternation';
+import { GalychynaLogo } from './GalychynaLogo';
 
 export type { SlotPhase };
 
@@ -63,6 +64,15 @@ export function MenuSlot({ paused, hasNews, unreadNews, onOpenWishes, onOpenNews
         title={content.moto.openGameLabel}>
         <IconMoto />
       </Link>
+      <a
+        href="https://galychyna.online/"
+        className={`${styles.iconButton} ${styles.slotItem}`}
+        data-shown={phase === 'galychyna'}
+        inert={phase !== 'galychyna'}
+        aria-label="Галичина — сайт нашої компанії"
+        title="Галичина — сайт нашої компанії">
+        <GalychynaLogo />
+      </a>
       <button
         type="button"
         className={`${styles.iconButton} ${styles.slotItem}`}
