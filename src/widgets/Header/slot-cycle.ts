@@ -6,12 +6,12 @@
 // 2026-09-20): прочитане теж треба мати як перечитати. Непрочитане міняє не
 // коло, а лише червону крапку на кнопці.
 //
-// Після меню й чату йдуть гра «Дріл Мото» та «Галичина». Дзвіночок лишається доступним у
+// Після меню йдуть «Цибуля», чат, гра «Дріл Мото» та «Галичина». Дзвіночок лишається доступним у
 // довгому колі, а меню повертається перед ним.
-export type SlotPhase = 'menu' | 'chat' | 'moto' | 'galychyna' | 'news';
+export type SlotPhase = 'menu' | 'tsybulia' | 'chat' | 'moto' | 'galychyna' | 'news';
 
-const CYCLE_PLAIN: SlotPhase[] = ['menu', 'chat', 'moto', 'galychyna'];
-const CYCLE_NEWS: SlotPhase[] = ['menu', 'chat', 'moto', 'galychyna', 'menu', 'news'];
+const CYCLE_PLAIN: SlotPhase[] = ['menu', 'tsybulia', 'chat', 'moto', 'galychyna'];
+const CYCLE_NEWS: SlotPhase[] = ['menu', 'tsybulia', 'chat', 'moto', 'galychyna', 'menu', 'news'];
 
 /** hasNews — чи є хоч одна новина (не «чи є непрочитана») */
 export const slotCycle = (hasNews: boolean): SlotPhase[] => (hasNews ? CYCLE_NEWS : CYCLE_PLAIN);

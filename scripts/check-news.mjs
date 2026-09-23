@@ -74,25 +74,27 @@ check('бойовий список: парні поля задані разом'
   }
 });
 
-check('коло слота: без новин меню, чат, Дріл Мото і Галичина', () => {
-  assert.deepEqual(slotCycle(false), ['menu', 'chat', 'moto', 'galychyna']);
+check('коло слота: без новин меню, Цибуля, чат, Дріл Мото і Галичина', () => {
+  assert.deepEqual(slotCycle(false), ['menu', 'tsybulia', 'chat', 'moto', 'galychyna']);
 });
 
 check('коло слота: з новинами після Галичини повертається меню й дзвіночок', () => {
   const cycle = slotCycle(true);
-  assert.deepEqual(cycle, ['menu', 'chat', 'moto', 'galychyna', 'menu', 'news']);
-  assert.deepEqual(cycle.slice(0, 4), ['menu', 'chat', 'moto', 'galychyna']);
+  assert.deepEqual(cycle, ['menu', 'tsybulia', 'chat', 'moto', 'galychyna', 'menu', 'news']);
+  assert.deepEqual(cycle.slice(0, 5), ['menu', 'tsybulia', 'chat', 'moto', 'galychyna']);
   assert.equal(cycle.at(-1), 'news');
 });
 
 check('фаза за номером тіку йде по колу і не падає на відʼємних', () => {
   assert.equal(slotPhaseAt(0, true), 'menu');
-  assert.equal(slotPhaseAt(2, true), 'moto');
-  assert.equal(slotPhaseAt(3, true), 'galychyna');
-  assert.equal(slotPhaseAt(5, true), 'news');
-  assert.equal(slotPhaseAt(11, true), 'news');
+  assert.equal(slotPhaseAt(1, true), 'tsybulia');
+  assert.equal(slotPhaseAt(1, false), 'tsybulia');
+  assert.equal(slotPhaseAt(3, true), 'moto');
+  assert.equal(slotPhaseAt(4, true), 'galychyna');
+  assert.equal(slotPhaseAt(6, true), 'news');
+  assert.equal(slotPhaseAt(13, true), 'news');
   // коло скоротилось (новини прибрали з конфіга), а індекс лишився великим
-  assert.equal(slotPhaseAt(7, false), 'galychyna');
+  assert.equal(slotPhaseAt(9, false), 'galychyna');
   assert.equal(slotPhaseAt(-1, true), 'news');
 });
 

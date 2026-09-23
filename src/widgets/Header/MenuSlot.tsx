@@ -1,5 +1,5 @@
 // src/widgets/Header/MenuSlot.tsx
-// Слот правої групи хедера: меню, чат, гра, Галичина і новини лежать одна на одній,
+// Слот правої групи хедера: меню, Цибуля, чат, гра, Галичина і новини лежать одна на одній,
 // видима — одна, за фазою такту (useSlotAlternation, спеки
 // 2026-09-17-wishes-chat-slot-design.md і 2026-09-20-news-bell-slot-design.md).
 //
@@ -19,6 +19,7 @@ import { IconBell, IconChat, IconMoto, MenuIcon } from '@/shared/components/Svg'
 import { content } from '@/shared/config/content';
 import { useSlotAlternation, type SlotPhase } from './useSlotAlternation';
 import { GalychynaLogo } from './GalychynaLogo';
+import { TsybuliaLogo } from './TsybuliaLogo';
 
 export type { SlotPhase };
 
@@ -46,6 +47,15 @@ export function MenuSlot({ paused, hasNews, unreadNews, onOpenWishes, onOpenNews
         aria-label="Меню">
         <MenuIcon />
       </Link>
+      <a
+        href="https://tsybulia.radio.fm/"
+        className={`${styles.iconButton} ${styles.slotItem}`}
+        data-shown={phase === 'tsybulia'}
+        inert={phase !== 'tsybulia'}
+        aria-label="Цибуля — слухати радіо"
+        title="Цибуля — слухати радіо">
+        <TsybuliaLogo />
+      </a>
       <button
         type="button"
         className={`${styles.iconButton} ${styles.slotItem}`}
