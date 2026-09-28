@@ -3,23 +3,27 @@
 // словомаркою — схема «Поламава» (scripts/polamav/create-polamav.cjs), але на рушії
 // scripts/lib/seed-collections.cjs. Футболки — на tshirt.glb, худі — на крої №3 (hoodie-3.glb).
 // Футболки — з 3d/є***/футболка-N-UV.png (власник, 2026-09-28): 7936² → 2048 JPEG q85;
-// фото товарів — 3d/artists/prokliatyi/футболки/картинки товарів/. Худі ще не прийшли.
+// фото товарів — 3d/artists/prokliatyi/футболки/картинки товарів/.
+// Худі («боби», той самий день) — розгортки під UV крою №3 з тих самих принтів
+// (3d/artists/prokliatyi/худі/худі-N-UV.png, 8192²), підігнані під видиму зону
+// scripts/3d/fit-hoodie-prints.py → WebP без втрат, як у «Бобів Оксани».
 // Фази й прапорці — у рушії. Будь-який запис:
 //   node scripts/prokliatyi/create-prokliatyi.cjs --phase=… --apply --confirm=prokliatyi
 const { run } = require('../lib/seed-collections.cjs');
 
-const texture = (file) => `/3d/textures/prokliatyi/${file}.jpg`;
+const texture = (file) => `/3d/textures/prokliatyi/${file}`;
 const PLAIN = '#111111';
 
 // [назва, файл текстури, свотч]; слаги нумеруються за порядком: prokliatyi-tee-01…
 const TEES = [
-  ['Проклятий Люцифер', 'tshirt-01'],
-  ['Проклятий Астарот', 'tshirt-02'],
-  ['Проклятий Вельзевул', 'tshirt-03'],
-  ['Проклятий Асмодей', 'tshirt-04'],
-  ['Проклятий Ліліт', 'tshirt-05'],
+  ['Проклятий Люцифер', 'tshirt-01.jpg'],
+  ['Проклятий Астарот', 'tshirt-02.jpg'],
+  ['Проклятий Вельзевул', 'tshirt-03.jpg'],
+  ['Проклятий Асмодей', 'tshirt-04.jpg'],
+  ['Проклятий Ліліт', 'tshirt-05.jpg'],
 ];
-const HOODIES = [];
+// Худі N — з принтів футболки N, тож і назва та сама, з «Боба» попереду (слово власника)
+const HOODIES = TEES.map(([name], i) => [`Боба ${name}`, `hoodie-0${i + 1}.webp`]);
 
 run({
   confirm: 'prokliatyi',
@@ -50,8 +54,8 @@ run({
     },
     {
       slug: 'prokliatyi-hudi',
-      title: 'Проклятий · Худі',
-      description: '',
+      title: 'Проклятий · Боби',
+      description: 'Пʼять бобів Проклятого на тих самих принтах. Чорні, розміри M, L, XL.',
       sortOrder: 103,
       labelText: null,
       labelColor: null,
@@ -64,7 +68,5 @@ run({
         texture3dUrl: texture(file),
       })),
     },
-  ]
-    // Колекція без товарів у базу не йде: худі додадуться, щойно прийдуть дизайни
-    .filter((c) => c.products.length),
+  ],
 });
