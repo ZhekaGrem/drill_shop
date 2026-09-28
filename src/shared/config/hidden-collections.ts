@@ -22,6 +22,8 @@ export const HIDDEN_COLLECTION_SLUGS: readonly string[] = [
   'mystetstvo-viyny-serik',
   'polamav-futbolky',
   'polamav-hudi',
+  'prokliatyi-futbolky',
+  'prokliatyi-hudi',
 ];
 
 // Словомарка хедера для прихованого розділу (дефолтна — «Дріл»)
@@ -30,6 +32,10 @@ export const HIDDEN_COLLECTION_WORDMARK: Record<string, string> = {
   'mystetstvo-viyny-serik': 'Сєрік',
   'polamav-futbolky': 'Поламав',
   'polamav-hudi': 'Поламав',
+  // Цензурою, а не словом: «є. ***» (рішення власника 2026-09-28). До того ж
+  // «Проклятий» на 360–390px у хедер не влазив — на ~29px ширший за «Поламав»
+  'prokliatyi-futbolky': '***',
+  'prokliatyi-hudi': '***',
 };
 
 export const isHiddenCollection = (slug: string | null | undefined): boolean =>

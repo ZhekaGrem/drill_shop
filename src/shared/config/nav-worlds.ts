@@ -56,6 +56,13 @@ export const NAV_WORLDS: NavWorld[] = [
     href: '/polamav',
     navItems: seriesNav('/polamav'),
   },
+  {
+    // Та сама схема, що в Поламава: футболки й худі на одній сторінці розділу
+    id: 'prokliatyi',
+    wordmark: HIDDEN_COLLECTION_WORDMARK['prokliatyi-futbolky'],
+    href: '/prokliatyi',
+    navItems: seriesNav('/prokliatyi'),
+  },
 ];
 
 /** Індекс розділу за словомаркою, яку віддала мапа прихованих розділів */
