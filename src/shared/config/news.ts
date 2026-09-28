@@ -28,6 +28,16 @@ export interface NewsItem {
 
 export const NEWS: NewsItem[] = [
   {
+    id: '2026-09-28-prokliatyi',
+    date: '2026-09-28',
+    title: 'Проклятий',
+    text: 'Привіт, у нас новий розділ — Проклятий***. Пʼять футболок і пʼять бобів, скоро відкриємо передзамовлення.',
+    label: 'новинка',
+    labelColor: '#2b9ad9',
+    href: '/prokliatyi',
+    hrefLabel: 'Подивитись',
+  },
+  {
     id: '2026-09-21-boby-oksana',
     date: '2026-09-21',
     title: 'Боби Оксана',
