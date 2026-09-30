@@ -38,8 +38,8 @@ run({
   collections: [
     {
       slug: 'prokliatyi-futbolky',
-      title: 'Проклятий · Футболки',
-      description: 'Пʼять футболок Проклятого. Оверсайз, чорні, розміри M, L, XL.',
+      title: 'футболки',
+      description: 'Прокуляті футболки для святих людей',
       sortOrder: 102,
       labelText: null,
       labelColor: null,
@@ -55,8 +55,8 @@ run({
     },
     {
       slug: 'prokliatyi-hudi',
-      title: 'Проклятий · Боби',
-      description: 'Пʼять бобів Проклятого на тих самих принтах. Чорні, розміри M, L, XL.',
+      title: 'Боби',
+      description: 'Прокуляті боби для святих людей',
       sortOrder: 103,
       labelText: null,
       labelColor: null,
