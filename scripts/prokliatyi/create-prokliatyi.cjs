@@ -39,7 +39,7 @@ run({
     {
       slug: 'prokliatyi-futbolky',
       title: 'футболки',
-      description: 'Прокуляті футболки для святих людей',
+      description: 'Прокляті футболки для святих людей',
       sortOrder: 102,
       labelText: null,
       labelColor: null,
@@ -56,7 +56,7 @@ run({
     {
       slug: 'prokliatyi-hudi',
       title: 'Боби',
-      description: 'Прокуляті боби для святих людей',
+      description: 'Прокляті боби для святих людей',
       sortOrder: 103,
       labelText: null,
       labelColor: null,
