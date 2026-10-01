@@ -76,8 +76,8 @@ export function WishSheet({ opened, onClose }: WishSheetProps) {
   const busy = status === 'sending';
 
   return (
-    // returnFocus=false: тригер — кнопка чату в MenuSlot — на момент
-    // закриття вже inert (такт слота), фокус після шторки веде сам слот.
+    // returnFocus=false: слот сам повертає фокус на свою обгортку,
+    // щоб програмне відновлення фокуса не утримувало таймер на кнопці чату.
     <Sheet opened={opened} onClose={close} title={content.wishes.title} returnFocus={false}>
       {status === 'sent' ? (
         <WishSent onDone={close} />

@@ -1,110 +1,107 @@
-// src/widgets/Header/useSlotAlternation.ts
-// Такт слота: 5 с на фазу, по колу, без зупинки (рішення власника, спека
-// 2026-09-17-wishes-chat-slot-design.md).
-//
-// Кіл два (slot-cycle.ts), і вибирає між ними наявність новин:
-//   новин нема   меню → Цибуля → чат → Дріл Мото → Галичина
-//   новини є     меню → Цибуля → чат → Дріл Мото → Галичина → меню → дзвіночок
-// Прочитаність на коло НЕ впливає — вона лише вмикає червону крапку на
-// кнопці (рішення власника 2026-09-20).
-//
-// Стартова фаза 'menu' однакова на сервері й клієнті, таймер живе лише
-// в useEffect — гідрація не розходиться. Три правила поверх такту:
-//  • утримання: поки на слоті ховер або фокус, тік пропускається — кнопка
-//    не зникає з-під пальця чи курсора; наступна перевірка через 5 с;
-//  • пауза (шторка відкрита): інтервалу нема, при знятті — 'menu' і відлік
-//    заново, щоб після закриття шторки хедер був звичним;
-//  • прихована вкладка: браузер тротлить таймери у фоні, тож на поверненні
-//    фаза скидається на 'menu' і інтервал перезапускається.
-//
-// Скидання фази при знятті паузи зроблено «під час рендера» (той самий
-// прийом, що seenRoute у Header.tsx): setState у тілі ефекту — помилка
-// правила react-hooks/set-state-in-effect.
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type FocusEvent, type PointerEvent } from 'react';
 
-import { slotPhaseAt, type SlotPhase } from './slot-cycle';
+import { slotCycle, slotPhaseAt, type SlotPhase } from './slot-cycle';
+import { createSlotTimer } from './slot-timer';
 
 export type { SlotPhase };
 
-export const SLOT_PERIOD_MS = 5000;
-
+// Початкове меню однакове в SSR і браузері. Одне коло — всі фази з
+// slot-cycle.ts; кожне наступне коло отримує 1, 1, 2, 3, 5, 8… с на фазу.
 export const useSlotAlternation = (paused: boolean, hasNews = false) => {
-  // Фаза — це ІНДЕКС у колі, а не сама назва: коло може змінити довжину
-  // (новини зникли з конфіга), і зберігати треба саме позицію.
   const [step, setStep] = useState(0);
-  const phase = slotPhaseAt(step, hasNews);
-  // Дві модальності утримання окремо: зі спільним прапорцем blur після Tab
-  // знімав би утримання, поки курсор досі на слоті (і навпаки). Ref, а не
-  // стан: зміна утримання не має перерендерювати хедер, вона лише впливає
-  // на наступний тік.
-  const pointerHeldRef = useRef(false);
-  const focusHeldRef = useRef(false);
-  // Інкремент перезапускає інтервал (повернення у вкладку)
-  const [epoch, setEpoch] = useState(0);
-
-  const [seenPaused, setSeenPaused] = useState(paused);
-  if (seenPaused !== paused) {
-    setSeenPaused(paused);
-    if (!paused) setStep(0);
+  const [seenNews, setSeenNews] = useState(hasNews);
+  if (seenNews !== hasNews) {
+    setSeenNews(hasNews);
+    setStep(0);
   }
+  const phase = slotPhaseAt(step, hasNews);
+  const slotRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof createSlotTimer> | null>(null);
+  const wasPausedRef = useRef(false);
+  const pointerHeldRef = useRef(false);
 
   useEffect(() => {
-    if (paused) return;
-    const id = window.setInterval(() => {
-      if (pointerHeldRef.current || focusHeldRef.current) return;
-      setStep((i) => i + 1);
-    }, SLOT_PERIOD_MS);
-    return () => window.clearInterval(id);
-  }, [paused, epoch]);
+    const timer = createSlotTimer(slotCycle(false).length, setStep, {
+      now: () => performance.now(),
+      schedule: (callback, delay) => window.setTimeout(callback, delay),
+      cancel: (id) => window.clearTimeout(id),
+    });
+    timerRef.current = timer;
 
-  useEffect(() => {
-    const onVisibility = () => {
-      if (document.visibilityState !== 'visible') return;
-      // pointerleave не гарантований, коли вікно втрачає фокус із курсором,
-      // що лежить на слоті, — застигле утримання інакше заморозило б слот
-      // після повернення у вкладку.
-      pointerHeldRef.current = false;
-      focusHeldRef.current = false;
-      setStep(0);
-      setEpoch((e) => e + 1);
+    const syncVisibility = () => {
+      const hidden = document.visibilityState !== 'visible';
+      // Спершу зупиняємо відлік; утримання переглядаємо до відновлення.
+      timer.hold('hidden', true);
+      if (!hidden) {
+        const slot = slotRef.current;
+        pointerHeldRef.current = pointerHeldRef.current && !!slot?.matches(':hover');
+        timer.hold('pointer', pointerHeldRef.current);
+        timer.hold('focus', !!slot?.contains(document.activeElement) && document.activeElement !== slot);
+        timer.hold('touch', false);
+        timer.hold('hidden', false);
+      }
     };
-    document.addEventListener('visibilitychange', onVisibility);
-    return () => document.removeEventListener('visibilitychange', onVisibility);
+    const releaseTouch = () => timer.hold('touch', false);
+    syncVisibility();
+    document.addEventListener('visibilitychange', syncVisibility);
+    document.addEventListener('pointerup', releaseTouch);
+    document.addEventListener('pointercancel', releaseTouch);
+    timer.start();
+
+    return () => {
+      timer.dispose();
+      timerRef.current = null;
+      document.removeEventListener('visibilitychange', syncVisibility);
+      document.removeEventListener('pointerup', releaseTouch);
+      document.removeEventListener('pointercancel', releaseTouch);
+    };
   }, []);
 
-  // Після закриття шторки фокус повертаємо на обгортку слота: кнопка, що
-  // її відкрила, на цей момент уже inert, і Drawer повернув би фокус на
-  // body. Програмний фокус — не утримання, тож focusHeldRef одразу знімаємо.
-  const slotRef = useRef<HTMLDivElement>(null);
-  const wasPausedRef = useRef(false);
   useEffect(() => {
+    // Зміна списку починає новий прохід, зберігаючи поточний час Фібоначчі.
+    timerRef.current?.setPhaseCount(slotCycle(hasNews).length);
+  }, [hasNews]);
+
+  useEffect(() => {
+    const timer = timerRef.current;
     if (paused) {
       wasPausedRef.current = true;
+      timer?.hold('panel', true);
       return;
     }
-    if (!wasPausedRef.current) return;
-    wasPausedRef.current = false;
-    slotRef.current?.focus({ preventScroll: true });
-    focusHeldRef.current = false;
+    if (wasPausedRef.current) {
+      wasPausedRef.current = false;
+      // Програмний фокус обгортки не утримує таймер; Tab на дії — утримує.
+      slotRef.current?.focus({ preventScroll: true });
+      timer?.hold('focus', false);
+    }
+    timer?.hold('panel', false);
   }, [paused]);
 
   return {
     phase,
     slotRef,
     holdHandlers: {
-      onPointerEnter: () => {
+      onPointerEnter: (event: PointerEvent<HTMLDivElement>) => {
+        if (event.pointerType === 'touch') return;
         pointerHeldRef.current = true;
+        timerRef.current?.hold('pointer', true);
       },
-      onPointerLeave: () => {
+      onPointerLeave: (event: PointerEvent<HTMLDivElement>) => {
+        if (event.pointerType === 'touch') return;
         pointerHeldRef.current = false;
+        timerRef.current?.hold('pointer', false);
       },
-      onFocus: () => {
-        focusHeldRef.current = true;
+      onPointerDown: (event: PointerEvent<HTMLDivElement>) => {
+        if (event.pointerType === 'touch') timerRef.current?.hold('touch', true);
       },
-      onBlur: () => {
-        focusHeldRef.current = false;
+      onFocus: (event: FocusEvent<HTMLDivElement>) => {
+        timerRef.current?.hold('focus', event.target !== event.currentTarget);
+      },
+      onBlur: (event: FocusEvent<HTMLDivElement>) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) timerRef.current?.hold('focus', false);
       },
     },
   };

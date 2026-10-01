@@ -28,8 +28,8 @@ export function NewsSheet({ opened, onClose }: NewsSheetProps) {
   };
 
   return (
-    // returnFocus=false: тригер — кнопка-дзвіночок у MenuSlot — на момент
-    // закриття вже inert (такт слота), фокус після шторки веде сам слот
+    // returnFocus=false: слот сам повертає фокус на свою обгортку,
+    // щоб програмне відновлення фокуса не утримувало таймер на дзвіночку.
     <Sheet opened={opened} onClose={onClose} title={content.news.title} returnFocus={false}>
       <div className={styles.list}>
         {NEWS.map((item) => (
