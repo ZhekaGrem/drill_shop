@@ -5,6 +5,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api/client';
+import scarf from '@/shared/config/scarf-oksana.json';
 import type { Design } from '@/widgets/HeroVisual/designs';
 import type { CollectionDef, CollectionItem } from './collections';
 
@@ -42,6 +43,7 @@ interface ApiCollection {
 }
 
 const toDesign = (p: ApiCollectionProduct): Design => ({
+  presentation: p.slug === scarf.slug ? 'scarf' : undefined,
   label: p.name,
   swatch: p.switcherSwatch ?? '#cccccc',
   // Постер сцени: 3D-рендер, а коли його ще нема — головне фото товару

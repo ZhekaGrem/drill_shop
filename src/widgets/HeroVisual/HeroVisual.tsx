@@ -16,6 +16,7 @@ import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import { useDesign } from '@/shared/hooks/useDesign';
 import { animationForDesign } from '@/shared/config/animation';
+import scarf from '@/shared/config/scarf-oksana.json';
 import { CompassSwitcher } from '@/shared/components/CompassSwitcher/CompassSwitcher';
 import { useDragRotation } from './useDragRotation';
 import type { Design } from './designs';
@@ -24,6 +25,7 @@ import styles from './HeroVisual.module.scss';
 
 // Окремий чанк: three і drei не потрапляють у бандл головної сторінки
 const TshirtScene = lazy(() => import('./TshirtScene'));
+const ScarfScene = lazy(() => import('./ScarfScene'));
 
 type Props = {
   /** Набір дизайнів колекції (з GET /collections) */
@@ -81,7 +83,7 @@ export const HeroVisual = ({
   const soloItem = Object.keys(designs).length <= 1 ? design : null;
   // Готовність памʼятаємо ЯК МОДЕЛЬ: перемкнули GLB — активна модель ще не
   // готова, канвас сам ховається за фолбек до onReady нової сцени
-  const activeModel = active?.modelUrl ?? 'tshirt';
+  const activeModel = active?.presentation === 'scarf' ? 'scarf' : (active?.modelUrl ?? 'tshirt');
   const [readyModel, setReadyModel] = useState<string | null>(null);
   const isSceneReady = readyModel === activeModel;
 
@@ -98,7 +100,8 @@ export const HeroVisual = ({
   // Префетч решти мап і моделей після першої готовності: свопи без пауз
   useEffect(() => {
     if (!readyModel) return;
-    for (const { mapUrl, modelUrl } of Object.values(designs)) {
+    for (const { mapUrl, modelUrl, presentation } of Object.values(designs)) {
+      if (presentation === 'scarf') continue;
       if (mapUrl) new window.Image().src = mapUrl;
       if (modelUrl) fetch(modelUrl).catch(() => undefined);
     }
@@ -133,18 +136,24 @@ export const HeroVisual = ({
             <Suspense fallback={null}>
               {/* key: зміна МОДЕЛІ ремонтує сцену (гарантований onReady і рефіт
                 камери), свопи текстур key не змінюють — граються без ремонту */}
-              <TshirtScene
-                key={active.modelUrl ?? 'tshirt'}
-                onReady={handleSceneReady}
-                mapUrl={active.mapUrl}
-                modelUrl={active.modelUrl}
-                dragRef={dragRef}
-                motionPreview={motion}
-              />
+              {active.presentation === 'scarf' ? (
+                <ScarfScene onReady={handleSceneReady} dragRef={dragRef} paused={motion.paused} />
+              ) : (
+                <TshirtScene
+                  key={active.modelUrl ?? 'tshirt'}
+                  onReady={handleSceneReady}
+                  mapUrl={active.mapUrl}
+                  modelUrl={active.modelUrl}
+                  dragRef={dragRef}
+                  motionPreview={motion}
+                />
+              )}
             </Suspense>
           </div>
         )}
       </div>
+
+      {active.presentation === 'scarf' && <p className={styles.printNote}>{scarf.printNote}</p>}
 
       {switcher === 'compass' && soloItem === null && (
         <CompassSwitcher

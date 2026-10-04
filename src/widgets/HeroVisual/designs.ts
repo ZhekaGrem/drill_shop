@@ -14,4 +14,6 @@ export interface Design {
   fallback: string;
   mapUrl?: string;
   modelUrl?: string;
+  /** Procedural cloth with animated prints; still a single purchasable product. */
+  presentation?: 'scarf';
 }

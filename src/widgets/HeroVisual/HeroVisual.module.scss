@@ -91,6 +91,15 @@
   filter: blur(18px);
 }
 
+.printNote {
+  max-width: 34ch;
+  margin: var(--spacing-sm) auto 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  text-align: center;
+}
+
 .still,
 .scene {
   grid-area: 1 / 1;

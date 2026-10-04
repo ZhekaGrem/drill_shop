@@ -1,0 +1,21 @@
+{
+  "slug": "khustynka-nizhna-oksana-randomna",
+  "collectionSlug": "khustynka-oksana",
+  "name": "Хустинка Ніжна Оксана Рандомна",
+  "description": "Легонька хустинка Ніжна Уксана рандомна щоб легонько на дрілі залітати в церкву, не знаю з чого зроблена, не знаю хто робив і мені похуй шо там не качественно.",
+  "price": 777,
+  "initialQuantity": 10,
+  "printNote": "Принт випадковий — на анімації показані можливі дизайни.",
+  "modelUrl": "/3d/models/scarf-oksana.glb",
+  "posterUrl": "/assets/img/scarf-oksana/poster.webp",
+  "textureUrls": [
+    "/3d/textures/scarf-oksana/print-01.webp",
+    "/3d/textures/scarf-oksana/print-02.webp",
+    "/3d/textures/scarf-oksana/print-03.webp",
+    "/3d/textures/scarf-oksana/print-04.webp",
+    "/3d/textures/scarf-oksana/print-05.webp",
+    "/3d/textures/scarf-oksana/print-06.webp",
+    "/3d/textures/scarf-oksana/print-07.webp",
+    "/3d/textures/scarf-oksana/print-08.webp"
+  ]
+}
