@@ -5,7 +5,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { IconShare } from '@tabler/icons-react';
+import { IconCopy } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/components/Button/Button';
@@ -73,7 +73,7 @@ export const HeroBlock = ({
           disabled={!active}
           title="Поділитися"
           aria-label={`Поділитися: ${col.title}`}>
-          <IconShare size={20} aria-hidden="true" />
+          <IconCopy size={20} aria-hidden="true" />
         </button>
         <span className={styles.heroShareMessage} role="status" aria-live="polite">
           {shareMessage}
