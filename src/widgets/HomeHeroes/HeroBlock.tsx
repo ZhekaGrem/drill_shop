@@ -4,6 +4,8 @@
 // стек Дії, карусель К1, плитки К2, таби К3 лише розставляють ці блоки.
 'use client';
 
+import { useEffect, useState } from 'react';
+import { IconShare } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/components/Button/Button';
@@ -22,6 +24,7 @@ interface HeroBlockProps {
   /** Slug вибраного дизайну колекції */
   active: string;
   onPick: (slug: string) => void;
+  onShare: () => Promise<void>;
   /** Кнопка «Про бренд» (лише в першого героя) */
   showAbout?: boolean;
   /** false — статичний постер замість 3D (бічні картки каруселі К1) */
@@ -33,10 +36,25 @@ export const HeroBlock = ({
   titleTag = 'h2',
   active,
   onPick,
+  onShare,
   showAbout = false,
   live = true,
 }: HeroBlockProps) => {
   const router = useRouter();
+  const [shareMessage, setShareMessage] = useState('');
+  useEffect(() => {
+    if (!shareMessage) return;
+    const timer = window.setTimeout(() => setShareMessage(''), 4000);
+    return () => window.clearTimeout(timer);
+  }, [shareMessage]);
+  const copyLink = async () => {
+    try {
+      await onShare();
+      setShareMessage('Посилання скопійовано');
+    } catch {
+      setShareMessage('Не вдалося скопіювати. Спробуй ще раз.');
+    }
+  };
   const design = useDesign();
   const TitleTag = titleTag;
   // Механіка перемикача залежить від колекції: там, де колір і є суттю товару
@@ -46,7 +64,7 @@ export const HeroBlock = ({
   const activeDesign = col.designs[active] ?? col.items[0]?.design;
 
   return (
-    <section className={styles.hero}>
+    <section id={`collection-${col.key}`} className={styles.hero}>
       <div className={styles.heroText}>
         <TitleTag className={styles.heroTitle}>
           {col.title}
@@ -72,6 +90,19 @@ export const HeroBlock = ({
               Про бренд
             </Button>
           )}
+        </div>
+        <div className={styles.heroShare}>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={copyLink}
+            disabled={!active}
+            aria-label={`Поділитися: ${col.title}`}>
+            <IconShare size={18} aria-hidden="true" /> Share
+          </Button>
+          <span role="status" aria-live="polite">
+            {shareMessage}
+          </span>
         </div>
       </div>
       <div className={styles.heroVisualWrap}>

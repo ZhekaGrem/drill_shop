@@ -15,13 +15,27 @@ interface HeroCarouselProps {
   collections: CollectionDef[];
   activeOf: (col: CollectionDef) => string;
   pick: (colKey: string) => (slug: string) => void;
+  share: (colKey: string) => Promise<void>;
+  focusKey?: string;
   /** «Про бренд» у першої картки (на сторінці автора — ні) */
   showAbout?: boolean;
 }
 
-export const HeroCarousel = ({ collections, activeOf, pick, showAbout = true }: HeroCarouselProps) => {
+export const HeroCarousel = ({
+  collections,
+  activeOf,
+  pick,
+  share,
+  focusKey,
+  showAbout = true,
+}: HeroCarouselProps) => {
   const trackRef = useRef<HTMLUListElement>(null);
-  const [centered, setCentered] = useState(0);
+  const [centered, setCentered] = useState(
+    Math.max(
+      0,
+      collections.findIndex((col) => col.key === focusKey)
+    )
+  );
 
   useEffect(() => {
     const track = trackRef.current;
@@ -49,6 +63,7 @@ export const HeroCarousel = ({ collections, activeOf, pick, showAbout = true }: 
               titleTag={i === 0 ? 'h1' : 'h2'}
               active={activeOf(col)}
               onPick={pick(col.key)}
+              onShare={() => share(col.key)}
               showAbout={showAbout && i === 0}
               live={i === centered}
             />

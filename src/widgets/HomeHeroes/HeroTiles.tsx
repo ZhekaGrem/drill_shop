@@ -23,15 +23,24 @@ export const HeroTiles = ({
   collections,
   activeOf,
   pick,
+  share,
+  focusKey,
 }: {
   collections: CollectionDef[];
   activeOf: (col: CollectionDef) => string;
   pick: (colKey: string) => (slug: string) => void;
+  share: (colKey: string) => Promise<void>;
+  focusKey?: string;
 }) => {
-  const [activeIdx, setActiveIdx] = useState(0);
+  const [activeIdx, setActiveIdx] = useState(
+    Math.max(
+      0,
+      collections.findIndex((col) => col.key === focusKey)
+    )
+  );
   // generation перезапускає CSS-анімацію бара і при повторному колі
   const [generation, setGeneration] = useState(0);
-  const pausedUntil = useRef(0);
+  const pausedUntil = useRef(focusKey ? Number.POSITIVE_INFINITY : 0);
   const reduced = useRef(false);
 
   useEffect(() => {
@@ -81,7 +90,13 @@ export const HeroTiles = ({
         ))}
       </div>
       <div onPointerDownCapture={pause}>
-        <HeroBlock col={col} titleTag="h1" active={activeOf(col)} onPick={pick(col.key)} />
+        <HeroBlock
+          col={col}
+          titleTag="h1"
+          active={activeOf(col)}
+          onPick={pick(col.key)}
+          onShare={() => share(col.key)}
+        />
       </div>
     </section>
   );

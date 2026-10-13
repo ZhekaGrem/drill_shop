@@ -15,12 +15,21 @@ interface HeroTabsProps {
   collections: CollectionDef[];
   activeOf: (col: CollectionDef) => string;
   pick: (colKey: string) => (slug: string) => void;
+  share: (colKey: string) => Promise<void>;
+  focusKey?: string;
   /** «Про бренд» у героя (на сторінці автора — ні) */
   showAbout?: boolean;
 }
 
-export const HeroTabs = ({ collections, activeOf, pick, showAbout = true }: HeroTabsProps) => {
-  const [activeKey, setActiveKey] = useState(collections[0]?.key);
+export const HeroTabs = ({
+  collections,
+  activeOf,
+  pick,
+  share,
+  focusKey,
+  showAbout = true,
+}: HeroTabsProps) => {
+  const [activeKey, setActiveKey] = useState(focusKey ?? collections[0]?.key);
   const col = collections.find((c) => c.key === activeKey) ?? collections[0];
   if (!col) return null;
 
@@ -45,6 +54,7 @@ export const HeroTabs = ({ collections, activeOf, pick, showAbout = true }: Hero
         titleTag="h1"
         active={activeOf(col)}
         onPick={pick(col.key)}
+        onShare={() => share(col.key)}
         showAbout={showAbout}
       />
     </section>

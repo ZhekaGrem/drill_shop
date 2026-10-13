@@ -5,7 +5,8 @@
 // переживає перемикання механік.
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { readHeroSelection, writeHeroSelection } from './hero-links';
 import { Button } from '@/shared/components/Button/Button';
 import { ArrowRight } from '@/shared/components/Svg';
 import { useDesign } from '@/shared/hooks';
@@ -30,8 +31,35 @@ export const HomeHeroes = ({ collections, showAbout = true, intro = content.home
   const design = useDesign();
   const [selected, setSelected] = useState<Record<string, string>>({});
 
+  const [ready, setReady] = useState(false);
+  const [focusKey, setFocusKey] = useState<string>();
+  useLayoutEffect(() => {
+    if (!collections?.length) return;
+    const restore = () => {
+      const url = new URL(window.location.href);
+      setSelected(readHeroSelection(url, collections));
+      setFocusKey(collections.find((col) => url.hash === `#collection-${col.key}`)?.key);
+      setReady(true);
+    };
+    restore();
+    window.addEventListener('popstate', restore);
+    window.addEventListener('hashchange', restore);
+    return () => {
+      window.removeEventListener('popstate', restore);
+      window.removeEventListener('hashchange', restore);
+    };
+  }, [collections]);
+
+  useEffect(() => {
+    if (!ready || !focusKey) return;
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(`collection-${focusKey}`)?.scrollIntoView({ block: 'start', inline: 'center' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [ready, focusKey, design]);
+
   // Скелетон, поки GET /collections не відповів (без стрибка макета)
-  if (!collections?.length) {
+  if (!collections?.length || !ready) {
     return (
       <section className={styles.hero}>
         <div className={styles.heroText}>
@@ -49,12 +77,21 @@ export const HomeHeroes = ({ collections, showAbout = true, intro = content.home
   }
 
   const activeOf = (col: CollectionDef) => selected[col.key] ?? col.items[0]?.slug;
-  const pick = (colKey: string) => (slug: string) => setSelected((prev) => ({ ...prev, [colKey]: slug }));
+  const pick = (colKey: string) => (slug: string) => {
+    const next = { ...selected, [colKey]: slug };
+    setSelected(next);
+    const url = writeHeroSelection(new URL(window.location.href), collections, next);
+    window.history.replaceState(window.history.state, '', url);
+  };
+  const share = async (colKey: string) => {
+    const url = writeHeroSelection(new URL(window.location.href), collections, selected, colKey);
+    await navigator.clipboard.writeText(url.href);
+  };
 
-  const mechanics = { collections, activeOf, pick, showAbout };
-  if (design === 'cupertino') return <HeroCarousel {...mechanics} />;
-  if (design === 'streetwear') return <HeroTiles collections={collections} activeOf={activeOf} pick={pick} />;
-  if (design === 'tactile') return <HeroTabs {...mechanics} />;
+  const mechanics = { collections, activeOf, pick, showAbout, share, focusKey };
+  if (design === 'cupertino') return <HeroCarousel key={focusKey} {...mechanics} />;
+  if (design === 'streetwear') return <HeroTiles key={focusKey} {...mechanics} />;
+  if (design === 'tactile') return <HeroTabs key={focusKey} {...mechanics} />;
 
   return (
     <>
@@ -65,6 +102,7 @@ export const HomeHeroes = ({ collections, showAbout = true, intro = content.home
           titleTag={i === 0 ? 'h1' : 'h2'}
           active={activeOf(col)}
           onPick={pick(col.key)}
+          onShare={() => share(col.key)}
           showAbout={showAbout && i === 0}
         />
       ))}
