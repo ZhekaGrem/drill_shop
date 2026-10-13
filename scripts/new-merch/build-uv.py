@@ -23,7 +23,7 @@ def main():
             'printAnchor':'original print center','designs':[]}
     collections=[]
     font=ImageFont.truetype('/System/Library/Fonts/Supplemental/Arial.ttf',24)
-    for kind,title,description in [('tshirt','футболярочеи','Прокляті футболки для святих людей'),
+    for kind,title,description in [('tshirt','футболяроки','Прокляті футболки для святих людей'),
                                    ('hoodie','бобчанскі','Прокляті боби для святих людей')]:
         mask=mesh_mask(OUT/f'{kind}-mesh.json');mask.save(OUT/f'{kind}-uv-mask.png')
         public=FRONT/f'public/3d/textures/prokliatyi/new-merch';public.mkdir(parents=True,exist_ok=True)
