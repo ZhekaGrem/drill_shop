@@ -12,7 +12,10 @@ FULL=ROOT/'готові розгортки'
 NAMES=['Рок департамент / два принти','Рок департамент / мала емблема','Рок департамент / велика емблема',
        'Суко, ми українці','Ганстерський режим','Проклятий вершник','Щільний Дріл / Ніжна Оксана',
        'Прокляті / жовтий і червоний','Проклятий / кістяна емблема','Ми українці, суко']
-PRODUCTION_NOTE='Виготовлення боб — до 7 днів під обстрілами, але ми вас любимо.'
+PRODUCTION_NOTES={
+    'tshirt':'Виготовлення футболянчанських — до 7 днів під обстрілами, але ми вас любимо.',
+    'hoodie':'Виготовлення боб — до 7 днів під обстрілами, але ми вас любимо.',
+}
 
 
 def main():
@@ -29,7 +32,7 @@ def main():
     font=ImageFont.truetype('/System/Library/Fonts/Supplemental/Arial.ttf',24)
     for kind,title,description in [('tshirt','Футболярочки','Прокляті футболки для святих людей'),
                                    ('hoodie','Бобчанскі','Прокляті боби для святих людей')]:
-        description=f'{description}. {PRODUCTION_NOTE}'
+        description=f'{description}. {PRODUCTION_NOTES[kind]}'
         mask=mesh_mask(OUT/f'{kind}-mesh.json');mask.save(OUT/f'{kind}-uv-mask.png')
         public=FRONT/f'public/3d/textures/prokliatyi/new-merch';public.mkdir(parents=True,exist_ok=True)
         items=[]
