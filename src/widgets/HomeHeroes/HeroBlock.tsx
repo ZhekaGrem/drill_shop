@@ -5,7 +5,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { IconCopy } from '@tabler/icons-react';
+import { IconCheck, IconCopy } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/components/Button/Button';
@@ -47,7 +47,9 @@ export const HeroBlock = ({
     const timer = window.setTimeout(() => setShareMessage(''), 4000);
     return () => window.clearTimeout(timer);
   }, [shareMessage]);
+  const copied = shareMessage === 'Посилання скопійовано';
   const copyLink = async () => {
+    setShareMessage('');
     try {
       await onShare();
       setShareMessage('Посилання скопійовано');
@@ -69,11 +71,13 @@ export const HeroBlock = ({
         <button
           type="button"
           className={styles.heroShareButton}
+          data-copied={copied}
           onClick={copyLink}
           disabled={!active}
           title="Поділитися"
           aria-label={`Поділитися: ${col.title}`}>
-          <IconCopy size={20} aria-hidden="true" />
+          <IconCopy className={styles.heroCopyIcon} size={20} aria-hidden="true" />
+          <IconCheck className={styles.heroCheckIcon} size={20} aria-hidden="true" />
         </button>
         <span className={styles.heroShareMessage} role="status" aria-live="polite">
           {shareMessage}

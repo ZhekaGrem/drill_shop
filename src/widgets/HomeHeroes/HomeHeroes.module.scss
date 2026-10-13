@@ -442,3 +442,35 @@ section + .hero {
     display: none;
   }
 }
+
+.heroCopyIcon,
+.heroCheckIcon {
+  grid-area: 1 / 1;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.heroCheckIcon {
+  opacity: 0;
+  transform: scale(0.5) rotate(-35deg);
+}
+
+.heroShareButton[data-copied='true'] {
+  .heroCopyIcon {
+    opacity: 0;
+    transform: scale(0.5) rotate(35deg);
+  }
+
+  .heroCheckIcon {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroCopyIcon,
+  .heroCheckIcon {
+    transition: none;
+  }
+}
