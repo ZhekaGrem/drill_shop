@@ -4,11 +4,12 @@
 
 // Між героями-колекціями — той самий токен, що відділяє контент від хедера
 section + .hero {
-  scroll-margin-top: 90px;
   margin-top: var(--page-padding-y);
 }
 
 .hero {
+  position: relative;
+  scroll-margin-top: 90px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -386,10 +387,58 @@ section + .hero {
 }
 
 .heroShare {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 5;
+}
+
+.heroShareButton {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--text-secondary);
+  border-radius: 50%;
+  background: var(--surface-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease;
+
+  &:hover {
+    color: var(--acid);
+    border-color: currentColor;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--acid);
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.heroShareMessage {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: max-content;
+  max-width: min(260px, calc(100vw - 80px));
+  padding: 10px 14px;
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-primary);
   font-size: var(--text-sm);
-  color: var(--text-secondary);
+  pointer-events: none;
+
+  &:empty {
+    display: none;
+  }
 }

@@ -65,6 +65,20 @@ export const HeroBlock = ({
 
   return (
     <section id={`collection-${col.key}`} className={styles.hero}>
+      <div className={styles.heroShare}>
+        <button
+          type="button"
+          className={styles.heroShareButton}
+          onClick={copyLink}
+          disabled={!active}
+          title="Поділитися"
+          aria-label={`Поділитися: ${col.title}`}>
+          <IconShare size={20} aria-hidden="true" />
+        </button>
+        <span className={styles.heroShareMessage} role="status" aria-live="polite">
+          {shareMessage}
+        </span>
+      </div>
       <div className={styles.heroText}>
         <TitleTag className={styles.heroTitle}>
           {col.title}
@@ -90,19 +104,6 @@ export const HeroBlock = ({
               Про бренд
             </Button>
           )}
-        </div>
-        <div className={styles.heroShare}>
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={copyLink}
-            disabled={!active}
-            aria-label={`Поділитися: ${col.title}`}>
-            <IconShare size={18} aria-hidden="true" /> Share
-          </Button>
-          <span role="status" aria-live="polite">
-            {shareMessage}
-          </span>
         </div>
       </div>
       <div className={styles.heroVisualWrap}>
