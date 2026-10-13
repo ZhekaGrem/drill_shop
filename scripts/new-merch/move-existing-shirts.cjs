@@ -14,7 +14,10 @@ const destination = 'prokliatyi-new-tshirt';
 async function main() {
   await prisma.$transaction(async (tx) => {
     const collection = await tx.collection.findUniqueOrThrow({ where: { slug: destination } });
-    const products = await tx.product.findMany({ where: { slug: { in: slugs } } });
+    const products = await tx.product.findMany({
+      where: { slug: { in: slugs } },
+      include: { variants: true },
+    });
     if (products.length !== slugs.length || !collection.isActive || collection.deletedAt)
       throw new Error('Missing products or inactive destination');
     for (const [index, slug] of slugs.entries()) {
@@ -25,6 +28,17 @@ async function main() {
           where: { id: product.id },
           data: { collectionId: collection.id, collectionOrder: 11 + index },
         });
+        // Legacy RDG variants kept the size as their name with empty options.
+        // Cart/checkout display the variant name, so restore the product name
+        // and store the size in its dedicated option without changing stock.
+        for (const variant of product.variants) {
+          if (!variant.options?.size && /^(S|M|L|XL|XXL|XXXL)$/.test(variant.name)) {
+            await tx.productVariant.update({
+              where: { id: variant.id },
+              data: { name: product.name, options: { ...variant.options, size: variant.name } },
+            });
+          }
+        }
       }
       console.log(`${slug} → ${destination}, position ${11 + index}`);
     }
