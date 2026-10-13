@@ -12,6 +12,7 @@ FULL=ROOT/'готові розгортки'
 NAMES=['Рок департамент / два принти','Рок департамент / мала емблема','Рок департамент / велика емблема',
        'Суко, ми українці','Ганстерський режим','Проклятий вершник','Щільний Дріл / Ніжна Оксана',
        'Прокляті / жовтий і червоний','Проклятий / кістяна емблема','Ми українці, суко']
+PRODUCTION_NOTE='Виготовлення боб — до 7 днів під обстрілами, але ми вас любимо.'
 
 
 def main():
@@ -20,11 +21,14 @@ def main():
     report={'cloth':[8,8,8],'shirtResolution':[7936,7936],'hoodieResolution':[8192,8192],
             'webResolution':[4096,4096],'sourceDirectory':ROOT.name,
             'printScale':{'tshirt':{'front':.7,'back':.8},'hoodie':{'front':1,'back':1}},
+            'tshirtAdjustments':{'6':{'frontScale':1.15,'frontShiftUp2048':32},
+                                 '9':{'frontShiftUp2048':32},'8':{'backScale':.8},'4':{'sleeveScale':.7}},
             'printAnchor':'original print center','designs':[]}
     collections=[]
     font=ImageFont.truetype('/System/Library/Fonts/Supplemental/Arial.ttf',24)
     for kind,title,description in [('tshirt','футболяроки','Прокляті футболки для святих людей'),
                                    ('hoodie','бобчанскі','Прокляті боби для святих людей')]:
+        description=f'{description}. {PRODUCTION_NOTE}'
         mask=mesh_mask(OUT/f'{kind}-mesh.json');mask.save(OUT/f'{kind}-uv-mask.png')
         public=FRONT/f'public/3d/textures/prokliatyi/new-merch';public.mkdir(parents=True,exist_ok=True)
         items=[]

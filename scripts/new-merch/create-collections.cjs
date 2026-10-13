@@ -17,7 +17,7 @@ const config = {
     title: collection.title,
     description: collection.description,
     sortOrder: 102 + i,
-    price: i === 0 ? 1000 : 2000,
+    price: i === 0 ? 1200 : 2100,
     model3dPath: i === 0 ? null : collection.modelUrl,
     products: collection.items.map((item) => ({
       slug: item.key,

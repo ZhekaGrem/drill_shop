@@ -3,7 +3,7 @@
     {
       "key": "prokliatyi-new-tshirt",
       "title": "футболяроки",
-      "description": "Прокляті футболки для святих людей",
+      "description": "Прокляті футболки для святих людей. Виготовлення боб — до 7 днів під обстрілами, але ми вас любимо.",
       "modelUrl": "/3d/models/tshirt.glb",
       "items": [
         {
@@ -27,8 +27,8 @@
         {
           "key": "prokliatyi-new-tee-04",
           "label": "Суко, ми українці",
-          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-04.webp?v=49b3202efcb1",
-          "fallback": "/assets/img/prokliatyi/new-merch/tshirt-04.webp?v=b60de5488a85"
+          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-04.webp?v=3ef080043169",
+          "fallback": "/assets/img/prokliatyi/new-merch/tshirt-04.webp?v=0f2a1b4fce4b"
         },
         {
           "key": "prokliatyi-new-tee-05",
@@ -39,8 +39,8 @@
         {
           "key": "prokliatyi-new-tee-06",
           "label": "Проклятий вершник",
-          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-06.webp?v=d10f6853b19b",
-          "fallback": "/assets/img/prokliatyi/new-merch/tshirt-06.webp?v=f5b05c2a246d"
+          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-06.webp?v=8f5180c339a0",
+          "fallback": "/assets/img/prokliatyi/new-merch/tshirt-06.webp?v=2234527a8de9"
         },
         {
           "key": "prokliatyi-new-tee-07",
@@ -51,14 +51,14 @@
         {
           "key": "prokliatyi-new-tee-08",
           "label": "Прокляті / жовтий і червоний",
-          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-08.webp?v=3712e8f71bd8",
+          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-08.webp?v=aa4f3dfaf72d",
           "fallback": "/assets/img/prokliatyi/new-merch/tshirt-08.webp?v=8638e13ba63f"
         },
         {
           "key": "prokliatyi-new-tee-09",
           "label": "Проклятий / кістяна емблема",
-          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-09.webp?v=d2529c65d113",
-          "fallback": "/assets/img/prokliatyi/new-merch/tshirt-09.webp?v=527a7aacdb69"
+          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-09.webp?v=c837b9051d66",
+          "fallback": "/assets/img/prokliatyi/new-merch/tshirt-09.webp?v=ace4bb3ded7a"
         },
         {
           "key": "prokliatyi-new-tee-10",
@@ -71,7 +71,7 @@
     {
       "key": "prokliatyi-new-hoodie",
       "title": "бобчанскі",
-      "description": "Прокляті боби для святих людей",
+      "description": "Прокляті боби для святих людей. Виготовлення боб — до 7 днів під обстрілами, але ми вас любимо.",
       "modelUrl": "/3d/models/hoodie-3.glb",
       "items": [
         {
