@@ -5,7 +5,10 @@ const { run } = require('../lib/seed-collections.cjs');
 const config = {
   confirm: 'new-merch',
   sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-  badge: { badgeText: 'передзамовлення', badgeColor: '#2b9ad9' },
+  badge: {
+    badgeText: 'виготовлення до 7 днів чувачки бо обстріли',
+    badgeColor: '#2b9ad9',
+  },
   backdate: '2025-11-01T00:00:00.000Z',
   // Activation replaces both old collections in the same transaction.
   retireCollections: ['prokliatyi-futbolky', 'prokliatyi-hudi'],
