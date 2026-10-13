@@ -2,7 +2,7 @@
   "collections": [
     {
       "key": "prokliatyi-new-tshirt",
-      "title": "футболяроки",
+      "title": "Футболярочки",
       "description": "Прокляті футболки для святих людей. Виготовлення боб — до 7 днів під обстрілами, але ми вас любимо.",
       "modelUrl": "/3d/models/tshirt.glb",
       "items": [
@@ -45,7 +45,7 @@
         {
           "key": "prokliatyi-new-tee-07",
           "label": "Щільний Дріл / Ніжна Оксана",
-          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-07.webp?v=e4a437ac8e77",
+          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-07.webp?v=c929aacdb8ad",
           "fallback": "/assets/img/prokliatyi/new-merch/tshirt-07.webp?v=630e18015069"
         },
         {
@@ -57,8 +57,8 @@
         {
           "key": "prokliatyi-new-tee-09",
           "label": "Проклятий / кістяна емблема",
-          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-09.webp?v=c837b9051d66",
-          "fallback": "/assets/img/prokliatyi/new-merch/tshirt-09.webp?v=ace4bb3ded7a"
+          "mapUrl": "/3d/textures/prokliatyi/new-merch/tshirt-09.webp?v=be14c297cff2",
+          "fallback": "/assets/img/prokliatyi/new-merch/tshirt-09.webp?v=684ebf1e33bb"
         },
         {
           "key": "prokliatyi-new-tee-10",
@@ -70,10 +70,16 @@
     },
     {
       "key": "prokliatyi-new-hoodie",
-      "title": "бобчанскі",
+      "title": "Бобчанскі",
       "description": "Прокляті боби для святих людей. Виготовлення боб — до 7 днів під обстрілами, але ми вас любимо.",
       "modelUrl": "/3d/models/hoodie-3.glb",
       "items": [
+        {
+          "key": "prokliatyi-new-hoodie-11",
+          "label": "Проклятий вершник / на всі груди",
+          "mapUrl": "/3d/textures/prokliatyi/new-merch/hoodie-11.webp?v=a9fa4598ef44",
+          "fallback": "/assets/img/prokliatyi/new-merch/hoodie-11.webp?v=9918b71e659a"
+        },
         {
           "key": "prokliatyi-new-hoodie-01",
           "label": "Рок департамент / два принти",
@@ -133,12 +139,6 @@
           "label": "Ми українці, суко",
           "mapUrl": "/3d/textures/prokliatyi/new-merch/hoodie-10.webp?v=66a528eef357",
           "fallback": "/assets/img/prokliatyi/new-merch/hoodie-10.webp?v=1b6f116470a3"
-        },
-        {
-          "key": "prokliatyi-new-hoodie-11",
-          "label": "Проклятий вершник / на всі груди",
-          "mapUrl": "/3d/textures/prokliatyi/new-merch/hoodie-11.webp?v=a9fa4598ef44",
-          "fallback": "/assets/img/prokliatyi/new-merch/hoodie-11.webp?v=9918b71e659a"
         }
       ]
     }

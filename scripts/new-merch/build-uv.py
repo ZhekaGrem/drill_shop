@@ -22,12 +22,13 @@ def main():
             'webResolution':[4096,4096],'sourceDirectory':ROOT.name,
             'printScale':{'tshirt':{'front':.7,'back':.8},'hoodie':{'front':1,'back':1}},
             'tshirtAdjustments':{'6':{'frontScale':1.15,'frontShiftUp2048':32},
-                                 '9':{'frontShiftUp2048':32},'8':{'backScale':.8},'4':{'sleeveScale':.7}},
+                                 '9':{'frontShiftUp2048':32,'frontScale':1.15,'frontArtwork':'emblem-only'},'8':{'backScale':.8},
+                                 '7':{'backScale':1.2},'4':{'sleeveScale':.7}},
             'printAnchor':'original print center','designs':[]}
     collections=[]
     font=ImageFont.truetype('/System/Library/Fonts/Supplemental/Arial.ttf',24)
-    for kind,title,description in [('tshirt','футболяроки','Прокляті футболки для святих людей'),
-                                   ('hoodie','бобчанскі','Прокляті боби для святих людей')]:
+    for kind,title,description in [('tshirt','Футболярочки','Прокляті футболки для святих людей'),
+                                   ('hoodie','Бобчанскі','Прокляті боби для святих людей')]:
         description=f'{description}. {PRODUCTION_NOTE}'
         mask=mesh_mask(OUT/f'{kind}-mesh.json');mask.save(OUT/f'{kind}-uv-mask.png')
         public=FRONT/f'public/3d/textures/prokliatyi/new-merch';public.mkdir(parents=True,exist_ok=True)
@@ -55,6 +56,8 @@ def main():
                           'mapUrl':f'/3d/textures/prokliatyi/new-merch/{stem}.webp?v={entry["runtimeSha256"][:12]}',
                           'fallback':f'/assets/img/prokliatyi/new-merch/{stem}.webp'})
             print(f'{stem}: full UV {texture.width}, WebP {runtime.stat().st_size:,} bytes, coverage OK',flush=True)
+        if kind=='hoodie':
+            items=items[-1:]+items[:-1]
         collections.append({'key':f'prokliatyi-new-{kind}','title':title,'description':description,
                             'modelUrl':f'/3d/models/{"tshirt" if kind=="tshirt" else "hoodie-3"}.glb','items':items})
     layout=json.dumps(report,ensure_ascii=False,indent=2)+'\n'

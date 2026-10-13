@@ -38,9 +38,10 @@ def atlas(kind,sides,mask2048,number,mesh_file=None):
         front_box=(220,150) if number==2 else (490,520)
         front_axis=870/3.875 if number==2 else 1290/3.875
         front_top=5480/3.875-(32 if number in (6,9) else 0)
-        front_scale=.7*(1.15 if number==6 else 1)
-        back_scale=.8*(.8 if number==8 else 1)
-        placement={'front':place(canvas,mask,sides['front'],front_box,front_axis,front_top,front_scale),
+        front_scale=.7*(1.15 if number in (6,9) else 1)
+        back_scale=.8*{7:1.2,8:.8}.get(number,1)
+        front_art=sides['front_key'] if number==9 else sides['front']
+        placement={'front':place(canvas,mask,front_art,front_box,front_axis,front_top,front_scale),
                    'back':place(canvas,mask,sides['back'],(568,605),3855/3.875,5090/3.875,back_scale)}
         if 'sleeve' in sides:
             placement['sleeve']=place(canvas,mask,sides['sleeve'],(190,110),6775/3.875,2900/3.875,

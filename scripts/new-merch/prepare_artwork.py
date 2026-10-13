@@ -119,7 +119,7 @@ def prepare(root, out):
         x0,y0,x1,y1=box
         part=ImageOps.contain(art,(x1-x0,y1-y0),Image.Resampling.LANCZOS)
         front.alpha_composite(part,(x0+(x1-x0-part.width)//2,y0))
-    assets[9]={'front':trim(front),'back':load(root/'футболка 9'/'спина.png')}
+    assets[9]={'front':trim(front),'front_key':emblem,'back':load(root/'футболка 9'/'спина.png')}
     for n,sides in assets.items():
         for side,im in sides.items(): im.save(prints/f'{n:02}-{side}.png')
     return assets
