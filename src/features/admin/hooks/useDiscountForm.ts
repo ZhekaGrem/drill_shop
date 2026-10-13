@@ -25,8 +25,8 @@ export const useDiscountForm = ({ discount }: UseDiscountFormProps) => {
     validate: {
       name: (value) => (!value?.trim() ? 'Назва знижки обовʼязкова' : null),
       code: (value) => {
-        if (value && !/^[A-Z0-9_-]+$/i.test(value)) {
-          return 'Промокод може містити тільки літери, цифри, дефіси та підкреслення';
+        if (value && !/^[\p{L}\p{N}_-]+(?: [\p{L}\p{N}_-]+)*$/u.test(value.trim())) {
+          return 'Промокод може містити літери, цифри, дефіси, підкреслення та пробіли між словами';
         }
         return null;
       },
@@ -59,7 +59,7 @@ export const useDiscountForm = ({ discount }: UseDiscountFormProps) => {
   const generateCode = (name: string): string => {
     return name
       .toUpperCase()
-      .replace(/[^A-Z0-9\s]/g, '')
+      .replace(/[^\p{L}\p{N}\s]/gu, '')
       .replace(/\s+/g, '')
       .substring(0, 20);
   };
