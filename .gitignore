@@ -59,3 +59,6 @@ next-env.d.ts
 # Тимчасові діагностичні сторінки 3D
 public/3d-test.html
 src/app/3d-live/
+
+# Local UV generator's Python import cache.
+/scripts/new-merch/__pycache__/

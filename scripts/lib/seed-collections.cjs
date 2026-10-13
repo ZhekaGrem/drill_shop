@@ -98,7 +98,7 @@ const assetUrls = (rows) => {
 
 const localAssetReport = (rows) =>
   assetUrls(rows).map((u) => {
-    const rel = path.join('public', u);
+    const rel = path.join('public', u.split('?')[0]);
     let tracked = false;
     try {
       execFileSync('git', ['-C', FRONT, 'ls-files', '--error-unmatch', rel], { stdio: 'ignore' });
@@ -113,7 +113,7 @@ const probe = async (origin, rows) => {
     try {
       const res = await fetch(origin + u, { method: 'HEAD', redirect: 'manual' });
       const type = res.headers.get('content-type') || '';
-      const ok = res.status === 200 && type.startsWith(TYPES[path.extname(u)] ?? 'image/');
+      const ok = res.status === 200 && type.startsWith(TYPES[path.extname(u.split('?')[0])] ?? 'image/');
       out.push({ url: u, status: res.status, type, ok });
     } catch (e) {
       out.push({ url: u, status: 'ERR ' + e.message, ok: false });
@@ -301,11 +301,16 @@ async function gate(ctx, prisma) {
     select: {
       slug: true,
       model3dPath: true,
+      texture3dUrl: true,
+      deletedAt: true,
+      name: true,
+      collection: { select: { slug: true, deletedAt: true } },
       images: { select: { kind: true, isPrimary: true } },
       variants: { where: { isActive: true }, orderBy: { sortOrder: 'asc' }, select: { options: true } },
     },
   });
   const expectedModel = Object.fromEntries(rows.map((r) => [r.product.slug, r.product.model3dPath]));
+  const expected = Object.fromEntries(rows.map((r) => [r.product.slug, r]));
   const sizes = config.sizes.join('/');
   return {
     badAssets: probed.filter((p) => !p.ok),
@@ -316,6 +321,14 @@ async function gate(ctx, prisma) {
       .map((p) => p.slug),
     // «шлях віддає 200» тут замало: чужа модель теж 200, а принт на неї не ляже
     wrongModel: prods.filter((p) => p.model3dPath !== expectedModel[p.slug]).map((p) => p.slug),
+    wrongTexture: prods
+      .filter((p) => p.texture3dUrl !== expected[p.slug].product.texture3dUrl)
+      .map((p) => p.slug),
+    wrongName: prods.filter((p) => p.name !== expected[p.slug].product.name).map((p) => p.slug),
+    wrongCollection: prods
+      .filter((p) => p.collection?.slug !== expected[p.slug].collection)
+      .map((p) => p.slug),
+    deletedProducts: prods.filter((p) => p.deletedAt || p.collection?.deletedAt).map((p) => p.slug),
     wrongSizes: prods
       .filter((p) => p.variants.map((v) => v.options?.size).join('/') !== sizes)
       .map((p) => p.slug),
@@ -336,18 +349,22 @@ async function activate(ctx, prisma) {
 async function revalidate(ctx) {
   const secret = process.env.REVALIDATE_SECRET;
   if (!secret) throw new Error('REVALIDATE_SECRET не задано');
-  for (const { product } of ctx.rows) {
+  const events = [
+    ...ctx.rows.map(({ product }) => ({ event: 'create', slug: product.slug })),
+    ...(ctx.config.retireProductSlugs ?? []).map((slug) => ({ event: 'delete', slug })),
+  ];
+  for (const event of events) {
     if (!ctx.apply) {
-      console.log(`DRY: POST ${ORIGIN}/api/revalidate {create, ${product.slug}}`);
+      console.log(`DRY: POST ${ORIGIN}/api/revalidate {${event.event}, ${event.slug}}`);
       continue;
     }
     const res = await fetch(`${ORIGIN}/api/revalidate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-revalidate-secret': secret },
-      body: JSON.stringify({ event: 'create', slug: product.slug }),
+      body: JSON.stringify(event),
     });
     const body = await res.json().catch(() => ({}));
-    console.log(`  ${product.slug}: ${res.status} revalidated=${body.revalidated}`);
+    console.log(`  ${event.slug}: ${res.status} revalidated=${body.revalidated}`);
     if (!body.revalidated) process.exitCode = 1;
   }
 }
@@ -357,11 +374,23 @@ async function setActive(ctx, prisma, value) {
   const collections = ctx.config.collections.map((c) => c.slug);
   if (!ctx.apply)
     return console.log(`DRY: isActive=${value} для ${collections.length} кол. і ${slugs.length} товарів`);
-  await prisma.$transaction([
+  const retire = value ? (ctx.config.retireCollections ?? []) : [];
+  if (retire.some((slug) => collections.includes(slug)))
+    throw new Error('Колекції для заміни мають відрізнятися від нових');
+  const operations = [
     prisma.product.updateMany({ where: { slug: { in: slugs } }, data: { isActive: value } }),
     prisma.collection.updateMany({ where: { slug: { in: collections } }, data: { isActive: value } }),
-  ]);
+  ];
+  if (retire.length) {
+    const gone = { isActive: false, deletedAt: new Date() };
+    operations.push(
+      prisma.product.updateMany({ where: { collection: { slug: { in: retire } } }, data: gone }),
+      prisma.collection.updateMany({ where: { slug: { in: retire } }, data: gone })
+    );
+  }
+  await prisma.$transaction(operations);
   console.log(`isActive=${value}`);
+  if (retire.length) console.log(`Знято старі колекції: ${retire.join(', ')}`);
 }
 
 async function stock(ctx, prisma) {

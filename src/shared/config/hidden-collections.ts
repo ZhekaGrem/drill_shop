@@ -24,6 +24,8 @@ export const HIDDEN_COLLECTION_SLUGS: readonly string[] = [
   'polamav-hudi',
   'prokliatyi-futbolky',
   'prokliatyi-hudi',
+  'prokliatyi-new-tshirt',
+  'prokliatyi-new-hoodie',
 ];
 
 // Словомарка хедера для прихованого розділу (дефолтна — «Дріл»)
@@ -36,6 +38,8 @@ export const HIDDEN_COLLECTION_WORDMARK: Record<string, string> = {
   // «Проклятий» на 360–390px у хедер не влазив — на ~29px ширший за «Поламав»
   'prokliatyi-futbolky': '***',
   'prokliatyi-hudi': '***',
+  'prokliatyi-new-tshirt': '***',
+  'prokliatyi-new-hoodie': '***',
 };
 
 export const isHiddenCollection = (slug: string | null | undefined): boolean =>

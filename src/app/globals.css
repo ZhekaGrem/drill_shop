@@ -2105,3 +2105,17 @@ svg.tabler-icon {
   background: var(--gradient-brand);
   color: #101413;
 }
+/* Shared input-section geometry applies to Mantine fields throughout the site. */
+.mantine-TextInput-section,
+.mantine-PasswordInput-section,
+.mantine-Textarea-section {
+  color: var(--text-secondary);
+  width: 40px;
+  justify-content: center;
+}
+
+.mantine-TextInput-section svg,
+.mantine-PasswordInput-section svg,
+.mantine-Textarea-section svg {
+  display: block;
+}
