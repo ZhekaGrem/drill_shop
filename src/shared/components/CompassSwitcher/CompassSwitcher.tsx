@@ -12,7 +12,7 @@
 //     (семантика, спрацьовує рівно на перетині осі);
 //   • наскільки елемент зменшений і згаслий — rAF на скролі (візуал, потребує
 //     плавності кожного кадру, тому лише transform/opacity).
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import Image from 'next/image';
 import styles from './CompassSwitcher.module.scss';
 
@@ -45,6 +45,7 @@ export const CompassSwitcher = ({ items, value, onChange, size = 60, crop = true
   // Останнє значення, віддане назовні: захист від зациклення
   // «скрол → onChange → проп value → програмний скрол → скрол…»
   const emitted = useRef(value);
+  const positioned = useRef(false);
   const frame = useRef(0);
 
   // Візуальний барабан: перерахунок масштабу й прозорості за відстанню до осі
@@ -92,16 +93,31 @@ export const CompassSwitcher = ({ items, value, onChange, size = 60, crop = true
 
   // Зміна ззовні (клік у списку, глибокий лінк) — підвести стрічку до осі.
   // Якщо значення прийшло від власного скролу, нічого не робимо.
-  useEffect(() => {
-    if (value === emitted.current) return;
+  useLayoutEffect(() => {
+    if (positioned.current && value === emitted.current) return;
+    positioned.current = true;
     emitted.current = value;
-    const el = trackRef.current?.querySelector<HTMLElement>(`[data-key="${CSS.escape(value)}"]`);
-    el?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+    const track = trackRef.current;
+    const el = track?.querySelector<HTMLElement>(`[data-key="${CSS.escape(value)}"]`);
+    if (track && el) {
+      const box = el.getBoundingClientRect();
+      track.scrollTo({
+        left:
+          track.scrollLeft +
+          box.left +
+          box.width / 2 -
+          track.getBoundingClientRect().left -
+          track.clientWidth / 2,
+        behavior: 'instant',
+      });
+    }
   }, [value]);
 
   const center = (key: string) => {
-    const el = trackRef.current?.querySelector<HTMLElement>(`[data-key="${CSS.escape(key)}"]`);
-    el?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+    // Commit the clicked product directly; scrolling through intermediate tiles
+    // must not select them or let the observer interrupt the destination.
+    positioned.current = false;
+    onChange(key);
   };
 
   const active = items.find((i) => i.key === value);
