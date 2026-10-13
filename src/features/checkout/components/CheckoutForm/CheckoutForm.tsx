@@ -8,6 +8,7 @@ import { useCart } from '@/features/cart/hooks/useCart';
 import { useCheckout } from '../../hooks/useCheckout';
 import { useDeliveryFields } from '../../hooks/useDeliveryFields';
 import { Button } from '@/shared/components/Button/Button';
+import { apiClient } from '@/shared/api/client';
 
 // Sections
 import { ContactInfoSection } from './sections/ContactInfoSection';
@@ -55,7 +56,43 @@ const CheckoutFormComponent = ({ email = true }: CheckoutFormProps) => {
     amount: number;
     id: string;
     name: string;
+    orderAmount: number;
   } | null>(null);
+  const [discountError, setDiscountError] = useState<string | null>(null);
+  const isDiscountUpdating = Boolean(
+    appliedDiscount && appliedDiscount.orderAmount !== calculations.totalAmount
+  );
+
+  // A percentage or minimum-order rule must be checked against the current
+  // cart, not the amount that existed when the code was first applied.
+  useEffect(() => {
+    if (!appliedDiscount || appliedDiscount.orderAmount === calculations.totalAmount) return;
+    let cancelled = false;
+    const orderAmount = calculations.totalAmount;
+    apiClient
+      .post('/discounts/validate', { code: appliedDiscount.code, orderAmount })
+      .then(({ data: response }) => {
+        if (cancelled) return;
+        const result = response.data ?? response;
+        if (result.isValid && result.eligibleForDiscount) {
+          setAppliedDiscount({ ...appliedDiscount, amount: result.potentialSavings, orderAmount });
+          setDiscountError(null);
+        } else {
+          setAppliedDiscount(null);
+          setValue('discountCode', undefined);
+          setDiscountError(result.errorMessage || 'Промокод недоступний для оновленого кошика.');
+        }
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setAppliedDiscount(null);
+        setValue('discountCode', undefined);
+        setDiscountError('Не вдалося перевірити знижку. Застосуйте промокод повторно.');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [appliedDiscount, calculations.totalAmount, setValue]);
 
   // Формуємо фінальний notes для відправки
   const finalNotes = useMemo(() => {
@@ -98,7 +135,12 @@ const CheckoutFormComponent = ({ email = true }: CheckoutFormProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className={styles.checkoutForm}>
+    <form
+      onSubmit={handleSubmit((data) => {
+        if (!isDiscountUpdating) onSubmit(data);
+      })}
+      noValidate
+      className={styles.checkoutForm}>
       <div className={styles.formGrid}>
         {/* Left column - form */}
         <div className={styles.formColumn}>
@@ -166,7 +208,7 @@ const CheckoutFormComponent = ({ email = true }: CheckoutFormProps) => {
               fullWidth
               className={styles.desktopOnly}
               loading={isSubmitting}
-              disabled={isCartLoading || items.length === 0}>
+              disabled={isCartLoading || isDiscountUpdating || items.length === 0}>
               {isSubmitting ? 'Замовляємо…' : 'Замовити'}
             </Button>
 
@@ -191,24 +233,29 @@ const CheckoutFormComponent = ({ email = true }: CheckoutFormProps) => {
 
         {/* Right column - order summary */}
         <div className={styles.summaryColumn}>
+          {isDiscountUpdating && <Alert>Перераховуємо знижку для оновленого кошика…</Alert>}
+          {discountError && <Alert color="red">{discountError}</Alert>}
           <OrderSummary
             items={items}
             totalAmount={calculations.totalAmount}
-            appliedDiscount={appliedDiscount}
+            appliedDiscount={isDiscountUpdating ? null : appliedDiscount}
             doNotCall={doNotCall}
             isSubmitting={isSubmitting}
-            isCartLoading={isCartLoading}
+            isCartLoading={isCartLoading || isDiscountUpdating}
             onApplyDiscount={(discountData) => {
               setAppliedDiscount({
                 code: discountData.code,
                 amount: discountData.discountAmount,
                 id: discountData.discountId,
                 name: discountData.discountName,
+                orderAmount: calculations.totalAmount,
               });
+              setDiscountError(null);
               setValue('discountCode', discountData.code);
             }}
             onRemoveDiscount={() => {
               setAppliedDiscount(null);
+              setDiscountError(null);
               setValue('discountCode', undefined);
             }}
             onDoNotCallChange={setDoNotCall}
