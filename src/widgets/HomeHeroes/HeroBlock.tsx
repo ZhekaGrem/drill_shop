@@ -75,12 +75,12 @@ export const HeroBlock = ({
           onClick={copyLink}
           disabled={!active}
           title="Поділитися"
-          aria-label={`Поділитися: ${col.title}`}>
+          aria-label={copied ? `Скопійовано: ${col.title}` : `Поділитися: ${col.title}`}>
           <IconCopy className={styles.heroCopyIcon} size={20} aria-hidden="true" />
           <IconCheck className={styles.heroCheckIcon} size={20} aria-hidden="true" />
         </button>
         <span className={styles.heroShareMessage} role="status" aria-live="polite">
-          {shareMessage}
+          {copied ? '' : shareMessage}
         </span>
       </div>
       <div className={styles.heroText}>
