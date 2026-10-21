@@ -74,14 +74,16 @@ export const HeroVisual = ({
   // самотня картка з підписом під сценою виглядала як недороблений контрол
   const soloItem = Object.keys(designs).length <= 1 ? design : null;
   const activeModel = active?.presentation === 'scarf' ? 'scarf' : (active?.modelUrl ?? 'tshirt');
-  // A fresh identity on every selection, including A → B → A. Late callbacks
-  // from an earlier selection cannot reveal the currently loading scene.
+  // Reset load errors when a different product is selected.
   const selection = useMemo(
     () => ({ design, activeModel, mapUrl: active?.mapUrl }),
     [design, activeModel, active?.mapUrl]
   );
-  const [readySelection, setReadySelection] = useState<typeof selection | null>(null);
-  const isSceneReady = readySelection === selection;
+  // Keep a rendered model visible during print changes. A different model
+  // remounts the Canvas and must complete its own first frame (also A → B → A).
+  const modelSession = useMemo(() => ({ activeModel }), [activeModel]);
+  const [readyModelSession, setReadyModelSession] = useState<typeof modelSession | null>(null);
+  const isSceneReady = readyModelSession === modelSession;
 
   // rootMargin — щоб сцена почала вантажитись трохи раніше, ніж блок
   // зʼявиться на екрані, і не «клацала» вже на видимому місці
@@ -91,9 +93,9 @@ export const HeroVisual = ({
 
   const shouldLoadScene = inView;
 
-  const handleSceneReady = useCallback(() => setReadySelection(selection), [selection]);
+  const handleSceneReady = useCallback(() => setReadyModelSession(modelSession), [modelSession]);
 
-  const hasReadyScene = readySelection !== null;
+  const hasReadyScene = readyModelSession !== null;
 
   // Префетч решти мап і моделей після першої готовності: свопи без пауз
   useEffect(() => {
