@@ -4,13 +4,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const config = require('./collection.json');
 const root = process.env.FRONTEND_DIR || path.resolve(__dirname, '../..');
-assert.equal(config.title, 'брілок');
+assert.equal(config.title, 'Брілочанский');
 assert.equal(config.products.length, 3);
 assert.equal(config.initialQuantity, 100);
 assert.deepEqual(config.sizes, [
-  { size: 'L', price: 300 },
-  { size: 'XL', price: 400 },
-  { size: 'XXL', price: 500 },
+  { size: 'L', price: 350 },
+  { size: 'XL', price: 420 },
+  { size: 'XXL', price: 550 },
 ]);
 for (const p of config.products) {
   const buf = fs.readFileSync(path.join(root, 'public/3d/models', p.slug + '.glb'));
@@ -38,4 +38,4 @@ for (const p of config.products) {
     `${p.slug}: ${triangles} triangles, ${(buf.length / 1024).toFixed(0)} KiB, embedded photo texture + normal, metal, poster OK`
   );
 }
-console.log('3 colors × L/XL/XXL = 9 variants, prices 300/400/500, quantity 100 each.');
+console.log('3 colors × L/XL/XXL = 9 variants, prices 350/420/550, quantity 100 each.');

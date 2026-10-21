@@ -10,7 +10,7 @@ Key references:
 - Size comparisons: IMG20251024124104/108/111/214, IMG_20251206_164431_930/164438_186/164445_101.
 - Other photographs show larger decorative pieces, hats, garlands or different angles; no inferred products or real-world dimensions.
 
-Three colors are separate collection products, each with L, XL, XXL variants. User-approved prices: 300, 400, 500 UAH, independent of color; initial quantity 100 per color/size. Size names are labels; physical measurements were not supplied.
+Three colors are separate collection products, each with L, XL, XXL variants. User-approved prices: 350, 420, 550 UAH, independent of color; initial quantity 100 per color/size. Size names are labels; physical measurements were not supplied.
 
 Models use closed 3D bodies, an irregular soft surface, fiber details and double metal rings. Fiber color/normal maps are sampled from source photos at 512². Backs and occluded details are approximations. Around 32k triangles, 1.0–1.4 MB per GLB; no 4K textures or hair simulation. Posters are rendered from the same geometry. Actual product photos are retained in the gallery.
 
@@ -20,3 +20,5 @@ Validation: `node scripts/keychains/check.cjs`.
 Read-only DB audit: `node scripts/keychains/create-collection.cjs --check`.
 Publish: `node scripts/keychains/create-collection.cjs --apply --confirm=brilok`.
 The publisher uploads and validates CDN assets before one database transaction. It refuses existing slugs and never resets existing stock. Production models/posters/photos use the existing Cloudinary account; local copies are committed for reproducibility.
+
+Display title: «Брілочанский». Last collection on the public homepage. Product names: «зелений», «філоветовий», «міксований». Description: «Пухнасті брілки з металевим кільцем для барабончиків.»

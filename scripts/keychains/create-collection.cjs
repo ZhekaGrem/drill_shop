@@ -102,14 +102,14 @@ async function main() {
     }
     uploads.push({ p, model: model.secure_url, images });
   }
-  const first = await db.collection.aggregate({ _min: { sortOrder: true } });
+  const last = await db.collection.aggregate({ where: { deletedAt: null }, _max: { sortOrder: true } });
   await db.$transaction(async (tx) => {
     const c = await tx.collection.create({
       data: {
         slug: config.slug,
         title: config.title,
         description: config.description,
-        sortOrder: (first._min.sortOrder ?? 0) - 1,
+        sortOrder: (last._max.sortOrder ?? 0) + 1,
         isActive: true,
         heroEnabled: true,
         labelText: 'новинка',
@@ -123,8 +123,8 @@ async function main() {
           slug: p.slug,
           name: p.name,
           description: config.description,
-          shortDescription: `${p.color}. L — 300 грн, XL — 400 грн, XXL — 500 грн.`,
-          price: 300,
+          shortDescription: config.description,
+          price: config.sizes[0].price,
           quantity: 0,
           unit: 'PIECE',
           productType: 'ACCESSORIES',
@@ -152,7 +152,7 @@ async function main() {
         },
       });
   });
-  console.log('Created brilok: 3 colors, 9 variants, L/XL/XXL 300/400/500 UAH, 100 each.');
+  console.log('Created brilok: 3 colors, 9 variants, L/XL/XXL 350/420/550 UAH, 100 each.');
   const route = fs.readFileSync(path.join(root, 'src/app/api/revalidate/route.ts'), 'utf8');
   const secret = process.env.REVALIDATE_SECRET || route.match(/const REVALIDATE_SECRET = '([^']+)'/)?.[1];
   assert(secret, 'Created; revalidation secret missing');
