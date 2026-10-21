@@ -1,4 +1,5 @@
 // src/app/catalog/category/[slug]/category.module.scss
+@use '../../../../shared/styles/win98' as win98;
 // Поля й ширину задає <Page>. Раніше тут був Mantine <Container size="xl">
 // з падінгами в rem — четвертий контейнер у проєкті.
 .categoryPage {
@@ -76,4 +77,9 @@
 
 .paginationWrapper {
   margin-top: var(--space-8);
+}
+
+// Windows 95/98: сторінка категорії — те саме вікно каталогу, що й /catalog (вікна товарів — ProductCard.module.scss).
+:global(html[data-design='win98']) .categoryPage {
+  @include win98.page-window('Каталог — Є.Дріл');
 }

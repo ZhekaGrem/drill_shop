@@ -1,4 +1,5 @@
 @use '../../shared/styles/animations';
+@use '../../shared/styles/win98' as win98;
 
 // Поля й ширину задає <Page>, заголовок — <PageHeader>.
 // Раніше сторінка мала третій контейнер — Mantine <Container size={1300}>
@@ -198,6 +199,44 @@
 
     @media (max-width: 768px) {
       height: 40px;
+    }
+  }
+}
+
+// ============ Windows 95/98 ============
+// Сторінка — одне вікно «Каталог — Є.Дріл» (смуга з CSS: її назва — оздоба, тож альтернативний текст порожній, і
+// екранний читач читає справжній h1); лічильник — поле рядка стану; вікна товарів стоять у темно-сірій робочій
+// області (windows98.css [data-win98-grid]); скелетони — ті самі вікна з неактивною сірою смугою.
+:global(html[data-design='win98']) {
+  .catalogPage {
+    @include win98.page-window('Каталог — Є.Дріл');
+  }
+
+  .totalCount {
+    height: 28px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 0;
+    background: var(--win-face);
+    box-shadow: var(--win-thin-sunken);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .productSkeleton {
+    padding: calc(var(--win-title-height) + 3px) 3px 8px;
+    border: 0;
+    border-radius: 0;
+    background: var(--win-face);
+    box-shadow: var(--win-window);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      left: 3px;
+      height: var(--win-title-height);
+      background: linear-gradient(90deg, var(--win-shadow), #b5b5b5);
     }
   }
 }

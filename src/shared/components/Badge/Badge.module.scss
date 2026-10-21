@@ -48,3 +48,19 @@
     font-size: 11px;
   }
 }
+
+// Windows 95/98: наліпка з веб-сторінок тієї доби — жовта, з червоним текстом і чорною рамкою; «Немає в наявності» —
+// сіре тонко втиснуте поле рядка стану.
+:global([data-design='win98']) .badge {
+  border-radius: 0;
+  background: #ffff00;
+  color: #a00000;
+  font-weight: 700;
+  box-shadow: 0 0 0 1px var(--win-frame);
+
+  &.badgeOutOfStock {
+    background: var(--win-face);
+    color: var(--error);
+    box-shadow: var(--win-thin-sunken);
+  }
+}

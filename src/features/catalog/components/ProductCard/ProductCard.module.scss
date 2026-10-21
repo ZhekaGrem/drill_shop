@@ -416,3 +416,216 @@
     display: none;
   }
 }
+
+// ============ Windows 95/98: вікно товару ============
+// docs/windows-95-98-encyclopedia.md §7 «Вікно товару». Картка стає вікном так само, як блоки сайту «Радіо Цибуля»:
+// рамка вікна, синя смуга, у якій стоїть СПРАВЖНІЙ заголовок картки (назва товару — без копії), фото на втиснутому
+// «екрані», розміри — кнопки-перемикачі, «Додати в кошик» — кнопка за замовчуванням із чорною рамкою.
+// Обгортки .link і .content розчиняються (display: contents), щоб посилання з назвою стало першим рядком вікна;
+// клік по картці працює, як і раніше: подія спливає крізь DOM, а не крізь коробки.
+$win98-parcel: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 6.5h12v8H2Z' fill='%23e8a317' stroke='%23000'/%3E%3Cpath d='M1.5 4h13v2.5h-13Z' fill='%23f5cf5a' stroke='%23000'/%3E%3Cpath d='M8 4v10.5' stroke='%23a00000' stroke-width='2'/%3E%3C/svg%3E";
+
+:global([data-design='win98']) {
+  .card {
+    --card-inset: 8px;
+
+    gap: 0;
+    justify-content: flex-start;
+    padding: 3px 3px 8px;
+    border: 0;
+    border-radius: 0;
+    background: var(--win-face);
+    box-shadow: var(--win-window);
+    overflow: visible;
+    transition: none;
+
+    // Вікно не стискається під пальцем і не «дихає» фото під курсором: Windows 98 відповідала рельєфом, а не рухом.
+    &:active {
+      transform: none;
+    }
+
+    &:hover .productImage {
+      transform: none;
+    }
+  }
+
+  .link,
+  .content {
+    display: contents;
+  }
+
+  // Смуга заголовка — це посилання з назвою: та сама дія «відкрити товар», що й раніше. Іконка — посилка: у списку
+  // товарів немає типу, тож одна на всіх, як значок програми в смузі.
+  .content > a {
+    display: flex;
+    order: -1;
+    align-items: center;
+    min-width: 0;
+    min-height: var(--win-title-height);
+    padding: 3px 8px 3px 27px;
+    background:
+      url($win98-parcel) 6px 50% / 16px 16px no-repeat,
+      var(--win-title-bar);
+    color: #fff;
+    text-decoration: none;
+
+    &:focus-visible {
+      outline: 1px dotted #fff;
+      outline-offset: -4px;
+    }
+
+    &:hover .title {
+      text-decoration: underline;
+    }
+  }
+
+  .title {
+    display: block;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #fff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-line-clamp: unset;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  // Екран: втиснуте поле кольору робочого столу — мініатюрний стіл, як монітор у «Властивостях екрана». На білому
+  // зникали б білі футболки, на сірому — сірі; на бірюзовому видно і білі, і чорні речі. Фото на весь кадр його
+  // просто закривають.
+  .productCardImageContainer {
+    // Тепер це елемент flex-колонки вікна: без min-height: 0 висоту диктував би вміст, а не пропорція кадру.
+    width: auto;
+    min-height: 0;
+    margin: 6px 5px 0;
+    padding: 2px;
+    background: var(--win-desktop);
+    box-shadow: var(--win-sunken);
+  }
+
+  .productCardImageContainer__ImageWrapper {
+    border-radius: 0;
+    background: var(--win-desktop);
+  }
+
+  .stock,
+  .divider,
+  .contentPriceVariants {
+    margin-inline: var(--card-inset);
+  }
+
+  // «Немає в наявності» — поле рядка стану: тонко втиснуте, темно-червоний текст.
+  .stock_out {
+    align-self: flex-start;
+    margin-top: 8px;
+    padding: 2px 8px;
+    color: var(--error);
+    box-shadow: var(--win-thin-sunken);
+
+    &::before {
+      display: none;
+    }
+  }
+
+  // Витравлена лінія: сіра над білою.
+  .divider {
+    margin-top: 8px;
+    border-top: 1px solid var(--win-shadow);
+    box-shadow: 0 1px 0 var(--win-highlight);
+  }
+
+  .price,
+  .finalPrice {
+    font-size: 20px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .originalPrice {
+    color: var(--text-tertiary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Розміри: підняті кнопки; вибраний — втиснутий на шаховому тлі й жирний, як натиснута кнопка панелі інструментів.
+  .variantCheckboxText {
+    min-width: 34px;
+    min-height: 30px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 0;
+    background: var(--win-face);
+    box-shadow: var(--win-raised);
+    color: var(--text-primary);
+    font-size: 13px;
+    transition: none;
+
+    &:hover {
+      background: var(--win-face);
+    }
+  }
+
+  .variantCheckbox input:checked + .variantCheckboxText {
+    background: var(--win-checker);
+    box-shadow: var(--win-pressed);
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  .variantCheckbox input[type='radio']:focus-visible + .variantCheckboxText {
+    outline: 1px dotted var(--text-primary);
+    outline-offset: -5px;
+  }
+
+  .variantCheckbox_disabled {
+    opacity: 1;
+
+    .variantCheckboxText {
+      color: var(--win-shadow);
+      text-shadow: 1px 1px 0 var(--win-highlight);
+    }
+  }
+
+  .actions {
+    margin: 4px var(--card-inset) 0;
+  }
+
+  // Кнопка за замовчуванням: чорна рамка навколо рельєфу (селектор глибший за спільне правило кнопок windows98.css).
+  .card .actions .addButton {
+    box-shadow: var(--win-default-ring), var(--win-raised);
+    font-weight: 700;
+  }
+
+  .card .actions .addButton:active:not(:disabled) {
+    box-shadow: var(--win-default-ring), var(--win-pressed);
+  }
+
+  .card .actions .addButton:disabled {
+    box-shadow: var(--win-raised);
+    color: var(--win-shadow);
+    text-shadow: 1px 1px 0 var(--win-highlight);
+  }
+
+  @media (max-width: 768px) {
+    .productCardImageContainer {
+      padding: 2px;
+    }
+
+    // Палець: розміри й кнопка — 44 px.
+    .variantCheckboxText {
+      min-width: 44px;
+      min-height: 44px;
+    }
+
+    .card .actions .addButton {
+      min-height: 44px;
+    }
+  }
+}

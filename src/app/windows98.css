@@ -21,6 +21,21 @@ html[data-design='win98'] {
   --win-sunken:
     inset 1px 1px var(--win-shadow), inset -1px -1px var(--win-highlight), inset 2px 2px var(--win-frame),
     inset -2px -2px var(--win-light);
+
+  /* A window's frame (its outer light line greyer than a button's), a pressed button, the one-line edges of a status
+     field, the checkerboard of a latched toggle, the title bar and the default button's black ring — the same tokens
+     as the Радіо Цибуля look, so the two sites' windows read alike. */
+  --win-window:
+    inset 1px 1px var(--win-light), inset -1px -1px var(--win-frame), inset 2px 2px var(--win-highlight),
+    inset -2px -2px var(--win-shadow);
+  --win-pressed:
+    inset 1px 1px var(--win-frame), inset -1px -1px var(--win-highlight), inset 2px 2px var(--win-shadow),
+    inset -2px -2px var(--win-light);
+  --win-thin-sunken: inset 1px 1px var(--win-shadow), inset -1px -1px var(--win-highlight);
+  --win-checker: repeating-conic-gradient(var(--win-highlight) 0 25%, var(--win-face) 0 50%) 0 0 / 2px 2px;
+  --win-title-bar: linear-gradient(90deg, var(--win-title), var(--win-title-end));
+  --win-default-ring: 0 0 0 1px var(--win-frame);
+  --win-title-height: 28px;
   --primary: #000080;
   --secondary: #fff;
   --accent: #000080;
@@ -257,16 +272,19 @@ html[data-design='win98'] [data-win98-spotlight] {
   display: none;
 }
 
+/* The grid of product windows: the dark grey workspace of a Windows program that holds several documents (the
+   «AppWorkspace» colour), sunken into the catalog's own window; the windows themselves are ProductCard.module.scss. */
 html[data-design='win98'] [data-win98-grid] {
-  gap: 32px;
+  gap: 16px;
   align-items: stretch;
+  padding: 16px;
+  background: var(--win-shadow);
+  box-shadow: var(--win-sunken);
 }
 
 html[data-design='win98'] [data-win98-product-card] {
   z-index: auto;
   isolation: isolate;
-  border: 1px solid var(--win-frame);
-  box-shadow: var(--win-raised);
 }
 
 html[data-design='win98'] [data-win98-image] :is(img, video) {
@@ -395,7 +413,8 @@ html[data-design='win98'] .win98-taskbar {
   }
 
   html[data-design='win98'] [data-win98-grid] {
-    gap: 20px;
+    gap: 12px;
+    padding: 8px;
   }
 }
 

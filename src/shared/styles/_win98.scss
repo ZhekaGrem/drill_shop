@@ -1,0 +1,31 @@
+// src/shared/styles/_win98.scss
+// Windows 95/98 (docs/windows-95-98-encyclopedia.md §7): вікно сторінки зі смугою заголовка, як вікна сайту «Радіо
+// Цибуля». Значень тут немає — вони в app/windows98.css (html[data-design='win98']). Імпорт відносний:
+//   @use '../../shared/styles/win98' as win98;
+
+// Сторінка-вікно: рамка вікна і синя смуга з назвою. Назва — оздоба (альтернативний текст порожній), тож екранний
+// читач читає справжній h1 сторінки, а не смугу.
+@mixin page-window($title) {
+  position: relative;
+  padding-top: calc(var(--win-title-height) + 3px + var(--page-padding-y));
+  box-shadow: var(--win-window);
+
+  &::before {
+    content: $title;
+    content: $title / '';
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    left: 3px;
+    height: var(--win-title-height);
+    padding: 0 8px;
+    overflow: hidden;
+    background: var(--win-title-bar);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: var(--win-title-height);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
