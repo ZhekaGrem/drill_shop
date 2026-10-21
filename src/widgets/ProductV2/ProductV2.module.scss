@@ -49,6 +49,7 @@
 .mediaCard {
   min-width: 0;
   overflow: hidden;
+  background: var(--background-secondary);
 }
 
 .mediaVisual {
@@ -69,6 +70,7 @@
 
 .optionsCard {
   min-width: 0;
+  background: var(--background-secondary);
 }
 
 @media (min-width: 1024px) {
