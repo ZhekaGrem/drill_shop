@@ -387,30 +387,44 @@ section + .hero {
 }
 
 .heroShareMessage {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
   width: max-content;
   max-width: min(260px, calc(100vw - 80px));
+  padding: 8px 10px;
+  background: var(--surface-card);
+  box-shadow: var(--shadow-sm);
   color: var(--text-primary);
   font-size: var(--text-sm);
+  pointer-events: none;
 
   &:empty {
     display: none;
   }
 }
 
-.heroCopyAction {
-  display: inline-flex;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 14px;
+.heroShare {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 5;
+}
+
+.heroShareButton {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-button);
   background: var(--surface-card);
   color: var(--text-primary);
-  font: inherit;
   cursor: pointer;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease;
 
   &:hover {
     border-color: var(--accent);
@@ -430,17 +444,10 @@ section + .hero {
 
 .heroCopyIcon,
 .heroCheckIcon {
-  display: grid;
-  position: absolute;
-  left: 12px;
-  place-items: center;
+  grid-area: 1 / 1;
   transition:
     opacity 360ms ease-in-out,
     transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.heroCopyAction > span:last-child {
-  margin-left: 22px;
 }
 
 .heroCheckIcon {
@@ -448,7 +455,7 @@ section + .hero {
   transform: scale(0.85) rotate(-12deg);
 }
 
-.heroCopyAction[data-copied='true'] {
+.heroShareButton[data-copied='true'] {
   .heroCopyIcon {
     opacity: 0;
     transform: scale(0.85) rotate(12deg);
@@ -468,7 +475,7 @@ section + .hero {
 }
 
 /*
- * Windows-specific home layout lives in
+ * Windows-specific home layout and copy control live in
  * shared/components/Windows98/windows-hero.module.scss. Keeping it out of
  * this shared module lets the legacy concepts evolve independently.
  */

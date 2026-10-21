@@ -2,18 +2,16 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { IconFolder, IconHome, IconShoppingBag, IconMenu2, IconArrowUpRight } from '@tabler/icons-react';
+import { IconFolder, IconHome, IconShoppingBag, IconMenu2 } from '@tabler/icons-react';
+import type { ReactNode } from 'react';
 
 /** Always present in HTML; the theme controls visibility before the first paint. */
-export function Windows98WindowBar({ title, href }: { title: string; href: string }) {
+export function Windows98WindowBar({ title, action }: { title: string; action?: ReactNode }) {
   return (
     <div className="win98-window-bar">
       <IconFolder size={18} aria-hidden="true" />
       <span>{title}</span>
-      <Link href={href} aria-label={`До колекції: ${title}`} title="До колекції">
-        <span>До колекції</span>
-        <IconArrowUpRight size={17} aria-hidden="true" />
-      </Link>
+      {action}
     </div>
   );
 }

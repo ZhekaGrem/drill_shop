@@ -1,6 +1,5 @@
 // src/widgets/ProductV2/ProductInfoGroups.tsx
-// Те, що людина шукає ПЕРЕД покупкою: характеристики, розмірна сітка, доставка.
-// Групи лежать на фоні сторінки (не в білій картці) — як на /catalog/[slug].
+// Характеристики, розмірна сітка, доставка й оплата — в панелі вибору товару.
 'use client';
 
 import { useState } from 'react';
@@ -25,7 +24,7 @@ export const ProductInfoGroups = ({ product }: { product: Product }) => {
   const [guideOpened, setGuideOpened] = useState(false);
 
   const specs = Object.entries(product.options || {})
-    .filter(([, value]) => value && String(value).trim())
+    .filter(([key, value]) => !['size', 'color'].includes(key.toLowerCase()) && value && String(value).trim())
     .map(([key, value]) => ({
       label: OPTION_LABELS[key] || key.charAt(0).toUpperCase() + key.slice(1),
       value: String(value),

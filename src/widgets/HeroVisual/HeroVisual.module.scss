@@ -7,6 +7,8 @@
   --stage-size: 440px;
 
   display: flex;
+  width: min(100%, var(--stage-size));
+  max-width: 100%;
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
@@ -32,9 +34,11 @@
   grid-template-rows: 100%;
   grid-template-columns: 100%;
   place-items: center;
-  width: var(--stage-size);
-  height: var(--stage-size);
-  flex-shrink: 0;
+  width: min(var(--stage-size), 100%);
+  max-width: 100%;
+  aspect-ratio: 1;
+  height: auto;
+  flex-shrink: 1;
   isolation: isolate;
   // Драг-обертання: вертикальний скрол лишається браузеру, горизонталь — нам.
   // pinch-zoom дозволений НАВМИСНО: без нього спроба «наблизити модельку»
@@ -64,7 +68,18 @@
     width: 100%;
     max-width: none;
     height: clamp(220px, 38svh, 320px);
+    aspect-ratio: auto;
   }
+}
+
+.still {
+  grid-area: 1 / 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 // М'яка пляма фірмового градієнта за предметом. Не картка й не рамка:

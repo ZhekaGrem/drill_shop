@@ -218,7 +218,7 @@ html[data-design='win98'] .win98-window-bar {
   align-items: center;
   gap: 8px;
   min-width: 0;
-  min-height: 36px;
+  min-height: 52px;
   padding: 4px 6px;
   color: #fff;
   background: linear-gradient(90deg, var(--win-title), var(--win-title-end));
@@ -234,40 +234,11 @@ html[data-design='win98'] .win98-window-bar {
 }
 
 .win98-window-bar > span {
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.win98-window-bar > a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  flex-shrink: 0;
-  min-height: 32px;
-  margin-left: auto;
-  padding: 0 8px;
-  color: #000;
-  background: #c0c0c0;
-  font-size: 12px;
-  text-decoration: none;
-  white-space: nowrap;
-  box-shadow:
-    inset 1px 1px #fff,
-    inset -1px -1px #000,
-    inset 2px 2px #dfdfdf,
-    inset -2px -2px #808080;
-}
-
-.win98-window-bar > a:active {
-  box-shadow:
-    inset 1px 1px #000,
-    inset -1px -1px #fff;
-}
-
-html[data-design='win98'] .win98-window-bar > a:hover {
-  background: #dfdfdf;
 }
 
 html[data-design='win98'] [data-win98-copy] {
@@ -308,6 +279,28 @@ html[data-design='win98'] [data-win98-apparel] [data-win98-image] :is(img, video
 
 html[data-design='win98'] [data-win98-apparel]:hover [data-win98-image] :is(img, video) {
   transform: scale(0.82);
+}
+
+html[data-design='win98'] [data-win98-choice] {
+  border: 0;
+  background: var(--win-face);
+  box-shadow: var(--win-raised);
+  color: var(--text-primary);
+}
+
+html[data-design='win98'] [data-win98-choice][aria-pressed='true'] {
+  background: var(--win-title);
+  box-shadow: var(--win-sunken);
+  color: #fff;
+  outline: 1px dotted #fff;
+  outline-offset: -5px;
+}
+
+html[data-design='win98'] [data-win98-choice]:disabled {
+  background: var(--win-light);
+  box-shadow: var(--win-sunken);
+  color: #444;
+  opacity: 1;
 }
 
 html[data-design='win98'] .win98-taskbar {
@@ -398,13 +391,7 @@ html[data-design='win98'] .win98-taskbar {
   }
 
   .win98-window-bar {
-    min-height: 44px;
-  }
-
-  .win98-window-bar > a {
-    min-height: 36px;
-    padding-inline: 6px;
-    font-size: 11px;
+    min-height: 52px;
   }
 
   html[data-design='win98'] [data-win98-grid] {
