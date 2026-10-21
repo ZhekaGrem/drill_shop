@@ -1,7 +1,23 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
+import { SITE_CLOSED, isOpenWhileClosed } from '@/shared/config/site-closed';
+import { siteClosedHtml } from '@/shared/utils/site-closed-page';
 
 export async function middleware(request: NextRequest) {
+  // 0. Сайт закрито (shared/config/site-closed.ts): одна відповідь одразу, без звертання до Supabase.
+  // 503 + Retry-After — тимчасова перерва для пошуковиків; no-store — щоб CDN не тримав закриту сторінку після відкриття.
+  if (SITE_CLOSED && !isOpenWhileClosed(request.nextUrl.pathname)) {
+    return new NextResponse(siteClosedHtml(), {
+      status: 503,
+      headers: {
+        'content-type': 'text/html; charset=utf-8',
+        'cache-control': 'no-store',
+        'retry-after': '86400',
+        'x-robots-tag': 'noindex',
+      },
+    });
+  }
+
   // 1. Створюємо відповідь одразу, щоб мати змогу писати в неї куки
   let response = NextResponse.next({
     request: {
