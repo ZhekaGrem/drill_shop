@@ -6,6 +6,7 @@ export type AnimationPreset = 'turntable' | 'showcase' | 'pendulum' | 'float' | 
  * no separate timer or storage key can drift out of sync with the palette.
  */
 export const ANIMATION_BY_DESIGN = {
+  win98: 'showcase',
   diia: 'turntable',
   overdrive: 'pendulum',
   spotlight: 'float',

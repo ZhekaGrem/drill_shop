@@ -303,3 +303,7 @@
       0 0 0 4px var(--text-primary);
   }
 }
+
+:global([data-design='win98']) .spotlight {
+  display: none;
+}

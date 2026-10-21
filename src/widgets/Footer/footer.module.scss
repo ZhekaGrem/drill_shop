@@ -167,3 +167,12 @@
     height: 40px;
   }
 }
+
+:global([data-design='win98']) .footer {
+  background: var(--win-face);
+  border-top: 2px solid var(--win-highlight);
+  color: var(--text-primary);
+  --text-inverse: var(--text-primary);
+  --text-inverse-secondary: var(--text-secondary);
+  --text-inverse-tertiary: var(--text-secondary);
+}

@@ -17,8 +17,11 @@
 // самих констант (див. rotationSnippet нижче).
 import type { DesignId } from './design';
 
-/** Головний рубильник. false — сайт назавжди лишається на DESIGN_FALLBACK. */
-export const ROTATION_ENABLED = true;
+/** Головний рубильник. false — сайт використовує DEFAULT_AUTO_DESIGN. */
+export const ROTATION_ENABLED = false;
+
+/** Active storefront design when calendar rotation is disabled. */
+export const DEFAULT_AUTO_DESIGN: DesignId = 'win98';
 
 /**
  * Порядок ротації. Рішення власника (2026-08-21): Дія → Перегруз →
@@ -80,4 +83,4 @@ export const rotationSnippet = (): string =>
   ROTATION_ENABLED
     ? `var RO=${JSON.stringify(ROTATION_ORDER)},RA=${ROTATION_ANCHOR_MS},RS=${SLOT_MS};` +
       `var rs=Math.floor((Date.now()-RA)/RS);ds=RO[((rs%RO.length)+RO.length)%RO.length];`
-    : '';
+    : `ds=${JSON.stringify(DEFAULT_AUTO_DESIGN)};`;

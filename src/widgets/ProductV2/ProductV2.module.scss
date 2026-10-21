@@ -490,3 +490,21 @@
   color: var(--text-secondary);
   text-wrap: pretty;
 }
+
+:global([data-design='win98']) .card {
+  background: var(--win-face);
+  box-shadow: var(--win-raised);
+}
+
+:global([data-design='win98']) .size {
+  border: 0;
+  box-shadow: var(--win-raised);
+  background: var(--win-face);
+  color: var(--text-primary);
+
+  &[aria-pressed='true'] {
+    box-shadow: var(--win-sunken);
+    outline: 1px dotted var(--text-primary);
+    outline-offset: -5px;
+  }
+}

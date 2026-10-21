@@ -13,3 +13,18 @@
     max-width: 720px;
   }
 }
+
+:global([data-design='win98']) .page {
+  background: var(--win-face);
+  box-shadow: var(--win-raised);
+  margin-top: var(--page-padding-y);
+  margin-bottom: var(--page-padding-y);
+  width: calc(100% - 24px);
+
+  &:has([data-store-window]) {
+    background: transparent;
+    box-shadow: none;
+    margin-block: 0;
+    width: 100%;
+  }
+}

@@ -7,6 +7,7 @@ import localFont from 'next/font/local';
 // чорний текст на графітовому фоні. Наші стилі мають іти останніми.
 import '@mantine/core/styles.css';
 import './globals.css';
+import './windows98.css';
 import { Providers } from '@/shared/providers/Providers';
 import { LayoutWrapper } from './LayoutWrapper';
 import { ErrorBoundary } from '@/shared/providers/ErrorBoundary';
@@ -33,12 +34,13 @@ const bootScript =
   `var ds=localStorage.getItem('design');` +
   // Немає явного вибору (або сміття у сховищі) — вмикається календар.
   // 'diia' присвоюється ПЕРЕД ротацією, щоб при вимкненому рубильнику
-  // (rotationSnippet() порожній) ds лишався валідним, а не null.
+  // rotationSnippet() повертає DEFAULT_AUTO_DESIGN замість календаря.
   `if(IDS.indexOf(ds)<0){ds='diia';${rotationSnippet()}}` +
   `if(ds!=='diia'){d.setAttribute('data-design',ds);}` +
   `var t=localStorage.getItem('theme');` +
   `if(t!=='dark'&&t!=='light'){` +
-  `if(ds==='streetwear'){t='dark';}` +
+  `if(ds==='win98'){t='light';}` +
+  `else if(ds==='streetwear'){t='dark';}` +
   `else if(ds==='cupertino'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}` +
   `else{var h=new Date().getHours();t=h>=18||h<6?'dark':'light';}}` +
   `d.setAttribute('data-theme',t);d.setAttribute('data-mantine-color-scheme',t);` +

@@ -60,3 +60,16 @@
     color: var(--background-dark);
   }
 }
+
+:global([data-design='win98']) .logo {
+  color: var(--text-primary);
+
+  .mark {
+    background: var(--win-title);
+    color: #fff;
+    border-radius: 0;
+  }
+  .word {
+    color: var(--text-primary);
+  }
+}

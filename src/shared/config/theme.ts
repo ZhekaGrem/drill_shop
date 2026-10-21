@@ -19,6 +19,7 @@ export const themeByClock = (): Theme => {
 // Cupertino слухає систему, Дія і мінімалізм — годинник 18:00–6:00
 export const autoTheme = (): Theme => {
   const design = readDesignAttr();
+  if (design === 'win98') return 'light';
   if (design === 'streetwear') return 'dark';
   if (design === 'cupertino') {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';

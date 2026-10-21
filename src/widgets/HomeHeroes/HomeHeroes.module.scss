@@ -474,3 +474,79 @@ section + .hero {
     transition: none;
   }
 }
+
+:global([data-design='win98']) .hero[data-store-window] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 4px 24px 24px;
+  border: 1px solid var(--win-frame);
+  box-shadow:
+    var(--win-raised),
+    4px 4px 0 rgb(0 0 0 / 22%);
+  min-width: 0;
+
+  > :global(.win98-window-bar) {
+    grid-column: 1 / -1;
+    margin: 0 -20px;
+  }
+
+  .heroShare {
+    top: 48px;
+    right: 18px;
+  }
+
+  .heroText {
+    min-width: 0;
+    padding: 20px 0 8px;
+  }
+  .heroTitle {
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.025em;
+  }
+  .heroSubtitle {
+    font-weight: 400;
+  }
+  .heroVisualWrap {
+    min-width: 0;
+    padding-top: 40px;
+  }
+  .heroBadgeOnStage {
+    top: 8px;
+    left: 0;
+    max-width: calc(100% - 48px);
+    font-weight: 400;
+    font-size: 13px;
+  }
+  .heroPulseDot {
+    width: 8px;
+    height: 8px;
+    animation: none;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 4px 16px 20px;
+    min-height: 0;
+
+    > :global(.win98-window-bar) {
+      margin: 0 -12px;
+    }
+    .heroVisualWrap {
+      grid-row: 2;
+    }
+    .heroText {
+      grid-row: 3;
+      padding-top: 0;
+    }
+    .heroActions {
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+    .heroShare {
+      right: 12px;
+    }
+  }
+}

@@ -312,3 +312,9 @@
   justify-content: center;
   margin-top: var(--space-2);
 }
+
+@media (max-width: 968px) {
+  :global([data-design='win98']) .stickyBar {
+    bottom: calc(var(--win-taskbar-height) + env(safe-area-inset-bottom, 0px));
+  }
+}

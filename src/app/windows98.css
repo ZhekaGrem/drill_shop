@@ -1,0 +1,365 @@
+/* Windows 95/98: theme-scoped storefront skin. See docs/windows-95-98-encyclopedia.md. */
+.win98-window-bar,
+.win98-taskbar {
+  display: none;
+}
+
+html[data-design='win98'] {
+  --win-taskbar-height: 58px;
+  --win-desktop: #008080;
+  --win-face: #c0c0c0;
+  --win-paper: #fff;
+  --win-highlight: #fff;
+  --win-light: #dfdfdf;
+  --win-shadow: #808080;
+  --win-frame: #000;
+  --win-title: #000080;
+  --win-title-end: #1084d0;
+  --win-raised:
+    inset 1px 1px var(--win-highlight), inset -1px -1px var(--win-frame), inset 2px 2px var(--win-light),
+    inset -2px -2px var(--win-shadow);
+  --win-sunken:
+    inset 1px 1px var(--win-shadow), inset -1px -1px var(--win-highlight), inset 2px 2px var(--win-frame),
+    inset -2px -2px var(--win-light);
+  --primary: #000080;
+  --secondary: #fff;
+  --accent: #000080;
+  --accent-deep: #000060;
+  --accent-red: #a00000;
+  --accent-red-fg: #fff;
+  --accent-red-on-dark: #ffdf00;
+  --success: #006400;
+  --success-green: #006400;
+  --success-fg: #fff;
+  --warning: #ffe680;
+  --warning-fg: #000;
+  --error: #a00000;
+  --btn-danger: #a00000;
+  --btn-danger-fg: #fff;
+  --info: #000080;
+  --text-primary: #000;
+  --text-secondary: #333;
+  --text-tertiary: #444;
+  --text-inverse: #fff;
+  --text-inverse-secondary: #e0e0e0;
+  --text-inverse-tertiary: #c0c0c0;
+  --text-white: #fff;
+  --background: #c0c0c0;
+  --background-secondary: #dfdfdf;
+  --background-dark: #000080;
+  --surface-card: #c0c0c0;
+  --surface-muted: #dfdfdf;
+  --surface-hover: #dfdfdf;
+  --border-subtle: #808080;
+  --border-control: #555;
+  --border-strong: #555;
+  --border-inverse-subtle: #c0c0c0;
+  --surface-inverse-hover: #000060;
+  --btn-primary: #c0c0c0;
+  --btn-primary-hover: #dfdfdf;
+  --btn-primary-fg: #000;
+  --btn-primary-hover-fg: #000;
+  --gradient-page: linear-gradient(#008080, #008080);
+  --gradient-brand: linear-gradient(#008080, #008080);
+  --gradient-btn: linear-gradient(#c0c0c0, #c0c0c0);
+  --gradient-underline: linear-gradient(#000080, #000080);
+  --gradient-btn-mask-floor: 1;
+  --border-radius-sm: 0px;
+  --border-radius-md: 0px;
+  --border-radius-lg: 0px;
+  --border-radius-xl: 0px;
+  --radius-card: 0px;
+  --radius-pill: 0px;
+  --shadow-card: var(--win-raised);
+  --shadow-xs: var(--win-raised);
+  --shadow-sm: var(--win-raised);
+  --shadow-md: var(--win-raised), 3px 3px 0 rgb(0 0 0 / 25%);
+  --shadow-lg: var(--win-raised), 5px 5px 0 rgb(0 0 0 / 25%);
+  --shadow-xl: var(--win-raised), 6px 6px 0 rgb(0 0 0 / 25%);
+  --fw-light: 400;
+  --fw-medium: 700;
+  --text-6xl: 2.5rem;
+  --text-5xl: 2rem;
+  --text-4xl: 1.75rem;
+  --text-3xl: 1.5rem;
+  --page-padding-y: 24px;
+  --section-gap: 32px;
+  --motion-press-scale: 1;
+
+  color-scheme: light;
+  scrollbar-color: #c0c0c0 #808080;
+}
+
+/* An optional modern night adaptation; the automatic classic skin is light. */
+html[data-design='win98'][data-theme='dark'] {
+  --win-desktop: #004b4b;
+  --win-face: #303438;
+  --win-paper: #15191c;
+  --win-highlight: #81878d;
+  --win-light: #52585e;
+  --win-shadow: #171a1d;
+  --win-frame: #050607;
+  --win-title: #000080;
+  --win-title-end: #07588b;
+  --text-primary: #fff;
+  --text-secondary: #e0e0e0;
+  --text-tertiary: #c5c5c5;
+  --background: #303438;
+  --background-secondary: #44494f;
+  --surface-card: #303438;
+  --surface-muted: #44494f;
+  --surface-hover: #44494f;
+  --border-subtle: #81878d;
+  --border-control: #a0a0a0;
+  --border-strong: #a0a0a0;
+  --accent: #b8d7ff;
+  --accent-deep: #b8d7ff;
+  --info: #b8d7ff;
+  --error: #ffb0b0;
+  --accent-red: #8f1111;
+  --success: #146b26;
+  --success-green: #146b26;
+  --btn-primary: #303438;
+  --btn-primary-hover: #44494f;
+  --btn-primary-fg: #fff;
+  --btn-primary-hover-fg: #fff;
+  --gradient-page: linear-gradient(#004b4b, #004b4b);
+  --gradient-btn: linear-gradient(#303438, #303438);
+
+  color-scheme: dark;
+}
+
+html[data-design='win98'] body {
+  --font-body: tahoma, verdana, arial, sans-serif;
+  --font-heading: tahoma, verdana, arial, sans-serif;
+  --mantine-font-family: tahoma, verdana, arial, sans-serif;
+
+  font-family: var(--font-body);
+  background: var(--win-desktop);
+  letter-spacing: 0;
+}
+
+html[data-design='win98'] [data-store-desktop] {
+  padding-bottom: calc(var(--win-taskbar-height) + 8px + env(safe-area-inset-bottom));
+}
+
+html[data-design='win98'] body :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px dotted var(--text-primary);
+  outline-offset: 3px;
+}
+
+html[data-design='win98'] body .mantine-Button-root,
+html[data-design='win98'] body .win98-taskbar a {
+  border: 0;
+  border-radius: 0;
+  background: var(--win-face);
+  color: var(--text-primary);
+  box-shadow: var(--win-raised);
+  font-weight: 700;
+  letter-spacing: 0;
+  transition: none;
+  transform: none;
+}
+
+html[data-design='win98'] body .mantine-Button-root::before,
+html[data-design='win98'] body .mantine-Button-root::after {
+  display: none;
+}
+
+html[data-design='win98'] body .mantine-Button-root:active:not(:disabled),
+html[data-design='win98'] body .win98-taskbar a:active,
+html[data-design='win98'] body .win98-taskbar a[aria-current='page'] {
+  box-shadow: var(--win-sunken);
+  background: var(--surface-muted);
+  transform: none;
+}
+
+html[data-design='win98'] body .mantine-Button-root:disabled {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+html[data-design='win98']
+  body
+  :is(.mantine-Input-input, .mantine-Select-dropdown, .mantine-Popover-dropdown, .mantine-Menu-dropdown) {
+  background: var(--win-paper) !important;
+  color: var(--text-primary);
+  border-radius: 0 !important;
+  box-shadow: var(--win-sunken);
+}
+
+html[data-design='win98']
+  body
+  :is(.mantine-Modal-content, .mantine-Drawer-content, .mantine-Notification-root) {
+  border: 0;
+  border-radius: 0;
+  box-shadow:
+    var(--win-raised),
+    5px 5px 0 rgb(0 0 0 / 25%);
+  background: var(--win-face);
+}
+
+html[data-design='win98'] body :is(.mantine-Modal-header, .mantine-Drawer-header) {
+  margin: 4px;
+  padding: 8px 12px;
+  background: linear-gradient(90deg, var(--win-title), var(--win-title-end));
+  color: #fff;
+}
+
+html[data-design='win98']
+  body
+  :is(.mantine-Modal-title, .mantine-Drawer-title, .mantine-Modal-close, .mantine-Drawer-close) {
+  color: #fff;
+  font-weight: 700;
+}
+
+html[data-design='win98'] .win98-window-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 36px;
+  padding: 4px 6px;
+  color: #fff;
+  background: linear-gradient(90deg, var(--win-title), var(--win-title-end));
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.win98-window-bar > svg {
+  color: #ffe679;
+  fill: #e9bd35;
+  flex-shrink: 0;
+}
+
+.win98-window-bar > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.win98-window-bar > a {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 28px;
+  margin-left: auto;
+  color: #000;
+  background: #c0c0c0;
+  box-shadow:
+    inset 1px 1px #fff,
+    inset -1px -1px #000,
+    inset 2px 2px #dfdfdf,
+    inset -2px -2px #808080;
+}
+
+.win98-window-bar > a:active {
+  box-shadow:
+    inset 1px 1px #000,
+    inset -1px -1px #fff;
+}
+
+html[data-design='win98'] .win98-taskbar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  background: var(--win-face);
+  border-top: 2px solid var(--win-highlight);
+  color: var(--text-primary);
+  box-shadow: 0 -1px 0 var(--win-shadow);
+  font-size: 14px;
+}
+
+.win98-taskbar a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 44px;
+  min-width: 0;
+  padding: 8px 14px;
+  text-decoration: none;
+}
+
+.win98-tasks {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: 6px;
+  border-left: 1px solid var(--win-shadow);
+  padding-left: 8px;
+}
+
+.win98-tasks a {
+  flex: 0 1 180px;
+}
+
+.win98-taskbar svg {
+  flex-shrink: 0;
+}
+
+.win98-tasks a span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.win98-tray {
+  padding: 10px 14px;
+  box-shadow: var(--win-sunken);
+  white-space: nowrap;
+}
+
+@media (width <= 600px) {
+  html[data-design='win98'] {
+    --page-padding-x: 12px;
+    --page-padding-y: 16px;
+  }
+
+  html[data-design='win98'] .win98-taskbar {
+    gap: 6px;
+    padding-inline: 6px;
+  }
+
+  .win98-taskbar a {
+    justify-content: center;
+    gap: 5px;
+    padding-inline: 8px;
+    font-size: 13px;
+  }
+
+  .win98-tasks {
+    padding-left: 6px;
+    gap: 5px;
+  }
+
+  .win98-tasks a {
+    flex: 1;
+  }
+
+  .win98-tray {
+    display: none;
+  }
+
+  .win98-window-bar {
+    min-height: 44px;
+  }
+
+  .win98-window-bar > a {
+    min-height: 36px;
+  }
+}
+
+@media (forced-colors: active) {
+  html[data-design='win98'] .win98-taskbar a,
+  html[data-design='win98'] .win98-window-bar {
+    border: 1px solid ButtonText;
+  }
+}

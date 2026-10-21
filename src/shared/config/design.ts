@@ -8,7 +8,7 @@
 // 'diia' — чинний дизайн: без атрибута і без запису в сховищі.
 // Інлайн-скрипт у layout.tsx ставить атрибут ДО першого кадру — дублює
 // це правило дослівно; міняєш тут — онови і його.
-import { ROTATION_ENABLED, designForTime } from './design-rotation';
+import { ROTATION_ENABLED, DEFAULT_AUTO_DESIGN, designForTime } from './design-rotation';
 
 export type DesignId =
   | 'diia'
@@ -19,7 +19,8 @@ export type DesignId =
   // Обидві теми задані повністю, тож авто-тема лишається за годинником.
   | 'monolith'
   | 'overdrive'
-  | 'spotlight';
+  | 'spotlight'
+  | 'win98';
 
 export const DESIGN_KEY = 'design';
 export const DESIGN_FALLBACK: DesignId = 'diia';
@@ -29,6 +30,7 @@ export const PALETTE_IDS: DesignId[] = ['monolith', 'overdrive', 'spotlight'];
 
 // Метадані для перемикача на дев-панелі
 export const DESIGN_OPTIONS: { id: DesignId; label: string; hint: string }[] = [
+  { id: 'win98', label: 'Windows 95/98', hint: 'робочий стіл · вікна колекцій · класичні кнопки' },
   { id: 'diia', label: 'Дія', hint: 'чинний · стек героїв · тема за годинником' },
   { id: 'monolith', label: 'Індустріальна студія', hint: 'В1 · бетон і сталь · електрик у ґрунті' },
   { id: 'overdrive', label: 'Аналоговий перегруз', hint: 'В2 · тепла крафтова база, мідь' },
@@ -82,7 +84,7 @@ export const readDesignChoice = (): DesignChoice => {
 
 /** Вибір → конкретна палітра. Момент передається явно, щоб лишитись чистою. */
 export const resolveDesign = (choice: DesignChoice, now: number): DesignId =>
-  choice === DESIGN_CHOICE_AUTO ? (ROTATION_ENABLED ? designForTime(now) : DESIGN_FALLBACK) : choice;
+  choice === DESIGN_CHOICE_AUTO ? (ROTATION_ENABLED ? designForTime(now) : DEFAULT_AUTO_DESIGN) : choice;
 
 export const applyDesign = (design: DesignId) => {
   const d = document.documentElement;

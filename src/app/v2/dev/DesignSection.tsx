@@ -25,6 +25,7 @@ import {
 } from '@/shared/config/design';
 import {
   ROTATION_ENABLED,
+  DEFAULT_AUTO_DESIGN,
   ROTATION_ORDER,
   ROTATION_SLOT_DAYS,
   designForTime,
@@ -104,7 +105,7 @@ export const DesignSection = () => {
             <strong>Авто · ротація</strong>
             <span>
               {!ROTATION_ENABLED
-                ? 'ротацію вимкнено рубильником — сайт лишається на Дії'
+                ? `ротацію вимкнено — ${labelOf(DEFAULT_AUTO_DESIGN)}`
                 : !rotating
                   ? `кожні ${ROTATION_SLOT_DAYS} дні за календарем`
                   : `зараз ${labelOf(design)} · далі ${labelOf(nextDesign as DesignId)} з ${whenLabel(nextAt)}`}
@@ -143,8 +144,9 @@ export const DesignSection = () => {
         <h2 className={styles.sectionTitle}>Дизайн-концепції</h2>
         {rows(conceptIds)}
         <p className={styles.mono}>
-          К1–К3 міняють ще й механіку героя, скіни позначок і правило авто-теми — тому їх не можна порівнювати
-          з кольористиками напряму. У ротації вони не беруть участі: це вже інший сайт, а не інший колір
+          Концепції змінюють оформлення компонентів, а деякі — ще й механіку героя та правило авто-теми. Їх не
+          можна порівнювати з кольористиками напряму. Windows 95/98 зараз використовується в режимі «Авто»;
+          решту можна закріпити для цього браузера.
         </p>
       </section>
     </>

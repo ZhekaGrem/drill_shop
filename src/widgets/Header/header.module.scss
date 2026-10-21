@@ -507,3 +507,17 @@
   border: 2px solid var(--hd-bg);
   pointer-events: none;
 }
+
+:global([data-design='win98']) .wrapper {
+  --hd-bg: var(--win-face);
+  --hd-fg: var(--text-primary);
+  --hd-fg-quiet: var(--text-secondary);
+  --hd-border: var(--win-frame);
+  --hd-hover: var(--surface-hover);
+  --hd-pill-border: var(--win-shadow);
+  --hd-cta-bg: var(--win-title);
+  --hd-cta-fg: #fff;
+  --hd-cta-hover: var(--win-title-end);
+  border-bottom: 2px solid var(--win-shadow);
+  box-shadow: inset 0 1px var(--win-highlight);
+}

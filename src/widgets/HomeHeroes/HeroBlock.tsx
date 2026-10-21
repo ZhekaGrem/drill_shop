@@ -16,6 +16,7 @@ import { switcherForCollection } from '@/shared/config/collection-switcher';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import { capsuleStyle, type CollectionDef } from '@/widgets/ProductV2/collections';
 import styles from './HomeHeroes.module.scss';
+import { Windows98WindowBar } from '@/shared/components/Windows98/Windows98';
 
 interface HeroBlockProps {
   col: CollectionDef;
@@ -66,7 +67,8 @@ export const HeroBlock = ({
   const activeDesign = col.designs[active] ?? col.items[0]?.design;
 
   return (
-    <section id={`collection-${col.key}`} className={styles.hero}>
+    <section id={`collection-${col.key}`} className={styles.hero} data-store-window>
+      <Windows98WindowBar title={col.title} href={`/v2/a/${active}`} />
       <div className={styles.heroShare}>
         <button
           type="button"

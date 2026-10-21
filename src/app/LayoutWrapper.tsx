@@ -8,6 +8,7 @@ import { EmailVerificationBanner } from '@/shared/components/EmailVerificationBa
 import { ThemeClock } from '@/shared/components/ThemeClock/ThemeClock';
 import { useRandomGradientPhase } from '@/shared/hooks';
 import styles from './LayoutWrapper.module.scss';
+import { Windows98Taskbar } from '@/shared/components/Windows98/Windows98';
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -33,7 +34,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
     <>
       <ThemeClock />
-      <div className={styles.siteAlways}>
+      <div className={styles.siteAlways} data-store-desktop>
         {/* viewTransitionName вилучає хедер зі знімка сторінки, щоб він не їхав
           разом із контентом. Правило анімації — в globals.css. Inline-стиль —
           варіант C правил стилізації: це унікальний ідентифікатор ділянки,
@@ -55,6 +56,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         <div style={{ viewTransitionName: 'site-footer' }}>
           <Footer />
         </div>
+        <Windows98Taskbar />
         {/* Нижня панель навігації видалена (рішення власника): каталог і меню
             переїхали в кнопки-іконки хедера */}
       </div>
