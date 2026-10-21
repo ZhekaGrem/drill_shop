@@ -1,0 +1,34 @@
+{
+  "slug": "brilok",
+  "title": "брілок",
+  "description": "Пухнасті брілки з металевим кільцем. Обирай свій колір і розмір: L, XL або XXL.",
+  "sizes": [
+    { "size": "L", "price": 300 },
+    { "size": "XL", "price": 400 },
+    { "size": "XXL", "price": 500 }
+  ],
+  "initialQuantity": 100,
+  "products": [
+    {
+      "slug": "brilok-green",
+      "name": "Брілок / зелений",
+      "color": "Зелений",
+      "swatch": "#7d8c48",
+      "source": "IMG20251109152732.jpg"
+    },
+    {
+      "slug": "brilok-purple",
+      "name": "Брілок / фіолетовий",
+      "color": "Фіолетовий",
+      "swatch": "#783a99",
+      "source": "IMG20251214103246.jpg"
+    },
+    {
+      "slug": "brilok-turquoise-purple",
+      "name": "Брілок / бірюзово-фіолетовий",
+      "color": "Бірюзово-фіолетовий",
+      "swatch": "linear-gradient(135deg, #50a4aa, #a940a5)",
+      "source": "IMG20250720140919.jpg"
+    }
+  ]
+}

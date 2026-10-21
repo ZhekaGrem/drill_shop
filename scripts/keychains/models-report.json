@@ -1,0 +1,17 @@
+[
+  {
+    "slug": "green",
+    "triangles": 32096,
+    "bytes": 1389164
+  },
+  {
+    "slug": "purple",
+    "triangles": 32096,
+    "bytes": 1074196
+  },
+  {
+    "slug": "turquoise-purple",
+    "triangles": 32096,
+    "bytes": 1147996
+  }
+]
