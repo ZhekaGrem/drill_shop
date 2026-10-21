@@ -39,7 +39,11 @@ export const ProductCardImage: React.FC<ProductCardImageProps> = ({
   const turn = turntables?.[product.slug];
 
   return (
-    <div className={styles.productCardImageContainer} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+    <div
+      className={styles.productCardImageContainer}
+      data-win98-image=""
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}>
       <div className={styles.productCardImageContainer__ImageWrapper}>
         {/* name збігається з обгорткою головного фото на сторінці товару — по
             ньому React знаходить пару й морфить фото між позиціями. share="morph"

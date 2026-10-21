@@ -386,36 +386,40 @@ section + .hero {
   color: var(--text-primary);
 }
 
-.heroShare {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 5;
+.heroShareMessage {
+  width: max-content;
+  max-width: min(260px, calc(100vw - 80px));
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+
+  &:empty {
+    display: none;
+  }
 }
 
-.heroShareButton {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 1px solid var(--text-secondary);
-  border-radius: 50%;
+.heroCopyAction {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-button);
   background: var(--surface-card);
   color: var(--text-primary);
+  font: inherit;
   cursor: pointer;
-  transition:
-    color 150ms ease,
-    border-color 150ms ease;
 
   &:hover {
-    color: var(--acid);
-    border-color: currentColor;
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--acid);
-    outline-offset: 3px;
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 
   &:disabled {
@@ -424,31 +428,19 @@ section + .hero {
   }
 }
 
-.heroShareMessage {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  width: max-content;
-  max-width: min(260px, calc(100vw - 80px));
-  padding: 10px 14px;
-  border-radius: var(--radius-card);
-  background: var(--surface-card);
-  box-shadow: var(--shadow-sm);
-  color: var(--text-primary);
-  font-size: var(--text-sm);
-  pointer-events: none;
-
-  &:empty {
-    display: none;
-  }
-}
-
 .heroCopyIcon,
 .heroCheckIcon {
-  grid-area: 1 / 1;
+  display: grid;
+  position: absolute;
+  left: 12px;
+  place-items: center;
   transition:
     opacity 360ms ease-in-out,
     transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.heroCopyAction > span:last-child {
+  margin-left: 22px;
 }
 
 .heroCheckIcon {
@@ -456,7 +448,7 @@ section + .hero {
   transform: scale(0.85) rotate(-12deg);
 }
 
-.heroShareButton[data-copied='true'] {
+.heroCopyAction[data-copied='true'] {
   .heroCopyIcon {
     opacity: 0;
     transform: scale(0.85) rotate(12deg);
@@ -475,78 +467,8 @@ section + .hero {
   }
 }
 
-:global([data-design='win98']) .hero[data-store-window] {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: 24px;
-  padding: 4px 24px 24px;
-  border: 1px solid var(--win-frame);
-  box-shadow:
-    var(--win-raised),
-    4px 4px 0 rgb(0 0 0 / 22%);
-  min-width: 0;
-
-  > :global(.win98-window-bar) {
-    grid-column: 1 / -1;
-    margin: 0 -20px;
-  }
-
-  .heroShare {
-    top: 48px;
-    right: 18px;
-  }
-
-  .heroText {
-    min-width: 0;
-    padding: 20px 0 8px;
-  }
-  .heroTitle {
-    font-size: clamp(28px, 3vw, 40px);
-    letter-spacing: -0.025em;
-  }
-  .heroSubtitle {
-    font-weight: 400;
-  }
-  .heroVisualWrap {
-    min-width: 0;
-    padding-top: 40px;
-  }
-  .heroBadgeOnStage {
-    top: 8px;
-    left: 0;
-    max-width: calc(100% - 48px);
-    font-weight: 400;
-    font-size: 13px;
-  }
-  .heroPulseDot {
-    width: 8px;
-    height: 8px;
-    animation: none;
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-    padding: 4px 16px 20px;
-    min-height: 0;
-
-    > :global(.win98-window-bar) {
-      margin: 0 -12px;
-    }
-    .heroVisualWrap {
-      grid-row: 2;
-    }
-    .heroText {
-      grid-row: 3;
-      padding-top: 0;
-    }
-    .heroActions {
-      padding-top: 8px;
-      margin-top: 8px;
-    }
-    .heroShare {
-      right: 12px;
-    }
-  }
-}
+/*
+ * Windows-specific home layout lives in
+ * shared/components/Windows98/windows-hero.module.scss. Keeping it out of
+ * this shared module lets the legacy concepts evolve independently.
+ */

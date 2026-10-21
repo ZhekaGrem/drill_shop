@@ -240,14 +240,19 @@ html[data-design='win98'] .win98-window-bar {
 }
 
 .win98-window-bar > a {
-  display: grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   flex-shrink: 0;
-  min-width: 44px;
-  min-height: 28px;
+  min-height: 32px;
   margin-left: auto;
+  padding: 0 8px;
   color: #000;
   background: #c0c0c0;
+  font-size: 12px;
+  text-decoration: none;
+  white-space: nowrap;
   box-shadow:
     inset 1px 1px #fff,
     inset -1px -1px #000,
@@ -259,6 +264,50 @@ html[data-design='win98'] .win98-window-bar {
   box-shadow:
     inset 1px 1px #000,
     inset -1px -1px #fff;
+}
+
+html[data-design='win98'] .win98-window-bar > a:hover {
+  background: #dfdfdf;
+}
+
+html[data-design='win98'] [data-win98-copy] {
+  min-height: 40px;
+  border: 0;
+  border-radius: 0;
+  background: var(--win-face);
+  box-shadow: var(--win-raised);
+}
+
+html[data-design='win98'] [data-win98-copy]:active {
+  box-shadow: var(--win-sunken);
+}
+
+html[data-design='win98'] [data-win98-spotlight] {
+  display: none;
+}
+
+html[data-design='win98'] [data-win98-grid] {
+  gap: 32px;
+  align-items: stretch;
+}
+
+html[data-design='win98'] [data-win98-product-card] {
+  z-index: auto;
+  isolation: isolate;
+  border: 1px solid var(--win-frame);
+  box-shadow: var(--win-raised);
+}
+
+html[data-design='win98'] [data-win98-image] :is(img, video) {
+  object-fit: contain;
+}
+
+html[data-design='win98'] [data-win98-apparel] [data-win98-image] :is(img, video) {
+  transform: scale(0.82);
+}
+
+html[data-design='win98'] [data-win98-apparel]:hover [data-win98-image] :is(img, video) {
+  transform: scale(0.82);
 }
 
 html[data-design='win98'] .win98-taskbar {
@@ -354,6 +403,12 @@ html[data-design='win98'] .win98-taskbar {
 
   .win98-window-bar > a {
     min-height: 36px;
+    padding-inline: 6px;
+    font-size: 11px;
+  }
+
+  html[data-design='win98'] [data-win98-grid] {
+    gap: 20px;
   }
 }
 

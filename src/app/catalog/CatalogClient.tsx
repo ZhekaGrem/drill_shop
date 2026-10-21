@@ -159,7 +159,7 @@ export default function CatalogClient({ initialData, basePath = '' }: CatalogPro
             і сам перший запит — обидва варто показувати скелетоном, а не
             порожнім кадром «Нічого не знайдено» (крок 4) */}
         {status === 'pending' && (
-          <div className={styles.products}>
+          <div className={styles.products} data-win98-grid="">
             {Array.from({ length: 18 }).map((_, i) => (
               <div key={i} className={styles.productSkeleton}>
                 <div className={styles.productSkeleton__image} />
@@ -176,7 +176,7 @@ export default function CatalogClient({ initialData, basePath = '' }: CatalogPro
 
         {status === 'success' && products.length > 0 && (
           <>
-            <div className={styles.products}>
+            <div className={styles.products} data-win98-grid="">
               {products.map((product, index) => (
                 <ProductCard key={product.id} product={product} basePath={basePath} index={index} />
               ))}

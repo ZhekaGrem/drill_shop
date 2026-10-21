@@ -57,6 +57,8 @@ export const ProductCard = React.memo<ProductCardProps>(
       // відчутно повільним, і каскад із декоративного стає перешкодою.
       <div
         className={`${styles.card} ${className}`}
+        data-win98-product-card=""
+        data-win98-apparel={product.productType === 'CLOTHING' ? '' : undefined}
         style={{ '--i': Math.min(index ?? 0, 8) } as React.CSSProperties}>
         <div className={styles.link} onClick={handleCardClick}>
           {/* Product Image */}

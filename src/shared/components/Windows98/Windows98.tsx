@@ -10,7 +10,8 @@ export function Windows98WindowBar({ title, href }: { title: string; href: strin
     <div className="win98-window-bar">
       <IconFolder size={18} aria-hidden="true" />
       <span>{title}</span>
-      <Link href={href} aria-label={`Відкрити колекцію: ${title}`} title="Відкрити колекцію">
+      <Link href={href} aria-label={`До колекції: ${title}`} title="До колекції">
+        <span>До колекції</span>
         <IconArrowUpRight size={17} aria-hidden="true" />
       </Link>
     </div>

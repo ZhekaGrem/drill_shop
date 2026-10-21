@@ -80,7 +80,7 @@ export default function CategoryPageClient({ initialCategory, initialProducts }:
           </div>
         ) : products.length > 0 ? (
           <>
-            <div className={styles.productsGrid}>
+            <div className={styles.productsGrid} data-win98-grid="">
               {products.map((product: Product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

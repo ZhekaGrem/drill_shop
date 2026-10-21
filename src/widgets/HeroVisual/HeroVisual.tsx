@@ -116,7 +116,7 @@ export const HeroVisual = ({
       <div ref={ref} className={styles.stage} {...dragHandlers}>
         {/* Підсвітка-«стенд» під обʼєктом: предмет стоїть на поверхні,
           а не висить у порожнечі */}
-        <span className={styles.spotlight} aria-hidden="true" />
+        <span className={styles.spotlight} data-win98-spotlight="" aria-hidden="true" />
         <span className={styles.shadow} aria-hidden="true" />
 
         <SceneErrorBoundary resetKey={selection}>
