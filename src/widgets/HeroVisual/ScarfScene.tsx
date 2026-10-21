@@ -1,11 +1,12 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useRef, type RefObject } from 'react';
+import { Suspense, useMemo, useRef, type RefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import { DoubleSide, SRGBColorSpace, type Group, type ShaderMaterial } from 'three';
 import scarf from '@/shared/config/scarf-oksana.json';
 import { DisposeRenderer } from './DisposeRenderer';
+import { useSceneReady } from './useSceneReady';
 import { scarfPrintAt } from './scarf-motion';
 import type { DragState } from './useDragRotation';
 
@@ -76,9 +77,7 @@ function Scarf({ onReady, dragRef, paused = false }: Props) {
     [textures]
   );
 
-  useEffect(() => {
-    onReady();
-  }, [onReady]);
+  useSceneReady(true, onReady);
 
   useFrame((_, delta) => {
     const mesh = group.current;

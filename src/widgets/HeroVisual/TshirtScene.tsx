@@ -18,6 +18,7 @@ import { useJump } from './useJump';
 import { useWind } from './useWind';
 import { useIdleMotion } from './useIdleMotion';
 import { useDesignMap } from './useDesignMap';
+import { useSceneReady } from './useSceneReady';
 import { useSceneClone } from './useSceneClone';
 import { sampleMotion, type MotionPreview } from './motionPresets';
 import type { RefObject } from 'react';
@@ -85,7 +86,8 @@ const Tshirt = ({
   const jump = useJump(jumpRef, box.height);
   const windStep = useWind(prepared);
   const idleStep = useIdleMotion(dragRef);
-  useDesignMap(prepared, mapUrl);
+  const mapReady = useDesignMap(prepared, mapUrl);
+  useSceneReady(mapReady, onReady);
 
   // Стрибок — внутрішня група, idle/drag — зовнішня; baked-анімація вимикає idle
   useFrame((state, delta) => {
@@ -117,11 +119,6 @@ const Tshirt = ({
     const lag = idleStep(group.current, delta, state.clock.elapsedTime);
     windStep(state.clock.elapsedTime, lag);
   });
-
-  // useGLTF саспендиться до завантаження, тож монтування = модель готова
-  useEffect(() => {
-    onReady();
-  }, [onReady]);
 
   // Перед моделі дивиться в +Z; обробники пасхалки — лише в interactive-режимі
   const jumpHandlers = interactive

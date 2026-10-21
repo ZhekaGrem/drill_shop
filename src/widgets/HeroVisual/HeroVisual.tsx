@@ -1,16 +1,7 @@
-// src/widgets/HeroVisual/HeroVisual.tsx
-// 3D-футболка в герої. Сцена локальна (public/model/tshirt.glb) і рендериться
-// через React Three Fiber — раніше вона вантажилась із хостингу Spline, через
-// що ми не мали доступу до камери й компенсували кадрування CSS-масштабом.
-// Дизайни перемикаються свотчами: сцені передається лише URL мапи, статичному
-// фолбеку — своє фото, тож перемикач працює і при reduced-motion без 3D.
-//
-// Порядок завантаження лишився той самий: сцена підвантажується лише коли блок
-// реально потрапив у вʼюпорт, і взагалі не вантажиться, якщо система просить
-// менше руху. Статичне фото — не «заглушка на час», а повноцінний фолбек.
+// 3D previews stay hidden until the selected model and print have rendered.
 'use client';
 
-import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
@@ -22,6 +13,7 @@ import { useDragRotation } from './useDragRotation';
 import type { Design } from './designs';
 import type { MotionPreview } from './motionPresets';
 import styles from './HeroVisual.module.scss';
+import { SceneErrorBoundary } from './SceneErrorBoundary';
 
 // Окремий чанк: three і drei не потрапляють у бандл головної сторінки
 const TshirtScene = lazy(() => import('./TshirtScene'));
@@ -81,11 +73,15 @@ export const HeroVisual = ({
   // Колекція з одного товару: перемикати нічого, тож ряду немає взагалі —
   // самотня картка з підписом під сценою виглядала як недороблений контрол
   const soloItem = Object.keys(designs).length <= 1 ? design : null;
-  // Готовність памʼятаємо ЯК МОДЕЛЬ: перемкнули GLB — активна модель ще не
-  // готова, канвас сам ховається за фолбек до onReady нової сцени
   const activeModel = active?.presentation === 'scarf' ? 'scarf' : (active?.modelUrl ?? 'tshirt');
-  const [readyModel, setReadyModel] = useState<string | null>(null);
-  const isSceneReady = readyModel === activeModel;
+  // A fresh identity on every selection, including A → B → A. Late callbacks
+  // from an earlier selection cannot reveal the currently loading scene.
+  const selection = useMemo(
+    () => ({ design, activeModel, mapUrl: active?.mapUrl }),
+    [design, activeModel, active?.mapUrl]
+  );
+  const [readySelection, setReadySelection] = useState<typeof selection | null>(null);
+  const isSceneReady = readySelection === selection;
 
   // rootMargin — щоб сцена почала вантажитись трохи раніше, ніж блок
   // зʼявиться на екрані, і не «клацала» вже на видимому місці
@@ -95,17 +91,19 @@ export const HeroVisual = ({
 
   const shouldLoadScene = inView;
 
-  const handleSceneReady = useCallback(() => setReadyModel(activeModel), [activeModel]);
+  const handleSceneReady = useCallback(() => setReadySelection(selection), [selection]);
+
+  const hasReadyScene = readySelection !== null;
 
   // Префетч решти мап і моделей після першої готовності: свопи без пауз
   useEffect(() => {
-    if (!readyModel) return;
+    if (!hasReadyScene) return;
     for (const { mapUrl, modelUrl, presentation } of Object.values(designs)) {
       if (presentation === 'scarf') continue;
       if (mapUrl) new window.Image().src = mapUrl;
       if (modelUrl) fetch(modelUrl).catch(() => undefined);
     }
-  }, [readyModel, designs]);
+  }, [hasReadyScene, designs]);
 
   // Ранній вихід ПІСЛЯ всіх хуків (правила хуків): порожня колекція більше не
   // валить сторінку, а просто не малює сцену.
@@ -119,38 +117,35 @@ export const HeroVisual = ({
         <span className={styles.spotlight} aria-hidden="true" />
         <span className={styles.shadow} aria-hidden="true" />
 
-        <Image
-          src={active.fallback}
-          // Назва товару приходить з active.label. Раніше тут була захардкоджена
-          // «Ніжна Оксана» — компонент став галереєю довільної колекції, і той
-          // самий alt віддавався для КОЖНОГО товару сайту.
-          alt={`${active.label} — офіційний мерч є.Дріл`}
-          width={1200}
-          height={1200}
-          priority
-          className={`${styles.still} ${isSceneReady ? styles.stillHidden : ''}`}
-        />
-
-        {shouldLoadScene && (
-          <div className={`${styles.scene} ${isSceneReady ? styles.sceneReady : ''}`}>
-            <Suspense fallback={null}>
-              {/* key: зміна МОДЕЛІ ремонтує сцену (гарантований onReady і рефіт
-                камери), свопи текстур key не змінюють — граються без ремонту */}
-              {active.presentation === 'scarf' ? (
-                <ScarfScene onReady={handleSceneReady} dragRef={dragRef} paused={motion.paused} />
-              ) : (
-                <TshirtScene
-                  key={active.modelUrl ?? 'tshirt'}
-                  onReady={handleSceneReady}
-                  mapUrl={active.mapUrl}
-                  modelUrl={active.modelUrl}
-                  dragRef={dragRef}
-                  motionPreview={motion}
-                />
-              )}
-            </Suspense>
-          </div>
-        )}
+        <SceneErrorBoundary resetKey={selection}>
+          {!isSceneReady && (
+            <div className={styles.loader} role="status" aria-label="Завантаження 3D-моделі">
+              <span className={styles.spinner} aria-hidden="true" />
+            </div>
+          )}
+          {shouldLoadScene && (
+            <div
+              className={`${styles.scene} ${isSceneReady ? styles.sceneReady : ''}`}
+              aria-hidden={!isSceneReady}
+              role="img"
+              aria-label={`${active.label} — 3D-модель`}>
+              <Suspense fallback={null}>
+                {active.presentation === 'scarf' ? (
+                  <ScarfScene onReady={handleSceneReady} dragRef={dragRef} paused={motion.paused} />
+                ) : (
+                  <TshirtScene
+                    key={active.modelUrl ?? 'tshirt'}
+                    onReady={handleSceneReady}
+                    mapUrl={active.mapUrl}
+                    modelUrl={active.modelUrl}
+                    dragRef={dragRef}
+                    motionPreview={motion}
+                  />
+                )}
+              </Suspense>
+            </div>
+          )}
+        </SceneErrorBoundary>
       </div>
 
       {active.presentation === 'scarf' && <p className={styles.printNote}>{scarf.printNote}</p>}
