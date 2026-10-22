@@ -1,5 +1,6 @@
 // src/widgets/ProductV2/ProductInfoGroups.tsx
-// Характеристики, розмірна сітка, доставка й оплата — в панелі вибору товару.
+// Те, що людина шукає ПЕРЕД покупкою: характеристики, розмірна сітка, доставка.
+// Групи лежать на фоні сторінки (не в білій картці) — як на /catalog/[slug].
 'use client';
 
 import { useState } from 'react';
@@ -20,11 +21,24 @@ const OPTION_LABELS: Record<string, string> = {
   origin: 'Походження',
 };
 
-export const ProductInfoGroups = ({ product }: { product: Product }) => {
+/**
+ * hideChoiceOptions — не дублювати розмір і колір у характеристиках, коли їх уже вибирають кнопками поруч
+ * (вікно «Інформація» в дизайні Windows 98). Решта дизайнів показує характеристики, як і раніше.
+ */
+export const ProductInfoGroups = ({
+  product,
+  hideChoiceOptions = false,
+}: {
+  product: Product;
+  hideChoiceOptions?: boolean;
+}) => {
   const [guideOpened, setGuideOpened] = useState(false);
 
   const specs = Object.entries(product.options || {})
-    .filter(([key, value]) => !['size', 'color'].includes(key.toLowerCase()) && value && String(value).trim())
+    .filter(
+      ([key, value]) =>
+        !(hideChoiceOptions && ['size', 'color'].includes(key.toLowerCase())) && value && String(value).trim()
+    )
     .map(([key, value]) => ({
       label: OPTION_LABELS[key] || key.charAt(0).toUpperCase() + key.slice(1),
       value: String(value),

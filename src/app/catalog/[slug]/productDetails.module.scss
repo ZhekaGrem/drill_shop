@@ -1,8 +1,8 @@
 // src/app/catalog/[slug]/productDetails.module.scss
 @use '../../../shared/styles/animations';
 
-// Сторінка товару: спільна сіра картка з галереєю та купівлею, окрема панель
-// варіантів і сервісних умов, нижче — характеристики та схожі товари.
+// Сторінка товару в мові Дії: дві білі картки-«документи» зверху (галерея +
+// купівля), під ними групи фактів, опис, схожі товари, відгуки.
 //
 // Одна шкала відступів на весь файл — примітиви --space-*. Раніше тут жили
 // одночасно --spacing-md і --space-4 (це аліаси одного значення), тож кожна
@@ -13,13 +13,13 @@
   // Прозорий фон — крізь сторінку видно var(--gradient-page) з globals.css
 
   // ============ PRODUCT DETAILS GRID ============
-  // Пропорції колонок навмисно дублюють ProductV2
+  // Пропорції колонок і sticky-інфокартка навмисно дублюють ProductV2
   // (/v2/a/[slug]): 400px — та сама міра, під яку рахована мова списків і
   // блок покупки, ліва (галерея) колонка забирає решту. minmax(0, …)
   // обов'язковий: без нього широке фото роздуває доріжку.
-  // align-items: start: внутрішні галерея й інформація мають різну висоту;
-  // sticky-контейнер не повинен розтягуватися разом із ними. Структура тут
-  // сама не дає sticky-інфокартці втекти в
+  // align-items: start (не stretch, як було): галерея й інфокартка тепер
+  // різної природи (одна sticky, інша ні), стретчити обидві під один ряд
+  // більше не можна — сама структура тут НЕ дає sticky-інфокартці втекти в
   // сусідній грід-рядок (групи фактів/схожі товари лежать ПОЗА цим грідом,
   // на відміну від того, як спершу було влаштовано ProductV2).
   .productDetails {
@@ -27,18 +27,15 @@
     grid-template-columns: minmax(0, 1fr) 400px;
     align-items: start;
     gap: var(--space-6);
-    margin-bottom: var(--space-4);
-    padding: var(--space-6);
-    background: var(--background-secondary);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--space-12);
 
-    // Вміст фото й покупки стоїть на спільній сітці всередині однієї сірої картки.
+    // Внутрішній падінг білої інфо-картки — один для всіх її дітей,
+    // щоб заголовок, ціна, варіанти й кнопки стояли на спільному лівому краї
     &__container {
-      padding: 0;
+      padding: var(--space-8);
 
       @media (max-width: 768px) {
-        padding: 0;
+        padding: var(--card-padding);
       }
     }
     // letter-spacing був +0.02em — літери в назві товару розповзались, тоді як
@@ -167,7 +164,7 @@
     // інакше гілка з <Select> лишалась узагалі без нижнього відступу, а гілка
     // з чіпами мала 24px — два різні ритми в одній колонці
     &__variants {
-      margin: 0;
+      margin-bottom: var(--space-6);
 
       &__select {
         :global(.mantine-Select-input) {
@@ -225,20 +222,26 @@
       gap: var(--space-4);
     }
 
-    // Галерея та інфо залишаються в межах спільної сірої картки.
+    // Дві білі картки-«документи» поруч. Внутрішній падінг у них має бути ОДИН:
+    // було 24px у галереї проти 32px в інфо-колонці, і вміст двох сусідніх
+    // карток стояв на різних вертикалях.
     &__images {
       display: flex;
       width: 100%;
-      padding: 0;
-      background: transparent;
+      padding: var(--space-8);
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
 
       @media (max-width: 768px) {
-        padding: 0;
+        padding: var(--card-padding);
       }
     }
 
     &__info {
-      background: transparent;
+      background: var(--surface-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
       // БЕЗ overflow: hidden. Предок із overflow робиться scroll-контейнером
       // для `position: sticky`, і мобільна панель дії переставала липнути —
       // вона трималась рівно доти, доки на екрані була сама картка.
@@ -422,21 +425,6 @@
   .productInfoGroups {
     display: grid;
     gap: var(--card-gap);
-  }
-
-  .productOptionsCard {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    margin-bottom: var(--space-8);
-    padding: var(--space-6);
-    background: var(--background-secondary);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-sm);
-
-    @media (max-width: 768px) {
-      padding: var(--card-padding);
-    }
   }
 
   // ============ DESCRIPTION ============
@@ -688,8 +676,9 @@
     padding-bottom: 72px;
 
     .productDetails {
+      // Дві білі картки зі скругленням 24px і тінню, поставлені впритул
+      // (gap: 0), читались як одна поламана площина, а не як два документи
       gap: var(--card-gap);
-      padding: var(--card-padding);
     }
 
     .productDetails__images {
@@ -698,6 +687,8 @@
 
     .productDetails__info {
       order: 2;
+      // Горизонтальний падінг дає `__container`; занулення тут клало текст
+      // на самий край скруглення картки
     }
 
     .productDetails__title {

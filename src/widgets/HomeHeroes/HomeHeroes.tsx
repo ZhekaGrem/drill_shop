@@ -13,6 +13,7 @@ import { useDesign } from '@/shared/hooks';
 import { content } from '@/shared/config/content';
 import type { CollectionDef } from '@/widgets/ProductV2/collections';
 import { HeroBlock } from './HeroBlock';
+import { HeroBlockWin98 } from './HeroBlockWin98';
 import { HeroCarousel } from './HeroCarousel';
 import { HeroTabs } from './HeroTabs';
 import { HeroTiles } from './HeroTiles';
@@ -93,10 +94,13 @@ export const HomeHeroes = ({ collections, showAbout = true, intro = content.home
   if (design === 'streetwear') return <HeroTiles key={focusKey} {...mechanics} />;
   if (design === 'tactile') return <HeroTabs key={focusKey} {...mechanics} />;
 
+  // Windows 98 — окремий дизайн зі своїм героєм-вікном; Дія й похідні рендерять незмінний HeroBlock
+  const Block = design === 'win98' ? HeroBlockWin98 : HeroBlock;
+
   return (
     <>
       {collections.map((col, i) => (
-        <HeroBlock
+        <Block
           key={col.key}
           col={col}
           titleTag={i === 0 ? 'h1' : 'h2'}

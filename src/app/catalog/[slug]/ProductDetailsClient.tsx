@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo, useRef, ViewTransition } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCard';
 import { productsApi, ProductResponse } from '@/features/catalog/api/products';
-import { Product, ProductVariant, ProductWithRelations } from '@/shared/types';
+import { Product, ProductWithRelations } from '@/shared/types';
 import { Select } from '@mantine/core';
 import { IconRuler } from '@tabler/icons-react';
 import { Button } from '@/shared/components/Button/Button';
@@ -342,69 +342,6 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
       .filter((cat) => cat.imageUrl || cat.text) || [];
   const hasSizeGuide = categoriesWithGuide.length > 0;
 
-  const variantSelector = !collectionArchived && hasVariants && sortedVariants.length > 0 && (
-    <div className={styles.productDetails__variants} ref={variantsRef}>
-      {showVariantCheckboxes ? (
-        <div>
-          <label className={styles.variantLabel}>Варіант:</label>
-          <div className={styles.variantCheckboxes}>
-            {sortedVariants.map((variant: ProductVariant) => {
-              const stock = getVariantStock(variant);
-              const isOutOfStock = stock <= 0;
-              const displayValue = getVariantDisplayValue(variant);
-
-              return (
-                <label
-                  key={variant.id}
-                  className={`${styles.variantCheckbox} ${isOutOfStock ? styles.variantCheckbox_disabled : ''}`}>
-                  <input
-                    type="radio"
-                    name={`variant-${product.id}`}
-                    checked={selectedVariant?.id === variant.id}
-                    disabled={isOutOfStock}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                      if (!isOutOfStock) {
-                        setSelectedVariant(variant);
-                        setVariantError(null);
-                      }
-                    }}
-                  />
-                  <span className={styles.variantCheckboxText}>{displayValue}</span>
-                </label>
-              );
-            })}
-          </div>
-        </div>
-      ) : (
-        <Select
-          className={styles.productDetails__variants__select}
-          radius="xs"
-          label="Варіант:"
-          size="lg"
-          value={selectedVariant?.id || (!product.hasVariants ? 'main' : undefined)}
-          onChange={(value) => {
-            if (value === 'main') {
-              setSelectedVariant(null);
-            } else {
-              const variant = sortedVariants.find((v) => v.id === value);
-              setSelectedVariant(variant);
-            }
-            setVariantError(null);
-          }}
-          data={[
-            ...(!product.hasVariants ? [{ value: 'main', label: `${product.name}` }] : []),
-            ...sortedVariants.map((variant: any) => ({
-              value: variant.id,
-              label: createVariantDisplayLabel(variant),
-            })),
-          ]}
-          placeholder="Оберіть варіант"
-        />
-      )}
-    </div>
-  );
-
   return (
     <Page className={styles.productPage}>
       <div>
@@ -563,6 +500,93 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                 )}
               </div>
 
+              {/* Variants Selector */}
+              {!collectionArchived && hasVariants && sortedVariants.length > 0 && (
+                <div className={styles.productDetails__variants} ref={variantsRef}>
+                  {/* ✅ Якщо варіанти мають size/color - показуємо чекбокси */}
+                  {showVariantCheckboxes ? (
+                    <div>
+                      <label className={styles.variantLabel}>Варіант:</label>
+                      <div className={styles.variantCheckboxes}>
+                        {sortedVariants.map((variant: any) => {
+                          const stock = getVariantStock(variant);
+                          const isOutOfStock = stock <= 0;
+                          const displayValue = getVariantDisplayValue(variant);
+
+                          return (
+                            <label
+                              key={variant.id}
+                              className={`${styles.variantCheckbox} ${
+                                isOutOfStock ? styles.variantCheckbox_disabled : ''
+                              }`}>
+                              {/* radio, а не checkbox: вибір варіанта
+                                  взаємовиключний. У картці каталогу цей самий
+                                  контрол уже radio — скрінрідер оголошував два
+                                  різні контроли для однієї сутності. */}
+                              <input
+                                type="radio"
+                                name={`variant-${product.id}`}
+                                checked={selectedVariant?.id === variant.id}
+                                disabled={isOutOfStock}
+                                onChange={(e) => {
+                                  e.stopPropagation();
+                                  if (!isOutOfStock) {
+                                    setSelectedVariant(variant);
+                                    setVariantError(null);
+                                  }
+                                }}
+                              />
+                              <span className={styles.variantCheckboxText}>{displayValue}</span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    // ✅ Інакше - показуємо Select
+                    <Select
+                      className={styles.productDetails__variants__select}
+                      radius="xs"
+                      label="Варіант:"
+                      size="lg"
+                      value={selectedVariant?.id || (!product.hasVariants ? 'main' : undefined)}
+                      onChange={(value) => {
+                        if (value === 'main') {
+                          setSelectedVariant(null);
+                        } else {
+                          const variant = sortedVariants.find((v) => v.id === value);
+                          setSelectedVariant(variant);
+                        }
+                        setVariantError(null);
+                      }}
+                      data={[
+                        // Показуємо головний товар тільки якщо hasVariants = false
+                        ...(!product.hasVariants
+                          ? [
+                              {
+                                value: 'main',
+                                label: `${product.name}`,
+                              },
+                            ]
+                          : []),
+                        ...(sortedVariants.map((variant: any) => ({
+                          value: variant.id,
+                          label: createVariantDisplayLabel(variant),
+                        })) || []),
+                      ]}
+                      placeholder="Оберіть варіант"
+                      style={{ marginTop: '8px' }}
+                    />
+                  )}
+                </div>
+              )}
+
+              {variantError && (
+                <p className={styles.variantError} role="alert">
+                  {variantError}
+                </p>
+              )}
+
               {/* Add to Cart Section */}
               <div className={styles.productDetails__actions}>
                 {collectionArchived ? (
@@ -599,35 +623,31 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
           </div>
         </div>
 
-        <div className={styles.productOptionsCard}>
-          {variantSelector}
-          {variantError && (
-            <p className={styles.variantError} role="alert">
-              {variantError}
-            </p>
+        {/* Те, що людина шукає ПЕРЕД покупкою: склад, розмір, доставка, повернення.
+            Раніше цього на сторінці не було взагалі — після кнопки одразу йшов опис.
+            Групи лежать НА фоні сторінки, а не всередині білої інфо-картки:
+            біле на білому не читається як окремий блок. */}
+        <div className={styles.productInfoGroups}>
+          {specRows.length > 0 && (
+            <ListGroup>
+              {specRows.map((spec) => (
+                <ListRow key={spec.label} title={spec.label} value={spec.value} />
+              ))}
+            </ListGroup>
           )}
-          <div className={styles.productInfoGroups}>
-            {specRows.length > 0 && (
-              <ListGroup>
-                {specRows.map((spec) => (
-                  <ListRow key={spec.label} title={spec.label} value={spec.value} />
-                ))}
-              </ListGroup>
-            )}
 
-            {hasSizeGuide && (
-              <ListGroup>
-                <ListRow
-                  onClick={() => setSizeGuideOpened(true)}
-                  media={<IconRuler stroke={1.5} />}
-                  title="Розмірна сітка"
-                  hint="Заміри та посадка для цієї категорії"
-                />
-              </ListGroup>
-            )}
+          {hasSizeGuide && (
+            <ListGroup>
+              <ListRow
+                onClick={() => setSizeGuideOpened(true)}
+                media={<IconRuler stroke={1.5} />}
+                title="Розмірна сітка"
+                hint="Заміри та посадка для цієї категорії"
+              />
+            </ListGroup>
+          )}
 
-            <ServicesGroup />
-          </div>
+          <ServicesGroup />
         </div>
 
         {/* Опис на всю ширину. Раніше він лежав у правій колонці сітки — вузька

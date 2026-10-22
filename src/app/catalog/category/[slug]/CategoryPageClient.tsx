@@ -12,6 +12,7 @@ import { Button } from '@/shared/components/Button/Button';
 import { useCategoryProducts } from '@/features/catalog/hooks/useCategoryProducts';
 import { CategoryHero } from '@/features/catalog/components/CategoryHero/CategoryHero';
 import { EmptyState } from '@/shared/components/EmptyState/EmptyState';
+import { useDesign } from '@/shared/hooks/useDesign';
 import styles from './category.module.scss';
 
 interface CategoryPageClientProps {
@@ -20,6 +21,7 @@ interface CategoryPageClientProps {
 }
 
 export default function CategoryPageClient({ initialCategory, initialProducts }: CategoryPageClientProps) {
+  const design = useDesign();
   const observerTarget = useRef<HTMLDivElement>(null);
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useCategoryProducts({
@@ -58,8 +60,8 @@ export default function CategoryPageClient({ initialCategory, initialProducts }:
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  return (
-    <Page className={styles.categoryPage}>
+  const head = (
+    <>
       {/* Breadcrumbs — той самий роздільник, що й на сторінці товару */}
       <nav className={styles.breadcrumbs}>
         <Link href="/catalog" className={styles.breadcrumbs__link}>
@@ -71,6 +73,20 @@ export default function CategoryPageClient({ initialCategory, initialProducts }:
 
       {/* Hero секція з даними категорії */}
       <CategoryHero category={initialCategory} productsCount={totalCount} />
+    </>
+  );
+
+  return (
+    <Page className={styles.categoryPage}>
+      {/* Windows 98: шапка — окреме вікно «Каталог — Є.Дріл», товари під ним — окремі вікна на робочому столі.
+          Решта дизайнів — без обгортки, як і була. */}
+      {design === 'win98' ? (
+        <div className={styles.categoryHead} data-store-window="">
+          {head}
+        </div>
+      ) : (
+        head
+      )}
 
       <div className={styles.content}>
         {/* Список товарів */}

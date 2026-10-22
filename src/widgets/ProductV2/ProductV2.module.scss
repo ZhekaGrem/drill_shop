@@ -3,8 +3,10 @@
 // покупки, інфогрупи, інші колекції.
 // Телефон — один стовпчик, як і був. Від 1024px .mainRow стає двоколонковим:
 // медіа зліва, покупка справа (див. .buyColumn).
-// H1 товару стоїть першим у DOM, а flex order показує галерею перед блоком
-// опису та покупки. У другій панелі живуть вибір варіантів і послуги.
+// DOM-порядок ← → візуальний порядок тепер РІЗНІ навмисно: h1 (назва товару,
+// .buyColumn) у розмітці йде перед h2 (назва колекції, медіа-картка) заради
+// скрін-рідерів, а order нижче лишає медіа зліва / зверху, як і раніше, в
+// обох розкладках — властивість не залежить від брейкпоінта.
 .page {
   display: flex;
   flex-direction: column;
@@ -26,7 +28,7 @@
 // Прямі діти .mainRow: order фіксує видиме місце незалежно від DOM-порядку
 // (grid враховує order і в auto-placement, не лише в малюванні — на відміну
 // від flex, тут це впливає й на те, в яку колонку/рядок потрапить елемент).
-.mainRow > .mediaColumn {
+.mainRow > .card {
   order: 1;
 }
 
@@ -40,37 +42,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-}
-
-.mediaColumn {
-  min-width: 0;
-}
-
-.mediaCard {
-  min-width: 0;
-  overflow: hidden;
-  background: var(--background-secondary);
-}
-
-.mediaVisual {
-  display: flex;
-  justify-content: center;
-  order: 2;
-  min-width: 0;
-  width: 100%;
-}
-
-.collectionHead {
-  order: 1;
-}
-
-.mediaCard > .productSummary {
-  order: 4;
-}
-
-.optionsCard {
-  min-width: 0;
-  background: var(--background-secondary);
 }
 
 @media (min-width: 1024px) {
@@ -166,90 +137,10 @@
 }
 
 // ---------- блок покупки ----------
-.productSummary {
+.buyPanel {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding-top: var(--space-5);
-  border-top: 1px solid var(--border-subtle);
-}
-
-.stockLabel {
-  margin: 0;
-  font-size: var(--text-sm);
-}
-
-.orderOptions {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.optionsTitle {
-  margin: 0;
-  font-size: var(--text-xl);
-  line-height: 1.25;
-}
-
-.choiceGroup {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.optionChoices {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.optionChoice {
-  display: inline-flex;
-  min-width: 52px;
-  min-height: 46px;
-  align-items: center;
-  justify-content: center;
-  padding: 0 var(--space-4);
-  border: 1px solid var(--border-control);
-  border-radius: var(--border-radius-sm);
-  background: var(--surface-card);
-  box-shadow: var(--win-raised, var(--shadow-xs));
-  color: var(--text-primary);
-  font: inherit;
-  font-size: 16px;
-  cursor: pointer;
-
-  &[aria-pressed='true'] {
-    background: var(--primary);
-    color: var(--text-inverse);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  &:disabled {
-    border-style: dashed;
-    box-shadow: none;
-    color: var(--text-secondary);
-    opacity: 0.72;
-    text-decoration: line-through;
-    cursor: not-allowed;
-  }
-}
-
-.optionHint,
-.noVariantHint {
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: var(--text-sm);
-  line-height: 1.45;
 }
 
 .badgeDot {
@@ -593,15 +484,9 @@
 
 // Опис колекції — тихий рядок під сценою, внизу картки
 .collectionDescription {
-  order: 3;
   margin: var(--space-3) 0 0;
   font-size: 14px;
   line-height: 1.5;
   color: var(--text-secondary);
   text-wrap: pretty;
-}
-
-:global([data-design='win98']) .card {
-  background: var(--win-face);
-  box-shadow: var(--win-raised);
 }

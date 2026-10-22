@@ -157,3 +157,63 @@
     }
   }
 }
+
+// Windows 98, вікно «Інформація» на сторінці колекції ([data-win98-field] навколо груп): група — біле втиснуте поле,
+// як список у вікні властивостей; рядки — його пункти; стрілка праворуч — звичайна піднята кнопка, яка
+// втискається, коли натискаєш рядок. Наведення не фарбує рядок, а підкреслює назву, як посилання.
+:global(html[data-design='win98']) :global([data-win98-field]) {
+  .group {
+    padding: 2px;
+    border-radius: 0;
+    background: var(--win-paper);
+    box-shadow: var(--win-sunken);
+  }
+
+  .row {
+    min-height: 60px;
+    padding: 10px 12px;
+
+    &:focus-visible {
+      outline: 1px dotted var(--text-primary);
+      outline-offset: -4px;
+    }
+  }
+
+  .row + .row::before {
+    right: 12px;
+    left: 12px;
+    border-top-color: var(--win-light);
+  }
+
+  .rowInteractive:active:not(:disabled) {
+    transform: none;
+  }
+
+  .rowInteractive:hover {
+    background: transparent;
+  }
+
+  .rowInteractive:hover .title {
+    text-decoration: underline;
+  }
+
+  .arrow {
+    width: 36px;
+    height: 36px;
+    border-radius: 0;
+    background: var(--win-face);
+    box-shadow: var(--win-raised);
+    color: var(--text-primary);
+    transform: none;
+    transition: none;
+  }
+
+  .rowInteractive:hover .arrow {
+    background: var(--win-face);
+    transform: none;
+  }
+
+  .rowInteractive:active .arrow {
+    box-shadow: var(--win-sunken);
+  }
+}

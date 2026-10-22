@@ -10,7 +10,7 @@ import { cache } from 'react';
 import { productsApi } from '@/features/catalog/api/products';
 import { JsonLd } from '../../../JsonLd';
 import { structuredData } from '../../../seo';
-import CollectionProductClient from './CollectionProductClient';
+import CollectionProductByDesign from './CollectionProductByDesign';
 
 // ISR, як на /catalog/[slug]: без цього серверний запит до бекенда в
 // generateMetadata/page робив сторінку повністю динамічною (no-store,
@@ -123,7 +123,7 @@ export default async function ProductV2Page({ params }: { params: Promise<{ slug
   return (
     <>
       {productStructuredData && <JsonLd data={productStructuredData} />}
-      <CollectionProductClient params={params} />
+      <CollectionProductByDesign params={params} />
     </>
   );
 }

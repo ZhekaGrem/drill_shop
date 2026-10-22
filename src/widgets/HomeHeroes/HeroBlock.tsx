@@ -16,8 +16,6 @@ import { switcherForCollection } from '@/shared/config/collection-switcher';
 import { HeroVisual } from '@/widgets/HeroVisual/HeroVisual';
 import { capsuleStyle, type CollectionDef } from '@/widgets/ProductV2/collections';
 import styles from './HomeHeroes.module.scss';
-import windows from '@/shared/components/Windows98/windows-hero.module.scss';
-import { Windows98WindowBar } from '@/shared/components/Windows98/Windows98';
 
 interface HeroBlockProps {
   col: CollectionDef;
@@ -66,37 +64,27 @@ export const HeroBlock = ({
   // («Щільний Дріл») — компас із картками. Мапа: config/collection-switcher.
   const switcher = switcherForCollection(col.key);
   const activeDesign = col.designs[active] ?? col.items[0]?.design;
-  const shareControl = (
-    <div className={`${styles.heroShare} ${design === 'win98' ? windows.heroShare : ''}`}>
-      <button
-        type="button"
-        className={`${styles.heroShareButton} ${design === 'win98' ? windows.heroShareButton : ''}`}
-        data-win98-copy={design === 'win98' ? '' : undefined}
-        data-copied={copied}
-        onClick={copyLink}
-        disabled={!active}
-        title="Скопіювати посилання"
-        aria-label={
-          copied ? `Посилання на ${col.title} скопійовано` : `Скопіювати посилання на ${col.title}`
-        }>
-        <IconCopy className={styles.heroCopyIcon} size={20} aria-hidden="true" />
-        <IconCheck className={styles.heroCheckIcon} size={20} aria-hidden="true" />
-      </button>
-      <span className={styles.heroShareMessage} role="status" aria-live="polite">
-        {copied ? '' : shareMessage}
-      </span>
-    </div>
-  );
 
   return (
-    <section
-      id={`collection-${col.key}`}
-      className={`${styles.hero} ${design === 'win98' ? windows.hero : ''}`}
-      data-store-window={design === 'win98' ? '' : undefined}>
-      <Windows98WindowBar title={col.title} action={design === 'win98' ? shareControl : undefined} />
-      {design !== 'win98' && shareControl}
-      <div className={`${styles.heroText} ${design === 'win98' ? windows.heroText : ''}`}>
-        <TitleTag className={`${styles.heroTitle} ${design === 'win98' ? windows.heroTitle : ''}`}>
+    <section id={`collection-${col.key}`} className={styles.hero}>
+      <div className={styles.heroShare}>
+        <button
+          type="button"
+          className={styles.heroShareButton}
+          data-copied={copied}
+          onClick={copyLink}
+          disabled={!active}
+          title="Поділитися"
+          aria-label={copied ? `Скопійовано: ${col.title}` : `Поділитися: ${col.title}`}>
+          <IconCopy className={styles.heroCopyIcon} size={20} aria-hidden="true" />
+          <IconCheck className={styles.heroCheckIcon} size={20} aria-hidden="true" />
+        </button>
+        <span className={styles.heroShareMessage} role="status" aria-live="polite">
+          {copied ? '' : shareMessage}
+        </span>
+      </div>
+      <div className={styles.heroText}>
+        <TitleTag className={styles.heroTitle}>
           {col.title}
           {col.labelText && (
             <span className={`${styles.capsule} designCapsule`} style={capsuleStyle(col.labelColor, design)}>
@@ -104,10 +92,10 @@ export const HeroBlock = ({
             </span>
           )}
         </TitleTag>
-        <p className={`${styles.heroSubtitle} ${design === 'win98' ? windows.heroSubtitle : ''}`}>
+        <p className={styles.heroSubtitle}>
           <RichDescription text={col.description} />
         </p>
-        <div className={`${styles.heroActions} ${design === 'win98' ? windows.heroActions : ''}`}>
+        <div className={styles.heroActions}>
           <Button
             size="lg"
             variant="primary"
@@ -122,17 +110,12 @@ export const HeroBlock = ({
           )}
         </div>
       </div>
-      <div className={`${styles.heroVisualWrap} ${design === 'win98' ? windows.heroVisualWrap : ''}`}>
+      <div className={styles.heroVisualWrap}>
         {col.badgeText && (
           <span
             className={styles.heroBadgeOnStage}
-            data-win98-badge={design === 'win98' ? '' : undefined}
             style={{ '--badge-color': col.badgeColor ?? '#1c8a37' } as React.CSSProperties}>
-            <span
-              className={styles.heroPulseDot}
-              data-win98-pulse={design === 'win98' ? '' : undefined}
-              aria-hidden="true"
-            />
+            <span className={styles.heroPulseDot} aria-hidden="true" />
             {col.badgeText}
           </span>
         )}

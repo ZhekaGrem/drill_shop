@@ -79,7 +79,18 @@
   margin-top: var(--space-8);
 }
 
-// Windows 95/98: сторінка категорії — те саме вікно каталогу, що й /catalog (вікна товарів — ProductCard.module.scss).
-:global(html[data-design='win98']) .categoryPage {
+// Windows 95/98: шапка категорії — те саме окреме вікно «Каталог — Є.Дріл», що й на /catalog; вікна товарів стоять
+// під ним на робочому столі (ProductCard.module.scss).
+:global(html[data-design='win98']) .categoryHead {
   @include win98.page-window('Каталог — Є.Дріл');
+
+  display: block;
+  margin-bottom: 16px;
+  padding-inline: 20px;
+  padding-bottom: 4px;
+  background: var(--win-face);
+
+  @media (max-width: 768px) {
+    padding-inline: 12px;
+  }
 }

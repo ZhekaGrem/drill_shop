@@ -1,0 +1,674 @@
+// src/widgets/ProductV2/win98/ProductV2Win98.module.scss
+// Стилі сторінки товару в колекції для дизайну Windows 98 (CollectionProductWin98, BuyPanelWin98,
+// OtherCollectionsWin98, ProductPhotos). Окремий модуль, щоб дизайни до Windows жили на незмінному
+// ../ProductV2.module.scss. Основа — та сама розкладка (медіа + покупка, від 1024px — дві колонки), поверх —
+// вікна Windows 98 у блоці :global(html[data-design='win98']) наприкінці.
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+// .mainRow — окремий грід-контейнер лише для медіа-картки й .buyColumn.
+// Виділений навмисно, а не як прямий грід .page: sticky-елемент бере
+// containing block у СВОГО грід-контейнера-БАТЬКА (не власного грід-ряду),
+// тож якби .buyColumn лишався прямим дитям .page разом із .fullWidth
+// нижче, sticky «плавав» би по всій висоті .page і заїжджав на карусель
+// «Інші колекції» — саме так це й було зламано.
+.mainRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+// Прямі діти .mainRow: order фіксує видиме місце незалежно від DOM-порядку
+// (grid враховує order і в auto-placement, не лише в малюванні — на відміну
+// від flex, тут це впливає й на те, в яку колонку/рядок потрапить елемент).
+.mainRow > .mediaColumn {
+  order: 1;
+}
+
+.mainRow > .buyColumn {
+  order: 2;
+}
+
+// Права колонка: картка покупки + інфогрупи одним блоком, щоб на телефоні між
+// ними лишався той самий проміжок, що й між рештою блоків сторінки.
+.buyColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.mediaColumn {
+  min-width: 0;
+}
+
+.mediaCard {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--background-secondary);
+}
+
+.mediaVisual {
+  display: flex;
+  justify-content: center;
+  order: 2;
+  min-width: 0;
+  width: 100%;
+}
+
+.collectionHead {
+  order: 1;
+}
+
+.mediaCard > .productSummary {
+  order: 4;
+}
+
+.optionsCard {
+  min-width: 0;
+  background: var(--background-secondary);
+}
+
+@media (min-width: 1024px) {
+  .mainRow {
+    // 400px — міра, під яку рахована мова списків і блок покупки; ліва колонка
+    // забирає решту. minmax(0, …) обов'язковий: без нього 3D-полотно з власною
+    // шириною роздуває доріжку й ламає грид.
+    grid-template-columns: minmax(0, 1fr) 400px;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  // Покупка лишається на екрані, поки гортаєш високу медіа-колонку. Це і є
+  // десктопна відповідь на «кнопки не видно» — окрема липка панель тут зайва.
+  // Зсув рахує висоту хедера: хедер тепер sticky (P0.2 закрита), тож без
+  // цього колонка виїжджала б з-під нього і перші рядки ховались би позаду.
+  // --header-height-desktop — єдиний власник числа (globals.css), той самий
+  // токен читає й сам хедер (header.module.scss, min-height).
+  // Containing block для sticky тепер .mainRow (див. коментар вище), тож
+  // низ прилипання — низ .mainRow, а не низ усієї сторінки.
+  .buyColumn {
+    position: sticky;
+    top: calc(var(--header-height-desktop) + var(--space-4));
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  padding: var(--space-6);
+}
+
+// ---------- шапка колекції ----------
+.collectionHead {
+  h1 {
+    margin: 0 0 4px;
+    font-size: clamp(22px, 5vw, 30px);
+  }
+
+  // h2 (назва колекції) стоїть у .collectionTitleRow (align-items: center)
+  // поруч із пульсуючою крапкою. Нижній відступ там був би зайвим —
+  // він трохи опускає рядок тексту нижче центру відносно бейджа поряд.
+  //
+  // Кегль і колір навмисно ТИХІШІ за .productName (BuyPanel): раніше обидва
+  // мали однаковий clamp(22px, 5vw, 30px) і на екрані читались як два h1 —
+  // назва колекції (тут) і назва товару конкурували за увагу, хоча головна
+  // дія сторінки — купити конкретний товар. Вага лишається --fw-bold (те
+  // саме правило h1–h3 з globals.css), ієрархія — через кегль і колір
+  // (--text-secondary, той самий токен, що й решта другорядних підписів),
+  // а не другий-третій сірий поза системою.
+  h2 {
+    margin: 0;
+    font-size: clamp(18px, 3.5vw, 22px);
+    color: var(--text-secondary);
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+  }
+}
+
+.collectionLink {
+  // Був align-self: flex-start у .actionsRow (align-items: center) —
+  // посилання «До каталогу» прилипало до верху рядка замість центру,
+  // тоді як кнопка «Спробувати ще раз» поруч лишалась центрованою:
+  // розбіжність центрів двох сусідніх контролів в одному ряду.
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+// Капсула-лейбл (колекції або товару): текст у кольоровій пігулці з БД
+.capsule {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  color: var(--text-white);
+  font-size: 12px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.badgesRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+// ---------- блок покупки ----------
+.productSummary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.stockLabel {
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.orderOptions {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.optionsTitle {
+  margin: 0;
+  font-size: var(--text-xl);
+  line-height: 1.25;
+}
+
+.choiceGroup {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.optionChoices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.optionChoice {
+  display: inline-flex;
+  min-width: 52px;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border-control);
+  border-radius: var(--border-radius-sm);
+  background: var(--surface-card);
+  box-shadow: var(--win-raised, var(--shadow-xs));
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 16px;
+  cursor: pointer;
+
+  &[aria-pressed='true'] {
+    background: var(--primary);
+    color: var(--text-inverse);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    border-style: dashed;
+    box-shadow: none;
+    color: var(--text-secondary);
+    opacity: 0.72;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+}
+
+.optionHint,
+.noVariantHint {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.badgeDot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.pulseDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--badge-color, var(--success-green));
+  animation: v2BadgePulse 1.6s ease-out infinite;
+}
+
+@keyframes v2BadgePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.25);
+  }
+
+  70% {
+    box-shadow: 0 0 0 9px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.productName {
+  margin: 0;
+  font-size: clamp(22px, 5vw, 30px);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.inStock {
+  color: var(--success-green);
+  font-weight: 600;
+}
+
+.outOfStock {
+  color: var(--accent-red);
+  font-weight: 600;
+}
+
+.shortDescription {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.price {
+  font-family: var(--font-price, inherit);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.priceDiscount {
+  color: var(--accent-red);
+}
+
+.oldPrice {
+  color: var(--text-secondary);
+  font-size: 18px;
+  text-decoration: line-through;
+}
+
+.blockLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.sizesBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.size {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  // 44px — комфортний тап-таргет (WCAG 2.5.5 AAA / Fitts's Law), а не голий
+  // естетичний відступ: попередній padding: 11px 15px давав ~40px висоти.
+  min-width: 54px;
+  min-height: 44px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-control);
+  border-radius: var(--radius-pill);
+  background: none;
+  font-size: 15px;
+  cursor: pointer;
+
+  &[aria-pressed='true'] {
+    background: var(--btn-primary);
+    border-color: transparent;
+    color: var(--btn-primary-fg);
+  }
+
+  // Наведення існує тільки там, де є курсор: на дотику :hover «залипає» після
+  // тапа. Обраний чіп не підсвічуємо — він уже в максимальному стані.
+  @media (hover: hover) {
+    &:not([aria-pressed='true']):not(:disabled):hover {
+      border-color: var(--text-primary);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.actionsRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+// ---------- липка панель дії (≤1023px) ----------
+// Переїхала в shared/components/StickyBuyBar: та сама панель потрібна ще й
+// сторінці /catalog/[slug], а дві копії вже одного разу розійшлися.
+
+// Архівна колекція: вітрина без продажу
+.archivedNote {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--border-radius-sm);
+  background: var(--surface-muted);
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+// Скелетон сцени, поки колекції вантажаться: висота як у стейджа
+.stageSkeleton {
+  width: 100%;
+  height: min(60vw, 420px);
+  border-radius: var(--border-radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--surface-muted) 25%,
+    var(--surface-card) 37%,
+    var(--surface-muted) 63%
+  );
+  background-size: 400% 100%;
+  animation: v2Shimmer 1.4s ease infinite;
+}
+
+// ---------- стани картки товару ----------
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.skeletonLine {
+  display: block;
+  height: 16px;
+  border-radius: var(--border-radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--surface-muted) 25%,
+    var(--surface-card) 37%,
+    var(--surface-muted) 63%
+  );
+  background-size: 400% 100%;
+  animation: v2Shimmer 1.4s ease infinite;
+}
+
+@keyframes v2Shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.errorState {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+}
+
+// ---------- інформаційні групи ----------
+.infoGroups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+
+  p {
+    margin: 0 0 10px;
+  }
+}
+
+// ---------- інші колекції ----------
+.collectionCards {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+  scrollbar-width: none;
+  // Картки зупиняються рівно одна під одною замість вільного «дрейфу» —
+  // той самий чіткий, дисциплінований свайп, що й у карток-послуг Дії.
+  scroll-snap-type: x proximity;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // На широкому екрані горизонтальна доріжка ховає картки без жодного натяку,
+  // що вбік є ще щось: смуга прокрутки прихована, а миша не «свайпає».
+  // Тому від 1024px це звичайна сітка — усі колекції видно одразу.
+  @media (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    overflow-x: visible;
+    padding-bottom: 0;
+    scroll-snap-type: none;
+  }
+}
+
+.collectionCard {
+  flex: 0 0 160px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--transition-fast);
+  scroll-snap-align: start;
+
+  // У сітці ширину задає доріжка, а не картка (DESIGN_SYSTEM, «картка товару»)
+  @media (min-width: 1024px) {
+    flex: initial;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-sm);
+    background: var(--surface-muted);
+  }
+}
+
+.collectionCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--text-sm);
+}
+
+// Назва картки + капсула-лейбл (якщо є) в одному рядку
+.collectionCardTitle {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.collectionCardHint {
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+}
+
+// Рядок шапки колекції: назва зліва, пульсуюча крапка в правому куті
+.collectionTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+// Опис колекції — тихий рядок під сценою, внизу картки
+.collectionDescription {
+  order: 3;
+  margin: var(--space-3) 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+// Кнопка «Фото товару» під сценою (ProductPhotos.tsx) — в усіх дизайнах, по центру під перемикачем
+.photoRow {
+  display: flex;
+  justify-content: center;
+  order: 2;
+}
+
+// Фото у вікні по центру, мініатюри (коли фото кілька) — під ним
+.photoDialog {
+  display: flex;
+  justify-content: center;
+}
+
+// ---------- Windows 98 ----------
+// Екран колекції — окремі вікна на робочому столі (docs/windows-95-98-encyclopedia.md §7):
+//   1. вікно товару: синя смуга з хлібними крихтами, 3D на білій робочій області, ціна, розміри й «Додати в
+//      кошик» — на кнопці вікно закінчується;
+//   2. «Інформація»: характеристики, розмірна сітка, доставка й оплата — пункти білого поля з кнопкою праворуч
+//      (ListGroup.module.scss, [data-win98-field]);
+//   3. «Іньчі колекції» (OtherCollections.tsx).
+// Смуги рендеряться лише в цьому дизайні (CollectionProductClient.tsx), тож і правила тут лише для нього.
+:global(html[data-design='win98']) {
+  .card {
+    gap: 16px;
+    padding: 4px 24px 24px;
+    border: 1px solid var(--win-frame);
+    border-radius: 0;
+    background: var(--win-face);
+    box-shadow:
+      var(--win-raised),
+      4px 4px 0 rgb(0 0 0 / 22%);
+
+    > :global(.win98-window-bar) {
+      order: -1;
+      margin: 0 -20px;
+    }
+
+    @media (max-width: 768px) {
+      padding: 4px 16px 20px;
+
+      > :global(.win98-window-bar) {
+        margin: 0 -12px;
+      }
+    }
+  }
+
+  // 3D стоїть на білій робочій області вікна, як у героях головної: біле тло у втиснутій рамці 2px
+  .mediaVisual :global([data-win98-stage]) {
+    padding: 2px;
+    background: var(--win-paper);
+    box-shadow: var(--win-sunken);
+  }
+
+  // Крапка колекції («■ класика») — у лівому верхньому куті білої області
+  .mediaVisual :global([data-win98-stage]) .badgeDot {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    max-width: calc(100% - 24px);
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 400;
+  }
+
+  // Вибір розміру стоїть перед «Додати в кошик» (BuySummary withChoices) — відступ як між рештою рядків
+  .productSummary .choiceGroup {
+    margin-top: 4px;
+  }
+
+  .otherWindow {
+    margin-top: 0;
+  }
+}

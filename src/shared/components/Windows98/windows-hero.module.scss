@@ -38,11 +38,6 @@
   }
 }
 
-.heroTitle {
-  font-size: clamp(28px, 3vw, 40px);
-  letter-spacing: -0.025em;
-}
-
 .heroSubtitle {
   font-weight: 400;
 }
@@ -80,20 +75,34 @@
   }
 }
 
+// 3D-модель стоїть на білій робочій області вікна, як полотно Paint чи поле документа: біле тло (--win-paper) у
+// втиснутій рамці. Полотно сцени прозоре, тож без цього модель лежала просто на сірому вікні й здавалась вицвілою.
+// Відступ 2px = товщина рамки: модель не налазить на рельєф. Лише герої головної і лише дизайн Windows 98 — клас
+// .heroVisualWrap отримує тільки він, а html[data-design='win98'] страхує ще раз.
+:global(html[data-design='win98']) .heroVisualWrap :global([data-win98-stage]) {
+  padding: 2px;
+  background: var(--win-paper);
+  box-shadow: var(--win-sunken);
+}
+
+// Над сценою більше нічого не стоїть (крапка тепер у її куті), тож сцена вирівнюється з текстом без запасу зверху
 .heroVisualWrap {
   min-width: 0;
-  padding-top: 40px;
+  padding-top: 20px;
 
   @media (max-width: 768px) {
     grid-row: 2;
-    padding-top: 0;
+    padding-top: 12px;
   }
 }
 
-.hero :global([data-win98-badge]) {
-  top: 8px;
-  left: 0;
-  max-width: calc(100% - 48px);
+// Крапка колекції («● класика») у лівому верхньому куті білої робочої області сцени — як підпис усередині
+// вікна документа. Чорний текст на білому; крапка — квадрат без пульсації, як індикатор Windows.
+.hero :global([data-win98-stage] [data-win98-badge]) {
+  top: 10px;
+  left: 12px;
+  max-width: calc(100% - 24px);
+  color: var(--text-primary);
   font-size: 13px;
   font-weight: 400;
 }

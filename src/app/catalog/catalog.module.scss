@@ -145,9 +145,6 @@
 
   @media (max-width: 768px) {
     --card-inset: var(--space-2);
-    background: var(--background-secondary);
-    border: 1px solid var(--border-subtle);
-    box-shadow: none;
   }
 
   &__image {
@@ -158,7 +155,7 @@
     border-radius: var(--border-radius-md);
 
     @media (max-width: 768px) {
-      aspect-ratio: 3 / 2;
+      aspect-ratio: 4 / 3;
     }
   }
 
@@ -204,12 +201,38 @@
 }
 
 // ============ Windows 95/98 ============
-// Сторінка — одне вікно «Каталог — Є.Дріл» (смуга з CSS: її назва — оздоба, тож альтернативний текст порожній, і
-// екранний читач читає справжній h1); лічильник — поле рядка стану; вікна товарів стоять у темно-сірій робочій
-// області (windows98.css [data-win98-grid]); скелетони — ті самі вікна з неактивною сірою смугою.
+// Шапка сторінки — окреме вікно «Каталог — Є.Дріл» (смуга з CSS: її назва — оздоба, тож альтернативний текст
+// порожній, і екранний читач читає справжній h1); лічильник — поле рядка стану. Вікна товарів стоять під ним просто
+// на робочому столі, кожне окремо (windows98.css [data-win98-grid], ProductCard.module.scss), тож довантаження
+// товарів під час прокрутки більше не розтягує вікно каталогу. Скелетони — ті самі вікна з неактивною сірою смугою.
 :global(html[data-design='win98']) {
-  .catalogPage {
+  .catalogHead {
     @include win98.page-window('Каталог — Є.Дріл');
+
+    display: block;
+    margin-bottom: 16px;
+    padding-inline: 20px;
+    padding-bottom: 4px;
+    background: var(--win-face);
+
+    @media (max-width: 768px) {
+      padding-inline: 12px;
+    }
+  }
+
+  // Рядок «Всі товари завантажено» на робочому столі — маленька піднята табличка, а не текст по бірюзі
+  .listEnd,
+  .loadMoreHint {
+    width: fit-content;
+    margin-inline: auto;
+    padding: 6px 12px;
+    background: var(--win-face);
+    box-shadow: var(--win-raised);
+    color: var(--text-primary);
+  }
+
+  .listEnd {
+    margin-block: 24px;
   }
 
   .totalCount {

@@ -12,6 +12,7 @@ import { ProductCard } from '@/features/catalog/components/ProductCard/ProductCa
 import { useCatalogFilters, countActiveFilters } from '@/features/catalog/hooks/useCatalogFilters';
 import { useHiddenProductSlugs } from '@/shared/hooks/useTurntables';
 import { useCatalogProducts } from '@/features/catalog/hooks/useCatalogProducts';
+import { useDesign } from '@/shared/hooks/useDesign';
 import { ProductsResponse } from '@/features/catalog/api/products';
 import styles from './catalog.module.scss';
 
@@ -24,6 +25,7 @@ interface CatalogProps {
 }
 
 export default function CatalogClient({ initialData, basePath = '' }: CatalogProps) {
+  const design = useDesign();
   const [initialized, setInitialized] = useState(false);
   // Нескінченний скрол ховав футер назавжди: сторінка довантажувалась швидше,
   // ніж людина доходила до низу, а в футері живуть єдині посилання на оферту,
@@ -126,8 +128,8 @@ export default function CatalogClient({ initialData, basePath = '' }: CatalogPro
     router.replace(pathname);
   }, [clearFilters, router, pathname]);
 
-  return (
-    <Page className={styles.catalogPage}>
+  const head = (
+    <>
       <Breadcrumbs items={[{ label: 'Головна', href: `${basePath}/` }, { label: 'Каталог' }]} />
       <PageHeader
         title="Каталог"
@@ -138,6 +140,20 @@ export default function CatalogClient({ initialData, basePath = '' }: CatalogPro
           ) : null
         }
       />
+    </>
+  );
+
+  return (
+    <Page className={styles.catalogPage}>
+      {/* Windows 98: шапка — окреме вікно «Каталог — Є.Дріл», а товари під ним — окремі вікна на робочому столі.
+          Решта дизайнів — без обгортки, як і була. */}
+      {design === 'win98' ? (
+        <div className={styles.catalogHead} data-store-window="">
+          {head}
+        </div>
+      ) : (
+        head
+      )}
 
       {/* Фільтри прибрані з каталогу (рішення власника): кнопка «Фільтри»,
           десктопна панель і мобільний bottom sheet. Стан фільтрів у сторі

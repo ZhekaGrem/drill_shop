@@ -1,8 +1,10 @@
-// Shared purchase state for the two product panels: overview and options.
+// src/widgets/ProductV2/BuyPanel.tsx
+// Блок покупки повної сторінки товару v2: бейдж, наявність, ціна з акцією,
+// розміри з власним залишком, кількість, «У кошик» + «Купити зараз».
+// Потік кошика 1:1 зі сторінкою /catalog/[slug] (addItem + variant + снапшот).
 'use client';
 
-import { createContext, useContext, useMemo, useState } from 'react';
-import type { ReactNode } from 'react';
+import { useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { Button } from '@/shared/components/Button/Button';
 import { IconCart3 } from '@/shared/components/Svg';
@@ -14,144 +16,70 @@ import { calculatePromoPrice, calculateVariantPromoPrice } from '@/shared/utils/
 import type { Product, ProductVariant } from '@/shared/types';
 import { buildCartSnapshot } from './cart-snapshot';
 import { capsuleStyle } from './collections';
-import { ProductInfoGroups } from './ProductInfoGroups';
 import styles from './ProductV2.module.scss';
 
+// Поріг «закінчується» — той самий, що на сторінці товару
 const LOW_STOCK = 5;
 const stockOf = (v: { quantity?: number; reservedQuantity?: number }) =>
   (v.quantity || 0) - (v.reservedQuantity || 0);
-const optionValue = (variant: ProductVariant, key: 'size' | 'color') => {
-  const entry = Object.entries(variant.options ?? {}).find(([name]) => name.toLowerCase() === key);
-  return entry?.[1] == null ? '' : String(entry[1]).trim();
-};
-interface PurchaseState {
-  product: Product;
-  variants: ProductVariant[];
-  variant?: ProductVariant;
-  sizes: string[];
-  colors: string[];
-  archived: boolean;
-  inStock: boolean;
-  stockLabel: string;
-  promo: ReturnType<typeof calculatePromoPrice>;
-  added: boolean;
-  isAddingItem: boolean;
-  add: () => Promise<void>;
-  select: (dimension: 'size' | 'color', value: string) => void;
-  selectVariant: (id: string) => void;
-  selected: (dimension: 'size' | 'color', value: string) => boolean;
-  available: (dimension: 'size' | 'color', value: string) => boolean;
-}
+const sizeLabel = (v: ProductVariant) => String(v.options?.size ?? v.name ?? v.sku);
 
-const PurchaseContext = createContext<PurchaseState | null>(null);
-
-export function BuyPanel({ product, children }: { product: Product | null; children: ReactNode }) {
-  if (!product) return children;
-  return <PurchaseProvider product={product}>{children}</PurchaseProvider>;
-}
-
-function PurchaseProvider({ product, children }: { product: Product; children: ReactNode }) {
+export const BuyPanel = ({ product }: { product: Product }) => {
   const { addItem, isAddingItem } = useCart();
+  const design = useDesign();
   const [variantId, setVariantId] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
+
   const variants = useMemo(() => sortVariantsBySize(product.variants ?? []), [product.variants]);
-  const sizes = useMemo(
-    () => [...new Set(variants.map((variant) => optionValue(variant, 'size')).filter(Boolean))],
-    [variants]
-  );
-  const colors = useMemo(
-    () => [...new Set(variants.map((variant) => optionValue(variant, 'color')).filter(Boolean))],
-    [variants]
-  );
-  const variant =
-    variants.find((entry) => entry.id === variantId) ??
-    variants.find((entry) => stockOf(entry) > 0) ??
-    variants[0];
+  const variant: ProductVariant | undefined = variants.find((v) => v.id === variantId) ?? variants[0];
+
+  const promo = variant ? calculateVariantPromoPrice(variant) : calculatePromoPrice(product);
+  const available = stockOf(variant ?? product);
+  // Архівна колекція: вітрина без продажу — контролі покупки не рендеряться
   const archived = Boolean(product.collection?.archivedAt);
-  const inStock = stockOf(variant ?? product) > 0;
-  const availableQuantity = stockOf(variant ?? product);
+  const inStock = available > 0;
   const stockLabel = archived
     ? 'Продаж завершено'
     : !inStock
       ? 'Немає в наявності'
-      : availableQuantity <= LOW_STOCK
-        ? `Залишилось ${availableQuantity} шт`
+      : available <= LOW_STOCK
+        ? `Залишилось ${available} шт`
         : 'Виготовлення і доставка — до 7 днів';
-  const promo = variant ? calculateVariantPromoPrice(variant) : calculatePromoPrice(product);
 
-  const available = (dimension: 'size' | 'color', value: string) =>
-    variants.some((entry) => optionValue(entry, dimension) === value && stockOf(entry) > 0);
-  const selected = (dimension: 'size' | 'color', value: string) =>
-    Boolean(variant && stockOf(variant) > 0 && optionValue(variant, dimension) === value);
-  const select = (dimension: 'size' | 'color', value: string) => {
-    const matches = variants.filter((entry) => optionValue(entry, dimension) === value);
-    const other = dimension === 'size' ? 'color' : 'size';
-    const next =
-      matches.find(
-        (entry) =>
-          optionValue(entry, other) === optionValue(variant ?? variants[0], other) && stockOf(entry) > 0
-      ) ?? matches.find((entry) => stockOf(entry) > 0);
-    if (next) setVariantId(next.id);
-  };
-  const selectVariant = (id: string) => {
-    const next = variants.find((entry) => entry.id === id);
-    if (next && stockOf(next) > 0) setVariantId(next.id);
-  };
-
-  const add = async () => {
+  // setAdded ПІСЛЯ успіху, а не до виклику. Раніше кнопка казала «Додано в
+  // кошик ✓» навіть тоді, коли запит падав, — людина йшла в кошик по товар,
+  // якого там не було.
+  const handleAdd = async () => {
     try {
+      // Кількість зі сторінки товару прибрана (рішення власника) — завжди 1;
+      // докупити більше можна степером у кошику
       await addItem(product.id, 1, variant?.id, buildCartSnapshot(product, variant));
       setAdded(true);
-      window.setTimeout(() => setAdded(false), 2000);
+      setTimeout(() => setAdded(false), 2000);
     } catch {
-      // useCart displays an error notification.
+      // Повідомлення про помилку показує сам useCart (тост);
+      // тут головне — не малювати успіх там, де його не було.
     }
   };
 
-  return (
-    <PurchaseContext.Provider
-      value={{
-        product,
-        variants,
-        variant,
-        sizes,
-        colors,
-        archived,
-        inStock,
-        stockLabel,
-        promo,
-        added: added && !isAddingItem,
-        isAddingItem,
-        add,
-        select,
-        selectVariant,
-        selected,
-        available,
-      }}>
-      {children}
-    </PurchaseContext.Provider>
-  );
-}
-
-const usePurchase = () => {
-  const value = useContext(PurchaseContext);
-  if (!value) throw new Error('Product purchase components must be inside BuyPanel.');
-  return value;
-};
-
-export function BuySummary() {
-  const { product, archived, inStock, stockLabel, promo, added, add, isAddingItem } = usePurchase();
-  const design = useDesign();
-  const actionDisabled = archived || !inStock || isAddingItem;
+  const actionLabel = added ? 'Додано в кошик ✓' : 'Додати в кошик';
+  const actionDisabled = !inStock || isAddingItem;
 
   return (
-    <div className={styles.productSummary}>
+    <div className={styles.buyPanel}>
       {(product.badgeText || product.labelText) && (
         <div className={styles.badgesRow}>
           {product.badgeText && (
             <span className={styles.badgeDot}>
               <span
                 className={styles.pulseDot}
+                // Токен замість хардкод-хексу — того вимагає проєктне правило
+                // «жодного hex у компоненті», а не контраст: крапка aria-hidden
+                // і дублює сусідній текст словами, тож поріг тут WCAG 1.4.11
+                // (нетекстовий контраст, 3:1), а не 1.4.3 для тексту. #1c8a37
+                // і так проходить 3:1 (4.43:1 удень / 3.60:1 уночі) —
+                // --success-green лишає той самий запас, тільки живе в
+                // globals.css, а не хардкодом у компоненті.
                 style={{ '--badge-color': product.badgeColor ?? 'var(--success-green)' } as CSSProperties}
                 aria-hidden="true"
               />
@@ -167,113 +95,57 @@ export function BuySummary() {
           )}
         </div>
       )}
+
       <h1 className={styles.productName}>{product.name}</h1>
-      <p className={`${styles.stockLabel} ${!archived && inStock ? styles.inStock : styles.outOfStock}`}>
-        {stockLabel}
-      </p>
+
+      {/* Артикул клієнтам не показуємо — він лишається в адмінці й замовленнях */}
+      <div className={styles.meta}>
+        <span className={!archived && inStock ? styles.inStock : styles.outOfStock}>{stockLabel}</span>
+      </div>
+
+      {product.shortDescription && <p className={styles.shortDescription}>{product.shortDescription}</p>}
+
       <div className={styles.priceRow}>
         {promo.hasDiscount && <span className={styles.oldPrice}>{formatPrice(promo.originalPrice)}</span>}
         <span className={`${styles.price} ${promo.hasDiscount ? styles.priceDiscount : ''}`}>
           {formatPrice(promo.finalPrice)}
         </span>
       </div>
-      {product.shortDescription && <p className={styles.shortDescription}>{product.shortDescription}</p>}
+
       {archived && (
         <p className={styles.archivedNote}>
           Архівна колекція «{product.collection?.title}» — лишається на вітрині, але купити її вже не можна.
         </p>
       )}
-      {!archived && (
-        <Button size="lg" variant="primary" fullWidth disabled={actionDisabled} onClick={add}>
-          <IconCart3 size={20} />
-          {added ? 'Додано в кошик ✓' : !inStock ? 'Немає в наявності' : 'Додати в кошик'}
-        </Button>
-      )}
-    </div>
-  );
-}
 
-function ChoiceGroup({
-  dimension,
-  values,
-  title,
-}: {
-  dimension: 'size' | 'color';
-  values: string[];
-  title: string;
-}) {
-  const { select, selected, available } = usePurchase();
-  if (!values.length) return null;
-
-  const hasUnavailable = values.some((value) => !available(dimension, value));
-  return (
-    <fieldset className={styles.choiceGroup}>
-      <legend className={styles.blockLabel}>{title}</legend>
-      <div className={styles.optionChoices}>
-        {values.map((value) => {
-          const isAvailable = available(dimension, value);
-          return (
-            <button
-              key={value}
-              type="button"
-              className={styles.optionChoice}
-              data-win98-choice=""
-              aria-pressed={selected(dimension, value)}
-              aria-label={`${title}: ${value}${isAvailable ? '' : ' — немає в наявності'}`}
-              title={isAvailable ? value : 'Немає в наявності'}
-              disabled={!isAvailable}
-              onClick={() => select(dimension, value)}>
-              {value}
-            </button>
-          );
-        })}
-      </div>
-      {hasUnavailable && (
-        <span className={styles.optionHint}>Недоступні зараз варіанти позначені й вимкнені.</span>
-      )}
-    </fieldset>
-  );
-}
-
-export function BuyOptions() {
-  const { product, variants, sizes, colors, variant, selectVariant } = usePurchase();
-  const hasSizeOrColor = sizes.length > 0 || colors.length > 0;
-  const genericVariants = !hasSizeOrColor && variants.length > 0;
-
-  return (
-    <div className={styles.orderOptions}>
-      <h2 className={styles.optionsTitle}>Варіанти товару</h2>
-      {sizes.length > 0 ? <ChoiceGroup dimension="size" values={sizes} title="Розмір" /> : null}
-      {colors.length > 0 ? <ChoiceGroup dimension="color" values={colors} title="Колір" /> : null}
-      {genericVariants && (
-        <fieldset className={styles.choiceGroup}>
-          <legend className={styles.blockLabel}>Варіант</legend>
-          <div className={styles.optionChoices}>
-            {variants.map((entry) => {
-              const isAvailable = entry.quantity - entry.reservedQuantity > 0;
-              const label = entry.name || entry.sku;
-              return (
-                <button
-                  key={entry.id}
-                  type="button"
-                  className={styles.optionChoice}
-                  data-win98-choice=""
-                  aria-pressed={variant?.id === entry.id && isAvailable}
-                  aria-label={`${label}${isAvailable ? '' : ' — немає в наявності'}`}
-                  title={isAvailable ? label : 'Немає в наявності'}
-                  disabled={!isAvailable}
-                  onClick={() => isAvailable && selectVariant(entry.id)}>
-                  {label}
-                </button>
-              );
-            })}
+      {!archived && variants.length > 0 && (
+        <div className={styles.sizesBlock}>
+          <span className={styles.blockLabel}>Розмір</span>
+          <div className={styles.sizes} role="group" aria-label="Розмір">
+            {variants.map((v) => (
+              <button
+                key={v.id}
+                type="button"
+                className={styles.size}
+                aria-pressed={variant?.id === v.id}
+                disabled={stockOf(v) <= 0}
+                onClick={() => setVariantId(v.id)}>
+                {sizeLabel(v)}
+              </button>
+            ))}
           </div>
-        </fieldset>
+        </div>
       )}
-      {variants.length === 0 && (
-        <p className={styles.noVariantHint}>Цей товар продається без вибору варіантів.</p>
-      )}
-      <ProductInfoGroups product={product} />
+
+      {/* «Купити зараз», сердечко-обране і липка панель-дублер прибрані
+          (рішення власника) — дія одна: «Додати в кошик» у картці */}
+      <div className={styles.actions}>
+        {!archived && (
+          <Button size="lg" variant="primary" fullWidth disabled={actionDisabled} onClick={handleAdd}>
+            <IconCart3 size={20} /> {actionLabel}
+          </Button>
+        )}
+      </div>
     </div>
   );
-}
+};

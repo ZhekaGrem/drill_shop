@@ -36,7 +36,7 @@ export const TurntableMedia = ({ poster, animated, alt, className }: TurntableMe
   }, []);
 
   return (
-    <div ref={ref} style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div ref={ref}>
       {/* unoptimized: анімований webp оптимізатор Next однаково віддає as-is,
           а постер — крихітний перший кадр того самого рендера */}
       <Image

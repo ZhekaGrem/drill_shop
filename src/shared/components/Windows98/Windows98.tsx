@@ -5,12 +5,24 @@ import { usePathname } from 'next/navigation';
 import { IconFolder, IconHome, IconShoppingBag, IconMenu2 } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
 
+interface WindowBarProps {
+  title?: ReactNode;
+  action?: ReactNode;
+  /**
+   * Тег назви. span — смуга лише повторює заголовок вікна. h1/h2 — смуга сама є заголовком: так роблять лише
+   * гілки, що рендеряться тільки в дизайні Windows 98, бо поза ним смуги не видно.
+   */
+  as?: 'span' | 'h1' | 'h2' | 'h3';
+  /** Власний вміст замість назви (хлібні крихти сторінки товару) */
+  children?: ReactNode;
+}
+
 /** Always present in HTML; the theme controls visibility before the first paint. */
-export function Windows98WindowBar({ title, action }: { title: string; action?: ReactNode }) {
+export function Windows98WindowBar({ title, action, as: Title = 'span', children }: WindowBarProps) {
   return (
     <div className="win98-window-bar">
       <IconFolder size={18} aria-hidden="true" />
-      <span>{title}</span>
+      {children ?? <Title>{title}</Title>}
       {action}
     </div>
   );

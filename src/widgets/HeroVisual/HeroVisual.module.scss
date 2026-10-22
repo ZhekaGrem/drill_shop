@@ -7,8 +7,6 @@
   --stage-size: 440px;
 
   display: flex;
-  width: min(100%, var(--stage-size));
-  max-width: 100%;
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
@@ -34,11 +32,9 @@
   grid-template-rows: 100%;
   grid-template-columns: 100%;
   place-items: center;
-  width: min(var(--stage-size), 100%);
-  max-width: 100%;
-  aspect-ratio: 1;
-  height: auto;
-  flex-shrink: 1;
+  width: var(--stage-size);
+  height: var(--stage-size);
+  flex-shrink: 0;
   isolation: isolate;
   // Драг-обертання: вертикальний скрол лишається браузеру, горизонталь — нам.
   // pinch-zoom дозволений НАВМИСНО: без нього спроба «наблизити модельку»
@@ -68,18 +64,7 @@
     width: 100%;
     max-width: none;
     height: clamp(220px, 38svh, 320px);
-    aspect-ratio: auto;
   }
-}
-
-.still {
-  grid-area: 1 / 1;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
 }
 
 // М'яка пляма фірмового градієнта за предметом. Не картка й не рамка:
@@ -92,6 +77,15 @@
   background: var(--gradient-brand);
   opacity: 0.28;
   filter: blur(28px);
+}
+
+// Шар для мітки поверх сцени (prop stageOverlay, дає лише дизайн Windows 98). Діти самі стають у кут; шар не
+// ловить вказівник, тож драг-обертання моделі під міткою працює.
+.stageOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
 }
 
 // Контактна тінь: без неї предмет «висить»
@@ -316,5 +310,46 @@
     box-shadow:
       0 0 0 2px var(--surface-card),
       0 0 0 4px var(--text-primary);
+  }
+}
+
+// ---------- Windows 98 ----------
+// Лише для дизайну Windows 98: решта дизайнів тримає сцену фіксованого розміру, як до нього. У Windows сцена стоїть у
+// колонці вікна (герой, вікно товару), тож гумова: квадрат не ширший за колонку, на телефоні — на всю ширину.
+// Фото товару (StaticGallery, діалог «Фото товару») вписується в ту саму сцену (.still).
+:global(html[data-design='win98']) {
+  .visual {
+    width: min(100%, var(--stage-size));
+    max-width: 100%;
+  }
+
+  .stage {
+    width: min(var(--stage-size), 100%);
+    max-width: 100%;
+    height: auto;
+    flex-shrink: 1;
+    aspect-ratio: 1;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      max-width: none;
+      height: clamp(220px, 38svh, 320px);
+      aspect-ratio: auto;
+    }
+  }
+
+  // Пляма фірмового градієнта — не з цієї доби: сцена стоїть на білій робочій області вікна (і в StaticGallery)
+  .spotlight {
+    display: none;
+  }
+
+  .still {
+    position: relative;
+    grid-area: 1 / 1;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 }

@@ -248,12 +248,99 @@ html[data-design='win98'] .win98-window-bar {
   flex-shrink: 0;
 }
 
-.win98-window-bar > span {
+.win98-window-bar > :is(span, h1, h2, h3, nav) {
   flex: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Смуга, що сама є заголовком вікна (герой, «Інформація», «Іньчі колекції»): кегль і колір смуги, а не h1/h2. */
+html[data-design='win98'] .win98-window-bar > :is(h1, h2, h3) {
+  /* Заголовок не обрізається трикрапкою, а переходить на другий рядок: на телефоні довга назва колекції інакше
+     губила кінець разом із капсулою */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  margin: 0;
+  white-space: normal;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+/* Капсула колекції («новинка») поруч із назвою у смузі */
+html[data-design='win98'] .win98-window-bar > :is(h1, h2, h3) .designCapsule {
+  margin-left: 8px;
+  padding: 1px 6px;
+  font-size: 11px;
+  line-height: 1.4;
+  vertical-align: 1px;
+}
+
+/* Хлібні крихти як назва вікна товару: «Головна › Каталог › Червона Оксана», білим по синьому */
+html[data-design='win98'] .win98-window-bar > nav {
+  margin: 0;
+  padding: 0;
+}
+
+html[data-design='win98'] .win98-window-bar > nav ol {
+  flex-wrap: nowrap;
+  margin: 0;
+  overflow: hidden;
+}
+
+html[data-design='win98'] .win98-window-bar > nav li:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-design='win98'] .win98-window-bar > nav :is(a, span) {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+html[data-design='win98'] .win98-window-bar > nav a {
+  text-decoration: none;
+}
+
+html[data-design='win98'] .win98-window-bar > nav a:hover {
+  text-decoration: underline;
+}
+
+html[data-design='win98'] .win98-window-bar :is(a, button):focus-visible {
+  outline-color: #fff;
+}
+
+/* Кнопка-посилання праворуч у смузі («Весь каталог») — звичайна піднята кнопка, як «Копіювати» в героя */
+html[data-design='win98'] .win98-window-bar > [data-win98-bar-button] {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 12px;
+  background: var(--win-face);
+  box-shadow: var(--win-raised);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+html[data-design='win98'] .win98-window-bar > [data-win98-bar-button]:active {
+  box-shadow: var(--win-sunken);
+}
+
+html[data-design='win98'] .win98-window-bar > [data-win98-bar-button]:focus-visible {
+  outline: 1px dotted var(--text-primary);
+  outline-offset: -5px;
 }
 
 html[data-design='win98'] [data-win98-copy] {
@@ -272,14 +359,12 @@ html[data-design='win98'] [data-win98-spotlight] {
   display: none;
 }
 
-/* The grid of product windows: the dark grey workspace of a Windows program that holds several documents (the
-   «AppWorkspace» colour), sunken into the catalog's own window; the windows themselves are ProductCard.module.scss. */
+/* Сітка вікон товарів лежить просто на робочому столі, окремо від вікна «Каталог — Є.Дріл»: кожен товар — своє
+   вікно (ProductCard.module.scss). Раніше сітка була темно-сірою робочою областю всередині вікна каталогу, і
+   вікно розтягувалось щоразу, як прокрутка довантажувала товари. */
 html[data-design='win98'] [data-win98-grid] {
   gap: 16px;
   align-items: stretch;
-  padding: 16px;
-  background: var(--win-shadow);
-  box-shadow: var(--win-sunken);
 }
 
 html[data-design='win98'] [data-win98-product-card] {
@@ -414,7 +499,6 @@ html[data-design='win98'] .win98-taskbar {
 
   html[data-design='win98'] [data-win98-grid] {
     gap: 12px;
-    padding: 8px;
   }
 }
 

@@ -2,7 +2,7 @@
 'use client';
 
 import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import { useDesign } from '@/shared/hooks/useDesign';
@@ -47,6 +47,11 @@ type Props = {
    * і обмеження шириною сцени тільки різало б останню мініатюру.
    */
   switcherWidth?: 'stage' | 'column';
+  /**
+   * Мітка поверх сцени, у її куті (крапка колекції «● класика» в дизайні Windows 98, де сцена — біла робоча
+   * область вікна). Інші дизайни її не передають: там крапка стоїть над сценою, як і раніше.
+   */
+  stageOverlay?: ReactNode;
 };
 
 export const HeroVisual = ({
@@ -56,6 +61,7 @@ export const HeroVisual = ({
   switcher = 'dots',
   switcherWidth = 'stage',
   motionPreview,
+  stageOverlay,
 }: Props) => {
   const siteDesign = useDesign();
   // DesignClock owns the schedule; the gallery can still pin a specific animation.
@@ -113,10 +119,12 @@ export const HeroVisual = ({
 
   return (
     <div className={styles.visual}>
-      <div ref={ref} className={styles.stage} {...dragHandlers}>
+      {/* data-win98-stage — мітка для дизайну Windows 98 (windows-hero.module.scss), сама нічого не стилізує */}
+      <div ref={ref} className={styles.stage} data-win98-stage="" {...dragHandlers}>
         {/* Підсвітка-«стенд» під обʼєктом: предмет стоїть на поверхні,
           а не висить у порожнечі */}
         <span className={styles.spotlight} data-win98-spotlight="" aria-hidden="true" />
+        {stageOverlay && <div className={styles.stageOverlay}>{stageOverlay}</div>}
         <span className={styles.shadow} aria-hidden="true" />
 
         <SceneErrorBoundary resetKey={selection}>

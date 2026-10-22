@@ -55,9 +55,6 @@
 
   @media (max-width: 768px) {
     --card-inset: var(--space-2);
-    background: var(--background-secondary);
-    border: 1px solid var(--border-subtle);
-    box-shadow: none;
   }
 }
 
@@ -78,10 +75,9 @@
   overflow: visible;
 
   @media (max-width: 768px) {
-    // Компактний горизонтальний кадр дає більше місця назві та розмірам,
-    // а contain нижче показує весь товар, включно з худі.
-    aspect-ratio: 3 / 2;
-    padding: var(--space-2) var(--space-2) 0;
+    // На мобільному картка на всю ширину — 3:4 дало б надто високе фото,
+    // тому кадр ширший, але так само пропорційний
+    aspect-ratio: 4 / 3;
   }
 
   &__ImageWrapper {
@@ -92,10 +88,6 @@
     // навколо вирізаних (прозорих) фото товару.
     background: var(--surface-card);
     overflow: hidden;
-
-    @media (max-width: 768px) {
-      border-radius: var(--radius-card);
-    }
   }
 }
 
@@ -105,10 +97,6 @@
   height: 100%;
   object-fit: cover;
   transition: transform var(--dur-hover) var(--ease-out);
-
-  @media (max-width: 768px) {
-    object-fit: contain;
-  }
 }
 
 .content {
@@ -270,9 +258,9 @@
 }
 
 .variantCheckbox input:checked + .variantCheckboxText {
-  background: #000;
-  color: #fff;
-  border-color: #000;
+  background: var(--text-primary);
+  color: var(--btn-primary-fg);
+  border-color: var(--text-primary);
 }
 
 // ============ Ціна ============
@@ -498,8 +486,8 @@ $win98-parcel: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
     }
   }
 
-  // Екран: втиснуте поле кольору робочого столу — мініатюрний стіл, як монітор у «Властивостях екрана». На білому
-  // зникали б білі футболки, на сірому — сірі; на бірюзовому видно і білі, і чорні речі. Фото на весь кадр його
+  // Екран: біла робоча область у втиснутій рамці — та сама, що під 3D у героях і на сторінці колекції (рішення
+  // власника 2026-10-22, замість бірюзового «монітора»). Межу білої речі тримає рамка 2px; фото на весь кадр його
   // просто закривають.
   .productCardImageContainer {
     // Тепер це елемент flex-колонки вікна: без min-height: 0 висоту диктував би вміст, а не пропорція кадру.
@@ -507,13 +495,13 @@ $win98-parcel: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
     min-height: 0;
     margin: 6px 5px 0;
     padding: 2px;
-    background: var(--win-desktop);
+    background: var(--win-paper);
     box-shadow: var(--win-sunken);
   }
 
   .productCardImageContainer__ImageWrapper {
     border-radius: 0;
-    background: var(--win-desktop);
+    background: var(--win-paper);
   }
 
   .stock,
