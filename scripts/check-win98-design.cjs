@@ -4,6 +4,8 @@ const path = require('node:path');
 const vm = require('node:vm');
 const ts = require(process.cwd() + '/node_modules/typescript');
 const cache = new Map();
+// Windows 98 — дизайн локального перегляду (NEXT_PUBLIC_DESIGN_PREVIEW=win98); без змінної — продакшн із ротацією
+let env = { NEXT_PUBLIC_DESIGN_PREVIEW: 'win98' };
 const document = { documentElement: { getAttribute: () => 'win98' } };
 function load(file) {
   const filename = path.resolve(file);
@@ -17,6 +19,7 @@ function load(file) {
     {
       exports: result,
       document,
+      process: { env },
       window: { matchMedia: () => ({ matches: true }) },
       require: (relative) => load(path.resolve(path.dirname(filename), relative + '.ts')),
     }
@@ -35,4 +38,22 @@ assert.equal(theme.autoTheme(), 'light', 'Classic desktop defaults to its origin
 const boot = { ds: 'diia' };
 vm.runInNewContext(rotation.rotationSnippet(), boot);
 assert.equal(boot.ds, 'win98', 'First paint and React must resolve to the same design');
-console.log('PASS: Windows 95/98 registered, default auto, explicit choices, first paint, animation, theme');
+cache.clear();
+env = {};
+const prodRotation = load('src/shared/config/design-rotation.ts');
+const prodDesign = load('src/shared/config/design.ts');
+assert.equal(prodRotation.ROTATION_ENABLED, true, 'Production rotates the pre-Windows designs');
+assert.notEqual(
+  prodDesign.resolveDesign('auto', Date.now()),
+  'win98',
+  'Production does not start in Windows 98'
+);
+const prodBoot = { ds: 'diia' };
+vm.runInNewContext(prodRotation.rotationSnippet(), prodBoot);
+assert.ok(
+  prodRotation.ROTATION_ORDER.includes(prodBoot.ds),
+  'Production first paint picks a rotation design'
+);
+console.log(
+  'PASS: Windows 95/98 registered, local preview auto, explicit choices, first paint, animation, theme; production rotation'
+);
