@@ -17,15 +17,8 @@
 // самих констант (див. rotationSnippet нижче).
 import type { DesignId } from './design';
 
-/**
- * Windows 98 доопрацьовується локально (рішення власника 2026-10-22), тож продакшн показує дизайни, як до нього, —
- * календарну ротацію. Локально Windows 98 вмикає NEXT_PUBLIC_DESIGN_PREVIEW=win98 у .env.local (на Vercel цієї змінної
- * немає). NEXT_PUBLIC_ вшивається в збірку і сервера, і браузера, тож інлайн-скрипт першого кадру й React бачать одне.
- */
-const WIN98_PREVIEW = process.env.NEXT_PUBLIC_DESIGN_PREVIEW === 'win98';
-
-/** Головний рубильник. false — сайт використовує DEFAULT_AUTO_DESIGN. */
-export const ROTATION_ENABLED = !WIN98_PREVIEW;
+/** Windows 95/98 — основний дизайн на продакшні. Календарна ротація вимкнена. */
+export const ROTATION_ENABLED = false;
 
 /** Active storefront design when calendar rotation is disabled. */
 export const DEFAULT_AUTO_DESIGN: DesignId = 'win98';
