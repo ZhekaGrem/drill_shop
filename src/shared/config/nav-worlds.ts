@@ -49,15 +49,7 @@ export const NAV_WORLDS: NavWorld[] = [
     navItems: seriesNav('/v2/a/privitonchyk'),
   },
   {
-    // Дві колекції (футболки й худі) — один світ із власною сторінкою, де
-    // обидві колекції стоять героями, як на головній
-    id: 'polamav',
-    wordmark: HIDDEN_COLLECTION_WORDMARK['polamav-futbolky'],
-    href: '/polamav',
-    navItems: seriesNav('/polamav'),
-  },
-  {
-    // Та сама схема, що в Поламава: футболки й худі на одній сторінці розділу
+    // Футболки й худі на одній сторінці розділу
     id: 'prokliatyi',
     wordmark: HIDDEN_COLLECTION_WORDMARK['prokliatyi-futbolky'],
     href: '/prokliatyi',
