@@ -14,12 +14,13 @@
 // Назви колекцій спершу збігалися — і щойно приховані розділи пустили в
 // «Іньчі колекції», у списку зʼявилось дві однакові картки. Звідси й імена.
 //
-// Один розділ може мати КІЛЬКА колекцій: у «Поламава» футболки й худі живуть
+// Один розділ може мати КІЛЬКА колекцій: футболки й худі живуть
 // окремо (кожна зі своїм перемикачем на своїй 3D-моделі), але словомарка в
 // обох одна — це один світ хедера.
 export const HIDDEN_COLLECTION_SLUGS: readonly string[] = [
   'mystetstvo-viyny',
   'mystetstvo-viyny-serik',
+  // Продаж Поламава завершено; не показувати навіть застарілі дані каталогу.
   'polamav-futbolky',
   'polamav-hudi',
   'prokliatyi-futbolky',
@@ -32,8 +33,6 @@ export const HIDDEN_COLLECTION_SLUGS: readonly string[] = [
 export const HIDDEN_COLLECTION_WORDMARK: Record<string, string> = {
   'mystetstvo-viyny': 'Олько',
   'mystetstvo-viyny-serik': 'Сєрік',
-  'polamav-futbolky': 'Поламав',
-  'polamav-hudi': 'Поламав',
   // Цензурою, а не словом: «є. ***» (рішення власника 2026-09-28). До того ж
   // «Проклятий» на 360–390px у хедер не влазив — на ~29px ширший за «Поламав»
   'prokliatyi-futbolky': '***',
