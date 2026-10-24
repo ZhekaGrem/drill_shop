@@ -154,6 +154,7 @@ const CheckoutFormComponent = ({ email = true }: CheckoutFormProps) => {
                   {errors.shippingAddress?.lastName && <li>{errors.shippingAddress.lastName.message}</li>}
                   {email && errors.guestEmail && <li>Email: {errors.guestEmail.message}</li>}
                   {errors.shippingAddress?.phone && <li>Телефон: {errors.shippingAddress.phone.message}</li>}
+                  {errors.guestTelegram && <li>Telegram: {errors.guestTelegram.message}</li>}
                   {errors.deliveryMethod && <li>{errors.deliveryMethod.message}</li>}
                   {errors.shippingAddress?.city && <li>Увага: {errors.shippingAddress.city.message}</li>}
                   {errors.deliveryData?.cityRef && <li>Увага: {errors.deliveryData.cityRef.message}</li>}

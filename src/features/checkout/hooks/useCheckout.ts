@@ -40,6 +40,7 @@ export const useCheckout = () => {
     mode: 'onBlur',
     defaultValues: {
       guestEmail: '',
+      guestTelegram: '',
       notes: '',
       deliveryMethod: 'nova_poshta',
       paymentMethod: 'cash_on_delivery',
@@ -90,6 +91,7 @@ export const useCheckout = () => {
           GUEST_CONTACTS_KEY,
           JSON.stringify({
             guestEmail: value.guestEmail,
+            guestTelegram: value.guestTelegram,
             shippingAddress: value.shippingAddress,
           })
         );

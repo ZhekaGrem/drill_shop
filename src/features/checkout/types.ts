@@ -1,5 +1,6 @@
 // src/features/checkout/types.ts - IMPROVED VALIDATION
 import { z } from 'zod';
+import { getTelegramHandleError, normalizeTelegramHandle } from '@/shared/utils/telegram-handle';
 
 // Delivery data schema
 export const deliveryDataSchema = z.object({
@@ -28,6 +29,14 @@ export const checkoutSchema = z
       .optional()
       .refine((val) => !val || z.string().email().safeParse(val).success, {
         message: 'Неправильний формат email',
+      }),
+    // Обовʼязковий: «@» першим ставить сама форма, тут — фінальна перевірка формату
+    guestTelegram: z
+      .string()
+      .transform(normalizeTelegramHandle)
+      .superRefine((value, ctx) => {
+        const error = getTelegramHandleError(value);
+        if (error) ctx.addIssue({ code: z.ZodIssueCode.custom, message: error });
       }),
     notes: z.string().optional(),
     deliveryMethod: z.enum(['nova_poshta', 'courier', 'ukr_poshta', 'other'], {

@@ -22,6 +22,7 @@ interface CreateOrderData {
   guestPhone?: string;
   guestFirstName?: string;
   guestLastName?: string;
+  guestTelegram: string;
   discountCode?: string;
 }
 

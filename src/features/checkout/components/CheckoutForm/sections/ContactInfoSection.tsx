@@ -1,5 +1,5 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
-import { Input, PhoneInput } from '@/shared/components/Input';
+import { Input, PhoneInput, TelegramInput } from '@/shared/components/Input';
 import styles from '../CheckoutForm.module.scss';
 
 interface ContactInfoSectionProps {
@@ -18,6 +18,7 @@ export const ContactInfoSection = ({ form, showEmail = true }: ContactInfoSectio
   const lastNameError = (errors.shippingAddress as any)?.lastName?.message;
   const emailError = errors.guestEmail?.message as string;
   const phoneError = (errors.shippingAddress as any)?.phone?.message;
+  const telegramError = errors.guestTelegram?.message as string;
 
   return (
     <>
@@ -60,6 +61,22 @@ export const ContactInfoSection = ({ form, showEmail = true }: ContactInfoSectio
             placeholder="+380 (XX) XXX XX XX"
             required
             error={phoneError}
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="guestTelegram"
+        render={({ field }) => (
+          <TelegramInput
+            ref={field.ref}
+            label="Telegram"
+            required
+            error={telegramError}
             value={field.value}
             onChange={field.onChange}
             onBlur={field.onBlur}
