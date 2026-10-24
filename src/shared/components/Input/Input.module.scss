@@ -174,3 +174,10 @@ $lifted: '&:has(:is(input, textarea):is(:focus, :not(:placeholder-shown), :disab
 .section {
   color: var(--text-tertiary);
 }
+
+// Windows 98 малює поле білою «втопленою» коробкою (app/windows98.css), і вона
+// лягала поверх лейбла в стані плейсхолдера: порожні поля стояли без підписів.
+// Лейбл — над коробкою; у фокусі він так само спливає над полем.
+:global(html[data-design='win98']) .label {
+  z-index: 1;
+}
