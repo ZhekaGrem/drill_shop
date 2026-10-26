@@ -41,7 +41,7 @@ ${itemsList}
     } else if (messenger === 'whatsapp') {
       url = `https://wa.me/${managerPhone}?text=${encodedText}`;
     } else if (messenger === 'telegram') {
-      url = `https://t.me/+${managerPhone}?text=${encodedText}`;
+      url = `https://t.me/makaron_gang?text=${encodedText}`;
     }
 
     window.open(url, '_blank');
