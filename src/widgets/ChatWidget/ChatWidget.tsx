@@ -7,7 +7,7 @@ import styles from './chatWidget.module.scss';
 
 // Contact links - replace with real ones
 const contactLinks = {
-  telegram: 'https://t.me/shchilnuidrill?direct',
+  telegram: 'https://t.me/makaron_gang?direct',
   instagram: 'https://www.instagram.com/r4zyob',
   phone: '+380000000000',
   email: 'team@ye-dril.com',
