@@ -17,8 +17,12 @@
 // самих констант (див. rotationSnippet нижче).
 import type { DesignId } from './design';
 
-/** Windows 95/98 — основний дизайн на продакшні. Календарна ротація вимкнена. */
-export const ROTATION_ENABLED = false;
+/**
+ * На продакшні дизайн обирає календар. Локальний перегляд Windows 95/98
+ * вмикається через NEXT_PUBLIC_DESIGN_PREVIEW=win98 у .env.local.
+ * NEXT_PUBLIC_ забезпечує однаковий вибір у першому кадрі та після гідрації.
+ */
+export const ROTATION_ENABLED = process.env.NEXT_PUBLIC_DESIGN_PREVIEW !== 'win98';
 
 /** Active storefront design when calendar rotation is disabled. */
 export const DEFAULT_AUTO_DESIGN: DesignId = 'win98';
