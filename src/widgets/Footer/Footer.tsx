@@ -14,7 +14,7 @@ export function Footer() {
     <footer className={`${styles.footer} `} data-footer role="contentinfo" aria-label="Інформація про сайт">
       {/* Верхній ярус посилань (Магазин / Покупцю / Час роботи) видалений
           (рішення власника): ті самі сторінки доступні з екрана «Меню».
-          Лишилась тільки службова смуга — бренд, контакти, кредити та соцмережі поруч,
+          Лишилась тільки службова смуга — бренд, кредити та соцмережі поруч,
           як у нижньому меню diia.gov.ua: там теж легальні посилання й
           «Слідкуй за нами тут:» стоять в одному тихому рядку під роздільником. */}
       <div className={styles.container}>
@@ -27,15 +27,6 @@ export function Footer() {
           </div>
 
           <div className={styles.bottomMeta}>
-            <div className={styles.contactInfo}>
-              <a href={`mailto:${siteConfig.contacts.email}`} className={styles.contactItem}>
-                {siteConfig.contacts.email}
-              </a>
-              <a href={`tel:${siteConfig.contacts.phone.replace(/\s/g, '')}`} className={styles.contactItem}>
-                {siteConfig.contacts.phone}
-              </a>
-            </div>
-
             <div className={styles.credits}>
               <span>
                 Розробка{' '}

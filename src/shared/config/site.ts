@@ -13,7 +13,7 @@ export const siteConfig = {
     country: 'Україна',
   },
   socials: {
-    instagram: 'https://www.instagram.com/r4zyob',
+    instagram: 'https://www.instagram.com/ye_drill/',
     telegram: 'https://t.me/makaron_gang?direct',
   },
   workingHours: 'Пн–Пт: 08:00–20:00 | Сб–Нд: 09:00–18:00',

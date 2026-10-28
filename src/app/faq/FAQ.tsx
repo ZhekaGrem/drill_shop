@@ -1,7 +1,6 @@
 // src/app/faq/FAQ.tsx
 'use client';
 
-import { useMemo, useState } from 'react';
 import { IconMail, IconSearch, IconX } from '@tabler/icons-react';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
@@ -9,29 +8,18 @@ import { Section } from '@/shared/components/Section/Section';
 import { ListGroup, ListRow } from '@/shared/components/ListGroup/ListGroup';
 import { IconTelegram } from '@/shared/components/Svg';
 import { siteConfig } from '@/shared/config/site';
+import { useDesign } from '@/shared/hooks/useDesign';
 import { faqData } from './faq-data';
+import { FAQWin98 } from './FAQWin98';
+import { formatQuestions, useFaqSearch } from './useFaqSearch';
 import styles from './faq.module.scss';
 
 const FAQ = () => {
-  const [query, setQuery] = useState('');
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return faqData;
-    return faqData
-      .map((category) => ({
-        ...category,
-        questions: category.questions.filter(
-          (item) => item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q)
-        ),
-      }))
-      .filter((category) => category.questions.length > 0);
-  }, [query]);
-
-  const totalQuestions = useMemo(
-    () => faqData.reduce((acc, category) => acc + category.questions.length, 0),
-    []
-  );
+  const search = useFaqSearch();
+  const { query, setQuery, filtered, totalQuestions } = search;
+  // Windows 98 — окремий дизайн: кожен розділ у ньому — окреме вікно (FAQWin98); решта дизайнів — як і раніше
+  const design = useDesign();
+  if (design === 'win98') return <FAQWin98 {...search} />;
 
   return (
     <Page>
@@ -67,7 +55,7 @@ const FAQ = () => {
           <Section
             key={category.category}
             title={category.category}
-            description={`${category.questions.length} ${category.questions.length === 1 ? 'питання' : 'питань'}`}>
+            description={formatQuestions(category.questions.length)}>
             <ListGroup>
               {category.questions.map((item) => (
                 <details key={item.question} className={styles.item}>

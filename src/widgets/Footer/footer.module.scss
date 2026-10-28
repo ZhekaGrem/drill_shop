@@ -20,7 +20,7 @@
 // власника: ті самі сторінки доступні з екрана «Меню». Футер = одна
 // службова смуга.
 
-// Bottom section — три групи в один тихий рядок: бренд, контакти+кредити,
+// Bottom section — три групи в один тихий рядок: бренд, кредити,
 // соцмережі. Мова нижнього меню diia.gov.ua: легальні посилання й
 // «Слідкуй за нами тут:» стоять поруч, не в основній сітці.
 .bottomSection {
@@ -60,25 +60,7 @@
   gap: var(--space-2);
 }
 
-.contactInfo {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--spacing-md);
-}
-
-.contactItem {
-  font-size: var(--text-sm);
-  font-weight: var(--fw-normal);
-  color: var(--text-inverse-secondary);
-  text-decoration: none;
-  transition: var(--transition-fast);
-
-  &:hover {
-    color: var(--text-inverse);
-  }
-}
-
-// Кредити — третинний шар, тихіше за контакти й копірайт.
+// Кредити — третинний шар, тихіше за копірайт.
 .credits {
   display: flex;
   align-items: center;

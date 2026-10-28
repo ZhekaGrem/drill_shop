@@ -248,6 +248,14 @@ html[data-design='win98'] .win98-window-bar {
   flex-shrink: 0;
 }
 
+/* Піксельний значок у смузі (Win98Icons) — 2×, щоб пікселі лишались квадратними; кольори — власні, не теки */
+.win98-window-bar > svg[data-pixel-icon] {
+  width: 32px;
+  height: 32px;
+  color: inherit;
+  fill: none;
+}
+
 .win98-window-bar > :is(span, h1, h2, h3, nav) {
   flex: 1;
   min-width: 0;

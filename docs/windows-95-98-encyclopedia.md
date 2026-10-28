@@ -261,7 +261,7 @@ box-shadow:
 
 ## 14. Активація та сумісність
 
-Ідентифікатор концепції — `win98`. У режимі «Авто» вона є поточним дизайном магазину, календарна ротація призупинена. Це централізовано налаштовано через `DEFAULT_AUTO_DESIGN` і `ROTATION_ENABLED`.
+Ідентифікатор концепції — `win98`. На продакшні режим «Авто» змінює палітри за календарем кожні дві доби; Windows 95/98 у цю ротацію не входить. Локальний перегляд Windows вмикає `NEXT_PUBLIC_DESIGN_PREVIEW=win98` у `.env.local`: тоді `ROTATION_ENABLED` вимкнено, а `DEFAULT_AUTO_DESIGN` дорівнює `win98`.
 
 Інлайн-скрипт ставить атрибут теми перед першим кадром. Клієнтська логіка використовує ту саму конфігурацію. Явний вибір попередньої концепції у конкретному браузері має вищий пріоритет. Через `/v2/dev` можна вибрати Windows 95/98 або повернути інший дизайн.
 
@@ -269,24 +269,26 @@ box-shadow:
 
 ## 15. Карта реалізації
 
-| Файл                                                                  | Відповідальність                                                                        |
-| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `src/app/windows98.css`                                               | Палітра, рельєф, поля, діалоги, панель завдань                                          |
-| `src/features/catalog/components/ProductCard/ProductCard.module.scss` | Вікно товару в каталозі                                                                 |
-| `src/shared/styles/_win98.scss`                                       | Сторінка-вікно зі смугою заголовка                                                      |
-| `src/shared/components/Windows98/Windows98.tsx`                       | Смуга вікна колекції та робоча нижня навігація                                          |
-| `src/shared/components/Windows98/windows-hero.module.scss`            | Незалежна розкладка героя Windows                                                       |
-| `src/shared/config/design.ts`                                         | Реєстрація концепції та ручний вибір                                                    |
-| `src/shared/config/design-rotation.ts`                                | Дизайн за замовчуванням і календар                                                      |
-| `src/shared/config/theme.ts`                                          | Автоматична світла тема                                                                 |
-| `src/shared/config/animation.ts`                                      | Рух товару для концепції                                                                |
-| `src/app/layout.tsx`                                                  | Стилі й початкова тема до гідрації                                                      |
-| `src/app/LayoutWrapper.tsx`                                           | Панель завдань у звичайній оболонці                                                     |
-| `src/widgets/HomeHeroes/HeroBlockWin98.tsx`                           | Герой-вікно колекції (HomeHeroes.tsx вибирає його для Windows)                          |
-| `src/widgets/ProductV2/win98/`                                        | Сторінка товару в колекції: вікна товару, «Інформація», «Іньчі колекції», «Фото товару» |
-| `src/app/v2/a/[slug]/CollectionProductByDesign.tsx`                   | Вибір сторінки товару: Windows або незмінний CollectionProductClient                    |
-| SCSS-модулі хедера, футера й логотипа                                 | Локальне компонування й специфічні кольори                                              |
-| `scripts/check-win98-design.cjs`                                      | Перевірка конфігурації, початкового кадру й ручного вибору                              |
+| Файл                                                                  | Відповідальність                                                                                                        |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `src/app/windows98.css`                                               | Палітра, рельєф, поля, діалоги, панель завдань                                                                          |
+| `src/features/catalog/components/ProductCard/ProductCard.module.scss` | Вікно товару в каталозі                                                                                                 |
+| `src/shared/styles/_win98.scss`                                       | Сторінка-вікно зі смугою заголовка                                                                                      |
+| `src/shared/components/Windows98/Windows98.tsx`                       | Смуга вікна колекції та робоча нижня навігація                                                                          |
+| `src/shared/components/Windows98/windows-hero.module.scss`            | Незалежна розкладка героя Windows                                                                                       |
+| `src/shared/config/design.ts`                                         | Реєстрація концепції та ручний вибір                                                                                    |
+| `src/shared/config/design-rotation.ts`                                | Дизайн за замовчуванням і календар                                                                                      |
+| `src/shared/config/theme.ts`                                          | Автоматична світла тема                                                                                                 |
+| `src/shared/config/animation.ts`                                      | Рух товару для концепції                                                                                                |
+| `src/app/layout.tsx`                                                  | Стилі й початкова тема до гідрації                                                                                      |
+| `src/app/LayoutWrapper.tsx`                                           | Панель завдань у звичайній оболонці                                                                                     |
+| `src/shared/components/Windows98/Win98Window.tsx`                     | Вікно блоку сторінки: головна — «Доставка · оплата · повернення», «Категорії» (рядок стану), «Часті питання», «Звʼязок» |
+| `src/shared/components/Windows98/Win98Icons.tsx`                      | Власні піксельні іконки в манері NT (16×16 у палітрі Windows, показ 2×): теки, категорії, доставка, оплата, повернення  |
+| `src/widgets/HomeHeroes/HeroBlockWin98.tsx`                           | Герой-вікно колекції (HomeHeroes.tsx вибирає його для Windows)                                                          |
+| `src/widgets/ProductV2/win98/`                                        | Сторінка товару в колекції: вікна товару, «Інформація», «Іньчі колекції», «Фото товару»                                 |
+| `src/app/v2/a/[slug]/CollectionProductByDesign.tsx`                   | Вибір сторінки товару: Windows або незмінний CollectionProductClient                                                    |
+| SCSS-модулі хедера, футера й логотипа                                 | Локальне компонування й специфічні кольори                                                                              |
+| `scripts/check-win98-design.cjs`                                      | Перевірка конфігурації, початкового кадру й ручного вибору                                                              |
 
 ## 16. Як продовжувати цей дизайн
 

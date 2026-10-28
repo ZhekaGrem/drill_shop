@@ -27,6 +27,8 @@ import { IconCart3 } from '@/shared/components/Svg';
 import { sortVariantsBySize } from '@/shared/utils/size-sort';
 import { NotifyAvailabilityModal } from '@/features/notify-availability';
 import { ImageGalleryModal } from '@/shared/components/ImageGalleryModal';
+import { useDesign } from '@/shared/hooks/useDesign';
+import { ProductDetailsWin98 } from './win98/ProductDetailsWin98';
 
 interface ProductDetailsProps {
   initialProduct?: ProductWithRelations;
@@ -70,6 +72,8 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   const [galleryOpened, setGalleryOpened] = useState(false);
   const [variantError, setVariantError] = useState<string | null>(null);
   const variantsRef = useRef<HTMLDivElement>(null);
+  // Windows 98 — окремий дизайн: товар у ньому — два вікна (ProductDetailsWin98); решта дизайнів — як і раніше
+  const design = useDesign();
 
   const params = useParams();
   const router = useRouter();
@@ -107,7 +111,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
   };
   const basePromoData = product ? calculatePromoPrice(product) : null;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (quantity = 1) => {
     if (!product) return;
 
     // Повідомлення стоїть біля самих чіпів варіантів, а не нативним alert()
@@ -137,12 +141,12 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
       promoEndsAt: selectedVariant?.promoEndsAt || product.promoEndsAt,
     };
 
-    // Кількість зі сторінки товару прибрана (рішення власника) — завжди 1;
-    // докупити більше можна степером у кошику
+    // У звичайних дизайнах кількість зі сторінки прибрана (рішення власника) — там завжди 1, докупити можна в
+    // кошику; у Windows 98 вікно товару має степер кількості (ProductDetailsWin98)
     if (selectedVariant) {
-      addItem(product.id, 1, selectedVariant.id, productData);
+      addItem(product.id, quantity, selectedVariant.id, productData);
     } else {
-      addItem(product.id, 1, undefined, productData);
+      addItem(product.id, quantity, undefined, productData);
     }
   };
 
@@ -341,6 +345,81 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
       }))
       .filter((cat) => cat.imageUrl || cat.text) || [];
   const hasSizeGuide = categoriesWithGuide.length > 0;
+
+  const modals = (
+    <>
+      {/* Size Guide Modal */}
+      {hasSizeGuide && (
+        <SizeGuideModal
+          opened={sizeGuideOpened}
+          onClose={() => setSizeGuideOpened(false)}
+          categories={categoriesWithGuide}
+        />
+      )}
+
+      {/* Notify Availability Modal */}
+      <NotifyAvailabilityModal
+        opened={notifyModalOpened}
+        onClose={() => setNotifyModalOpened(false)}
+        productName={product.name}
+        productSlug={product.slug}
+        variantName={selectedVariant?.name}
+      />
+
+      {/* Image Gallery Modal */}
+      <ImageGalleryModal
+        images={sortedImages}
+        opened={galleryOpened}
+        onClose={() => setGalleryOpened(false)}
+        initialIndex={selectedImageIndex}
+        productName={product.name}
+      />
+    </>
+  );
+
+  if (design === 'win98') {
+    const priceData = selectedVariant ? calculateVariantPromoPrice(selectedVariant) : basePromoData;
+    return (
+      <Page className={styles.productPage}>
+        <ProductDetailsWin98
+          product={product}
+          basePath={basePath}
+          images={sortedImages}
+          selectedImageIndex={selectedImageIndex}
+          onSelectImage={setSelectedImageIndex}
+          onOpenGallery={() => setGalleryOpened(true)}
+          selectedVariant={selectedVariant}
+          stockLabel={stockLabel}
+          relatedProducts={relatedProducts}
+          buy={{
+            name: product.name,
+            price: priceData?.finalPrice ?? Number(selectedVariant?.price ?? product.price),
+            originalPrice: priceData?.hasDiscount ? priceData.originalPrice : undefined,
+            variants: sortedVariants,
+            selectedVariantId: selectedVariant?.id,
+            onSelectVariant: (variant) => {
+              setSelectedVariant(variant);
+              setVariantError(null);
+            },
+            getVariantLabel: showVariantCheckboxes ? getVariantDisplayValue : createVariantDisplayLabel,
+            getVariantStock,
+            variantsRef,
+            variantError,
+            isInStock: isInStock && !collectionArchived,
+            maxQuantity: availableQuantity,
+            archivedNotice: collectionArchived
+              ? `Архівна колекція «${product.collection?.title}» — лишається на вітрині, але купити її вже не можна.`
+              : undefined,
+            addLabel: getButtonText(),
+            onAdd: handleAddToCart,
+            onNotify: () => setNotifyModalOpened(true),
+            onOpenSizeGuide: hasSizeGuide ? () => setSizeGuideOpened(true) : undefined,
+          }}>
+          {modals}
+        </ProductDetailsWin98>
+      </Page>
+    );
+  }
 
   return (
     <Page className={styles.productPage}>
@@ -606,7 +685,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
                         size="lg"
                         fullWidth
                         className={styles.addToCartButton}
-                        onClick={handleAddToCart}>
+                        onClick={() => handleAddToCart()}>
                         <IconCart3 /> {getButtonText()}
                       </Button>
                     </div>
@@ -677,32 +756,7 @@ export default function ProductDetailsClient({ initialProduct, basePath = '' }: 
             aggregateRating/review — розмітка невидимого контенту порушує
             вимоги rich results. */}
 
-        {/* Size Guide Modal */}
-        {hasSizeGuide && (
-          <SizeGuideModal
-            opened={sizeGuideOpened}
-            onClose={() => setSizeGuideOpened(false)}
-            categories={categoriesWithGuide}
-          />
-        )}
-
-        {/* Notify Availability Modal */}
-        <NotifyAvailabilityModal
-          opened={notifyModalOpened}
-          onClose={() => setNotifyModalOpened(false)}
-          productName={product.name}
-          productSlug={product.slug}
-          variantName={selectedVariant?.name}
-        />
-
-        {/* Image Gallery Modal */}
-        <ImageGalleryModal
-          images={sortedImages}
-          opened={galleryOpened}
-          onClose={() => setGalleryOpened(false)}
-          initialIndex={selectedImageIndex}
-          productName={product.name}
-        />
+        {modals}
       </div>
     </Page>
   );

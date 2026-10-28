@@ -1,7 +1,14 @@
 // src/app/Home.tsx
 'use client';
 
-import { IconAward, IconCircleCheck, IconMail, IconMapPin, IconMessageCircle } from '@tabler/icons-react';
+import {
+  IconAward,
+  IconCircleCheck,
+  IconHelpCircle,
+  IconMail,
+  IconMapPin,
+  IconMessageCircle,
+} from '@tabler/icons-react';
 import { IconInstagram, IconTelegram } from '@/shared/components/Svg';
 import { Page } from '@/shared/components/Page/Page';
 import { Section } from '@/shared/components/Section/Section';
@@ -15,6 +22,10 @@ import { useCategoriesStore } from '@/shared/stores/categories';
 import { CategoriesInitializer } from '@/shared/components/CategoriesInitializer/CategoriesInitializer';
 import { content } from '@/shared/config/content';
 import { siteConfig } from '@/shared/config/site';
+import { useDesign } from '@/shared/hooks/useDesign';
+import { Win98Window } from '@/shared/components/Windows98/Win98Window';
+import { Win98CategoryIcon, Win98TrustIcon } from '@/shared/components/Windows98/Win98Icons';
+import win98Window from '@/shared/components/Windows98/win98-window.module.scss';
 import { faqData } from './faq/faq-data';
 import styles from './home.module.scss';
 
@@ -34,6 +45,9 @@ const FAQ_PREVIEW = faqData.slice(0, 3).map((category) => category.questions[0])
 
 const Home = () => {
   const categories = useCategoriesStore((s) => s.categories);
+  // Windows 98 — окремий дизайн: смуга «доставка · оплата · повернення», «Категорії», «Часті питання» і «Звʼязок»
+  // у ньому — вікна (Win98Window) з піксельними іконками NT; решта дизайнів показує ті самі блоки, як і раніше.
+  const win98 = useDesign() === 'win98';
   // Герої = колекції з БД (GET /collections); механіку розкладки вибирає
   // активна дизайн-концепція (data-design, перемикач на /v2/dev).
   //
@@ -44,97 +58,159 @@ const Home = () => {
   const visibleCollections =
     collections && orderForHome(collections.filter((c) => !isHiddenCollection(c.key)));
 
+  const contacts = (
+    <ListGroup>
+      <ListRow
+        external
+        href={siteConfig.socials.instagram}
+        media={<IconInstagram />}
+        title="Instagram"
+        hint="Нові дропи, бекстейдж і анонси"
+      />
+      <ListRow
+        external
+        href={siteConfig.socials.telegram}
+        media={<IconTelegram />}
+        title="Telegram"
+        hint="Питання про замовлення й наявність"
+      />
+      <ListRow
+        href={`mailto:${siteConfig.contacts.email}`}
+        media={<IconMail stroke={1.5} />}
+        title="Пошта"
+        hint={siteConfig.contacts.email}
+      />
+      <ListRow
+        media={<IconMapPin stroke={1.5} />}
+        title={siteConfig.contacts.city}
+        hint={siteConfig.workingHours}
+      />
+    </ListGroup>
+  );
+
   return (
     <Page>
       <CategoriesInitializer />
 
       <HomeHeroes collections={visibleCollections} />
 
-      <ul className={styles.trust}>
-        {content.home.trust.map((item) => (
-          <li key={item.label} className={styles.trustItem}>
-            <span className={styles.trustLabel}>{item.label}</span>
-            <span className={styles.trustHint}>{item.hint}</span>
-          </li>
-        ))}
-      </ul>
+      {win98 ? (
+        <Win98Window title="Доставка · оплата · повернення" className={win98Window.trustWindow}>
+          <ul className={win98Window.trustList}>
+            {content.home.trust.map((item) => (
+              <li key={item.label} className={win98Window.trustItem}>
+                <Win98TrustIcon label={item.label} />
+                <span className={win98Window.trustText}>
+                  <span className={win98Window.trustLabel}>{item.label}</span>
+                  <span className={win98Window.trustHint}>{item.hint}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Win98Window>
+      ) : (
+        <ul className={styles.trust}>
+          {content.home.trust.map((item) => (
+            <li key={item.label} className={styles.trustItem}>
+              <span className={styles.trustLabel}>{item.label}</span>
+              <span className={styles.trustHint}>{item.hint}</span>
+            </li>
+          ))}
+        </ul>
+      )}
 
-      {/* Секції-списки стоять парами: від 1024px пара лягає у дві доріжки,
-          нижче — одна під одною, як і було. Пари складені за змістом, а не за
-          висотою: навігація з аргументом, операційне з операційним. */}
-      <div className={styles.listTracks}>
-        {categories && categories.length > 0 && (
-          <Section title="Категорії" action={{ href: '/catalog', label: 'Усі товари' }}>
+      {win98 ? (
+        // Windows 98: лише «Категорії» й «Часті питання» поруч («Чому Є.Дріл» і «Доставка й оплата» тут прибрані —
+        // рішення власника 2026-10-22); решта дизайнів — дві пари секцій, як і були
+        <div className={styles.listTracks}>
+          {categories && categories.length > 0 && (
+            <Win98Window
+              title="Категорії"
+              action={{ href: '/catalog', label: 'Усі товари' }}
+              status={`Об'єктів: ${Math.min(categories.length, 4)}`}>
+              <ListGroup>
+                {categories.slice(0, 4).map((cat) => (
+                  <ListRow
+                    key={cat.id}
+                    href={`/catalog/category/${cat.slug}`}
+                    media={<Win98CategoryIcon slug={cat.slug} />}
+                    title={cat.name}
+                    hint={cat.description || content.home.categoryHints[cat.slug]}
+                  />
+                ))}
+              </ListGroup>
+            </Win98Window>
+          )}
+          <Win98Window title="Часті питання" action={{ href: '/faq', label: 'Усі питання' }}>
             <ListGroup>
-              {categories.slice(0, 4).map((cat) => (
+              {FAQ_PREVIEW.map((item) => (
                 <ListRow
-                  key={cat.id}
-                  href={`/catalog/category/${cat.slug}`}
-                  title={cat.name}
-                  hint={cat.description || content.home.categoryHints[cat.slug]}
+                  key={item.question}
+                  href="/faq"
+                  media={<IconHelpCircle stroke={1.5} />}
+                  title={item.question}
+                  hint={item.answer}
                 />
               ))}
             </ListGroup>
-          </Section>
-        )}
+          </Win98Window>
+        </div>
+      ) : (
+        <>
+          {/* Секції-списки стоять парами: від 1024px пара лягає у дві доріжки,
+            нижче — одна під одною, як і було. Пари складені за змістом, а не за
+            висотою: навігація з аргументом, операційне з операційним. */}
+          <div className={styles.listTracks}>
+            {categories && categories.length > 0 && (
+              <Section title="Категорії" action={{ href: '/catalog', label: 'Усі товари' }}>
+                <ListGroup>
+                  {categories.slice(0, 4).map((cat) => (
+                    <ListRow
+                      key={cat.id}
+                      href={`/catalog/category/${cat.slug}`}
+                      title={cat.name}
+                      hint={cat.description || content.home.categoryHints[cat.slug]}
+                    />
+                  ))}
+                </ListGroup>
+              </Section>
+            )}
 
-        <Section title="Чому Є.Дріл" description="Що стоїть за кожним замовленням">
-          <ListGroup>
-            {REASONS.map((reason) => (
-              <ListRow
-                key={reason.title}
-                media={reason.icon}
-                title={reason.title}
-                hint={reason.description}
-              />
-            ))}
-          </ListGroup>
-        </Section>
-      </div>
+            <Section title="Чому Є.Дріл" description="Що стоїть за кожним замовленням">
+              <ListGroup>
+                {REASONS.map((reason) => (
+                  <ListRow
+                    key={reason.title}
+                    media={reason.icon}
+                    title={reason.title}
+                    hint={reason.description}
+                  />
+                ))}
+              </ListGroup>
+            </Section>
+          </div>
 
-      <div className={styles.listTracks}>
-        <Section title="Доставка й оплата" action={{ href: '/delivery-and-payment', label: 'Деталі' }}>
-          <ServicesGroup />
-        </Section>
+          <div className={styles.listTracks}>
+            <Section title="Доставка й оплата" action={{ href: '/delivery-and-payment', label: 'Деталі' }}>
+              <ServicesGroup />
+            </Section>
 
-        <Section title="Часті питання" action={{ href: '/faq', label: 'Усі питання' }}>
-          <ListGroup>
-            {FAQ_PREVIEW.map((item) => (
-              <ListRow key={item.question} href="/faq" title={item.question} hint={item.answer} />
-            ))}
-          </ListGroup>
-        </Section>
-      </div>
+            <Section title="Часті питання" action={{ href: '/faq', label: 'Усі питання' }}>
+              <ListGroup>
+                {FAQ_PREVIEW.map((item) => (
+                  <ListRow key={item.question} href="/faq" title={item.question} hint={item.answer} />
+                ))}
+              </ListGroup>
+            </Section>
+          </div>
+        </>
+      )}
 
-      <Section title="Звʼязок">
-        <ListGroup>
-          <ListRow
-            external
-            href={siteConfig.socials.instagram}
-            media={<IconInstagram />}
-            title="Instagram"
-            hint="Нові дропи, бекстейдж і анонси"
-          />
-          <ListRow
-            external
-            href={siteConfig.socials.telegram}
-            media={<IconTelegram />}
-            title="Telegram"
-            hint="Питання про замовлення й наявність"
-          />
-          <ListRow
-            href={`mailto:${siteConfig.contacts.email}`}
-            media={<IconMail stroke={1.5} />}
-            title="Пошта"
-            hint={siteConfig.contacts.email}
-          />
-          <ListRow
-            media={<IconMapPin stroke={1.5} />}
-            title={siteConfig.contacts.city}
-            hint={siteConfig.workingHours}
-          />
-        </ListGroup>
-      </Section>
+      {win98 ? (
+        <Win98Window title="Звʼязок">{contacts}</Win98Window>
+      ) : (
+        <Section title="Звʼязок">{contacts}</Section>
+      )}
     </Page>
   );
 };

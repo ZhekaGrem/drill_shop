@@ -16,6 +16,8 @@ import { Button } from '@/shared/components/Button/Button';
 import { Page } from '@/shared/components/Page/Page';
 import { PageHeader } from '@/shared/components/PageHeader/PageHeader';
 import styles from './cart.module.scss';
+import { useDesign } from '@/shared/hooks/useDesign';
+import { CartWin98 } from './CartWin98';
 
 interface CartPageProps {
   basePath?: string;
@@ -41,6 +43,9 @@ export default function CartPage({ basePath = '' }: CartPageProps) {
   const { items, calculations, error, isLoading } = useCart();
   const hasItems = items.length > 0;
   const discount = calculations.discountAmount ?? 0;
+  // Windows 98 — окремий дизайн: кошик у ньому — вікно Провідника з товарами-значками (CartWin98)
+  const design = useDesign();
+  if (design === 'win98') return <CartWin98 basePath={basePath} />;
 
   if (error) {
     return (

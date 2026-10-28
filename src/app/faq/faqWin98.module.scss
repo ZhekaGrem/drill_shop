@@ -1,0 +1,224 @@
+// src/app/faq/faqWin98.module.scss
+// FAQ у дизайні Windows 98 (FAQWin98.tsx). Компонент рендериться лише в цьому дизайні, тож правила без обмеження
+// html[data-design]. Рамку вікна, смугу й рядок стану дає Win98Window; білий втиснутий список — ListGroup у
+// [data-win98-field]. Тут — розкладка вікон, поле пошуку і рядки-питання.
+//
+// Відкрите питання більше НЕ заливається: у спільному faq.module.scss шеврон відкритого пункту брав
+// --text-primary тлом і --btn-primary-fg штрихами, а в Windows 98 обидва — #000, тож виходив чорний квадрат.
+// Тут стан показує сама кнопка: піднята ▼ — закрито, втиснута ▲ — відкрито.
+
+.desk {
+  display: grid;
+  gap: 24px;
+  margin-top: var(--page-padding-y);
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    gap: 16px;
+  }
+}
+
+// Win98Window сам ставить відступ зверху (для блоків головної); у сітці відступ дає gap
+.desk > .window {
+  margin-top: 0;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.lead {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+// ============ Пошук: біле втиснуте поле вводу ============
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 4px 6px 4px 10px;
+  background: var(--win-paper);
+  box-shadow: var(--win-sunken);
+  cursor: text;
+
+  &:focus-within {
+    outline: 1px dotted var(--text-primary);
+    outline-offset: -5px;
+  }
+}
+
+.searchIcon {
+  flex: none;
+  color: var(--text-primary);
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--win-shadow);
+  }
+
+  &::-webkit-search-cancel-button {
+    appearance: none;
+  }
+}
+
+.searchClear,
+.reset {
+  border: 0;
+  border-radius: 0;
+  background: var(--win-face);
+  box-shadow: var(--win-raised);
+  color: var(--text-primary);
+  cursor: pointer;
+
+  &:active {
+    box-shadow: var(--win-sunken);
+  }
+
+  &:focus-visible {
+    outline: 1px dotted var(--text-primary);
+    outline-offset: -5px;
+  }
+}
+
+.searchClear {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+.reset {
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0 20px;
+  font: inherit;
+  font-weight: 700;
+}
+
+// ============ Питання: рядки списку з кнопкою-перемикачем ============
+.item + .item {
+  box-shadow: inset 0 1px var(--win-light);
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 8px 8px 8px 12px;
+  list-style: none;
+  cursor: pointer;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  // Наведення підкреслює назву, як у рядків-посилань вікна «Інформація», а не фарбує рядок
+  &:hover .question {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 1px dotted var(--text-primary);
+    outline-offset: -4px;
+  }
+}
+
+.question {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+// Кнопка-перемикач 36 px з трикутником, як у випадного списку Windows: ▼ піднята, ▲ втиснута
+.toggle {
+  position: relative;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  background: var(--win-face);
+  box-shadow: var(--win-raised);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-top: 6px solid var(--text-primary);
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    transform: translate(-50%, -40%);
+  }
+}
+
+.trigger:active .toggle {
+  box-shadow: var(--win-sunken);
+}
+
+.item[open] .toggle {
+  background: var(--win-checker);
+  box-shadow: var(--win-pressed);
+
+  &::before {
+    border-top: 0;
+    border-bottom: 6px solid var(--text-primary);
+    transform: translate(-50%, -60%);
+  }
+}
+
+.answer {
+  margin: 0;
+  padding: 0 56px 16px 12px;
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    padding-right: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .item[open] .answer {
+    animation: reveal 120ms steps(3, end);
+  }
+}
+
+// Поява «кроками», як перемальовування у Windows 98, а не плавне згасання
+@keyframes reveal {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  to {
+    clip-path: inset(0);
+  }
+}

@@ -22,6 +22,8 @@ import { IconClock, IconInstagram, IconMail, IconPhone, IconTelegram } from '@/s
 import { useAuthStore } from '@/shared/stores/auth';
 import { siteConfig } from '@/shared/config/site';
 import styles from './menu.module.scss';
+import { useDesign } from '@/shared/hooks/useDesign';
+import { MenuScreenWin98 } from './MenuScreenWin98';
 
 export default function MenuScreen() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -36,6 +38,20 @@ export default function MenuScreen() {
     await logout();
     window.location.href = '/';
   };
+
+  // Windows 98 — окремий дизайн: групи меню в ньому — вікна (MenuScreenWin98); решта дизайнів — як і раніше
+  const design = useDesign();
+  if (design === 'win98') {
+    return (
+      <MenuScreenWin98
+        account={
+          isInitialized && isAuthenticated
+            ? { email: userProfile?.email, isManager, onLogout: handleLogout }
+            : null
+        }
+      />
+    );
+  }
 
   return (
     <Page width="narrow" className={styles.page}>

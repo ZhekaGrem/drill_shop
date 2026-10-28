@@ -215,6 +215,11 @@
     padding-bottom: 4px;
     background: var(--win-face);
 
+    // Місце праворуч у смузі під лічильник, щоб довга назва обрізалась трикрапкою, а не лізла під нього
+    &::before {
+      padding-right: 116px;
+    }
+
     @media (max-width: 768px) {
       padding-inline: 12px;
     }
@@ -235,13 +240,23 @@
     margin-block: 24px;
   }
 
-  .totalCount {
-    height: 28px;
+  // Лічильник — у синій смузі «Каталог — Є.Дріл», праворуч від назви вікна: це метадана вікна, а не окремий
+  // блок під заголовком. Сам елемент лишається в розмітці шапки (його читає екранний читач), лише стає поверх
+  // смуги — смуга намальована ::before вікна (page-window), тож її висота й відступ 3 px звідти.
+  .catalogHead .totalCount {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    height: var(--win-title-height);
     padding: 0 10px;
     border: 0;
     border-radius: 0;
-    background: var(--win-face);
-    box-shadow: var(--win-thin-sunken);
+    background: none;
+    box-shadow: none;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: var(--win-title-height);
     font-variant-numeric: tabular-nums;
   }
 

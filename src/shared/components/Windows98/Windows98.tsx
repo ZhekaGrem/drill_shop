@@ -15,13 +15,15 @@ interface WindowBarProps {
   as?: 'span' | 'h1' | 'h2' | 'h3';
   /** Власний вміст замість назви (хлібні крихти сторінки товару) */
   children?: ReactNode;
+  /** Значок вікна замість теки (кошик — Win98Icon «binFull») */
+  icon?: ReactNode;
 }
 
 /** Always present in HTML; the theme controls visibility before the first paint. */
-export function Windows98WindowBar({ title, action, as: Title = 'span', children }: WindowBarProps) {
+export function Windows98WindowBar({ title, action, as: Title = 'span', children, icon }: WindowBarProps) {
   return (
     <div className="win98-window-bar">
-      <IconFolder size={18} aria-hidden="true" />
+      {icon ?? <IconFolder size={18} aria-hidden="true" />}
       {children ?? <Title>{title}</Title>}
       {action}
     </div>

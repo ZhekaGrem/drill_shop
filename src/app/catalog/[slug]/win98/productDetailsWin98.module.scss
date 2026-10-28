@@ -1,0 +1,374 @@
+// src/app/catalog/[slug]/win98/productDetailsWin98.module.scss
+// Сторінка товару в дизайні Windows 98 (ProductDetailsWin98, BuyBoxWin98). Компоненти рендеряться лише в цьому
+// дизайні, тож правила без обмеження html[data-design]. Рамку вікна, смугу й рядок стану дають
+// win98-window.module.scss і windows98.css; тут — вміст вікон.
+
+.desk {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: var(--page-padding-y);
+
+  @media (max-width: 768px) {
+    gap: 16px;
+  }
+}
+
+// Win98Window ставить собі відступ зверху для блоків головної; тут відступи дає gap
+.desk > .window {
+  margin-top: 0;
+}
+
+// ============ Вікно товару ============
+.productBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+// Фото на білому втиснутому «екрані», як у вікні-картці каталогу
+.screen {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 2px;
+  overflow: hidden;
+  background: var(--win-paper);
+  box-shadow: var(--win-sunken);
+  cursor: zoom-in;
+
+  &:focus-visible {
+    outline: 1px dotted var(--text-primary);
+    outline-offset: -6px;
+  }
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.badges {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.thumb {
+  width: 60px;
+  height: 60px;
+  padding: 3px;
+  border: 0;
+  border-radius: 0;
+  background: var(--win-face);
+  box-shadow: var(--win-raised);
+  cursor: pointer;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &[aria-pressed='true'] {
+    background: var(--win-checker);
+    box-shadow: var(--win-pressed);
+  }
+
+  &:focus-visible {
+    outline: 1px dotted var(--text-primary);
+    outline-offset: -4px;
+  }
+}
+
+// Наявність у рядку стану; «Немає в наявності» — темно-червоним, як у вікні-картці
+.statusOut {
+  color: #800000;
+  font-weight: 700;
+}
+
+// ============ Купівля (BuyBoxWin98) ============
+.buy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+}
+
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.currentPrice {
+  color: var(--text-primary);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+// Червоний — лише для акції (енциклопедія §4)
+.promoPrice {
+  color: #c00000;
+}
+
+.oldPrice {
+  color: var(--win-shadow);
+  font-size: 18px;
+}
+
+// Витравлена лінія: сіра над білою, як роздільник у вікні властивостей
+.etched {
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--win-shadow);
+  border-bottom: 1px solid var(--win-highlight);
+}
+
+.label {
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.choiceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choiceHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// Розмір: піднята кнопка. Вибраний — втиснутий на шаховому тлі й жирний (натиснута кнопка панелі інструментів):
+// рельєф перевертається, текст лишається чорним на світлому — читається завжди.
+.choice {
+  min-width: 56px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 0;
+  background: var(--win-face);
+  box-shadow: var(--win-raised);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+
+  &:active:not(:disabled) {
+    box-shadow: var(--win-pressed);
+  }
+
+  // + чорна рамка (як у кнопки за замовчуванням), щоб обраний розмір читався з першого погляду
+  &[aria-pressed='true'] {
+    background: var(--win-checker);
+    box-shadow: var(--win-default-ring), var(--win-pressed);
+    font-weight: 700;
+  }
+
+  // Розміру немає: витиснений сірий текст, як вимкнений пункт меню
+  &:disabled {
+    color: var(--win-shadow);
+    text-shadow: 1px 1px 0 var(--win-highlight);
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 1px dotted var(--text-primary);
+    outline-offset: -6px;
+  }
+}
+
+.guideButton,
+.step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 0;
+  background: var(--win-face);
+  box-shadow: var(--win-raised);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+
+  &:active:not(:disabled) {
+    box-shadow: var(--win-pressed);
+  }
+
+  &:disabled {
+    color: var(--win-shadow);
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 1px dotted var(--text-primary);
+    outline-offset: -5px;
+  }
+}
+
+.guideButton {
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px 0 6px;
+  font-size: 14px;
+
+  :global(svg[data-pixel-icon]) {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.error {
+  margin: 0;
+  color: #c00000;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.notice {
+  margin: 0;
+  padding: 8px 10px;
+  box-shadow: var(--win-thin-sunken);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+// Кількість: [−] [N шт] [+], як у кошику
+.quantityRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.stepper {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.step {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+}
+
+.quantity {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  padding: 0 10px;
+  background: var(--win-paper);
+  box-shadow: var(--win-sunken);
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+// Кнопка за замовчуванням: чорна рамка навколо рельєфу, як «Додати в кошик» у вікні-картці.
+// Подвійний клас — щоб перебити спільне правило кнопок windows98.css.
+.addButton.addButton {
+  min-height: 48px;
+  box-shadow: var(--win-default-ring), var(--win-raised);
+  font-weight: 700;
+
+  &:active:not(:disabled) {
+    box-shadow: var(--win-default-ring), var(--win-pressed);
+  }
+}
+
+// ============ «Схожі товари» ============
+// Від 1024 px — три вікна-картки в ряд (четверта схована); вужче — стрічка з прокруткою: кожна картка сталої
+// ширини, тож не стискається в дві вузькі колонки, де розміри переносились і вікна були різної висоти.
+.related {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+
+  @media (max-width: 1023px) {
+    display: flex;
+    margin: -4px;
+    padding: 4px 4px 12px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 4px;
+  }
+}
+
+.relatedItem {
+  display: flex;
+  min-width: 0;
+
+  > * {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @media (max-width: 1023px) {
+    flex: 0 0 min(300px, 82%);
+    scroll-snap-align: start;
+  }
+}
+
+.narrowOnly {
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}

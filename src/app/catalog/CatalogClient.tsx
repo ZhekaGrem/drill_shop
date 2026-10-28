@@ -13,6 +13,7 @@ import { useCatalogFilters, countActiveFilters } from '@/features/catalog/hooks/
 import { useHiddenProductSlugs } from '@/shared/hooks/useTurntables';
 import { useCatalogProducts } from '@/features/catalog/hooks/useCatalogProducts';
 import { useDesign } from '@/shared/hooks/useDesign';
+import { formatProducts } from '@/shared/utils/format';
 import { ProductsResponse } from '@/features/catalog/api/products';
 import styles from './catalog.module.scss';
 
@@ -136,7 +137,7 @@ export default function CatalogClient({ initialData, basePath = '' }: CatalogPro
         description="Футболки, худі, постери та аксесуари — офіційний мерч, лімітовані тиражі."
         aside={
           totalCount !== undefined && totalCount > 0 ? (
-            <span className={styles.totalCount}>{totalCount} товарів</span>
+            <span className={styles.totalCount}>{formatProducts(totalCount)}</span>
           ) : null
         }
       />

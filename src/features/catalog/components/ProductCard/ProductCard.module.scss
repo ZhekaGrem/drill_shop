@@ -504,6 +504,14 @@ $win98-parcel: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
     background: var(--win-paper);
   }
 
+  // Обгортка turntable (TurntableMedia) — на весь «екран»: без висоти вона брала природну висоту кадру 4:5, і низ
+  // речі, що обертається, ховався за краєм екрана. Тепер кадр вписується цілим (object-fit: contain нижче).
+  .productCardImageContainer__ImageWrapper > div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
   .stock,
   .divider,
   .contentPriceVariants {
@@ -602,8 +610,10 @@ $win98-parcel: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
   }
 
   @media (max-width: 768px) {
+    // Квадратний екран: у широкому 4:3 вписана річ виходила дрібною
     .productCardImageContainer {
       padding: 2px;
+      aspect-ratio: 1;
     }
 
     // Палець: розміри й кнопка — 44 px.
