@@ -14,7 +14,7 @@ export const siteConfig = {
   },
   socials: {
     instagram: 'https://www.instagram.com/ye_drill/',
-    telegram: 'https://t.me/makaron_gang?direct',
+    telegram: 'https://t.me/makaron_gang',
   },
   workingHours: 'Пн–Пт: 08:00–20:00 | Сб–Нд: 09:00–18:00',
 };
