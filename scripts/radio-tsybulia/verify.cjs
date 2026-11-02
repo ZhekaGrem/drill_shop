@@ -38,7 +38,7 @@ async function main() {
   ]);
   assert.equal(home[0].key, manifest.collection.slug);
 
-  assert.equal(manifest.price, 1000);
+  assert.equal(manifest.price, 900);
   assert.deepEqual(manifest.stock, { S: 1, M: 2, L: 3 });
   const image = async (url) => {
     const [file, version] = url.split('?v=');
