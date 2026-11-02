@@ -18,11 +18,13 @@ import { useJump } from './useJump';
 import { useWind } from './useWind';
 import { useIdleMotion } from './useIdleMotion';
 import { useDesignMap } from './useDesignMap';
+import { useChestCycle } from './useChestCycle';
 import { useSceneReady } from './useSceneReady';
 import { useSceneClone } from './useSceneClone';
 import { sampleMotion, type MotionPreview } from './motionPresets';
 import type { RefObject } from 'react';
 import type { DragState } from './useDragRotation';
+import type { ChestCycle } from './designs';
 
 const MODEL_URL = '/3d/models/tshirt.glb?v=2';
 
@@ -34,6 +36,8 @@ type Props = {
   interactive?: boolean;
   /** URL basecolor-дизайну; без нього — запечена в GLB мапа */
   mapUrl?: string;
+  /** Випадковий колір грудей: вирізки грудей по черзі поверх mapUrl */
+  chestCycle?: ChestCycle;
   /** GLB іншої моделі (худі тощо); без нього — дефолтна футболка */
   modelUrl?: string;
   /** Ref драг-обертання зі stage; сцена лише читає його покадрово */
@@ -46,6 +50,7 @@ const Tshirt = ({
   onReady,
   interactive = false,
   mapUrl,
+  chestCycle,
   modelUrl = MODEL_URL,
   dragRef,
   motionPreview,
@@ -87,10 +92,12 @@ const Tshirt = ({
   const windStep = useWind(prepared);
   const idleStep = useIdleMotion(dragRef);
   const mapReady = useDesignMap(prepared, mapUrl);
+  const chestStep = useChestCycle(prepared, chestCycle);
   useSceneReady(mapReady, onReady);
 
   // Стрибок — внутрішня група, idle/drag — зовнішня; baked-анімація вимикає idle
   useFrame((state, delta) => {
+    chestStep(motionPreview?.paused ? 0 : Math.min(delta, 1 / 15));
     if (motionPreview && group.current) {
       const dt = Math.min(delta, 1 / 15);
       const drag = dragRef?.current;

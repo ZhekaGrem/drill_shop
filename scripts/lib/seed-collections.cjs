@@ -20,6 +20,8 @@
 //                  середовища REVALIDATE_SECRET, у файлі його немає).
 //   deactivate     миттєво сховати назад (isActive=false), зворотно.
 //   stock          --qty=N на кожен розмір (відкрити продаж).
+//                  Конфіг із stockBySize ({ S: 1, M: 2 }) отримує ці залишки вже на create;
+//                  без --qty create ставить 0 на кожен розмір.
 //   retire         мʼяке видалення за конвенцією ProductRepository.delete.
 //   purge          ЖОРСТКЕ видалення з бази, лише для --only=slug1,slug2. Варіанти, фото,
 //                  позиції кошиків, відгуки й категорії зникають каскадом; товар, що є
@@ -125,7 +127,8 @@ const probe = async (origin, rows) => {
 // ---------- фази ----------
 function printPlan(ctx) {
   const { config, rows, qty } = ctx;
-  console.log(`PLAN (без БД). createdAt=${config.backdate ?? 'now'} qty=${qty}`);
+  const stockText = config.stockBySize ? JSON.stringify(config.stockBySize) : qty;
+  console.log(`PLAN (без БД). createdAt=${config.backdate ?? 'now'} qty=${stockText}`);
   for (const c of config.collections) {
     console.log(`\nКОЛЕКЦІЯ ${c.slug} «${c.title}» sortOrder=${c.sortOrder} label=${c.labelText ?? '—'}`);
     for (const { product: p } of rows.filter((x) => x.collection === c.slug)) {
@@ -216,7 +219,13 @@ async function create(ctx, prisma) {
           await tx.productVariant.upsert({
             where: { sku },
             update: { ...fields, isActive: true }, // сток повторний create не чіпає
-            create: { productId: prod.id, sku, ...fields, quantity: qty, isActive: true },
+            create: {
+              productId: prod.id,
+              sku,
+              ...fields,
+              quantity: config.stockBySize?.[fields.options.size] ?? qty,
+              isActive: true,
+            },
           });
         }
         console.log(`  ✓ ${slug} «${r.product.name}» (${r.variants.length} розміри)`);
@@ -488,7 +497,7 @@ const DB_PHASES = {
   deactivate: (ctx, prisma) => setActive(ctx, prisma, false),
 };
 
-/** config: { confirm, sizes, badge, backdate, collections: [{ slug, title, description, sortOrder,
+/** config: { confirm, sizes, stockBySize?, badge, backdate, collections: [{ slug, title, description, sortOrder,
  *  labelText, labelColor, price, model3dPath, products: [{ slug, name, swatch, texture3dUrl }] }] } */
 async function run(config, argv = process.argv.slice(2)) {
   const args = parseArgs(argv);

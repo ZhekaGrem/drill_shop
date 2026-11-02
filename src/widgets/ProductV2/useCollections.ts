@@ -6,6 +6,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/shared/api/client';
 import scarf from '@/shared/config/scarf-oksana.json';
+import radioTsybulia from '@/shared/config/radio-tsybulia.json';
 import type { Design } from '@/widgets/HeroVisual/designs';
 import type { CollectionDef, CollectionItem } from './collections';
 
@@ -42,8 +43,19 @@ interface ApiCollection {
   products: ApiCollectionProduct[];
 }
 
+// Товари з випадковим кольором грудей: колір на 3D-моделі змінюється по колу
+const CHEST_CYCLE_SLUGS = new Set(radioTsybulia.products.map((p) => p.slug));
+
+const printNoteFor = (slug: string) => {
+  if (slug === scarf.slug) return scarf.printNote;
+  if (CHEST_CYCLE_SLUGS.has(slug)) return radioTsybulia.printNote;
+  return undefined;
+};
+
 const toDesign = (p: ApiCollectionProduct): Design => ({
   presentation: p.slug === scarf.slug ? 'scarf' : undefined,
+  printNote: printNoteFor(p.slug),
+  chestCycle: CHEST_CYCLE_SLUGS.has(p.slug) ? radioTsybulia.chest : undefined,
   label: p.name,
   swatch: p.switcherSwatch ?? '#cccccc',
   // Постер сцени: 3D-рендер, а коли його ще нема — головне фото товару

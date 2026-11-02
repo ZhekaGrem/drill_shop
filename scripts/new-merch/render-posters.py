@@ -60,13 +60,15 @@ def build_scene(kind):
     return garment,color,scene
 
 
-for kind in kinds:
-    garment,color,scene=build_scene(kind)
-    for number in range(1,12 if kind=='hoodie' else 11):
-        stem=f'{kind}-{number:02}'
-        color.image=bpy.data.images.load(str(ROOT/f'public/3d/textures/prokliatyi/new-merch/{stem}.webp'))
-        for side,angle in [('front',0),('back',math.pi)]:
-            garment.rotation_euler.z=angle
-            scene.render.filepath=str(RENDERS/f'{stem}-{side}.png')
-            bpy.ops.render.render(write_still=True)
-        print(f'VERIFIED RENDER {stem}: front and rear',flush=True)
+# Guarded so other series (scripts/radio-tsybulia/render-posters.py) can reuse build_scene
+if __name__=='__main__':
+    for kind in kinds:
+        garment,color,scene=build_scene(kind)
+        for number in range(1,12 if kind=='hoodie' else 11):
+            stem=f'{kind}-{number:02}'
+            color.image=bpy.data.images.load(str(ROOT/f'public/3d/textures/prokliatyi/new-merch/{stem}.webp'))
+            for side,angle in [('front',0),('back',math.pi)]:
+                garment.rotation_euler.z=angle
+                scene.render.filepath=str(RENDERS/f'{stem}-{side}.png')
+                bpy.ops.render.render(write_still=True)
+            print(f'VERIFIED RENDER {stem}: front and rear',flush=True)

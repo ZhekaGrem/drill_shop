@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import { useDesign } from '@/shared/hooks/useDesign';
 import { animationForDesign } from '@/shared/config/animation';
-import scarf from '@/shared/config/scarf-oksana.json';
 import { CompassSwitcher } from '@/shared/components/CompassSwitcher/CompassSwitcher';
 import { useDragRotation } from './useDragRotation';
 import type { Design } from './designs';
@@ -106,9 +105,9 @@ export const HeroVisual = ({
   // Префетч решти мап і моделей після першої готовності: свопи без пауз
   useEffect(() => {
     if (!hasReadyScene) return;
-    for (const { mapUrl, modelUrl, presentation } of Object.values(designs)) {
+    for (const { mapUrl, chestCycle, modelUrl, presentation } of Object.values(designs)) {
       if (presentation === 'scarf') continue;
-      if (mapUrl) new window.Image().src = mapUrl;
+      for (const url of [mapUrl, ...(chestCycle?.urls ?? [])]) if (url) new window.Image().src = url;
       if (modelUrl) fetch(modelUrl).catch(() => undefined);
     }
   }, [hasReadyScene, designs]);
@@ -147,6 +146,7 @@ export const HeroVisual = ({
                     key={active.modelUrl ?? 'tshirt'}
                     onReady={handleSceneReady}
                     mapUrl={active.mapUrl}
+                    chestCycle={active.chestCycle}
                     modelUrl={active.modelUrl}
                     dragRef={dragRef}
                     motionPreview={motion}
@@ -158,7 +158,7 @@ export const HeroVisual = ({
         </SceneErrorBoundary>
       </div>
 
-      {active.presentation === 'scarf' && <p className={styles.printNote}>{scarf.printNote}</p>}
+      {active.printNote && <p className={styles.printNote}>{active.printNote}</p>}
 
       {switcher === 'compass' && soloItem === null && (
         <CompassSwitcher

@@ -1,0 +1,36 @@
+{
+  "collection": {
+    "slug": "radio-tsybulia",
+    "title": "Радіо Цибуля",
+    "description": "Легосінька футболяндрочка для слухачів Радіо Цибуляндрочка, колір грудей - випадковий, можливо зроблена каліцко в підвалі села, але з любовю до вас, барабончики."
+  },
+  "price": 1000,
+  "stock": {
+    "S": 1,
+    "M": 2,
+    "L": 3
+  },
+  "printNote": "Колір грудей випадковий — на анімації показані можливі варіанти.",
+  "products": [
+    {
+      "slug": "radio-tsybulia-shchilnyi-salut",
+      "name": "Щільний салют",
+      "mapUrl": "/3d/textures/radio-tsybulia/shchilnyi-salut.webp?v=a440c14b7a16"
+    },
+    {
+      "slug": "radio-tsybulia-holos-andehraunda",
+      "name": "Голос андеграунда",
+      "mapUrl": "/3d/textures/radio-tsybulia/holos-andehraunda.webp?v=865623caee2f"
+    }
+  ],
+  "chest": {
+    "rect": [0.0849609375, 0.71533203125, 0.239990234375, 0.820068359375],
+    "urls": [
+      "/3d/textures/radio-tsybulia/chest-rozheva.webp?v=c0eaf2ee91c8",
+      "/3d/textures/radio-tsybulia/chest-zhovta.webp?v=b9502670feb1",
+      "/3d/textures/radio-tsybulia/chest-biruzova.webp?v=996ce0236240",
+      "/3d/textures/radio-tsybulia/chest-fioletova.webp?v=7ae5d11434e1",
+      "/3d/textures/radio-tsybulia/chest-bila.webp?v=64ed48347869"
+    ]
+  }
+}

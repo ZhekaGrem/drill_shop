@@ -15,7 +15,7 @@ function loadTs(file) {
   return result.exports;
 }
 async function main() {
-  const { scarfPrintAt } = loadTs('src/widgets/HeroVisual/scarf-motion.ts');
+  const { scarfPrintAt } = loadTs('src/widgets/HeroVisual/print-cycle.ts');
   assert.deepEqual(scarfPrintAt(0, 8), { current: 0, next: 1, blend: 0 });
   assert.equal(scarfPrintAt(3.5, 8).blend, 0);
   assert.ok(Math.abs(scarfPrintAt(4.3, 8).blend - 0.5) < 0.0001);

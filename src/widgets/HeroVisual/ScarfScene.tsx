@@ -7,7 +7,7 @@ import { DoubleSide, SRGBColorSpace, type Group, type ShaderMaterial } from 'thr
 import scarf from '@/shared/config/scarf-oksana.json';
 import { DisposeRenderer } from './DisposeRenderer';
 import { useSceneReady } from './useSceneReady';
-import { scarfPrintAt } from './scarf-motion';
+import { scarfPrintAt } from './print-cycle';
 import type { DragState } from './useDragRotation';
 
 const vertexShader = /* glsl */ `
