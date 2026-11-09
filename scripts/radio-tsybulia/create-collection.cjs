@@ -10,7 +10,8 @@ const { run } = require('../lib/seed-collections.cjs');
 const config = {
   confirm: 'radio-tsybulia',
   sizes: Object.keys(manifest.stock),
-  // Реальні залишки власника, 2026-11-02: по кожній футболці L 3, M 2, S 1
+  // Залишки власника з 2026-11-09: по 100 на кожен розмір S–XXL (спершу S 1, M 2, L 3).
+  // Новий розмір отримує їх на create; наявним розмірам — фаза stock --qty=100.
   stockBySize: manifest.stock,
   collections: [
     {

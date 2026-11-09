@@ -39,7 +39,7 @@ async function main() {
   assert.equal(home[0].key, manifest.collection.slug);
 
   assert.equal(manifest.price, 1250);
-  assert.deepEqual(manifest.stock, { S: 1, M: 2, L: 3 });
+  assert.deepEqual(manifest.stock, { S: 100, M: 100, L: 100, XL: 100, XXL: 100 });
   const image = async (url) => {
     const [file, version] = url.split('?v=');
     const bytes = fs.readFileSync(path.join(root, 'public', file));
