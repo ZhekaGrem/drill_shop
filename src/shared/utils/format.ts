@@ -27,12 +27,15 @@ export const formatNumber = (num: number): string => {
   return new Intl.NumberFormat('uk-UA').format(num);
 };
 
-/** «12 товарів» / «1 товар» / «24 товари» */
-export const formatProducts = (count: number): string => {
+/** Число зі словом в українській формі: [1 товар, 2 товари, 5 товарів] */
+export const formatCount = (count: number, [one, few, many]: [string, string, string]): string => {
   const mod10 = count % 10;
   const mod100 = count % 100;
 
-  if (mod10 === 1 && mod100 !== 11) return `${count} товар`;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${count} товари`;
-  return `${count} товарів`;
+  if (mod10 === 1 && mod100 !== 11) return `${count} ${one}`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${count} ${few}`;
+  return `${count} ${many}`;
 };
+
+/** «12 товарів» / «1 товар» / «24 товари» */
+export const formatProducts = (count: number): string => formatCount(count, ['товар', 'товари', 'товарів']);

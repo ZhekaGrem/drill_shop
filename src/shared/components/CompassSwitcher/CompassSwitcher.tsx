@@ -40,6 +40,11 @@ const FALLOFF = 2.2;
 const MIN_SCALE = 0.66;
 const MIN_OPACITY = 0.35;
 
+// Довга колекція (/zlypni — сто дизайнів) вантажить одразу лише сусідів активного товару, решту —
+// лінньо, коли стрічка до них докрутиться. Короткі колекції, як і раніше, вантажать усе одразу.
+const EAGER_ALL_UP_TO = 32;
+const EAGER_RADIUS = 12;
+
 export const CompassSwitcher = ({ items, value, onChange, size = 60, crop = true }: CompassSwitcherProps) => {
   const trackRef = useRef<HTMLDivElement>(null);
   // Останнє значення, віддане назовні: захист від зациклення
@@ -121,6 +126,9 @@ export const CompassSwitcher = ({ items, value, onChange, size = 60, crop = true
   };
 
   const active = items.find((i) => i.key === value);
+  const activeIndex = items.indexOf(active as CompassItem);
+  const eager = (index: number) =>
+    items.length <= EAGER_ALL_UP_TO || Math.abs(index - activeIndex) <= EAGER_RADIUS;
 
   return (
     <div className={styles.compass} style={{ '--tile': `${size}px` } as React.CSSProperties}>
@@ -131,7 +139,7 @@ export const CompassSwitcher = ({ items, value, onChange, size = 60, crop = true
         role="listbox"
         aria-label="Товари колекції"
         tabIndex={0}>
-        {items.map((it) => (
+        {items.map((it, index) => (
           <button
             key={it.key}
             data-key={it.key}
@@ -144,8 +152,9 @@ export const CompassSwitcher = ({ items, value, onChange, size = 60, crop = true
             {/* eager, а не lazy: стрічка гортається швидше, ніж вантажиться
                 картинка, і під пальцем зʼявлялися порожні плитки. 300px —
                 під 60px-плитку з 2.5× кропом на retina; оптимізатор Next
-                віддає саме такий розмір, а не вихідні 1600². */}
-            <Image src={it.image} alt="" width={300} height={300} loading="eager" />
+                віддає саме такий розмір, а не вихідні 1600². Виняток —
+                довга колекція: там eager лише сусіди активного (EAGER_RADIUS). */}
+            <Image src={it.image} alt="" width={300} height={300} loading={eager(index) ? 'eager' : 'lazy'} />
           </button>
         ))}
       </div>

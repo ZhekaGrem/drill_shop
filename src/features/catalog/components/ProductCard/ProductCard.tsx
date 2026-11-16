@@ -15,6 +15,8 @@ interface ProductCardProps {
   product: Product;
   className?: string;
   basePath?: string;
+  /** Куди веде картка (за замовчуванням — сторінка товару в каталозі) */
+  href?: string;
   /** Порядковий номер у списку — керує каскадом появи (--i) */
   index?: number;
 }
@@ -24,7 +26,7 @@ interface ProductCardProps {
  * Оркеструє логіку відображення товару в каталозі
  */
 export const ProductCard = React.memo<ProductCardProps>(
-  ({ product, className = '', basePath = '', index }) => {
+  ({ product, className = '', basePath = '', href, index }) => {
     // Використовуємо hooks для логіки
     const {
       selectedVariant,
@@ -50,6 +52,7 @@ export const ProductCard = React.memo<ProductCardProps>(
       showVariantsInCatalog,
       variantLabel,
       basePath,
+      href,
     });
 
     return (
