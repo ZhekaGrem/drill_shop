@@ -18,6 +18,9 @@ import { SceneErrorBoundary } from './SceneErrorBoundary';
 const TshirtScene = lazy(() => import('./TshirtScene'));
 const ScarfScene = lazy(() => import('./ScarfScene'));
 
+/** Скільки дизайнів колекції ще префетчимо всі разом */
+const PREFETCH_ALL_UP_TO = 32;
+
 type Props = {
   /** Набір дизайнів колекції (з GET /collections) */
   designs: Record<string, Design>;
@@ -102,9 +105,11 @@ export const HeroVisual = ({
 
   const hasReadyScene = readyModelSession !== null;
 
-  // Префетч решти мап і моделей після першої готовності: свопи без пауз
+  // Префетч решти мап і моделей після першої готовності: свопи без пауз. Довга колекція
+  // (галерея «Злипні» — сто розгорток по ~200 КБ) так тягнула б двадцять мегабайт, яких людина
+  // здебільшого й не відкриє, — там мапа вантажиться, коли дизайн вибрали.
   useEffect(() => {
-    if (!hasReadyScene) return;
+    if (!hasReadyScene || Object.keys(designs).length > PREFETCH_ALL_UP_TO) return;
     for (const { mapUrl, chestCycle, modelUrl, presentation } of Object.values(designs)) {
       if (presentation === 'scarf') continue;
       for (const url of [mapUrl, ...(chestCycle?.urls ?? [])]) if (url) new window.Image().src = url;

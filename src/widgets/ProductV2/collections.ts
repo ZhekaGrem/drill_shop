@@ -5,14 +5,11 @@
 import type { CSSProperties } from 'react';
 import type { Design } from '@/widgets/HeroVisual/designs';
 import type { DesignId } from '@/shared/config/design';
-import type { Product } from '@/shared/types';
 
 export interface CollectionItem {
   key: string;
   slug: string;
   design: Design;
-  /** Той самий товар для картки каталогу (сітка розділу /zlypni) */
-  card: Product;
 }
 
 export interface CollectionDef {

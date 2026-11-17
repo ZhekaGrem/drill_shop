@@ -8,14 +8,28 @@ import { apiClient } from '@/shared/api/client';
 import scarf from '@/shared/config/scarf-oksana.json';
 import radioTsybulia from '@/shared/config/radio-tsybulia.json';
 import type { Design } from '@/widgets/HeroVisual/designs';
-import { toCardProduct } from './card-product';
-import type { ApiCollectionProduct } from './card-product';
 import type { CollectionDef, CollectionItem } from './collections';
 
 // Дефолтна модель футболки живе у фронті (TshirtScene) — коли товар на ній,
 // modelUrl не передаємо, щоб не вантажити другу копію того самого GLB
 const DEFAULT_MODEL_PATH = '/3d/models/tshirt.glb';
 const DEFAULT_FALLBACK = '/assets/img/tshirt-fallback.webp';
+
+interface ApiImage {
+  url: string;
+  kind: string;
+  isPrimary: boolean;
+}
+
+interface ApiCollectionProduct {
+  slug: string;
+  name: string;
+  collectionOrder: number;
+  model3dPath: string | null;
+  texture3dUrl: string | null;
+  switcherSwatch: string | null;
+  images: ApiImage[];
+}
 
 interface ApiCollection {
   slug: string;
@@ -59,7 +73,6 @@ const toCollectionDef = (c: ApiCollection): CollectionDef => {
     key: p.slug,
     slug: p.slug,
     design: toDesign(p),
-    card: toCardProduct(p),
   }));
   return {
     key: c.slug,

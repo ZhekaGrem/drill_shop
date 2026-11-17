@@ -13,8 +13,6 @@ interface UseProductCardActionsParams {
   showVariantsInCatalog: boolean;
   variantLabel: string;
   basePath?: string;
-  /** Куди веде картка (за замовчуванням — сторінка товару в каталозі) */
-  href?: string;
 }
 
 interface UseProductCardActionsReturn {
@@ -35,13 +33,11 @@ export const useProductCardActions = ({
   showVariantsInCatalog,
   variantLabel,
   basePath = '',
-  href,
 }: UseProductCardActionsParams): UseProductCardActionsReturn => {
   const router = useRouter();
   const { addItem } = useCart();
   const { setTimeoutSafe } = useTimeout();
   const [isClicked, setIsClicked] = useState(false);
-  const productHref = href ?? `${basePath}/catalog/${product.slug}`;
 
   // Тіло картки — div з onClick, а не <Link> (всередині живуть радіо-чіпи
   // варіантів, які всередині <a> зривали б навігацію). Тому напрямок переходу
@@ -108,7 +104,7 @@ export const useProductCardActions = ({
 
       // Якщо варіанти БЕЗ SIZE/COLOR
       if (product.variants && product.variants.length > 0 && !showVariantsInCatalog) {
-        pushForward(productHref);
+        pushForward(`${basePath}/catalog/${product.slug}`);
         return;
       }
 
@@ -148,12 +144,12 @@ export const useProductCardActions = ({
       addItem,
       setTimeoutSafe,
       pushForward,
-      productHref,
+      basePath,
     ]
   );
 
   const handleCardClick = () => {
-    pushForward(productHref);
+    pushForward(`${basePath}/catalog/${product.slug}`);
   };
 
   const getButtonText = () => {

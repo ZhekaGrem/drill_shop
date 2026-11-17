@@ -6,7 +6,6 @@
 // Тут до нього додано лише те, чого в ньому нема й не має бути: куди веде
 // розділ і що стоїть у його навігації.
 import { HIDDEN_COLLECTION_WORDMARK } from './hidden-collections';
-import { ZLYPNI_COLLECTION_SLUGS, ZLYPNI_HREF, ZLYPNI_LIVE } from './zlypni';
 
 export interface NavWorld {
   id: string;
@@ -56,17 +55,6 @@ export const NAV_WORLDS: NavWorld[] = [
     href: '/prokliatyi',
     navItems: seriesNav('/prokliatyi'),
   },
-  // Футболярчики й бобаночки на одній сторінці. До запуску розділу (ZLYPNI_LIVE) у хедері його нема
-  ...(ZLYPNI_LIVE
-    ? [
-        {
-          id: 'zlypni',
-          wordmark: HIDDEN_COLLECTION_WORDMARK[ZLYPNI_COLLECTION_SLUGS[0]],
-          href: ZLYPNI_HREF,
-          navItems: seriesNav(ZLYPNI_HREF),
-        },
-      ]
-    : []),
 ];
 
 /** Індекс розділу за словомаркою, яку віддала мапа прихованих розділів */

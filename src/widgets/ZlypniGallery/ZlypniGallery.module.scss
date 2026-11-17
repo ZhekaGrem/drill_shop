@@ -1,0 +1,115 @@
+// Галерея «Злипні»: сцена по центру, під нею сітка постерів-кнопок
+.section {
+  margin-top: var(--space-12);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-3xl);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
+
+.count,
+.hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.stage {
+  display: flex;
+  justify-content: center;
+  scroll-margin-top: var(--space-16);
+}
+
+.hint {
+  margin: var(--space-8) 0 var(--space-4);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+
+  &:hover,
+  &[aria-pressed='true'] {
+    border-color: var(--border-strong);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.poster {
+  position: relative;
+  aspect-ratio: 1;
+  background: var(--surface-muted);
+
+  img {
+    object-fit: cover;
+  }
+}
+
+.name {
+  padding: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-8);
+}
+
+// Windows 98: кожен дизайн — опукла кнопка на сірому, вибраний — втиснутий
+:global(html[data-design='win98']) {
+  .tile {
+    border: 0;
+    border-radius: 0;
+    background: var(--win-face);
+    box-shadow: var(--win-raised);
+
+    &[aria-pressed='true'] {
+      box-shadow: var(--win-pressed);
+    }
+  }
+
+  .poster {
+    background: var(--win-paper);
+  }
+}

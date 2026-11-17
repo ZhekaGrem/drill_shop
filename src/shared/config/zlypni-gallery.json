@@ -1,0 +1,1217 @@
+{
+  "collections": [
+    {
+      "key": "zlypni-futboliarchyky",
+      "title": "Футболярчики",
+      "designs": [
+        {
+          "key": "zlypni-futboliarchyk-001",
+          "name": "Липкий знак №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/001.webp?v=35e360147e57",
+          "poster": "/zlypni/futboliarchyky/001.webp?v=19bbe5fc787b"
+        },
+        {
+          "key": "zlypni-futboliarchyk-002",
+          "name": "Липкий знак №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/002.webp?v=3e9e7158444d",
+          "poster": "/zlypni/futboliarchyky/002.webp?v=ad71022e3f02"
+        },
+        {
+          "key": "zlypni-futboliarchyk-003",
+          "name": "Липкий знак №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/003.webp?v=1122bf2360b3",
+          "poster": "/zlypni/futboliarchyky/003.webp?v=c690775adef7"
+        },
+        {
+          "key": "zlypni-futboliarchyk-004",
+          "name": "Липкий знак №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/004.webp?v=78433530b74c",
+          "poster": "/zlypni/futboliarchyky/004.webp?v=c338319ad61c"
+        },
+        {
+          "key": "zlypni-futboliarchyk-005",
+          "name": "Липкий знак №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/005.webp?v=14ff0649ee55",
+          "poster": "/zlypni/futboliarchyky/005.webp?v=d489f60aad39"
+        },
+        {
+          "key": "zlypni-futboliarchyk-006",
+          "name": "Козел крупним планом №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/006.webp?v=4403d0d96d6d",
+          "poster": "/zlypni/futboliarchyky/006.webp?v=72a8671d0ec5"
+        },
+        {
+          "key": "zlypni-futboliarchyk-007",
+          "name": "Козел крупним планом №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/007.webp?v=6d316151e004",
+          "poster": "/zlypni/futboliarchyky/007.webp?v=28a04a7d7bb0"
+        },
+        {
+          "key": "zlypni-futboliarchyk-008",
+          "name": "Козел крупним планом №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/008.webp?v=4ebb69862b91",
+          "poster": "/zlypni/futboliarchyky/008.webp?v=d36e616137fc"
+        },
+        {
+          "key": "zlypni-futboliarchyk-009",
+          "name": "Козел крупним планом №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/009.webp?v=d70eee7452bd",
+          "poster": "/zlypni/futboliarchyky/009.webp?v=e8808d744a74"
+        },
+        {
+          "key": "zlypni-futboliarchyk-010",
+          "name": "Козел крупним планом №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/010.webp?v=63f62e28b1d9",
+          "poster": "/zlypni/futboliarchyky/010.webp?v=485c2d2b1fc7"
+        },
+        {
+          "key": "zlypni-futboliarchyk-011",
+          "name": "Сонячний тотем №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/011.webp?v=3a3d3775ad09",
+          "poster": "/zlypni/futboliarchyky/011.webp?v=38b0ccbc8dca"
+        },
+        {
+          "key": "zlypni-futboliarchyk-012",
+          "name": "Сонячний тотем №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/012.webp?v=a7253ce6c1dd",
+          "poster": "/zlypni/futboliarchyky/012.webp?v=e9bfb4cde241"
+        },
+        {
+          "key": "zlypni-futboliarchyk-013",
+          "name": "Сонячний тотем №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/013.webp?v=47a0920c5121",
+          "poster": "/zlypni/futboliarchyky/013.webp?v=acd5010691f9"
+        },
+        {
+          "key": "zlypni-futboliarchyk-014",
+          "name": "Сонячний тотем №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/014.webp?v=e524951559f1",
+          "poster": "/zlypni/futboliarchyky/014.webp?v=59096ae98ef4"
+        },
+        {
+          "key": "zlypni-futboliarchyk-015",
+          "name": "Сонячний тотем №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/015.webp?v=454bbc737d3a",
+          "poster": "/zlypni/futboliarchyky/015.webp?v=141b3ff3a4cd"
+        },
+        {
+          "key": "zlypni-futboliarchyk-016",
+          "name": "Коріння звуку №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/016.webp?v=9a6fc3af9373",
+          "poster": "/zlypni/futboliarchyky/016.webp?v=b7ab07a2c31c"
+        },
+        {
+          "key": "zlypni-futboliarchyk-017",
+          "name": "Коріння звуку №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/017.webp?v=2489a97b3afe",
+          "poster": "/zlypni/futboliarchyky/017.webp?v=d7fe58911235"
+        },
+        {
+          "key": "zlypni-futboliarchyk-018",
+          "name": "Коріння звуку №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/018.webp?v=320e01b54f67",
+          "poster": "/zlypni/futboliarchyky/018.webp?v=f4e038f7155d"
+        },
+        {
+          "key": "zlypni-futboliarchyk-019",
+          "name": "Коріння звуку №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/019.webp?v=118ad24435fb",
+          "poster": "/zlypni/futboliarchyky/019.webp?v=9dd0a19f0ebc"
+        },
+        {
+          "key": "zlypni-futboliarchyk-020",
+          "name": "Коріння звуку №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/020.webp?v=78ea58cbb521",
+          "poster": "/zlypni/futboliarchyky/020.webp?v=3d9e61070fa3"
+        },
+        {
+          "key": "zlypni-futboliarchyk-021",
+          "name": "Контурний рельєф №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/021.webp?v=520480119b33",
+          "poster": "/zlypni/futboliarchyky/021.webp?v=ab75e760f80e"
+        },
+        {
+          "key": "zlypni-futboliarchyk-022",
+          "name": "Контурний рельєф №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/022.webp?v=190a5938515d",
+          "poster": "/zlypni/futboliarchyky/022.webp?v=293ea1268cbd"
+        },
+        {
+          "key": "zlypni-futboliarchyk-023",
+          "name": "Контурний рельєф №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/023.webp?v=e85097713cd2",
+          "poster": "/zlypni/futboliarchyky/023.webp?v=df8e3a3eab9d"
+        },
+        {
+          "key": "zlypni-futboliarchyk-024",
+          "name": "Контурний рельєф №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/024.webp?v=492b566e0d30",
+          "poster": "/zlypni/futboliarchyky/024.webp?v=1a2c8b6426d6"
+        },
+        {
+          "key": "zlypni-futboliarchyk-025",
+          "name": "Контурний рельєф №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/025.webp?v=7c966a107a6a",
+          "poster": "/zlypni/futboliarchyky/025.webp?v=685fa142a2ca"
+        },
+        {
+          "key": "zlypni-futboliarchyk-026",
+          "name": "Оптичний зсув №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/026.webp?v=8a0910e27ddb",
+          "poster": "/zlypni/futboliarchyky/026.webp?v=d1a5d87a347e"
+        },
+        {
+          "key": "zlypni-futboliarchyk-027",
+          "name": "Оптичний зсув №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/027.webp?v=21a04e63d24f",
+          "poster": "/zlypni/futboliarchyky/027.webp?v=613245be85b1"
+        },
+        {
+          "key": "zlypni-futboliarchyk-028",
+          "name": "Оптичний зсув №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/028.webp?v=2fe568bb8b77",
+          "poster": "/zlypni/futboliarchyky/028.webp?v=b2793744c2d6"
+        },
+        {
+          "key": "zlypni-futboliarchyk-029",
+          "name": "Оптичний зсув №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/029.webp?v=2f1ba5d33215",
+          "poster": "/zlypni/futboliarchyky/029.webp?v=a64cd86ca7fd"
+        },
+        {
+          "key": "zlypni-futboliarchyk-030",
+          "name": "Оптичний зсув №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/030.webp?v=e0d4e7493edf",
+          "poster": "/zlypni/futboliarchyky/030.webp?v=3009061704e9"
+        },
+        {
+          "key": "zlypni-futboliarchyk-031",
+          "name": "Амплітуда №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/031.webp?v=b8443b3df27a",
+          "poster": "/zlypni/futboliarchyky/031.webp?v=8637ac6fc61c"
+        },
+        {
+          "key": "zlypni-futboliarchyk-032",
+          "name": "Амплітуда №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/032.webp?v=7fbb162d6e57",
+          "poster": "/zlypni/futboliarchyky/032.webp?v=686768ba3301"
+        },
+        {
+          "key": "zlypni-futboliarchyk-033",
+          "name": "Амплітуда №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/033.webp?v=1b74971ccd3f",
+          "poster": "/zlypni/futboliarchyky/033.webp?v=1cd6c2edbc13"
+        },
+        {
+          "key": "zlypni-futboliarchyk-034",
+          "name": "Амплітуда №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/034.webp?v=303c94096a1d",
+          "poster": "/zlypni/futboliarchyky/034.webp?v=c0f5d8063b0a"
+        },
+        {
+          "key": "zlypni-futboliarchyk-035",
+          "name": "Амплітуда №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/035.webp?v=2a6b895a97c1",
+          "poster": "/zlypni/futboliarchyky/035.webp?v=ce5ae13e0f18"
+        },
+        {
+          "key": "zlypni-futboliarchyk-036",
+          "name": "Кислотний гербарій №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/036.webp?v=e10cef2abbe5",
+          "poster": "/zlypni/futboliarchyky/036.webp?v=9d50d9d28f2b"
+        },
+        {
+          "key": "zlypni-futboliarchyk-037",
+          "name": "Кислотний гербарій №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/037.webp?v=4c74c57e4510",
+          "poster": "/zlypni/futboliarchyky/037.webp?v=85a45a0ce935"
+        },
+        {
+          "key": "zlypni-futboliarchyk-038",
+          "name": "Кислотний гербарій №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/038.webp?v=00c7db3670da",
+          "poster": "/zlypni/futboliarchyky/038.webp?v=46b5640a2ed1"
+        },
+        {
+          "key": "zlypni-futboliarchyk-039",
+          "name": "Кислотний гербарій №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/039.webp?v=e73acec43849",
+          "poster": "/zlypni/futboliarchyky/039.webp?v=8fbacf785d7d"
+        },
+        {
+          "key": "zlypni-futboliarchyk-040",
+          "name": "Кислотний гербарій №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/040.webp?v=b819d1791c3d",
+          "poster": "/zlypni/futboliarchyky/040.webp?v=9c131432f567"
+        },
+        {
+          "key": "zlypni-futboliarchyk-041",
+          "name": "Зламана шахівниця №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/041.webp?v=d78a14b51f9c",
+          "poster": "/zlypni/futboliarchyky/041.webp?v=df94f69eb1e9"
+        },
+        {
+          "key": "zlypni-futboliarchyk-042",
+          "name": "Зламана шахівниця №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/042.webp?v=e6f670eb828d",
+          "poster": "/zlypni/futboliarchyky/042.webp?v=8fbe41d405f1"
+        },
+        {
+          "key": "zlypni-futboliarchyk-043",
+          "name": "Зламана шахівниця №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/043.webp?v=5281b47c93a3",
+          "poster": "/zlypni/futboliarchyky/043.webp?v=31f1128859aa"
+        },
+        {
+          "key": "zlypni-futboliarchyk-044",
+          "name": "Зламана шахівниця №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/044.webp?v=ff5a4c51b01f",
+          "poster": "/zlypni/futboliarchyky/044.webp?v=f3c479523b7f"
+        },
+        {
+          "key": "zlypni-futboliarchyk-045",
+          "name": "Зламана шахівниця №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/045.webp?v=ee5b40a03530",
+          "poster": "/zlypni/futboliarchyky/045.webp?v=9417efa98c6b"
+        },
+        {
+          "key": "zlypni-futboliarchyk-046",
+          "name": "Шари ґрунту №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/046.webp?v=b4d968765172",
+          "poster": "/zlypni/futboliarchyky/046.webp?v=defc2220d082"
+        },
+        {
+          "key": "zlypni-futboliarchyk-047",
+          "name": "Шари ґрунту №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/047.webp?v=e67387581028",
+          "poster": "/zlypni/futboliarchyky/047.webp?v=ace704929ebf"
+        },
+        {
+          "key": "zlypni-futboliarchyk-048",
+          "name": "Шари ґрунту №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/048.webp?v=d1a52658e7a6",
+          "poster": "/zlypni/futboliarchyky/048.webp?v=b7e062478ee3"
+        },
+        {
+          "key": "zlypni-futboliarchyk-049",
+          "name": "Шари ґрунту №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/049.webp?v=6dd9763dbe07",
+          "poster": "/zlypni/futboliarchyky/049.webp?v=c5cebb92e500"
+        },
+        {
+          "key": "zlypni-futboliarchyk-050",
+          "name": "Шари ґрунту №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/050.webp?v=3cb4974b5002",
+          "poster": "/zlypni/futboliarchyky/050.webp?v=174d59f42ace"
+        },
+        {
+          "key": "zlypni-futboliarchyk-051",
+          "name": "Вертикальний тотем №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/051.webp?v=49720f62904a",
+          "poster": "/zlypni/futboliarchyky/051.webp?v=5a95a864479e"
+        },
+        {
+          "key": "zlypni-futboliarchyk-052",
+          "name": "Вертикальний тотем №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/052.webp?v=0c0061f8c971",
+          "poster": "/zlypni/futboliarchyky/052.webp?v=90422f2cdec8"
+        },
+        {
+          "key": "zlypni-futboliarchyk-053",
+          "name": "Вертикальний тотем №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/053.webp?v=5d746ea09264",
+          "poster": "/zlypni/futboliarchyky/053.webp?v=dca41ef637ff"
+        },
+        {
+          "key": "zlypni-futboliarchyk-054",
+          "name": "Вертикальний тотем №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/054.webp?v=d99f56ea8103",
+          "poster": "/zlypni/futboliarchyky/054.webp?v=019596c028e2"
+        },
+        {
+          "key": "zlypni-futboliarchyk-055",
+          "name": "Вертикальний тотем №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/055.webp?v=105f68d3efbf",
+          "poster": "/zlypni/futboliarchyky/055.webp?v=da995ba14787"
+        },
+        {
+          "key": "zlypni-futboliarchyk-056",
+          "name": "Растровий шум №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/056.webp?v=8c3c96a43add",
+          "poster": "/zlypni/futboliarchyky/056.webp?v=085684918b24"
+        },
+        {
+          "key": "zlypni-futboliarchyk-057",
+          "name": "Растровий шум №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/057.webp?v=872eb8ec3acf",
+          "poster": "/zlypni/futboliarchyky/057.webp?v=771fd64b52cd"
+        },
+        {
+          "key": "zlypni-futboliarchyk-058",
+          "name": "Растровий шум №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/058.webp?v=68c2aef9737b",
+          "poster": "/zlypni/futboliarchyky/058.webp?v=b0650310d2ff"
+        },
+        {
+          "key": "zlypni-futboliarchyk-059",
+          "name": "Растровий шум №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/059.webp?v=80e26cdcc3f2",
+          "poster": "/zlypni/futboliarchyky/059.webp?v=f1042c307e13"
+        },
+        {
+          "key": "zlypni-futboliarchyk-060",
+          "name": "Растровий шум №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/060.webp?v=bab415784ff3",
+          "poster": "/zlypni/futboliarchyky/060.webp?v=aef306721842"
+        },
+        {
+          "key": "zlypni-futboliarchyk-061",
+          "name": "Типографічний удар №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/061.webp?v=62f3775646dd",
+          "poster": "/zlypni/futboliarchyky/061.webp?v=c338a8029f38"
+        },
+        {
+          "key": "zlypni-futboliarchyk-062",
+          "name": "Типографічний удар №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/062.webp?v=3124b40194df",
+          "poster": "/zlypni/futboliarchyky/062.webp?v=87e907859ff9"
+        },
+        {
+          "key": "zlypni-futboliarchyk-063",
+          "name": "Типографічний удар №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/063.webp?v=776a680f1f45",
+          "poster": "/zlypni/futboliarchyky/063.webp?v=df6e0a51b6bb"
+        },
+        {
+          "key": "zlypni-futboliarchyk-064",
+          "name": "Типографічний удар №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/064.webp?v=882aaa9f20c3",
+          "poster": "/zlypni/futboliarchyky/064.webp?v=cb48e03ed993"
+        },
+        {
+          "key": "zlypni-futboliarchyk-065",
+          "name": "Типографічний удар №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/065.webp?v=3d96ed01aeb7",
+          "poster": "/zlypni/futboliarchyky/065.webp?v=5a462f32ad81"
+        },
+        {
+          "key": "zlypni-futboliarchyk-066",
+          "name": "Злиплий текстиль №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/066.webp?v=a8660ead072a",
+          "poster": "/zlypni/futboliarchyky/066.webp?v=d22c92710c06"
+        },
+        {
+          "key": "zlypni-futboliarchyk-067",
+          "name": "Злиплий текстиль №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/067.webp?v=46c04d3b419c",
+          "poster": "/zlypni/futboliarchyky/067.webp?v=35f22e0853dc"
+        },
+        {
+          "key": "zlypni-futboliarchyk-068",
+          "name": "Злиплий текстиль №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/068.webp?v=15868485d84d",
+          "poster": "/zlypni/futboliarchyky/068.webp?v=1a68acb4b8eb"
+        },
+        {
+          "key": "zlypni-futboliarchyk-069",
+          "name": "Злиплий текстиль №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/069.webp?v=591abccfec73",
+          "poster": "/zlypni/futboliarchyky/069.webp?v=e7e1dde93738"
+        },
+        {
+          "key": "zlypni-futboliarchyk-070",
+          "name": "Злиплий текстиль №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/070.webp?v=d1f314d5b0b5",
+          "poster": "/zlypni/futboliarchyky/070.webp?v=30bd9e35fbbf"
+        },
+        {
+          "key": "zlypni-futboliarchyk-071",
+          "name": "Сузір’я шуму №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/071.webp?v=b528e948b6f2",
+          "poster": "/zlypni/futboliarchyky/071.webp?v=b1714f7fc43e"
+        },
+        {
+          "key": "zlypni-futboliarchyk-072",
+          "name": "Сузір’я шуму №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/072.webp?v=f7353b9e13d2",
+          "poster": "/zlypni/futboliarchyky/072.webp?v=3aaa63b21624"
+        },
+        {
+          "key": "zlypni-futboliarchyk-073",
+          "name": "Сузір’я шуму №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/073.webp?v=1964af61d4fe",
+          "poster": "/zlypni/futboliarchyky/073.webp?v=70664596d48f"
+        },
+        {
+          "key": "zlypni-futboliarchyk-074",
+          "name": "Сузір’я шуму №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/074.webp?v=3fb17fb0f168",
+          "poster": "/zlypni/futboliarchyky/074.webp?v=458bb5fc6ddd"
+        },
+        {
+          "key": "zlypni-futboliarchyk-075",
+          "name": "Сузір’я шуму №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/075.webp?v=640fd7871776",
+          "poster": "/zlypni/futboliarchyky/075.webp?v=c5a970ab6fdc"
+        },
+        {
+          "key": "zlypni-futboliarchyk-076",
+          "name": "Стікерна стіна №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/076.webp?v=0f5ab63d4502",
+          "poster": "/zlypni/futboliarchyky/076.webp?v=c884d5666dc4"
+        },
+        {
+          "key": "zlypni-futboliarchyk-077",
+          "name": "Стікерна стіна №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/077.webp?v=9c0e0b1fa860",
+          "poster": "/zlypni/futboliarchyky/077.webp?v=be28e3db1175"
+        },
+        {
+          "key": "zlypni-futboliarchyk-078",
+          "name": "Стікерна стіна №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/078.webp?v=3411a029075d",
+          "poster": "/zlypni/futboliarchyky/078.webp?v=f1f7eaf47e66"
+        },
+        {
+          "key": "zlypni-futboliarchyk-079",
+          "name": "Стікерна стіна №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/079.webp?v=32d10abbea98",
+          "poster": "/zlypni/futboliarchyky/079.webp?v=6f2080331354"
+        },
+        {
+          "key": "zlypni-futboliarchyk-080",
+          "name": "Стікерна стіна №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/080.webp?v=ca4dffe49e86",
+          "poster": "/zlypni/futboliarchyky/080.webp?v=ace139c10714"
+        },
+        {
+          "key": "zlypni-futboliarchyk-081",
+          "name": "Два голоси №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/081.webp?v=62b89d4e9c92",
+          "poster": "/zlypni/futboliarchyky/081.webp?v=d72140c42a6d"
+        },
+        {
+          "key": "zlypni-futboliarchyk-082",
+          "name": "Два голоси №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/082.webp?v=183a9c7c8cb6",
+          "poster": "/zlypni/futboliarchyky/082.webp?v=d3f165a579ab"
+        },
+        {
+          "key": "zlypni-futboliarchyk-083",
+          "name": "Два голоси №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/083.webp?v=713cb503aa4a",
+          "poster": "/zlypni/futboliarchyky/083.webp?v=d73a0106d479"
+        },
+        {
+          "key": "zlypni-futboliarchyk-084",
+          "name": "Два голоси №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/084.webp?v=81936554cd3c",
+          "poster": "/zlypni/futboliarchyky/084.webp?v=9084688af898"
+        },
+        {
+          "key": "zlypni-futboliarchyk-085",
+          "name": "Два голоси №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/085.webp?v=0ece7a775e4b",
+          "poster": "/zlypni/futboliarchyky/085.webp?v=e11856333466"
+        },
+        {
+          "key": "zlypni-futboliarchyk-086",
+          "name": "Зсув фарби №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/086.webp?v=1dba371235c8",
+          "poster": "/zlypni/futboliarchyky/086.webp?v=53317519bf51"
+        },
+        {
+          "key": "zlypni-futboliarchyk-087",
+          "name": "Зсув фарби №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/087.webp?v=f1545a5b9e04",
+          "poster": "/zlypni/futboliarchyky/087.webp?v=ce59d9ee6b4c"
+        },
+        {
+          "key": "zlypni-futboliarchyk-088",
+          "name": "Зсув фарби №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/088.webp?v=6f0508bafbcb",
+          "poster": "/zlypni/futboliarchyky/088.webp?v=f782a12e6ec7"
+        },
+        {
+          "key": "zlypni-futboliarchyk-089",
+          "name": "Зсув фарби №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/089.webp?v=2ca57a89751c",
+          "poster": "/zlypni/futboliarchyky/089.webp?v=3edc5c773abe"
+        },
+        {
+          "key": "zlypni-futboliarchyk-090",
+          "name": "Зсув фарби №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/090.webp?v=45cb710c8753",
+          "poster": "/zlypni/futboliarchyky/090.webp?v=4aa5c72982ce"
+        },
+        {
+          "key": "zlypni-futboliarchyk-091",
+          "name": "Орбітальний джем №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/091.webp?v=d57ba9f2fc64",
+          "poster": "/zlypni/futboliarchyky/091.webp?v=949ae65945ab"
+        },
+        {
+          "key": "zlypni-futboliarchyk-092",
+          "name": "Орбітальний джем №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/092.webp?v=b8e2925d0085",
+          "poster": "/zlypni/futboliarchyky/092.webp?v=f299116dcd8e"
+        },
+        {
+          "key": "zlypni-futboliarchyk-093",
+          "name": "Орбітальний джем №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/093.webp?v=21cfb395540a",
+          "poster": "/zlypni/futboliarchyky/093.webp?v=628f51a0ffef"
+        },
+        {
+          "key": "zlypni-futboliarchyk-094",
+          "name": "Орбітальний джем №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/094.webp?v=ff04fb892471",
+          "poster": "/zlypni/futboliarchyky/094.webp?v=e0694c591def"
+        },
+        {
+          "key": "zlypni-futboliarchyk-095",
+          "name": "Орбітальний джем №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/095.webp?v=1feb33aa7d68",
+          "poster": "/zlypni/futboliarchyky/095.webp?v=757705771b1a"
+        },
+        {
+          "key": "zlypni-futboliarchyk-096",
+          "name": "Любити · світити · давати №1",
+          "texture": "/3d/textures/zlypni/futboliarchyky/096.webp?v=7046ce80f792",
+          "poster": "/zlypni/futboliarchyky/096.webp?v=2d7debb30b4e"
+        },
+        {
+          "key": "zlypni-futboliarchyk-097",
+          "name": "Любити · світити · давати №2",
+          "texture": "/3d/textures/zlypni/futboliarchyky/097.webp?v=c632cb343452",
+          "poster": "/zlypni/futboliarchyky/097.webp?v=018adf84d8dd"
+        },
+        {
+          "key": "zlypni-futboliarchyk-098",
+          "name": "Любити · світити · давати №3",
+          "texture": "/3d/textures/zlypni/futboliarchyky/098.webp?v=70858360be70",
+          "poster": "/zlypni/futboliarchyky/098.webp?v=dc2723e98506"
+        },
+        {
+          "key": "zlypni-futboliarchyk-099",
+          "name": "Любити · світити · давати №4",
+          "texture": "/3d/textures/zlypni/futboliarchyky/099.webp?v=c7c502ef4f25",
+          "poster": "/zlypni/futboliarchyky/099.webp?v=2c356bc201d9"
+        },
+        {
+          "key": "zlypni-futboliarchyk-100",
+          "name": "Любити · світити · давати №5",
+          "texture": "/3d/textures/zlypni/futboliarchyky/100.webp?v=c95fddbce680",
+          "poster": "/zlypni/futboliarchyky/100.webp?v=dbb4ee9316f0"
+        }
+      ]
+    },
+    {
+      "key": "zlypni-bobanochky",
+      "title": "Бобаночки",
+      "modelUrl": "/3d/models/hoodie-3.glb",
+      "designs": [
+        {
+          "key": "zlypni-bobanochka-001",
+          "name": "Липкий знак №1",
+          "texture": "/3d/textures/zlypni/bobanochky/001.webp?v=974b7e12d40b",
+          "poster": "/zlypni/bobanochky/001.webp?v=060067e0d2ea"
+        },
+        {
+          "key": "zlypni-bobanochka-002",
+          "name": "Липкий знак №2",
+          "texture": "/3d/textures/zlypni/bobanochky/002.webp?v=d1013a2b276b",
+          "poster": "/zlypni/bobanochky/002.webp?v=055cd6aecc3f"
+        },
+        {
+          "key": "zlypni-bobanochka-003",
+          "name": "Липкий знак №3",
+          "texture": "/3d/textures/zlypni/bobanochky/003.webp?v=90efce28f15c",
+          "poster": "/zlypni/bobanochky/003.webp?v=754304ece50a"
+        },
+        {
+          "key": "zlypni-bobanochka-004",
+          "name": "Липкий знак №4",
+          "texture": "/3d/textures/zlypni/bobanochky/004.webp?v=bff42419f6d3",
+          "poster": "/zlypni/bobanochky/004.webp?v=7829fb9f0338"
+        },
+        {
+          "key": "zlypni-bobanochka-005",
+          "name": "Липкий знак №5",
+          "texture": "/3d/textures/zlypni/bobanochky/005.webp?v=5f18ef1477e7",
+          "poster": "/zlypni/bobanochky/005.webp?v=c85856cde616"
+        },
+        {
+          "key": "zlypni-bobanochka-006",
+          "name": "Козел крупним планом №1",
+          "texture": "/3d/textures/zlypni/bobanochky/006.webp?v=62014f50926e",
+          "poster": "/zlypni/bobanochky/006.webp?v=78a0dfa9cb1a"
+        },
+        {
+          "key": "zlypni-bobanochka-007",
+          "name": "Козел крупним планом №2",
+          "texture": "/3d/textures/zlypni/bobanochky/007.webp?v=9835b2d8c484",
+          "poster": "/zlypni/bobanochky/007.webp?v=be39dfc01082"
+        },
+        {
+          "key": "zlypni-bobanochka-008",
+          "name": "Козел крупним планом №3",
+          "texture": "/3d/textures/zlypni/bobanochky/008.webp?v=2dae3c74d10d",
+          "poster": "/zlypni/bobanochky/008.webp?v=435641806d5f"
+        },
+        {
+          "key": "zlypni-bobanochka-009",
+          "name": "Козел крупним планом №4",
+          "texture": "/3d/textures/zlypni/bobanochky/009.webp?v=3ee10124bb03",
+          "poster": "/zlypni/bobanochky/009.webp?v=376909f52775"
+        },
+        {
+          "key": "zlypni-bobanochka-010",
+          "name": "Козел крупним планом №5",
+          "texture": "/3d/textures/zlypni/bobanochky/010.webp?v=c958345be0d1",
+          "poster": "/zlypni/bobanochky/010.webp?v=7238d03dc437"
+        },
+        {
+          "key": "zlypni-bobanochka-011",
+          "name": "Сонячний тотем №1",
+          "texture": "/3d/textures/zlypni/bobanochky/011.webp?v=dbac6da822c4",
+          "poster": "/zlypni/bobanochky/011.webp?v=a690e7608170"
+        },
+        {
+          "key": "zlypni-bobanochka-012",
+          "name": "Сонячний тотем №2",
+          "texture": "/3d/textures/zlypni/bobanochky/012.webp?v=f16e1abfacae",
+          "poster": "/zlypni/bobanochky/012.webp?v=67cedd7b62b8"
+        },
+        {
+          "key": "zlypni-bobanochka-013",
+          "name": "Сонячний тотем №3",
+          "texture": "/3d/textures/zlypni/bobanochky/013.webp?v=68c47ab8ed54",
+          "poster": "/zlypni/bobanochky/013.webp?v=700f5f2c5a37"
+        },
+        {
+          "key": "zlypni-bobanochka-014",
+          "name": "Сонячний тотем №4",
+          "texture": "/3d/textures/zlypni/bobanochky/014.webp?v=6bc25e8de687",
+          "poster": "/zlypni/bobanochky/014.webp?v=3a820b8ddb3e"
+        },
+        {
+          "key": "zlypni-bobanochka-015",
+          "name": "Сонячний тотем №5",
+          "texture": "/3d/textures/zlypni/bobanochky/015.webp?v=fabac741d613",
+          "poster": "/zlypni/bobanochky/015.webp?v=ac4f4eb993bb"
+        },
+        {
+          "key": "zlypni-bobanochka-016",
+          "name": "Коріння звуку №1",
+          "texture": "/3d/textures/zlypni/bobanochky/016.webp?v=2bc568742812",
+          "poster": "/zlypni/bobanochky/016.webp?v=6e425cec7120"
+        },
+        {
+          "key": "zlypni-bobanochka-017",
+          "name": "Коріння звуку №2",
+          "texture": "/3d/textures/zlypni/bobanochky/017.webp?v=155dc7f567fa",
+          "poster": "/zlypni/bobanochky/017.webp?v=a75dd06328eb"
+        },
+        {
+          "key": "zlypni-bobanochka-018",
+          "name": "Коріння звуку №3",
+          "texture": "/3d/textures/zlypni/bobanochky/018.webp?v=1c8ca8d58f37",
+          "poster": "/zlypni/bobanochky/018.webp?v=d2cdb6ebaf8d"
+        },
+        {
+          "key": "zlypni-bobanochka-019",
+          "name": "Коріння звуку №4",
+          "texture": "/3d/textures/zlypni/bobanochky/019.webp?v=8113a38b9e87",
+          "poster": "/zlypni/bobanochky/019.webp?v=23d30ae02e70"
+        },
+        {
+          "key": "zlypni-bobanochka-020",
+          "name": "Коріння звуку №5",
+          "texture": "/3d/textures/zlypni/bobanochky/020.webp?v=a4256e3eb0ba",
+          "poster": "/zlypni/bobanochky/020.webp?v=25cb19eec6ca"
+        },
+        {
+          "key": "zlypni-bobanochka-021",
+          "name": "Контурний рельєф №1",
+          "texture": "/3d/textures/zlypni/bobanochky/021.webp?v=a92ac7e93883",
+          "poster": "/zlypni/bobanochky/021.webp?v=e5bba366f30a"
+        },
+        {
+          "key": "zlypni-bobanochka-022",
+          "name": "Контурний рельєф №2",
+          "texture": "/3d/textures/zlypni/bobanochky/022.webp?v=866bfdfc8a60",
+          "poster": "/zlypni/bobanochky/022.webp?v=7ce52768fe82"
+        },
+        {
+          "key": "zlypni-bobanochka-023",
+          "name": "Контурний рельєф №3",
+          "texture": "/3d/textures/zlypni/bobanochky/023.webp?v=d523dd2067e6",
+          "poster": "/zlypni/bobanochky/023.webp?v=66065b8ed201"
+        },
+        {
+          "key": "zlypni-bobanochka-024",
+          "name": "Контурний рельєф №4",
+          "texture": "/3d/textures/zlypni/bobanochky/024.webp?v=4d8b31be05bd",
+          "poster": "/zlypni/bobanochky/024.webp?v=3ae4f1f61ee2"
+        },
+        {
+          "key": "zlypni-bobanochka-025",
+          "name": "Контурний рельєф №5",
+          "texture": "/3d/textures/zlypni/bobanochky/025.webp?v=83d1da341d61",
+          "poster": "/zlypni/bobanochky/025.webp?v=3ea865dd762c"
+        },
+        {
+          "key": "zlypni-bobanochka-026",
+          "name": "Оптичний зсув №1",
+          "texture": "/3d/textures/zlypni/bobanochky/026.webp?v=285c8b6bff1a",
+          "poster": "/zlypni/bobanochky/026.webp?v=aaf02cc17467"
+        },
+        {
+          "key": "zlypni-bobanochka-027",
+          "name": "Оптичний зсув №2",
+          "texture": "/3d/textures/zlypni/bobanochky/027.webp?v=d72dcf23a08e",
+          "poster": "/zlypni/bobanochky/027.webp?v=141474738f2a"
+        },
+        {
+          "key": "zlypni-bobanochka-028",
+          "name": "Оптичний зсув №3",
+          "texture": "/3d/textures/zlypni/bobanochky/028.webp?v=39007abf878f",
+          "poster": "/zlypni/bobanochky/028.webp?v=baf898dfecf7"
+        },
+        {
+          "key": "zlypni-bobanochka-029",
+          "name": "Оптичний зсув №4",
+          "texture": "/3d/textures/zlypni/bobanochky/029.webp?v=e18b5280e43d",
+          "poster": "/zlypni/bobanochky/029.webp?v=219fe362c580"
+        },
+        {
+          "key": "zlypni-bobanochka-030",
+          "name": "Оптичний зсув №5",
+          "texture": "/3d/textures/zlypni/bobanochky/030.webp?v=de5ade51a6f2",
+          "poster": "/zlypni/bobanochky/030.webp?v=c29c062718dc"
+        },
+        {
+          "key": "zlypni-bobanochka-031",
+          "name": "Амплітуда №1",
+          "texture": "/3d/textures/zlypni/bobanochky/031.webp?v=0bd9ecfc29d7",
+          "poster": "/zlypni/bobanochky/031.webp?v=ed30777f8de8"
+        },
+        {
+          "key": "zlypni-bobanochka-032",
+          "name": "Амплітуда №2",
+          "texture": "/3d/textures/zlypni/bobanochky/032.webp?v=779b61aefb38",
+          "poster": "/zlypni/bobanochky/032.webp?v=bacc25890df1"
+        },
+        {
+          "key": "zlypni-bobanochka-033",
+          "name": "Амплітуда №3",
+          "texture": "/3d/textures/zlypni/bobanochky/033.webp?v=ccba8e07f4c7",
+          "poster": "/zlypni/bobanochky/033.webp?v=0f575b0acb7c"
+        },
+        {
+          "key": "zlypni-bobanochka-034",
+          "name": "Амплітуда №4",
+          "texture": "/3d/textures/zlypni/bobanochky/034.webp?v=366203e95270",
+          "poster": "/zlypni/bobanochky/034.webp?v=a07c911e8b7d"
+        },
+        {
+          "key": "zlypni-bobanochka-035",
+          "name": "Амплітуда №5",
+          "texture": "/3d/textures/zlypni/bobanochky/035.webp?v=bcb00a6e404b",
+          "poster": "/zlypni/bobanochky/035.webp?v=7a189cbe5b42"
+        },
+        {
+          "key": "zlypni-bobanochka-036",
+          "name": "Кислотний гербарій №1",
+          "texture": "/3d/textures/zlypni/bobanochky/036.webp?v=a14f50b955a3",
+          "poster": "/zlypni/bobanochky/036.webp?v=bf3526ef24f0"
+        },
+        {
+          "key": "zlypni-bobanochka-037",
+          "name": "Кислотний гербарій №2",
+          "texture": "/3d/textures/zlypni/bobanochky/037.webp?v=60e4320c2b0b",
+          "poster": "/zlypni/bobanochky/037.webp?v=b298218eea63"
+        },
+        {
+          "key": "zlypni-bobanochka-038",
+          "name": "Кислотний гербарій №3",
+          "texture": "/3d/textures/zlypni/bobanochky/038.webp?v=b36887f42597",
+          "poster": "/zlypni/bobanochky/038.webp?v=2756ef961dbc"
+        },
+        {
+          "key": "zlypni-bobanochka-039",
+          "name": "Кислотний гербарій №4",
+          "texture": "/3d/textures/zlypni/bobanochky/039.webp?v=a623a7ff6e03",
+          "poster": "/zlypni/bobanochky/039.webp?v=5d04bb69525c"
+        },
+        {
+          "key": "zlypni-bobanochka-040",
+          "name": "Кислотний гербарій №5",
+          "texture": "/3d/textures/zlypni/bobanochky/040.webp?v=dd6c46746a91",
+          "poster": "/zlypni/bobanochky/040.webp?v=0f8b5446f4cb"
+        },
+        {
+          "key": "zlypni-bobanochka-041",
+          "name": "Зламана шахівниця №1",
+          "texture": "/3d/textures/zlypni/bobanochky/041.webp?v=8da13467ce7d",
+          "poster": "/zlypni/bobanochky/041.webp?v=494dbbcc83ef"
+        },
+        {
+          "key": "zlypni-bobanochka-042",
+          "name": "Зламана шахівниця №2",
+          "texture": "/3d/textures/zlypni/bobanochky/042.webp?v=3afc6743b7af",
+          "poster": "/zlypni/bobanochky/042.webp?v=81be1365a90e"
+        },
+        {
+          "key": "zlypni-bobanochka-043",
+          "name": "Зламана шахівниця №3",
+          "texture": "/3d/textures/zlypni/bobanochky/043.webp?v=ec8b947926f5",
+          "poster": "/zlypni/bobanochky/043.webp?v=738b3506b523"
+        },
+        {
+          "key": "zlypni-bobanochka-044",
+          "name": "Зламана шахівниця №4",
+          "texture": "/3d/textures/zlypni/bobanochky/044.webp?v=a38183703cd8",
+          "poster": "/zlypni/bobanochky/044.webp?v=e450f73d8dc8"
+        },
+        {
+          "key": "zlypni-bobanochka-045",
+          "name": "Зламана шахівниця №5",
+          "texture": "/3d/textures/zlypni/bobanochky/045.webp?v=22df5ef47dbf",
+          "poster": "/zlypni/bobanochky/045.webp?v=7f89b70cd098"
+        },
+        {
+          "key": "zlypni-bobanochka-046",
+          "name": "Шари ґрунту №1",
+          "texture": "/3d/textures/zlypni/bobanochky/046.webp?v=ceeec46d5702",
+          "poster": "/zlypni/bobanochky/046.webp?v=6081530a0e59"
+        },
+        {
+          "key": "zlypni-bobanochka-047",
+          "name": "Шари ґрунту №2",
+          "texture": "/3d/textures/zlypni/bobanochky/047.webp?v=d3db2f83a9b7",
+          "poster": "/zlypni/bobanochky/047.webp?v=e5a273cbbbda"
+        },
+        {
+          "key": "zlypni-bobanochka-048",
+          "name": "Шари ґрунту №3",
+          "texture": "/3d/textures/zlypni/bobanochky/048.webp?v=d22cd7f54fe1",
+          "poster": "/zlypni/bobanochky/048.webp?v=deb4990ae4c5"
+        },
+        {
+          "key": "zlypni-bobanochka-049",
+          "name": "Шари ґрунту №4",
+          "texture": "/3d/textures/zlypni/bobanochky/049.webp?v=40cf433559b8",
+          "poster": "/zlypni/bobanochky/049.webp?v=03f127cdb57f"
+        },
+        {
+          "key": "zlypni-bobanochka-050",
+          "name": "Шари ґрунту №5",
+          "texture": "/3d/textures/zlypni/bobanochky/050.webp?v=f8ad8b7a62bc",
+          "poster": "/zlypni/bobanochky/050.webp?v=da6ef742ddbc"
+        },
+        {
+          "key": "zlypni-bobanochka-051",
+          "name": "Вертикальний тотем №1",
+          "texture": "/3d/textures/zlypni/bobanochky/051.webp?v=2c8a3880366a",
+          "poster": "/zlypni/bobanochky/051.webp?v=0acbdcca8927"
+        },
+        {
+          "key": "zlypni-bobanochka-052",
+          "name": "Вертикальний тотем №2",
+          "texture": "/3d/textures/zlypni/bobanochky/052.webp?v=5295f019b274",
+          "poster": "/zlypni/bobanochky/052.webp?v=ffd9c72911ff"
+        },
+        {
+          "key": "zlypni-bobanochka-053",
+          "name": "Вертикальний тотем №3",
+          "texture": "/3d/textures/zlypni/bobanochky/053.webp?v=c6c263f80a32",
+          "poster": "/zlypni/bobanochky/053.webp?v=adcfb37622d2"
+        },
+        {
+          "key": "zlypni-bobanochka-054",
+          "name": "Вертикальний тотем №4",
+          "texture": "/3d/textures/zlypni/bobanochky/054.webp?v=92923e3078f0",
+          "poster": "/zlypni/bobanochky/054.webp?v=73b82708cac7"
+        },
+        {
+          "key": "zlypni-bobanochka-055",
+          "name": "Вертикальний тотем №5",
+          "texture": "/3d/textures/zlypni/bobanochky/055.webp?v=7eab2d3ea046",
+          "poster": "/zlypni/bobanochky/055.webp?v=fd4f955c9ccc"
+        },
+        {
+          "key": "zlypni-bobanochka-056",
+          "name": "Растровий шум №1",
+          "texture": "/3d/textures/zlypni/bobanochky/056.webp?v=1e8394b6d8ae",
+          "poster": "/zlypni/bobanochky/056.webp?v=622196816a98"
+        },
+        {
+          "key": "zlypni-bobanochka-057",
+          "name": "Растровий шум №2",
+          "texture": "/3d/textures/zlypni/bobanochky/057.webp?v=b18764b86ddf",
+          "poster": "/zlypni/bobanochky/057.webp?v=2a0b8ae4ddfd"
+        },
+        {
+          "key": "zlypni-bobanochka-058",
+          "name": "Растровий шум №3",
+          "texture": "/3d/textures/zlypni/bobanochky/058.webp?v=00fb4d9d637c",
+          "poster": "/zlypni/bobanochky/058.webp?v=2e4acb0b9182"
+        },
+        {
+          "key": "zlypni-bobanochka-059",
+          "name": "Растровий шум №4",
+          "texture": "/3d/textures/zlypni/bobanochky/059.webp?v=f1f1b0db2a8e",
+          "poster": "/zlypni/bobanochky/059.webp?v=aecba417b353"
+        },
+        {
+          "key": "zlypni-bobanochka-060",
+          "name": "Растровий шум №5",
+          "texture": "/3d/textures/zlypni/bobanochky/060.webp?v=461dce96e143",
+          "poster": "/zlypni/bobanochky/060.webp?v=90f906715797"
+        },
+        {
+          "key": "zlypni-bobanochka-061",
+          "name": "Типографічний удар №1",
+          "texture": "/3d/textures/zlypni/bobanochky/061.webp?v=2f443c820ff1",
+          "poster": "/zlypni/bobanochky/061.webp?v=f16e66fe477d"
+        },
+        {
+          "key": "zlypni-bobanochka-062",
+          "name": "Типографічний удар №2",
+          "texture": "/3d/textures/zlypni/bobanochky/062.webp?v=61b8cd7933b1",
+          "poster": "/zlypni/bobanochky/062.webp?v=105706b7ceec"
+        },
+        {
+          "key": "zlypni-bobanochka-063",
+          "name": "Типографічний удар №3",
+          "texture": "/3d/textures/zlypni/bobanochky/063.webp?v=ec7b127c3234",
+          "poster": "/zlypni/bobanochky/063.webp?v=b375a599f59c"
+        },
+        {
+          "key": "zlypni-bobanochka-064",
+          "name": "Типографічний удар №4",
+          "texture": "/3d/textures/zlypni/bobanochky/064.webp?v=393e3e73564c",
+          "poster": "/zlypni/bobanochky/064.webp?v=2095bd6a3832"
+        },
+        {
+          "key": "zlypni-bobanochka-065",
+          "name": "Типографічний удар №5",
+          "texture": "/3d/textures/zlypni/bobanochky/065.webp?v=f317f219c352",
+          "poster": "/zlypni/bobanochky/065.webp?v=c47471e0846a"
+        },
+        {
+          "key": "zlypni-bobanochka-066",
+          "name": "Злиплий текстиль №1",
+          "texture": "/3d/textures/zlypni/bobanochky/066.webp?v=4278bac15244",
+          "poster": "/zlypni/bobanochky/066.webp?v=25182555e6d4"
+        },
+        {
+          "key": "zlypni-bobanochka-067",
+          "name": "Злиплий текстиль №2",
+          "texture": "/3d/textures/zlypni/bobanochky/067.webp?v=a69d56bb24cf",
+          "poster": "/zlypni/bobanochky/067.webp?v=67e98e1a97e4"
+        },
+        {
+          "key": "zlypni-bobanochka-068",
+          "name": "Злиплий текстиль №3",
+          "texture": "/3d/textures/zlypni/bobanochky/068.webp?v=eb84b63abfc1",
+          "poster": "/zlypni/bobanochky/068.webp?v=34b147ccf347"
+        },
+        {
+          "key": "zlypni-bobanochka-069",
+          "name": "Злиплий текстиль №4",
+          "texture": "/3d/textures/zlypni/bobanochky/069.webp?v=4f88165bbdd1",
+          "poster": "/zlypni/bobanochky/069.webp?v=2112ba4f4c12"
+        },
+        {
+          "key": "zlypni-bobanochka-070",
+          "name": "Злиплий текстиль №5",
+          "texture": "/3d/textures/zlypni/bobanochky/070.webp?v=31e6236755be",
+          "poster": "/zlypni/bobanochky/070.webp?v=daf38ab57be7"
+        },
+        {
+          "key": "zlypni-bobanochka-071",
+          "name": "Сузір’я шуму №1",
+          "texture": "/3d/textures/zlypni/bobanochky/071.webp?v=ed0b686f101c",
+          "poster": "/zlypni/bobanochky/071.webp?v=a9e13201b7da"
+        },
+        {
+          "key": "zlypni-bobanochka-072",
+          "name": "Сузір’я шуму №2",
+          "texture": "/3d/textures/zlypni/bobanochky/072.webp?v=89c143ca96bb",
+          "poster": "/zlypni/bobanochky/072.webp?v=c2cfcfad549e"
+        },
+        {
+          "key": "zlypni-bobanochka-073",
+          "name": "Сузір’я шуму №3",
+          "texture": "/3d/textures/zlypni/bobanochky/073.webp?v=646a37b73c60",
+          "poster": "/zlypni/bobanochky/073.webp?v=8f9f00b84075"
+        },
+        {
+          "key": "zlypni-bobanochka-074",
+          "name": "Сузір’я шуму №4",
+          "texture": "/3d/textures/zlypni/bobanochky/074.webp?v=8c930b4bf674",
+          "poster": "/zlypni/bobanochky/074.webp?v=e9e6559dcada"
+        },
+        {
+          "key": "zlypni-bobanochka-075",
+          "name": "Сузір’я шуму №5",
+          "texture": "/3d/textures/zlypni/bobanochky/075.webp?v=b0b43fc40a16",
+          "poster": "/zlypni/bobanochky/075.webp?v=36cf520eff83"
+        },
+        {
+          "key": "zlypni-bobanochka-076",
+          "name": "Стікерна стіна №1",
+          "texture": "/3d/textures/zlypni/bobanochky/076.webp?v=5672b1d4dd98",
+          "poster": "/zlypni/bobanochky/076.webp?v=f82e7b3ef1e4"
+        },
+        {
+          "key": "zlypni-bobanochka-077",
+          "name": "Стікерна стіна №2",
+          "texture": "/3d/textures/zlypni/bobanochky/077.webp?v=b1b6a0603227",
+          "poster": "/zlypni/bobanochky/077.webp?v=fdac443fba05"
+        },
+        {
+          "key": "zlypni-bobanochka-078",
+          "name": "Стікерна стіна №3",
+          "texture": "/3d/textures/zlypni/bobanochky/078.webp?v=50d3a130ae02",
+          "poster": "/zlypni/bobanochky/078.webp?v=c792738a3d06"
+        },
+        {
+          "key": "zlypni-bobanochka-079",
+          "name": "Стікерна стіна №4",
+          "texture": "/3d/textures/zlypni/bobanochky/079.webp?v=95766cd6d897",
+          "poster": "/zlypni/bobanochky/079.webp?v=fa46662c2d2e"
+        },
+        {
+          "key": "zlypni-bobanochka-080",
+          "name": "Стікерна стіна №5",
+          "texture": "/3d/textures/zlypni/bobanochky/080.webp?v=a1d086c3970f",
+          "poster": "/zlypni/bobanochky/080.webp?v=10c88d3941b7"
+        },
+        {
+          "key": "zlypni-bobanochka-081",
+          "name": "Два голоси №1",
+          "texture": "/3d/textures/zlypni/bobanochky/081.webp?v=6dd5371804b1",
+          "poster": "/zlypni/bobanochky/081.webp?v=bba27faebd04"
+        },
+        {
+          "key": "zlypni-bobanochka-082",
+          "name": "Два голоси №2",
+          "texture": "/3d/textures/zlypni/bobanochky/082.webp?v=d8db8bcb1393",
+          "poster": "/zlypni/bobanochky/082.webp?v=8c0b5e6f07c2"
+        },
+        {
+          "key": "zlypni-bobanochka-083",
+          "name": "Два голоси №3",
+          "texture": "/3d/textures/zlypni/bobanochky/083.webp?v=1672509e0222",
+          "poster": "/zlypni/bobanochky/083.webp?v=d51cde8fab41"
+        },
+        {
+          "key": "zlypni-bobanochka-084",
+          "name": "Два голоси №4",
+          "texture": "/3d/textures/zlypni/bobanochky/084.webp?v=0640f1f92d7f",
+          "poster": "/zlypni/bobanochky/084.webp?v=751726339e46"
+        },
+        {
+          "key": "zlypni-bobanochka-085",
+          "name": "Два голоси №5",
+          "texture": "/3d/textures/zlypni/bobanochky/085.webp?v=ec5e32fed0fd",
+          "poster": "/zlypni/bobanochky/085.webp?v=2f3016922879"
+        },
+        {
+          "key": "zlypni-bobanochka-086",
+          "name": "Зсув фарби №1",
+          "texture": "/3d/textures/zlypni/bobanochky/086.webp?v=e2a3d2b8708c",
+          "poster": "/zlypni/bobanochky/086.webp?v=e328c01c2ae9"
+        },
+        {
+          "key": "zlypni-bobanochka-087",
+          "name": "Зсув фарби №2",
+          "texture": "/3d/textures/zlypni/bobanochky/087.webp?v=f1c8297cd143",
+          "poster": "/zlypni/bobanochky/087.webp?v=fdca8df3e514"
+        },
+        {
+          "key": "zlypni-bobanochka-088",
+          "name": "Зсув фарби №3",
+          "texture": "/3d/textures/zlypni/bobanochky/088.webp?v=395995d1a5cc",
+          "poster": "/zlypni/bobanochky/088.webp?v=c94f79e873b0"
+        },
+        {
+          "key": "zlypni-bobanochka-089",
+          "name": "Зсув фарби №4",
+          "texture": "/3d/textures/zlypni/bobanochky/089.webp?v=fcad13b2c389",
+          "poster": "/zlypni/bobanochky/089.webp?v=4764d15227b6"
+        },
+        {
+          "key": "zlypni-bobanochka-090",
+          "name": "Зсув фарби №5",
+          "texture": "/3d/textures/zlypni/bobanochky/090.webp?v=f3a81e3e6c11",
+          "poster": "/zlypni/bobanochky/090.webp?v=69a5ea70ba9f"
+        },
+        {
+          "key": "zlypni-bobanochka-091",
+          "name": "Орбітальний джем №1",
+          "texture": "/3d/textures/zlypni/bobanochky/091.webp?v=69ee15893ba1",
+          "poster": "/zlypni/bobanochky/091.webp?v=ecb6cf204b6e"
+        },
+        {
+          "key": "zlypni-bobanochka-092",
+          "name": "Орбітальний джем №2",
+          "texture": "/3d/textures/zlypni/bobanochky/092.webp?v=7aa9cba42206",
+          "poster": "/zlypni/bobanochky/092.webp?v=ba019deec4ba"
+        },
+        {
+          "key": "zlypni-bobanochka-093",
+          "name": "Орбітальний джем №3",
+          "texture": "/3d/textures/zlypni/bobanochky/093.webp?v=87b63bc1fc7f",
+          "poster": "/zlypni/bobanochky/093.webp?v=b3b29d02f0e8"
+        },
+        {
+          "key": "zlypni-bobanochka-094",
+          "name": "Орбітальний джем №4",
+          "texture": "/3d/textures/zlypni/bobanochky/094.webp?v=1406e182669e",
+          "poster": "/zlypni/bobanochky/094.webp?v=c5684b79fb93"
+        },
+        {
+          "key": "zlypni-bobanochka-095",
+          "name": "Орбітальний джем №5",
+          "texture": "/3d/textures/zlypni/bobanochky/095.webp?v=854b3061d999",
+          "poster": "/zlypni/bobanochky/095.webp?v=fd357ccceef2"
+        },
+        {
+          "key": "zlypni-bobanochka-096",
+          "name": "Любити · світити · давати №1",
+          "texture": "/3d/textures/zlypni/bobanochky/096.webp?v=a6b3e9c566fa",
+          "poster": "/zlypni/bobanochky/096.webp?v=7cce8b565ebd"
+        },
+        {
+          "key": "zlypni-bobanochka-097",
+          "name": "Любити · світити · давати №2",
+          "texture": "/3d/textures/zlypni/bobanochky/097.webp?v=c7fc0369e504",
+          "poster": "/zlypni/bobanochky/097.webp?v=f1428bf49ea5"
+        },
+        {
+          "key": "zlypni-bobanochka-098",
+          "name": "Любити · світити · давати №3",
+          "texture": "/3d/textures/zlypni/bobanochky/098.webp?v=62cd00d21304",
+          "poster": "/zlypni/bobanochky/098.webp?v=10b6ef468064"
+        },
+        {
+          "key": "zlypni-bobanochka-099",
+          "name": "Любити · світити · давати №4",
+          "texture": "/3d/textures/zlypni/bobanochky/099.webp?v=0d0336006367",
+          "poster": "/zlypni/bobanochky/099.webp?v=626ad0a21d8b"
+        },
+        {
+          "key": "zlypni-bobanochka-100",
+          "name": "Любити · світити · давати №5",
+          "texture": "/3d/textures/zlypni/bobanochky/100.webp?v=d92735b1dc16",
+          "poster": "/zlypni/bobanochky/100.webp?v=c81b6ce070bf"
+        }
+      ]
+    }
+  ]
+}
