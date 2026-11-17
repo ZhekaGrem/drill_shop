@@ -7,37 +7,22 @@
 // (photoImages.slice(0, 2)) і губить kind; /collections — єдиний ендпоінт,
 // що проносить kind і склад колекцій. Коли формер навчиться — це спроститься.
 import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '@/shared/api/client';
-import { HIDDEN_COLLECTION_WORDMARK, isHiddenCollection } from '@/shared/config/hidden-collections';
+import {
+  ApiCollection,
+  RAW_COLLECTIONS_QUERY_KEY,
+  fetchRawCollections,
+  toHiddenSlugs,
+} from '@/shared/api/collections';
+import { HIDDEN_COLLECTION_WORDMARK } from '@/shared/config/hidden-collections';
 
 export interface TurntableEntry {
   animated: string;
   poster: string;
 }
 
-interface ApiImage {
-  url: string;
-  kind?: string;
-}
-
-interface ApiCollectionProduct {
-  slug: string;
-  images: ApiImage[];
-}
-
-interface ApiCollection {
-  slug: string;
-  products: ApiCollectionProduct[];
-}
-
-const fetchRawCollections = async (): Promise<ApiCollection[]> => {
-  const { data } = await apiClient.get<{ data: ApiCollection[] }>('/collections');
-  return data.data;
-};
-
 const useRawCollections = <T>(select: (data: ApiCollection[]) => T) =>
   useQuery({
-    queryKey: ['collections-raw'],
+    queryKey: RAW_COLLECTIONS_QUERY_KEY,
     queryFn: fetchRawCollections,
     staleTime: 5 * 60_000,
     select,
@@ -54,9 +39,6 @@ const toTurntables = (data: ApiCollection[]): Record<string, TurntableEntry> => 
   }
   return map;
 };
-
-const toHiddenSlugs = (data: ApiCollection[]): Set<string> =>
-  new Set(data.filter((c) => isHiddenCollection(c.slug)).flatMap((c) => c.products.map((p) => p.slug)));
 
 // slug товару прихованого розділу → словомарка хедера («Олько»)
 const toHiddenWordmarks = (data: ApiCollection[]): Record<string, string> => {

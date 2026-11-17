@@ -1,5 +1,5 @@
 // src/app/catalog/page.tsx — SSG зі списком товарів
-import { productsApi } from '@/features/catalog/api/products';
+import { getCatalogFirstPage } from '@/features/catalog/api/products';
 import CatalogClient from './CatalogClient';
 import { JsonLd } from '../JsonLd';
 import { structuredData } from '../seo';
@@ -18,25 +18,12 @@ export async function generateMetadata() {
   };
 }
 
-// SSG - завантажуємо початкові товари
-async function getInitialProducts() {
-  try {
-    const response = await productsApi.getProducts(
-      { sortBy: 'created', sortOrder: 'desc' },
-      { limit: 18, offset: 0 }
-    );
-    return response;
-  } catch (error) {
-    console.error('Failed to fetch products:', error);
-    return null;
-  }
-}
-
 // Категорії тут більше не тягнемо: єдиним їхнім споживачем були фільтри
 // каталогу, які прибрані (рішення власника). Один зайвий запит на SSG менше.
 
 export default async function CatalogPage() {
-  const initialData = await getInitialProducts();
+  // SSG: перша сторінка вже без товарів прихованих розділів
+  const initialData = await getCatalogFirstPage();
 
   const itemListData = initialData?.data
     ? structuredData.itemList(

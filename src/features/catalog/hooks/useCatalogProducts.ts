@@ -1,6 +1,7 @@
 // src/features/catalog/hooks/useCatalogProducts.ts
 import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { productsApi, ProductsResponse, ProductFilters } from '../api/products';
+import { RAW_COLLECTIONS_QUERY_KEY, fetchRawCollections, toHiddenSlugs } from '@/shared/api/collections';
 import { queryDefaults } from '@/shared/config/react-query';
 
 interface UseCatalogProductsOptions {
@@ -8,8 +9,6 @@ interface UseCatalogProductsOptions {
   enabled?: boolean;
   initialData?: ProductsResponse | null;
 }
-
-const ITEMS_PER_PAGE = 18;
 
 /** SSG (`src/app/catalog/page.tsx`) завжди тягне товари без фільтрів і з
  *  дефолтним сортуванням — `initialData` можна підставляти лише під точно
@@ -30,26 +29,24 @@ export const useCatalogProducts = ({ filters, enabled = true, initialData }: Use
   return useInfiniteQuery<ProductsResponse>({
     ...queryDefaults,
     queryKey: ['products', filters],
-    queryFn: ({ pageParam = 0 }) =>
-      productsApi.getProducts(filters, { limit: ITEMS_PER_PAGE, offset: pageParam as number }),
+    // Приховані розділи відсіюємо тут, а не в рендері: сторінка, що цілком
+    // складалася з прихованих товарів, лишала каталог порожнім. Склад колекцій
+    // беремо зі спільного кешу — той самий запит уже роблять картки (useTurntables).
+    queryFn: async ({ pageParam = 0, client }) => {
+      const collections = await client.ensureQueryData({
+        queryKey: RAW_COLLECTIONS_QUERY_KEY,
+        queryFn: fetchRawCollections,
+      });
+      return productsApi.getVisibleProducts(filters, pageParam as number, toHiddenSlugs(collections));
+    },
     // Функція з явним `| undefined` у поверненні: без цього TS вибирає
     // перевантаження з гарантованим `data` (без 'pending' у status), хоча
     // тут initialData справді умовний.
     initialData: (): InfiniteData<ProductsResponse> | undefined =>
       initialData && matchesServerDefault(filters) ? { pages: [initialData], pageParams: [0] } : undefined,
-    getNextPageParam: (lastPage) => {
-      const currentOffset = lastPage.meta.offset;
-      const currentLimit = lastPage.meta.limit;
-      const total = lastPage.meta.total;
-
-      // Якщо є ще сторінки - повертаємо наступний offset
-      if (currentOffset + currentLimit < total) {
-        return currentOffset + currentLimit;
-      }
-
-      // Немає більше сторінок
-      return undefined;
-    },
+    // meta.limit тут — скільки серверних рядків спожила сторінка разом із
+    // прихованими (див. getVisibleProductsPage), тож наступна починається одразу за ними
+    getNextPageParam: ({ meta }) => (meta.hasMore ? meta.offset + meta.limit : undefined),
     initialPageParam: 0,
     enabled,
   });

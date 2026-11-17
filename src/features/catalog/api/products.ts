@@ -1,7 +1,9 @@
 // src/features/catalog/api/products.ts
 import { apiClient } from '@/shared/api/client';
+import { fetchRawCollections, toHiddenSlugs } from '@/shared/api/collections';
 import { productEndpoints, categoryEndpoints } from '@/shared/api/endpoints';
 import { Product, Category, ProductWithRelations } from '@/shared/types';
+import { getVisibleProductsPage } from './visible-products';
 
 // API response types
 export interface ProductsResponse {
@@ -74,6 +76,11 @@ export const productsApi = {
     return response.data;
   },
 
+  /** Сторінка каталогу без товарів прихованих розділів, починаючи з серверного `offset` */
+  async getVisibleProducts(filters: ProductFilters, offset: number, hiddenSlugs: ReadonlySet<string>) {
+    return getVisibleProductsPage((pagination) => this.getProducts(filters, pagination), offset, hiddenSlugs);
+  },
+
   async getProductBySlug(slug: string) {
     const response = await apiClient.get<ProductResponse>(productEndpoints.productBySlug(slug));
     return response.data;
@@ -95,6 +102,17 @@ export const productsApi = {
     return this.getProducts({ categorySlug }, pagination);
   },
 };
+
+/** Перша сторінка каталогу для SSG: дефолтне сортування, без прихованих розділів */
+export async function getCatalogFirstPage(): Promise<ProductsResponse | null> {
+  try {
+    const hiddenSlugs = toHiddenSlugs(await fetchRawCollections());
+    return await productsApi.getVisibleProducts({ sortBy: 'created', sortOrder: 'desc' }, 0, hiddenSlugs);
+  } catch (error) {
+    console.error('Failed to fetch products:', error);
+    return null;
+  }
+}
 
 export const categoriesApi = {
   async getCategories() {

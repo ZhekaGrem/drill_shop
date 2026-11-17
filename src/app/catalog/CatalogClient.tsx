@@ -58,13 +58,13 @@ export default function CatalogClient({ initialData, basePath = '' }: CatalogPro
     }
   );
 
-  // Товари прихованих розділів (config/hidden-collections) з каталогу
-  // відсіюємо на фронті: лістовий /products нічого не знає про колекції,
-  // а деталка вимагає isActive=true — тож ховати можна лише тут
+  // Товари прихованих розділів (config/hidden-collections) відсіює сам запит
+  // (useCatalogProducts) — сторінки приходять уже без них. Тут їхня кількість
+  // потрібна лише лічильнику нижче
   const { data: hiddenSlugs } = useHiddenProductSlugs();
 
   // Обʼєднуємо всі сторінки в один масив
-  const products = (data?.pages.flatMap((page) => page.data) || []).filter((p) => !hiddenSlugs?.has(p.slug));
+  const products = data?.pages.flatMap((page) => page.data) || [];
   // undefined, поки запит ще не осів — «Знайдено 0 товарів» не має права
   // звучати з aria-live, доки ми не знаємо реальної кількості (крок 5).
   // Мінус приховані: вони в лічильнику бекенда, але не на вітрині
