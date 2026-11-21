@@ -1,39 +1,38 @@
 /* eslint-disable no-console */
-// Колекції «Злипні» в прод-БД: «Футболярчики» (tshirt.glb) і «Бобаночки» (hoodie-3.glb), розміри
-// S–XXL по 100 штук. Товари бере з scripts/zlypni/catalog.json — його пише import-uv.py.
+// Колекції розділу «є. Злипні» в прод-БД: «Футболляндручки» (tshirt.glb, 1300 грн) і «Боби»
+// (hoodie-3.glb, 2300 грн), S–XXL по stockPerSize штук. Джерело — src/shared/config/zlypni-merch.json,
+// у якому mapUrl заповнює scripts/zlypni/import-kits.cjs (він же готує фото карток і оберти).
 // Фази й запобіжники — scripts/lib/seed-collections.cjs. Будь-який запис: --apply --confirm=zlypni
 //
-// Порядок (повністю — docs/zlypni.md): import-uv.py → render-posters.py → publish-images.cjs →
-//   create → images --dir=3d/artists/zlypni/catalog-images → деплой фронта з ZLYPNI_LIVE=true →
+// Порядок (повністю — docs/zlypni.md): import-kits.cjs → push v2 (текстури на проді) →
+//   create → images --dir=3d/artists/zlypni/merch/catalog-images → оберти (upload-turntables.mjs) →
 //   activate --probe=https://ye-dril.com
-const catalog = require('./catalog.json');
+const manifest = require('../../src/shared/config/zlypni-merch.json');
 const { run } = require('../lib/seed-collections.cjs');
 
 const MODEL = { tshirt: null, hoodie: '/3d/models/hoodie-3.glb' }; // null — дефолтна tshirt.glb
 
-const unpriced = catalog.collections.filter((c) => c.products.length && !c.price).map((c) => c.title);
-if (unpriced.length) throw new Error(`Нема ціни: ${unpriced.join(', ')} — вкажіть price у catalog.json`);
+const unfilled = manifest.collections.flatMap((c) => c.products.filter((p) => !p.mapUrl).map((p) => p.slug));
+if (unfilled.length) throw new Error(`Нема mapUrl: ${unfilled.join(', ')} — спершу import-kits.cjs`);
 
 const config = {
   confirm: 'zlypni',
-  sizes: catalog.sizes,
-  stockBySize: Object.fromEntries(catalog.sizes.map((size) => [size, catalog.stockPerSize])),
-  collections: catalog.collections
-    .filter((c) => c.products.length)
-    .map((c, i) => ({
-      slug: c.slug,
-      title: c.title,
-      description: c.description,
-      sortOrder: 110 + i, // після «є. ***» (102–103)
-      price: c.price,
-      model3dPath: MODEL[c.garment],
-      products: c.products.map((p) => ({
-        slug: p.slug,
-        name: p.name,
-        swatch: '#080808',
-        texture3dUrl: p.texture3dUrl,
-      })),
+  sizes: manifest.sizes,
+  stockBySize: Object.fromEntries(manifest.sizes.map((size) => [size, manifest.stockPerSize])),
+  collections: manifest.collections.map((c, i) => ({
+    slug: c.slug,
+    title: c.title,
+    description: c.description,
+    sortOrder: 110 + i, // після «є. ***» (102–103) і брілка (104)
+    price: c.price,
+    model3dPath: MODEL[c.garment],
+    products: c.products.map((p) => ({
+      slug: p.slug,
+      name: p.name,
+      swatch: '#080808',
+      texture3dUrl: p.mapUrl,
     })),
+  })),
 };
 
 module.exports = config;
