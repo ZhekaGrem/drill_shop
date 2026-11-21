@@ -1,0 +1,32 @@
+{
+  "sizes": ["S", "M", "L", "XL", "XXL"],
+  "stockPerSize": 100,
+  "collections": [
+    {
+      "slug": "zlypni-futbolliandruchky",
+      "title": "Футболляндручки",
+      "garment": "tshirt",
+      "price": 1300,
+      "description": "Футболляндручки від Злипнів із серії «Всім нашим»: п'ять теплих дизайнів, а на спині кожного — кого бережемо. Злипайся зі своїми.",
+      "products": [
+        { "slug": "zlypni-t01-zhyve-teplo", "name": "Живе тепло", "kit": "футболка/дизайн 7", "mapUrl": "" },
+        { "slug": "zlypni-t02-lyst-na-khvyli", "name": "Лист на хвилі", "kit": "футболка/дизайн 8", "mapUrl": "" },
+        { "slug": "zlypni-t03-soniachne-zhyttia", "name": "Сонячне життя", "kit": "футболка/дизайн 9", "mapUrl": "" },
+        { "slug": "zlypni-t04-sad-pislia-doshchu", "name": "Сад після дощу", "kit": "футболка/дизайн 10", "mapUrl": "" },
+        { "slug": "zlypni-t05-teplo-svoikh", "name": "Тепло своїх", "kit": "футболка/дизайн 11", "mapUrl": "" }
+      ]
+    },
+    {
+      "slug": "zlypni-boby",
+      "title": "Боби",
+      "garment": "hoodie",
+      "price": 2300,
+      "description": "Боби від Злипнів із серії «Всім нашим»: три худі з принтом на грудях, спині й рукавах, бірка під капюшоном. Тепло на всіх.",
+      "products": [
+        { "slug": "zlypni-h01-kvitnuty-razom", "name": "Квітнути разом", "kit": "худі/дизайн 1", "mapUrl": "" },
+        { "slug": "zlypni-h02-nizhnyi-kosmos", "name": "Ніжний космос", "kit": "худі/дизайн 2", "mapUrl": "" },
+        { "slug": "zlypni-h03-tepla-chastota", "name": "Тепла частота", "kit": "худі/дизайн 3", "mapUrl": "" }
+      ]
+    }
+  ]
+}

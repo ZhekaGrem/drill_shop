@@ -10,7 +10,7 @@ import { ZlypniShowcase } from './ZlypniShowcase';
 
 export const ZlypniGallery = () => (
   <Page>
-    <PageHeader title={ZLYPNI_TITLE} description={content.zlypni.description} />
+    <PageHeader title={ZLYPNI_TITLE} description={content.zlypniGallery.description} />
     {ZLYPNI_COLLECTIONS.map((collection) => (
       <ZlypniShowcase key={collection.key} collection={collection} />
     ))}

@@ -52,12 +52,12 @@ export const ZlypniShowcase = ({ collection }: { collection: ZlypniCollection })
         <h2 id={`${id}-title`} className={styles.title}>
           {collection.title}
         </h2>
-        <p className={styles.count}>{formatCount(collection.designs.length, content.zlypni.designs)}</p>
+        <p className={styles.count}>{formatCount(collection.designs.length, content.zlypniGallery.designs)}</p>
       </header>
       <div ref={stageRef} className={styles.stage}>
         <HeroVisual designs={designs} switcher="compass" value={active} onChange={setActive} />
       </div>
-      <p className={styles.hint}>{content.zlypni.hint}</p>
+      <p className={styles.hint}>{content.zlypniGallery.hint}</p>
       <ul className={styles.grid}>
         {collection.designs.slice(0, shown).map((d) => (
           <li key={d.key}>

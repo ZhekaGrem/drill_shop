@@ -17,7 +17,7 @@
 // Один розділ може мати КІЛЬКА колекцій: футболки й худі живуть
 // окремо (кожна зі своїм перемикачем на своїй 3D-моделі), але словомарка в
 // обох одна — це один світ хедера.
-import { ZLYPNI_COLLECTION_SLUGS } from './zlypni';
+import { ZLYPNI_RETIRED_SLUGS, ZLYPNI_SECTION_SLUGS, ZLYPNI_TITLE } from './zlypni';
 
 export const HIDDEN_COLLECTION_SLUGS: readonly string[] = [
   'mystetstvo-viyny',
@@ -29,8 +29,10 @@ export const HIDDEN_COLLECTION_SLUGS: readonly string[] = [
   'prokliatyi-hudi',
   'prokliatyi-new-tshirt',
   'prokliatyi-new-hoodie',
-  // «Злипні» зняті з продажу 2026-11-17: лишилась тільки прихована галерея (config/zlypni.ts)
-  ...ZLYPNI_COLLECTION_SLUGS,
+  // Розділ «є. Злипні» продається з 2026-11-21 (config/zlypni.ts); колекції 2026-11-16 зняті
+  // з продажу 2026-11-17 — їх показує лише прихована галерея
+  ...ZLYPNI_SECTION_SLUGS,
+  ...ZLYPNI_RETIRED_SLUGS,
 ];
 
 // Словомарка хедера для прихованого розділу (дефолтна — «Дріл»)
@@ -43,6 +45,7 @@ export const HIDDEN_COLLECTION_WORDMARK: Record<string, string> = {
   'prokliatyi-hudi': '***',
   'prokliatyi-new-tshirt': '***',
   'prokliatyi-new-hoodie': '***',
+  ...Object.fromEntries(ZLYPNI_SECTION_SLUGS.map((slug) => [slug, ZLYPNI_TITLE])),
 };
 
 export const isHiddenCollection = (slug: string | null | undefined): boolean =>
