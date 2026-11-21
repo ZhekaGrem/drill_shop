@@ -1,11 +1,5 @@
 {
-  "sizes": [
-    "S",
-    "M",
-    "L",
-    "XL",
-    "XXL"
-  ],
+  "sizes": ["S", "M", "L", "XL", "XXL"],
   "stockPerSize": 100,
   "collections": [
     {

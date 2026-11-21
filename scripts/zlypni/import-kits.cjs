@@ -126,7 +126,10 @@ const importKit = async (kit, product) => {
   for (const job of jobs) await checkKit(job.kit, job.garment);
   for (const dir of [TEXTURES, CARDS, TURNTABLES]) fs.mkdirSync(dir, { recursive: true });
   for (const job of jobs) await importKit(job.kit, job.product);
-  fs.writeFileSync(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`);
+  // У форматі Prettier репозиторію, щоб pre-commit hook не переписував маніфест після кожного запуску
+  const prettier = require('prettier');
+  const options = await prettier.resolveConfig(MANIFEST);
+  fs.writeFileSync(MANIFEST, await prettier.format(JSON.stringify(manifest), { ...options, parser: 'json' }));
   console.log(`${jobs.length} товарів; mapUrl записано в ${path.relative(FRONT, MANIFEST)}`);
 })().catch((e) => {
   console.error(e.message);

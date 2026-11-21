@@ -33,10 +33,12 @@ cp 3d/pipeline/upload-turntables.mjs ../drill-shop-backend/scripts/.tmp-upload-t
 (cd ../drill-shop-backend && node scripts/.tmp-upload-turntables.mjs ../drill_shop/3d/artists/zlypni/merch/turntables && rm scripts/.tmp-upload-turntables.mjs)
 # 5. Увімкнути (гейт: асети на проді, фото й рендери в БД, модель і розміри ті самі)
 node scripts/zlypni/create-collection.cjs --phase=activate --probe=https://ye-dril.com --apply --confirm=zlypni
+# 6. Скинути ISR сторінок товарів (секрет — з Vercel, у репо його нема)
+REVALIDATE_SECRET=… node scripts/zlypni/create-collection.cjs --phase=revalidate --apply --confirm=zlypni
 # Інший залишок: --phase=stock --qty=N; сховати назад без деплою: --phase=deactivate
 ```
 
-`create` вставляє колекції й товари неактивними, тож між деплоєм фронта й `activate` сторінка `/zlypni` показує «Розділ скоро відкриється». Старий магазин shchilnuidrill.com (той самий бекенд, без списку прихованих колекцій) показує ці товари у своєму каталозі.
+`create` вставляє колекції й товари неактивними, тож між деплоєм фронта й `activate` сторінка `/zlypni` показує «Розділ скоро відкриється». Сторінки товарів `/v2/a/<slug>` — ISR на годину: відкрита до `activate`, така сторінка закешує «Товар не знайдено» до `revalidate` або до кінця години, тож до активації їх не відкривати. Старий магазин shchilnuidrill.com (той самий бекенд, без списку прихованих колекцій) показує ці товари у своєму каталозі.
 
 **Лонгсліви** («Longslivchansky», 2000 грн за брифом): комплекти 4–6 готові, але окремої 3D-моделі лонгсліва нема — у комплектах він показаний на моделі худі. Варіанти: продавати на моделі худі з підписом, купити/знайти модель лонгсліва (нові шаблони розгорток, розкладка принтів і рендери — 1–2 дні), або без 3D. Коли власник вирішить — третя колекція в `zlypni-merch.json` і той самий конвеєр.
 

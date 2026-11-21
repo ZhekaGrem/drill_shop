@@ -52,7 +52,9 @@ export const ZlypniShowcase = ({ collection }: { collection: ZlypniCollection })
         <h2 id={`${id}-title`} className={styles.title}>
           {collection.title}
         </h2>
-        <p className={styles.count}>{formatCount(collection.designs.length, content.zlypniGallery.designs)}</p>
+        <p className={styles.count}>
+          {formatCount(collection.designs.length, content.zlypniGallery.designs)}
+        </p>
       </header>
       <div ref={stageRef} className={styles.stage}>
         <HeroVisual designs={designs} switcher="compass" value={active} onChange={setActive} />
