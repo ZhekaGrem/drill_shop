@@ -6,6 +6,7 @@
 // Тут до нього додано лише те, чого в ньому нема й не має бути: куди веде
 // розділ і що стоїть у його навігації.
 import { HIDDEN_COLLECTION_WORDMARK } from './hidden-collections';
+import { ZLYPNI_HREF, ZLYPNI_SECTION_SLUGS } from './zlypni';
 
 export interface NavWorld {
   id: string;
@@ -54,6 +55,13 @@ export const NAV_WORLDS: NavWorld[] = [
     wordmark: HIDDEN_COLLECTION_WORDMARK['prokliatyi-futbolky'],
     href: '/prokliatyi',
     navItems: seriesNav('/prokliatyi'),
+  },
+  {
+    // Футболляндручки й боби на одній сторінці розділу
+    id: 'zlypni',
+    wordmark: HIDDEN_COLLECTION_WORDMARK[ZLYPNI_SECTION_SLUGS[0]],
+    href: ZLYPNI_HREF,
+    navItems: seriesNav(ZLYPNI_HREF),
   },
 ];
 
